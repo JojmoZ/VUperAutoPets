@@ -3,7 +3,6 @@
      width: 100%;
      background-color: #333;
      color: white;
-     height: 39px;
      display: flex;
      justify-content: space-between;
      align-items: center;
@@ -41,6 +40,19 @@
      border: none;
      border-radius: 5px;
  }
+
+ .play-button {
+     padding: 10px 20px;
+     font-size: 16px;
+     background-color: #28a745;
+     color: white;
+ }
+
+ .logout-button {
+     background-color: #dc3545;
+     color: white;
+ }
+
   html,
   body {
       margin: 0;

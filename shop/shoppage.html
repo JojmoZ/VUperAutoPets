@@ -11,9 +11,14 @@
 <body>
     <div class="navbar">
         <div class="navbar-left">
-            <a href="homepage.html">Home Page</a>
-            <a href="shoppage.html">Shop Page</a>
-            <a href="barnpage.html">Barn Page</a>
+            <a href="/home/homepage.html">Home Page</a>
+            <a href="/shop/shoppage.html">Shop Page</a>
+            <!-- <a href="shoppage.html">Animal Showcase</a> -->
+            <a href="/barn/barnpage.html">Barn Page</a>
+        </div>
+        <div class="navbar-right">
+            <button id="play-button" class="play-button">Play</button>
+            <button class="logout-button" id="logoutButton">Logout</button>
         </div>
     </div>
 
@@ -49,10 +54,10 @@
             <p>Attack: 1, Health: 2</p>
         </div>
         <div class="card" data-animal="Fish">
-            <img src="../assets/Fish.webp" alt="Fish">
-            <h3>Fish</h3>
-            <p>Price: 5 Coins</p>
-            <p>Attack: 2, Health: 3</p>
+            <img src="../assets/Elephant.webp" alt="Fish">
+            <h3>Elephant</h3>
+            <p>Price: 7 Coins</p>
+            <p>Attack: 8, Health: 7</p>
         </div>
     </div>
 
@@ -70,7 +75,9 @@
         </div>
     </div>
 
-    <script src="shop.js"></script>
+
 </body>
+<script src="shop.js"></script>
+<script src="../navbar.js"></script>
 
 </html>

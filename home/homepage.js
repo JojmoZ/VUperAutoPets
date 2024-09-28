@@ -1,27 +1,13 @@
 window.onload = function () {
   console.log("Script Loaded");
-  const gotoplay = document.getElementById("play-button");
-  gotoplay.addEventListener("click", function (e) {
-    window.location = "/game/index.html";
-  });
-  const username = localStorage.getItem("username");
-  if (username) {
-    document.querySelector(
-      ".jumbotron h1"
-    ).textContent = `Welcome, ${username}, to VUper Auto Pets`;
-  } else {
-    window.location.href = "/login/start.html";
-  }
-
-  document
-    .getElementById("logoutButton")
-    .addEventListener("click", function () {
-      localStorage.removeItem("username");
-      localStorage.removeItem("coins");
-      localStorage.removeItem("ownedAnimals");
-      window.location.href = "/login/start.html";
-    });
-
+ const username = localStorage.getItem("username");
+ if (username) {
+   document.querySelector(
+     ".jumbotron h1"
+   ).textContent = `Welcome, ${username}, to VUper Auto Pets`;
+ } else {
+   window.location.href = "/login/start.html";
+ }
   // IntersectionObserver to detect when the game-desc section is in view
   const gameDescSection = document.querySelector(".game-desc");
   const observer = new IntersectionObserver(
