@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>VUper auto Pets</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+  <h1>VUper Auto Pets</h1>
+  <p id="coins">Coins: 10</p>
+  <div class="shop">
+    <div class="animal" onclick="buyAnimal(0)"><img src="../assets/Ant.webp" alt=""></div>
+    <div class="animal" onclick="buyAnimal(1)"><img src="../assets/Fish.webp" alt=""></div>
+    <div class="animal" onclick="buyAnimal(2)"><img src="../assets/Lion.webp" alt=""></div>
+  </div>
+  <button onclick="startBattle()">Play</button>
+  <canvas id="battleCanvas" width="800" height="200"></canvas>
+  <div class="terminal" id="terminal"></div>
+  <script src="game.js"></script>
+</body>
+
+</html>

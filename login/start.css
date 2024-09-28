@@ -1,0 +1,44 @@
+ .main {
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     height: 100vh;
+     color: white;
+     font-family: Arial, sans-serif;
+     padding: 20px;
+     border-radius: 10px;
+ }
+
+ .title {
+     font-size: 2em;
+     margin-bottom: 10px;
+     color: #cbac24;
+     /* font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; */
+ }
+
+ form {
+     width: 200px;
+ }
+
+ input[type="submit"] {
+     padding: 10px 20px;
+     background-color: #4CAF50;
+     color: white;
+     border: none;
+     cursor: pointer;
+     border-radius: 5px;
+     margin-top: 10px;
+ }
+
+ input[type="text"] {
+     padding: 10px;
+     margin-bottom: 10px;
+     border: none;
+     border-radius: 5px;
+     width: 100%;
+ }
+
+ #error {
+     color: red;
+     display: hidden;
+ }
