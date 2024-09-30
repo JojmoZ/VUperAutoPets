@@ -105,3 +105,6 @@ canvas {
   width: 50px; /* Adjust based on your animal image size */
   height: 50px; /* Adjust based on your animal image size */
 }
+.restricted-area {
+  border: 2px solid red; /* Optional: adds a border around the area */
+}
