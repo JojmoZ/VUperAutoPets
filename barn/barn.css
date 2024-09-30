@@ -62,3 +62,46 @@
       font-family: Arial, sans-serif;
       background-size: cover;
   }
+
+  body {
+    margin: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+}
+
+.barn {
+    position: relative;
+    width: 100%;
+    height: calc(100% - 60px); /* Adjust height to account for navbar */
+    overflow: hidden; /* This ensures no overflow */
+}
+.food {
+  position: absolute;
+  width: 20px; /* Width of food */
+  height: 20px; /* Height of food */
+  background-color: black; /* Food color */
+  border-radius: 50%; /* Make it round */
+}
+
+
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* background-image: url('path/to/your/pixel-barn.png'); Use your pixel barn image here */
+    background-size: cover;
+}
+
+#animals {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    /* pointer-events: none; Allows clicks to go through to the canvas */
+}
+
+.animal {
+  width: 50px; /* Adjust based on your animal image size */
+  height: 50px; /* Adjust based on your animal image size */
+}

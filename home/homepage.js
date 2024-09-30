@@ -28,7 +28,7 @@ window.onload = function () {
   observer.observe(gameDescSection);
 
   // Carousel Logic
-  const carouselImages = ["Steam.png", "TeamWoodGames.jpg", "LogoVUPER.jpg"];
+  const carouselImages = ["../assets/Steam.png", "../assets/TeamWoodGames.jpg", "../assets/LogoVUPER.jpg"];
   const carouselTexts = [
     "This is the description for image 1.",
     "This is the description for image 2.",
