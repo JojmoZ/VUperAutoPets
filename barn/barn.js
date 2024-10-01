@@ -1,149 +1,28 @@
 const animalContainer = document.getElementById("animals");
-const walkingSpeed = 50; 
-const frameDuration = 1000 / 60; 
-let animationId; const restrictedAreas = [
-  { x: 100, y: 100, width: 200, height: 150 },
-  { x: 400, y: 300, width: 150, height: 200 },
-  { x: 600, y: 300, width: 150, height: 200 },
-];
-function drawRestrictedAreas() {
-  restrictedAreas.forEach((area) => {
-    const restrictedAreaElement = document.createElement("div");
-    restrictedAreaElement.className = "restricted-area";
-    restrictedAreaElement.style.position = "absolute";
-    restrictedAreaElement.style.left = `${area.x}px`;
-    restrictedAreaElement.style.top = `${area.y}px`;
-    restrictedAreaElement.style.width = `${area.width}px`;
-    restrictedAreaElement.style.height = `${area.height}px`;
-    restrictedAreaElement.style.backgroundColor = "rgba(255, 0, 0, 0.5)"; 
-    animalContainer.appendChild(restrictedAreaElement);
-  });
-}
-drawRestrictedAreas();
+const walkingSpeed = 50; // Walking speed in pixels per second
+const frameDuration = 1000 / 60; // Duration for each frame (60 FPS)
+let animationId; // To store the requestAnimationFrame ID
+
+// Function to retrieve animals from local storage
 function getUserAnimals() {
   const storedAnimals = localStorage.getItem("ownedAnimals");
   return storedAnimals ? JSON.parse(storedAnimals) : [];
 }
-function isInRestrictedArea(x, y) {
-  return restrictedAreas.some((area) => {
-    const isInArea =
-      x >= area.x &&
-      x <= area.x + area.width &&
-      y >= area.y &&
-      y <= area.y + area.height;
 
-    // Debugging output
-    if (isInArea) {
-      console.log(
-        `Coordinates (${x}, ${y}) are in restricted area: ${JSON.stringify(
-          area
-        )}`
-      );
-    }
-
-    return isInArea;
-  });
-}
-
-function aStar(start, goal) {
-  const openSet = [start];
-  const cameFrom = new Map();
-
-  const gScore = new Map(); 
-  gScore.set(JSON.stringify(start), 0);
-
-  const fScore = new Map(); 
-  fScore.set(JSON.stringify(start), heuristic(start, goal));
-
-  while (openSet.length > 0) {
-    let current = openSet.reduce((prev, curr) =>
-      fScore.get(JSON.stringify(curr)) < fScore.get(JSON.stringify(prev))
-        ? curr
-        : prev
-    );
-
-    if (current.x === goal.x && current.y === goal.y) {
-      return reconstructPath(cameFrom, current);
-    }
-
-    openSet.splice(openSet.indexOf(current), 1);
-
-    const neighbors = getNeighbors(current);
-    for (let neighbor of neighbors) {
-      if (isInRestrictedArea(neighbor.x, neighbor.y)) continue;
-
-      const tentativeGScore = gScore.get(JSON.stringify(current)) + 1; 
-      if (
-        !gScore.has(JSON.stringify(neighbor)) ||
-        tentativeGScore < gScore.get(JSON.stringify(neighbor))
-      ) {
-        cameFrom.set(JSON.stringify(neighbor), current);
-        gScore.set(JSON.stringify(neighbor), tentativeGScore);
-        fScore.set(
-          JSON.stringify(neighbor),
-          tentativeGScore + heuristic(neighbor, goal)
-        );
-
-        if (!openSet.includes(neighbor)) {
-          openSet.push(neighbor);
-        }
-      }
-    }
-  }
-  return [];
-}
-
-function heuristic(a, b) {
-  return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
-}
-function getNeighbors(position) {
-  const directions = [
-    { x: 0, y: 1 },
-    { x: 0, y: -1 },
-    { x: 1, y: 0 },
-    { x: -1, y: 0 },
-  ];
-  return directions
-    .map((dir) => ({
-      x: position.x + dir.x * 50, 
-      y: position.y + dir.y * 50,
-    }))
-    .filter(
-      (neighbor) =>
-        neighbor.x >= 0 &&
-        neighbor.y >= 0 &&
-        neighbor.x <= window.innerWidth &&
-        neighbor.y <= window.innerHeight
-    );
-}
-function reconstructPath(cameFrom, current) {
-  const totalPath = [current];
-  while (cameFrom.has(JSON.stringify(current))) {
-    current = cameFrom.get(JSON.stringify(current));
-    totalPath.push(current);
-  }
-  return totalPath.reverse();
-}
-function spawnAnimalOutsideRestrictedArea() {
-  let animalX, animalY;
-  do {
-    animalX = Math.random() * (window.innerWidth - 50);
-    animalY = Math.random() * (window.innerHeight - 60);
-  } while (isInRestrictedArea(animalX, animalY));
-  return { x: animalX, y: animalY };
-}
+// Function to create an animal element
 function createAnimal(animal) {
-  const { x, y } = spawnAnimalOutsideRestrictedArea();
   const animalElement = document.createElement("img");
   animalElement.src = `../assets/${animal}.webp`;
   animalElement.className = "animal";
   animalElement.style.position = "absolute"; // Ensure absolute positioning for movement
-  animalElement.style.left = `${x}px`;
-  animalElement.style.top = `${y}px`;
+  animalElement.style.left = `${Math.random() * (window.innerWidth - 50)}px`; // Random start position
+  animalElement.style.top = `${Math.random() * (window.innerHeight - 60)}px`; // Random start position
   animalElement.dataset.isMovingToFood = "false"; // Track if the animal is currently moving to food
   animalContainer.appendChild(animalElement);
   return animalElement;
 }
+
+// Function to create food when double-clicking on the canvas
 function createFood(event) {
   const foodElement = document.createElement("div");
   foodElement.className = "food";
@@ -156,57 +35,85 @@ function createFood(event) {
   foodElement.style.top = `${event.clientY - 60}px`; // Center the food
   animalContainer.appendChild(foodElement);
 }
+
 function moveToFood(animalElement, foodElement) {
   if (animalElement.dataset.isMovingToFood === "true") return; // Prevent re-entry
   animalElement.dataset.isMovingToFood = "true"; // Mark as moving to food
-  const foodPosition = {
-    x: parseFloat(foodElement.style.left),
-    y: parseFloat(foodElement.style.top),
-  };
-  const startPosition = {
-    x: parseFloat(animalElement.style.left),
-    y: parseFloat(animalElement.style.top),
-  };
-  const path = aStar(startPosition, foodPosition); // Find the path using A*
-  if (path.length === 0) {
-    animalElement.dataset.isMovingToFood = "false"; // No valid path found
-    moveAnimal(animalElement); // Return to walking state
-    return;
-  }
-  function followPath(pathIndex) {
-    if (pathIndex >= path.length) {
+
+  function move() {
+    // Constantly search for the closest food
+    searchForFood(animalElement); // This will update foodElement if needed
+
+    // If the foodElement is removed or is no longer valid, return
+    if (!document.body.contains(foodElement)) {
       animalElement.dataset.isMovingToFood = "false"; // Mark as not moving to food
-      moveAnimal(animalElement); // Return to walking state after eating
+      moveAnimal(animalElement); // Return to walking state
       return;
     }
-    const targetPosition = path[pathIndex];
-    animalElement.style.left = `${targetPosition.x}px`;
-    animalElement.style.top = `${targetPosition.y}px`;
-    requestAnimationFrame(() => followPath(pathIndex + 1));
+
+    // Calculate positions and movement
+    const animalX = parseFloat(animalElement.style.left);
+    const animalY = parseFloat(animalElement.style.top);
+    const foodX = parseFloat(foodElement.style.left);
+    const foodY = parseFloat(foodElement.style.top);
+
+    const deltaX = foodX - animalX;
+    const deltaY = foodY - animalY;
+    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+    // Stop moving if close enough to the food
+    if (distance < 5) {
+      animalElement.style.left = `${foodX}px`;
+      animalElement.style.top = `${foodY}px`;
+      foodElement.remove(); // Remove the food
+      setTimeout(() => {
+        animalElement.dataset.isMovingToFood = "false"; 
+        moveAnimal(animalElement);
+      }, 1000); // Short delay before resuming walking
+      return;
+    }
+
+    // Calculate normalized step values based on speed
+    const stepX = (deltaX / distance) * (walkingSpeed * (frameDuration / 1000));
+    const stepY = (deltaY / distance) * (walkingSpeed * (frameDuration / 1000));
+    animalElement.style.left = `${animalX + stepX}px`;
+    animalElement.style.top = `${animalY + stepY}px`;
+    requestAnimationFrame(move); 
   }
-  followPath(0); // Start following the path
+
+  move(); 
 }
 function searchForFood(animal) {
   const foodElements = document.querySelectorAll(".food");
   let closestFood = null;
   let closestDistance = Infinity;
+
+  // Find the closest food
   foodElements.forEach((food) => {
     const animalX = parseFloat(animal.style.left);
     const animalY = parseFloat(animal.style.top);
     const foodX = parseFloat(food.style.left);
     const foodY = parseFloat(food.style.top);
+
+    // Calculate distance to food
     const distance = Math.sqrt(
       Math.pow(foodX - animalX, 2) + Math.pow(foodY - animalY, 2)
     );
+
+    // Update closest food if this one is closer
     if (distance < closestDistance) {
       closestDistance = distance;
       closestFood = food;
     }
   });
+
+  // If closestFood found and not already moving to it, move to it
   if (closestFood && animal.dataset.isMovingToFood === "false") {
     moveToFood(animal, closestFood);
   }
 }
+
+// Function to move an animal randomly
 function moveAnimal(animalElement) {
   if (animalElement.dataset.isMovingToFood === "true") return; // Prevent movement if heading to food
 
@@ -217,8 +124,12 @@ function moveAnimal(animalElement) {
 
   const deltaX = Math.cos(direction) * distance; // Calculate deltaX based on direction
   const deltaY = Math.sin(direction) * distance; // Calculate deltaY based on direction
+
+  // Current position
   const startX = parseFloat(animalElement.style.left);
   const startY = parseFloat(animalElement.style.top);
+
+  // New positions with boundaries
   const endX = Math.min(
     Math.max(startX + deltaX, 0),
     animalContainer.clientWidth - 50
@@ -228,31 +139,23 @@ function moveAnimal(animalElement) {
     animalContainer.clientHeight - 60
   );
 
-  // Check if the end position is in a restricted area
-  if (isInRestrictedArea(endX, endY)) {
-    // If the end position is restricted, try moving again
-    moveAnimal(animalElement); // Try moving again
-    return; // Exit the function to avoid further movement
-  }
-
-  // Ensure the entire path does not intersect with restricted areas
-  if (isPathInRestrictedArea(startX, startY, endX, endY)) {
-    moveAnimal(animalElement); // Try moving again if path is restricted
-    return; // Exit the function to avoid further movement
-  }
-
+  // Animate movement smoothly using requestAnimationFrame
   const duration = walkDuration / 1000; // Convert to seconds
   const startTime = performance.now(); // Record start time
 
   function animateMovement(currentTime) {
     const elapsedTime = (currentTime - startTime) / 1000; // Convert to seconds
     const progress = Math.min(elapsedTime / duration, 1); // Progress of the animation
+
+    // Update position based on easing
     animalElement.style.left = `${startX + (endX - startX) * progress}px`;
     animalElement.style.top = `${startY + (endY - startY) * progress}px`;
 
+    // Continue animating until the duration is completed
     if (progress < 1) {
       animationId = requestAnimationFrame(animateMovement);
     } else {
+      // Set a timeout to idle after walking
       setTimeout(() => {
         animalElement.style.transition = "none"; // Disable transition for idle
         setTimeout(() => {
@@ -261,30 +164,22 @@ function moveAnimal(animalElement) {
       }, 0); // Allow some time before starting idle
     }
   }
-  requestAnimationFrame(animateMovement);
+
+  requestAnimationFrame(animateMovement); // Start the animation
 }
 
-
-function isPathInRestrictedArea(startX, startY, endX, endY) {
-  const steps = 10; // Number of steps to check along the path
-  for (let i = 0; i <= steps; i++) {
-    const t = i / steps; // Progress along the path
-    const x = startX + (endX - startX) * t;
-    const y = startY + (endY - startY) * t;
-
-    if (isInRestrictedArea(x, y)) {
-      return true; // Path intersects with a restricted area
-    }
-  }
-  return false; // Path does not intersect with any restricted area
-}
+// Get user animals and create them in the barn
 const userAnimals = getUserAnimals();
 userAnimals.forEach((animal) => {
   const animalElement = createAnimal(animal);
   moveAnimal(animalElement); // Start moving the animal
 });
+
+// Add event listener to canvas for food creation
 animalContainer.addEventListener("dblclick", createFood);
+
+// Start searching for food for each animal periodically
 setInterval(() => {
   const animals = document.querySelectorAll(".animal");
-  animals.forEach((animal) => searchForFood(animal)); 
+  animals.forEach((animal) => searchForFood(animal)); // Check for food for each animal every second
 }, 50);

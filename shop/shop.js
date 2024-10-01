@@ -12,8 +12,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const coinsDisplay = document.createElement("div");
   coinsDisplay.id = "coinsDisplay";
   coinsDisplay.style.position = "fixed";
-  coinsDisplay.style.top = "20px";
-  coinsDisplay.style.right = "190px";
+  coinsDisplay.style.top = "15px";
+  coinsDisplay.style.right = "250px";
   coinsDisplay.style.color = "white";
   coinsDisplay.style.fontSize = "20px";
   coinsDisplay.style.zIndex = "9999";

@@ -4,7 +4,7 @@ window.onload = function () {
  if (username) {
    document.querySelector(
      ".jumbotron h1"
-   ).textContent = `Welcome, ${username}, to VUper Auto Pets`;
+   ).textContent = `Welcome, ${username}!`;
  } else {
    window.location.href = "/login/start.html";
  }
