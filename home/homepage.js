@@ -1,14 +1,15 @@
 window.onload = function () {
   console.log("Script Loaded");
- const username = localStorage.getItem("username");
- if (username) {
-   document.querySelector(
-     ".jumbotron h1"
-   ).textContent = `Welcome, ${username}!`;
- } else {
-   window.location.href = "/login/start.html";
- }
-  // IntersectionObserver to detect when the game-desc section is in view
+  const username = localStorage.getItem("username");
+  if (username) {
+    document.querySelector(
+      ".jumbotron h1"
+    ).textContent = `Welcome, ${username}!`;
+  } else {
+    window.location.href = "/login/start.html";
+  }
+
+  // IntersectionObserver for game description
   const gameDescSection = document.querySelector(".game-desc");
   const observer = new IntersectionObserver(
     (entries) => {
@@ -23,12 +24,15 @@ window.onload = function () {
       });
     },
     { threshold: 0.5 }
-  ); // 50% of the section needs to be visible
-
+  );
   observer.observe(gameDescSection);
 
   // Carousel Logic
-  const carouselImages = ["../assets/LogoVUPER.jpg","../assets/Steam.png", "../assets/TeamWoodGames.jpg"];
+  const carouselImages = [
+    "../assets/LogoVUPER.jpg",
+    "../assets/Steam.png",
+    "../assets/TeamWoodGames.jpg",
+  ];
   const carouselTexts = [
     "Super Auto Pets is the first game out of independent studio Team Wood Games, and is available both as a free browser title as well as a mobile app for Android, it’s certainly a game worth checking out.",
     "This game is available in Steam! Download VUper Auto Pets Free Now!",
@@ -39,22 +43,33 @@ window.onload = function () {
 
   const carouselImageElement = document.getElementById("carousel-image");
   const carouselTextElement = document.getElementById("carousel-text");
+  const indicators = document.querySelectorAll(".indicator");
 
-  document.getElementById("next-button").addEventListener("click", function () {
-    currentIndex = (currentIndex + 1) % carouselImages.length;
-    updateCarousel();
-  });
-
-  document.getElementById("prev-button").addEventListener("click", function () {
-    currentIndex =
-      (currentIndex - 1 + carouselImages.length) % carouselImages.length;
-    updateCarousel();
+  indicators.forEach((indicator) => {
+    indicator.addEventListener("click", function () {
+      currentIndex = parseInt(this.dataset.index);
+      updateCarousel();
+    });
   });
 
   function updateCarousel() {
     carouselImageElement.src = carouselImages[currentIndex];
     carouselTextElement.textContent = carouselTexts[currentIndex];
+    updateIndicators();
   }
+
+  function updateIndicators() {
+    indicators.forEach((indicator, index) => {
+      if (index === currentIndex) {
+        indicator.classList.add("active");
+      } else {
+        indicator.classList.remove("active");
+      }
+    });
+  }
+
+  // Initial update to set the first slide as active
+  updateCarousel();
 
   // Social Media Animation Logic
   const socialMediaSection = document.querySelector(".social-media");

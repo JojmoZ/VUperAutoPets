@@ -108,6 +108,24 @@
      font-size: 16px;
      cursor: pointer;
  }
+.carousel-indicators {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.indicator {
+  width: 20px;
+  height: 20px;
+  background-color: gray;
+  margin: 0 5px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.indicator.active {
+  background-color: orange;
+}
 
  #logoutButton {
      padding: 10px 20px;
