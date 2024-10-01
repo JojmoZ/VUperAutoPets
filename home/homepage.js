@@ -28,11 +28,11 @@ window.onload = function () {
   observer.observe(gameDescSection);
 
   // Carousel Logic
-  const carouselImages = ["../assets/Steam.png", "../assets/TeamWoodGames.jpg", "../assets/LogoVUPER.jpg"];
+  const carouselImages = ["../assets/LogoVUPER.jpg","../assets/Steam.png", "../assets/TeamWoodGames.jpg"];
   const carouselTexts = [
-    "This is the description for image 1.",
-    "This is the description for image 2.",
-    "This is the description for image 3.",
+    "Super Auto Pets is the first game out of independent studio Team Wood Games, and is available both as a free browser title as well as a mobile app for Android, it’s certainly a game worth checking out.",
+    "This game is available in Steam! Download VUper Auto Pets Free Now!",
+    "We are the creators of this game, you can see more of us in https://itch.io/profile/teamwood",
   ];
 
   let currentIndex = 0;
