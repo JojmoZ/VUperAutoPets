@@ -7,7 +7,6 @@
      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
      background-size: cover;
  }
-
  section {
      height: 100vh;
      display: flex;
@@ -17,7 +16,6 @@
      padding: 20px;
      box-sizing: border-box;
  }
-
  .jumbotron {
      background-color: rgba(255, 255, 255, 0.8);
      text-align: center;
@@ -25,20 +23,30 @@
      background-repeat: no-repeat;
      background-size: cover;
  }
+.jumbotron-box{
+    width: 60%;
+}
+.curved-text-container {
+  width: 100%;
+  text-align: center;
+  margin: 0 auto;
+}
 
- .jumbotron h1 {
-     font-size: 3em;
-     color:#FEBD01;
-     font-weight: bold;
-     
- }
-
+svg {
+  width: 100%;
+  height: auto;
+}
+text {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bold;
+  font-size:3rem;
+  fill: #FEBD01;
+}
  .jumbotron p {
     font-weight: bold;
      font-size: 1.5em;
-     color:#FEBD01
+     color:black;
  }
-
  .game-desc {
      color: black;
      text-align: left;
@@ -52,20 +60,17 @@
      align-items: center;
      justify-content: center;
  }
-
  .game-desc img {
      width: 40%;
      
      margin-right: 20px;
  }
-
  .game-desc p {
      color: white;
      font-size: 1.2em;
      width: 50%;
      font-weight: bold;
  }
-
  .game-maker {
      background-color: rgba(255, 255, 255, 0.9);
      display: flex;
@@ -76,33 +81,28 @@
      background-image: url(../assets/Scary_Forest.webp);
      padding: 20px;
  }
-
  .game-maker .text {
      width: 50%;
      font-size: 1.5em;
      padding: 20px;
  }
-
  .carousel {
      width: 40%;
      display: flex;
      justify-content: center;
      align-items: center;
  }
-
  .carousel img {
      width: 100%;
      border-radius: 10px;
      max-width: 300px;
  }
-
  .carousel-controls {
      display: flex;
      justify-content: space-between;
      width: 100%;
      margin-top: 10px;
  }
-
  .carousel-controls button {
      padding: 10px 20px;
      font-size: 16px;
@@ -113,7 +113,6 @@
   justify-content: center;
   margin-top: 10px;
 }
-
 .indicator {
   width: 20px;
   height: 20px;
@@ -122,11 +121,9 @@
   border-radius: 50%;
   cursor: pointer;
 }
-
 .indicator.active {
   background-color: orange;
 }
-
  #logoutButton {
      padding: 10px 20px;
      font-size: 16px;
@@ -135,14 +132,11 @@
      border: none;
      cursor: pointer;
  }
-
  .visible {
      opacity: 1 !important;
      transform: translateY(0) !important;
  }
-
- .social-media {
-     background-color: rgba(255, 255, 255, 0.9);
+ .social-media { 
      display: flex;
      justify-content: center;
      align-items: center;
@@ -152,25 +146,25 @@
      position: relative;
      overflow: hidden;
  }
-
+ .social-media a{
+    width: 200px;
+    display: flex;
+    justify-content: center;
+ }
  .social-media img {
      width: 100px;
      height: 100px;
      opacity: 0;
-     position: absolute;
      transition: opacity 1s, transform 1s;
  }
-
  .instagram {
      left: 25%;
      transform: translateX(-200%);
  }
-
  .twitter {
      right: 25%;
      transform: translateX(200%);
  }
-
  .steam {
      transform: translateY(-200%);
  }
@@ -179,57 +173,46 @@
          transform: translateX(-200%);
          opacity: 0;
      }
-
      50% {
          opacity: 1;
      }
-
      100% {
          transform: translateX(0%);
          opacity: 1;
      }
  }
-
  @keyframes walkTwitter {
      0% {
          transform: translateX(200%);
          opacity: 0;
      }
-
      50% {
          opacity: 1;
      }
-
      100% {
          transform: translateX(0%);
          opacity: 1;
      }
  }
-
  @keyframes walkSteam {
      0% {
          transform: translateY(-200%);
          opacity: 0;
      }
-
      50% {
          opacity: 1;
      }
-
      100% {
          transform: translateY(0%);
          opacity: 1;
      }
  }
-
  .instagram.walk {
      animation: walkInstagram 2s ease forwards;
  }
-
  .twitter.walk {
      animation: walkTwitter 2s ease forwards;
  }
-
  .steam.walk {
      animation: walkSteam 2s ease forwards;
  }
