@@ -2,7 +2,7 @@ window.onload = function () {
   console.log("Script Loaded");
   const username = localStorage.getItem("username");
   if (username) {
-    document.getElementById("useruser").textContent =`Welcome ${username}!`;
+    document.getElementById("useruser").textContent = `Welcome ${username}!`;
   } else {
     window.location.href = "/login/start.html";
   }
@@ -36,12 +36,18 @@ window.onload = function () {
   const carouselImageElement = document.getElementById("carousel-image");
   const carouselTextElement = document.getElementById("carousel-text");
   const indicators = document.querySelectorAll(".indicator");
-  indicators.forEach((indicator) => {
-    indicator.addEventListener("click", function () {
-      currentIndex = parseInt(this.dataset.index);
+  const autoSlide = () => {
+    fadeOutAndChangeImage();
+  };
+  function fadeOutAndChangeImage() {
+    carouselImageElement.classList.add("hidden");
+    setTimeout(() => {
+      currentIndex = (currentIndex + 1) % carouselImages.length;
       updateCarousel();
-    });
-  });
+      carouselImageElement.classList.remove("hidden");
+    }, 1000); // Matches the CSS transition time (1 second)
+  }
+  let autoSlideInterval = setInterval(autoSlide, 5000); // 5-second interva
   function updateCarousel() {
     carouselImageElement.src = carouselImages[currentIndex];
     carouselTextElement.textContent = carouselTexts[currentIndex];
@@ -56,6 +62,14 @@ window.onload = function () {
       }
     });
   }
+   indicators.forEach((indicator) => {
+     indicator.addEventListener("click", function () {
+       currentIndex = parseInt(this.dataset.index);
+       clearInterval(autoSlideInterval); // Stop auto-slide when user clicks
+       updateCarousel();
+       autoSlideInterval = setInterval(autoSlide, 5000); // Resume auto-slide
+     });
+   });
   updateCarousel();
   const socialMediaSection = document.querySelector(".social-media");
   const instagram = document.querySelector(".instagram");
