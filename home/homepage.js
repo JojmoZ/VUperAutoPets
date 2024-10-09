@@ -45,9 +45,9 @@ window.onload = function () {
       currentIndex = (currentIndex + 1) % carouselImages.length;
       updateCarousel();
       carouselImageElement.classList.remove("hidden");
-    }, 1000); // Matches the CSS transition time (1 second)
+    }, 1000); 
   }
-  let autoSlideInterval = setInterval(autoSlide, 5000); // 5-second interva
+  let autoSlideInterval = setInterval(autoSlide, 5000);
   function updateCarousel() {
     carouselImageElement.src = carouselImages[currentIndex];
     carouselTextElement.textContent = carouselTexts[currentIndex];

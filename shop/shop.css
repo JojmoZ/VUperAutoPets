@@ -4,7 +4,6 @@ body {
     height: 100%;
      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-size: cover;
-    /* background: linear-gradient(to right, #FF7E5F, #FF4C4C); */
     background-image: url(../assets/].webp);
 }
 .shop-container {
@@ -51,7 +50,6 @@ body {
 
 .card.sold-out {
     pointer-events: none;
-    /* opacity: 0.6; */
 }
 .card img {
     width: 100px;

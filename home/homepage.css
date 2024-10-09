@@ -25,6 +25,10 @@
  }
 .jumbotron-box{
     width: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 .curved-text-container {
   width: 100%;
@@ -94,6 +98,15 @@ text {
     position: absolute;
     top: 0;
     left: 0;
+}
+#useruser{
+    font-size: 2.5em;
+    background-color: #FEBD01;
+    border-radius: 15px;
+    width: fit-content;
+    text-align: center;
+    padding:  0px 5px;
+
 }
 .carousel {
     position: relative;
