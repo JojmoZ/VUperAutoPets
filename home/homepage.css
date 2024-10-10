@@ -279,7 +279,12 @@ text {
     will-change: opacity, transform;
     backface-visibility: hidden;
 }
+.play-button:hover{
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
 
+}
 .indicator.active {
   background-color: orange;
 }
