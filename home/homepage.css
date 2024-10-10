@@ -428,3 +428,49 @@ text {
 .fancy-card:hover::before {
     opacity: 0.4; 
 }
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.fade-in-section {
+    opacity: 0;
+    transition: opacity 1s, transform 1s;
+    will-change: opacity, transform;
+}
+.fade-in-section.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+.game-desc img,
+.description-card {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+}
+
+.game-desc.visible img,
+.game-desc.visible .description-card {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Game maker section */
+.game-maker .text,
+.game-maker .carousel {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+}
+
+.game-maker.visible .text,
+.game-maker.visible .carousel {
+    opacity: 1;
+    transform: translateY(0);
+}
