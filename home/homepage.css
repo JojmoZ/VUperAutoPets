@@ -191,14 +191,6 @@ text {
 .indicator.active {
   background-color: orange;
 }
-#logoutButton {
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: red;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
 .visible {
   opacity: 1 !important;
   transform: translateY(0) !important;

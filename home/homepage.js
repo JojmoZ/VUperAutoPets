@@ -95,3 +95,8 @@ window.onload = function () {
   );
   socialMediaObserver.observe(socialMediaSection);
 };
+
+const gotoplay = document.getElementById("play-button");
+gotoplay.addEventListener("click", function (e) {
+  window.location = "/game/index.html";
+});
