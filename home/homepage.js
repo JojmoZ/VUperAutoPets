@@ -22,6 +22,7 @@ window.onload = function () {
     { threshold: 0.5 }
   );
   observer.observe(gameDescSection);
+  
   const carouselImages = [
     "../assets/LogoVUPER.jpg",
     "../assets/Steam.png",

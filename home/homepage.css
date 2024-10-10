@@ -189,16 +189,96 @@ text {
   margin: 0 5px;
   cursor: pointer;
 }
- .play-button {
-     padding: 10px 20px;
-     width: 10%;
-     font-size: 1em;
-     background-color: black;
-     color: white;
-     border-radius: 15px;
-     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-     font-weight: bold;
- }
+@keyframes fadeInLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%); /* Slight adjustment for smoother effect */
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInTop {
+    0% {
+        opacity: 0;
+        transform: translateY(-50%); /* Adjust to less movement for smoother appearance */
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInRight {
+    0% {
+        opacity: 0;
+        transform: translateX(50%);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInBottom {
+    0% {
+        opacity: 0;
+        transform: translateY(50%);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-left {
+    opacity: 0;
+    animation: fadeInLeft 1.5s ease-in-out forwards;
+    will-change: opacity, transform; /* Optimized for performance */
+    backface-visibility: hidden; /* Prevents rendering issues during animation */
+}
+
+.fade-top {
+    opacity: 0;
+    animation: fadeInTop 1.5s ease-in-out forwards;
+    animation-delay: 0.5s;
+    will-change: opacity, transform;
+    backface-visibility: hidden;
+}
+
+.fade-right {
+    opacity: 0;
+    animation: fadeInRight 1.5s ease-in-out forwards;
+    animation-delay: 1s;
+    will-change: opacity, transform;
+    backface-visibility: hidden;
+}
+
+.fade-bottom {
+    opacity: 0;
+    animation: fadeInBottom 1.5s ease-in-out forwards;
+    animation-delay: 1.5s;
+    will-change: opacity, transform;
+    backface-visibility: hidden;
+}
+
+.play-button {
+    padding: 10px 20px;
+    width: 10%;
+    font-size: 1em;
+    background-color: black;
+    color: white;
+    border-radius: 15px;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: bold;
+    opacity: 0;
+    animation: fadeInBottom 1.5s ease-in-out forwards;
+    animation-delay: 2s;
+    will-change: opacity, transform;
+    backface-visibility: hidden;
+}
 
 .indicator.active {
   background-color: orange;
