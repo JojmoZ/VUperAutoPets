@@ -36,33 +36,24 @@ window.onload = function () {
   const carouselImageElement = document.getElementById("carousel-image");
   const carouselTextElement = document.getElementById("carousel-text");
   const indicators = document.querySelectorAll(".indicator");
-
-  // Function to fade out and change the image and text
   function fadeOutAndChangeContent() {
-    // Fade out both the image and the text
     carouselImageElement.style.opacity = "0";
     carouselTextElement.style.opacity = "0";
 
     setTimeout(() => {
-      // Change to the next image and text
       currentIndex = (currentIndex + 1) % carouselImages.length;
       updateCarousel();
-      // Fade in both the image and the text
       setTimeout(() => {
         carouselImageElement.style.opacity = "1";
         carouselTextElement.style.opacity = "1";
-      }, 50); // Short delay to ensure fade-in happens after content change
-    }, 1000); // 1-second fade-out duration
+      }, 50); 
+    }, 1000); 
   }
-
-  // Update the carousel image and text
   function updateCarousel() {
     carouselImageElement.src = carouselImages[currentIndex];
     carouselTextElement.textContent = carouselTexts[currentIndex];
     updateIndicators();
   }
-
-  // Update the indicators to reflect the current image
   function updateIndicators() {
     indicators.forEach((indicator, index) => {
       if (index === currentIndex) {
@@ -72,21 +63,15 @@ window.onload = function () {
       }
     });
   }
-
-  // Auto-slide the carousel every 5 seconds
   let autoSlideInterval = setInterval(fadeOutAndChangeContent, 5000);
-
-  // Allow clicking on indicators to navigate to specific images
   indicators.forEach((indicator) => {
     indicator.addEventListener("click", function () {
       currentIndex = parseInt(this.dataset.index);
-      clearInterval(autoSlideInterval); // Stop auto-slide when user clicks
+      clearInterval(autoSlideInterval); 
       updateCarousel();
-      autoSlideInterval = setInterval(fadeOutAndChangeContent, 5000); // Resume auto-slide
+      autoSlideInterval = setInterval(fadeOutAndChangeContent, 5000); 
     });
   });
-
-  // Initialize the carousel
   updateCarousel();
   const socialMediaSection = document.querySelector(".social-media");
   const instagram = document.querySelector(".instagram");
