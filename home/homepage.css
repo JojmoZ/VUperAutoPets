@@ -192,7 +192,7 @@ text {
 @keyframes fadeInLeft {
     0% {
         opacity: 0;
-        transform: translateX(-50%); /* Slight adjustment for smoother effect */
+        transform: translateX(-50%); 
     }
     100% {
         opacity: 1;
@@ -203,7 +203,7 @@ text {
 @keyframes fadeInTop {
     0% {
         opacity: 0;
-        transform: translateY(-50%); /* Adjust to less movement for smoother appearance */
+        transform: translateY(-50%); 
     }
     100% {
         opacity: 1;
@@ -236,8 +236,8 @@ text {
 .fade-left {
     opacity: 0;
     animation: fadeInLeft 1.5s ease-in-out forwards;
-    will-change: opacity, transform; /* Optimized for performance */
-    backface-visibility: hidden; /* Prevents rendering issues during animation */
+    will-change: opacity, transform;
+    backface-visibility: hidden; 
 }
 
 .fade-top {
@@ -428,28 +428,18 @@ text {
 .fancy-card:hover::before {
     opacity: 0.4; 
 }
-
-@keyframes fadeIn {
-    0% {
-        opacity: 0;
-        transform: translateY(50px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.game-desc{
+    background-image: url(../assets/Autumn_Forest.webp); 
+    background-repeat: no-repeat;
+    background-size: cover;
 }
-.fade-in-section {
-    opacity: 0;
-    transition: opacity 1s, transform 1s;
-    will-change: opacity, transform;
-}
-.fade-in-section.visible {
-    opacity: 1;
-    transform: translateY(0);
+.game-maker{
+  background-image: url(../assets/Scary_Forest.webp);
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 .game-desc img,
-.description-card {
+.game-desc .description-card {
     opacity: 0;
     transform: translateY(50px);
     transition: opacity 1s ease-in-out, transform 1s ease-in-out;
@@ -460,8 +450,6 @@ text {
     opacity: 1;
     transform: translateY(0);
 }
-
-/* Game maker section */
 .game-maker .text,
 .game-maker .carousel {
     opacity: 0;
@@ -471,6 +459,27 @@ text {
 
 .game-maker.visible .text,
 .game-maker.visible .carousel {
+    opacity: 1;
+    transform: translateY(0);
+}
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-element {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+}
+
+.fade-in-element.visible {
     opacity: 1;
     transform: translateY(0);
 }

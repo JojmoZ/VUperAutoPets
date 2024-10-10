@@ -6,23 +6,23 @@ window.onload = function () {
   } else {
     window.location.href = "/login/start.html";
   }
-  const sections = document.querySelectorAll(".fade-in-section");
+   const fadeInElements = document.querySelectorAll(".fade-in-element");
 
-  const sectionObserver = new IntersectionObserver(
+  const elementObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add("visible");
         } else {
-          entry.target.classList.remove("visible"); // Optional: remove if you don't want the animation to replay
+          entry.target.classList.remove("visible"); 
         }
       });
     },
-    { threshold: 0.3 } // Trigger when 30% of the section is visible
+    { threshold: 0.3 } 
   );
 
-  sections.forEach((section) => {
-    sectionObserver.observe(section);
+  fadeInElements.forEach((element) => {
+    elementObserver.observe(element);
   });
   const carouselSection = document.querySelector(".game-maker");
   const carouselImages = [
@@ -71,15 +71,11 @@ window.onload = function () {
       }
     });
   }
-
-  // Function to start the carousel timer
   function startCarousel() {
     if (!autoSlideInterval) {
       autoSlideInterval = setInterval(fadeOutAndChangeContent, 5000);
     }
   }
-
-  // Function to stop the carousel timer
   function stopCarousel() {
     clearInterval(autoSlideInterval);
     autoSlideInterval = null;
@@ -88,24 +84,22 @@ window.onload = function () {
   indicators.forEach((indicator) => {
     indicator.addEventListener("click", function () {
       currentIndex = parseInt(this.dataset.index);
-      stopCarousel(); // Stop the timer when user interacts
+      stopCarousel(); 
       updateCarousel();
-      startCarousel(); // Restart the timer
+      startCarousel();
     });
   });
 
   updateCarousel();
-
-  // Observe the carousel section
   const carouselObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           console.log("Carousel is visible, starting the carousel timer");
-          startCarousel(); // Start the carousel timer when in view
+          startCarousel();
         } else {
           console.log("Carousel is not visible, stopping the carousel timer");
-          stopCarousel(); // Stop the carousel timer when out of view
+          stopCarousel(); 
         }
       });
     },
