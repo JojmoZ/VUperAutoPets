@@ -58,7 +58,7 @@ text {
     background-image: url(../assets/Autumn_Forest.webp);
     background-repeat: no-repeat;
     background-size: cover;
-    opacity: 1; /* Ensure visibility for testing */
+    opacity: 1; 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -71,13 +71,13 @@ text {
 
 @keyframes borderAnimation {
     0% {
-        border-image: linear-gradient(90deg, #ff0099, #ff6600) 1; /* Initial gradient */
+        border-image: linear-gradient(90deg, #ff0099, #ff6600) 1;
     }
     50% {
-        border-image: linear-gradient(90deg, #00ff99, #6600ff) 1; /* Midpoint gradient */
+        border-image: linear-gradient(90deg, #00ff99, #6600ff) 1; 
     }
     100% {
-        border-image: linear-gradient(90deg, #ff0099, #ff6600) 1; /* Back to initial */
+        border-image: linear-gradient(90deg, #ff0099, #ff6600) 1; 
     }
 }
 
@@ -282,4 +282,50 @@ text {
 }
 .steam.walk {
   animation: walkSteam 2s ease forwards;
+}
+.fancy-card {
+    background: white; 
+    border-radius: 20px;
+    padding: 20px; 
+    width: 100%; 
+    max-width: 500px; 
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); 
+    position: relative; 
+    overflow: hidden; 
+    transition: transform 0.3s ease;
+}
+
+.fancy-card:hover {
+    transform: scale(1.02);
+}
+
+.fancy-card h2 {
+    margin: 0; 
+    font-size: 1.8em; 
+    color: #ff0099; 
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); 
+}
+
+.fancy-card p {
+    margin-top: 10px; 
+    font-size: 1.2em; 
+    line-height: 1.5; 
+    color: #333; 
+}
+.fancy-card::before {
+    content: ""; 
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 20px;
+    background: linear-gradient(145deg, #febd01, #ff6600);
+    z-index: -1; 
+    opacity: 0.2; 
+    transition: opacity 0.3s ease; 
+}
+
+.fancy-card:hover::before {
+    opacity: 0.4; 
 }
