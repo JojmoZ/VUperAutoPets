@@ -1,31 +1,41 @@
-const restrictedAreas = [
-    { x: 100, y: 100, width: 200, height: 150 },
-  ];
+// Select the audio player and background div
+const audio = document.getElementById("audio-player");
+const background = document.querySelector(".background");
 
-document.addEventListener("keypress", () => {
-  console.log("CCFCFCFCFCFCFCFCFCFCFFCF");
-});
-function isInRestrictedArea(x, y) {
-    return restrictedAreas.some((area) => {
-      const isInArea =
-        !(x <= area.x ||
-        x >= area.x+area.width) &&
-        (y <= area.y ||
-        y >= area.y + area.height);
-    
-    
-  
-      if (isInArea) {
-        console.log(
-          `Coordinates (${x}, ${y}) are in restricted area: ${JSON.stringify(
-            area
-          )}`
-        );
-      }
-  
-      return isInArea;
-});
+// Create AudioContext and analyzer
+const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+const analyzer = audioContext.createAnalyser();
+analyzer.fftSize = 256;
+
+// Create an audio source from the audio element
+const source = audioContext.createMediaElementSource(audio);
+source.connect(analyzer);
+analyzer.connect(audioContext.destination);
+
+const dataArray = new Uint8Array(analyzer.frequencyBinCount);
+
+// Function to change the background based on music data
+function updateBackground() {
+  analyzer.getByteFrequencyData(dataArray);
+
+  // Get the average volume from the frequency data
+  let sum = 0;
+  for (let i = 0; i < dataArray.length; i++) {
+    sum += dataArray[i];
+  }
+  const average = sum / dataArray.length;
+
+  // Map the average volume to a color intensity (0 to 255)
+  const intensity = Math.min(Math.max(average, 50), 255);
+  background.style.backgroundColor = `rgb(${intensity}, 50, 50)`;
+
+  requestAnimationFrame(updateBackground);
 }
 
-console.log(isInRestrictedArea(50,50))
-console.log(isInRestrictedArea(150,250))
+// Start the audio context when the audio plays
+audio.addEventListener("play", () => {
+  if (audioContext.state === "suspended") {
+    audioContext.resume();
+  }
+  requestAnimationFrame(updateBackground);
+});

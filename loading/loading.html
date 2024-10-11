@@ -1,27 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Interactive Parallax and Content</title>
-  <link rel="stylesheet" href="loading.css">
-</head>
-<body>
-  <div class="parallax-container">
-    <div class="parallax-layer" id="layer-0" data-speed="2"></div>
-    <div class="parallax-layer" id="layer-1" data-speed="5"></div>
-    <div class="parallax-layer" id="layer-2" data-speed="11"></div>
-    <div class="parallax-layer" id="layer-3" data-speed="16"></div>
-    <div class="parallax-layer" id="layer-4" data-speed="26"></div>
-    <div class="parallax-layer" id="layer-5" data-speed="36"></div>
-    <div class="parallax-layer" id="layer-6" data-speed="49"></div>
-    <div class="parallax-layer" id="layer-7" data-speed="69"></div>
-  </div>
-  <div class="main-content">
-    <h1>Welcome to the Next Section</h1>
-    <p>This content appears after the parallax background finishes scrolling.</p>
-  </div>
 
-  <script src="loading.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Parallax and Osu Game</title>
+    <link rel="stylesheet" href="loading.css">
+</head>
+
+<body>
+    <!-- Parallax Section -->
+    <div class="parallax-container">
+        <div class="parallax-layer" id="layer-0" data-speed="2"></div>
+        <div class="parallax-layer" id="layer-1" data-speed="5"></div>
+        <div class="parallax-layer" id="layer-2" data-speed="11"></div>
+        <div class="parallax-layer" id="layer-3" data-speed="16"></div>
+        <div class="parallax-layer" id="layer-4" data-speed="26"></div>
+        <div class="parallax-layer" id="layer-5" data-speed="36"></div>
+        <div class="parallax-layer" id="layer-6" data-speed="49"></div>
+        <div class="parallax-layer" id="layer-7" data-speed="69"></div>
+    </div>
+    <div class="main-content">
+        <div class="game-container">
+            <div id="loading-bar">
+                <div id="loading-fill"></div>
+            </div>
+            <div class="score">Score: <span id="score">0</span></div>
+            <canvas id="gameCanvas"></canvas>
+        </div>
+    </div>
+
+    <script src="loading.js"></script>
 </body>
+
 </html>

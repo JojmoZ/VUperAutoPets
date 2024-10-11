@@ -1,68 +1,110 @@
+/* Basic reset */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
+
 .parallax-container {
-  position: relative;
-  height: 100vh; 
-  overflow: hidden;
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
 }
 
 .parallax-layer {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  z-index: 1;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 1;
 }
 
 #layer-0 {
-  background-image: url('../assets/paral0.png');
+    background-image: url('../assets/paral0.png');
 }
 #layer-1 {
-  background-image: url('../assets/paral1.png');
+    background-image: url('../assets/paral1.png');
 }
 #layer-2 {
-  background-image: url('../assets/paral2.png');
+    background-image: url('../assets/paral2.png');
 }
 #layer-3 {
-  background-image: url('../assets/paral3.png');
+    background-image: url('../assets/paral3.png');
 }
 #layer-4 {
-  background-image: url('../assets/paral4.png');
+    background-image: url('../assets/paral4.png');
 }
 #layer-5 {
-  background-image: url('../assets/paral5.png');
+    background-image: url('../assets/paral5.png');
 }
 #layer-6 {
-  background-image: url('../assets/paral6.png');
+    background-image: url('../assets/paral6.png');
 }
 #layer-7 {
-  background-image: url('../assets/newnewparal7.png');
-  position: absolute;
-  top: 350px; 
-  height: 150%;
-  z-index: 7; 
+    background-image: url('../assets/newnewparal7.png');
+    position: absolute;
+    top: 350px;
+    height: 150%;
+    z-index: 7;
 }
+
 .main-content {
-  height: 100vh; 
-  background-color: #210002; 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 10; 
-  position: relative; 
+    height: 100vh;
+    background-color: #210002;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    position: relative;
 }
 
-.main-content h1 {
-  font-size: 2.5rem;
-  color: white;
+.game-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
 }
 
-.main-content p {
-  color: white;
-  font-size: 1.2rem;
+#loading-bar {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    height: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+}
+
+#loading-fill {
+    width: 0%;
+    height: 100%;
+    background-color: #febd01;
+    border-radius: 10px;
+}
+
+.score {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 1.5rem;
+    color: white;
+}
+
+#gameCanvas {
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+}
+.osu-circle {
+  animation: shrink 3s linear forwards; /* Adjust the duration here */
+}
+@keyframes shrink {
+  from {
+    transform: scale(1); /* Full size */
+  }
+  to {
+    transform: scale(0); /* Shrinks to disappear */
+  }
 }
