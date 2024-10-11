@@ -20,7 +20,20 @@
     background-repeat: no-repeat;
     z-index: 1;
 }
-
+.parallax-layera {
+    position: absolute;
+    width: 275px;
+    height: 125px;
+    top: 10%;
+    left:40%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 1;
+}
+#layer-8{
+    background-image: url(../assets/VUVUVU.png);
+}
 #layer-0 {
     background-image: url('../assets/paral0.png');
 }
