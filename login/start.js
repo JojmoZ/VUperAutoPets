@@ -10,9 +10,9 @@ window.onload = function () {
   const errorModal = document.getElementById("errorModal");
   const modalErrorText = document.getElementById("modalErrorText");
   let isLoginCardVisible = false;
- const username = localStorage.getItem("username");
-if(username){
-      window.location.href = "/home/homepage.html";
+ const logged = localStorage.getItem("loggedin");
+if (logged) {
+  window.location.href = "/home/homepage.html";
 }
   registerTab.classList.add("active");
   registrationForm.classList.add("active");
@@ -58,7 +58,32 @@ if(username){
     
     registrationForm.reset();
     registerError.style.display = "none";
+
+     showSuccessModal();
+
   });
+  function showSuccessModal() {
+    const successModal = document.getElementById("successModal");
+    const checkmarkCircle = document.querySelector(".checkmark-circle");
+    const checkmarkCheck = document.querySelector(".checkmark-check");
+    checkmarkCircle.style.strokeDashoffset = "166";
+    checkmarkCheck.style.strokeDashoffset = "48";
+    successModal.classList.remove("show");
+    void successModal.offsetWidth; 
+    successModal.style.bottom = "20px";
+    setTimeout(() => {
+      successModal.classList.add("show");
+    }, 10); 
+    setTimeout(() => {
+      successModal.style.bottom = "-100px";
+      successModal.classList.remove("show");
+    }, 5000);
+  }
+
+
+
+
+
   loginForm.addEventListener("submit", function (e) {
     e.preventDefault();
     const username = document.getElementById("loginUsername").value;
@@ -68,6 +93,7 @@ if(username){
     const storedPassword = localStorage.getItem("password");
     if (username === storedUsername && password === storedPassword) {
       window.location.href = "/home/homepage.html";
+      localStorage.setItem('loggedin', true);
     } else {
       modalErrorText.innerText = "Invalid username or password.";
       showErrorModal();

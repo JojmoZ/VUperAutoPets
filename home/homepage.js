@@ -1,7 +1,8 @@
 window.onload = function () {
   console.log("Script Loaded");
   const username = localStorage.getItem("username");
-  if (username) {
+  const logged = localStorage.getItem("loggedin");
+  if (logged) {
     document.getElementById("useruser").textContent = `Welcome ${username}!`;
   } else {
     window.location.href = "/login/start.html";
@@ -25,22 +26,18 @@ window.onload = function () {
     elementObserver.observe(element);
   });
    const sectionTitles = document.querySelectorAll(".section-title");
-
-   // Create an IntersectionObserver to observe each section title
    const titleObserver = new IntersectionObserver(
      (entries) => {
        entries.forEach((entry) => {
          if (entry.isIntersecting) {
-           entry.target.classList.add("visible"); // Add the "visible" class when in view
+           entry.target.classList.add("visible"); 
          } else {
-           entry.target.classList.remove("visible"); // Remove it when out of view
+           entry.target.classList.remove("visible"); 
          }
        });
      },
-     { threshold: 0.5 } // Trigger when 50% of the title is visible
+     { threshold: 0.5 } 
    );
-
-   // Observe each section title
    sectionTitles.forEach((title) => {
      titleObserver.observe(title);
    });
@@ -75,13 +72,11 @@ window.onload = function () {
       }, 50);
     }, 1000);
   }
-
   function updateCarousel() {
     carouselImageElement.src = carouselImages[currentIndex];
     carouselTextElement.textContent = carouselTexts[currentIndex];
     updateIndicators();
   }
-
   function updateIndicators() {
     indicators.forEach((indicator, index) => {
       if (index === currentIndex) {
@@ -100,7 +95,6 @@ window.onload = function () {
     clearInterval(autoSlideInterval);
     autoSlideInterval = null;
   }
-
   indicators.forEach((indicator) => {
     indicator.addEventListener("click", function () {
       currentIndex = parseInt(this.dataset.index);
@@ -109,7 +103,6 @@ window.onload = function () {
       startCarousel();
     });
   });
-
   updateCarousel();
   const carouselObserver = new IntersectionObserver(
     (entries) => {

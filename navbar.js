@@ -26,6 +26,7 @@
     .getElementById("logoutButton")
     .addEventListener("click", function () {
       localStorage.removeItem("username");
+      localStorage.removeItem("loggedin");
       localStorage.removeItem("coins");
       localStorage.removeItem("ownedAnimals");
       window.location.href = "/login/start.html";
