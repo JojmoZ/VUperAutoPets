@@ -29,7 +29,6 @@ img#logo {
     animation: float 3s ease-in-out infinite;
 }
 
-/* Floating animation */
 @keyframes float {
     0%, 100% {
         transform: translateY(0) translateX(-50%);
@@ -61,7 +60,6 @@ img#logo {
     right: 10%;
 }
 
-/* Animations for form transitions */
 form {
     opacity: 0;
     transform: translateY(20px);
@@ -123,15 +121,12 @@ input[type="text"], input[type="password"] {
     width: 100%;
     box-sizing: border-box;
 }
-
-/* Error Modal Styles */
-/* Error Modal Styles */
 #errorModal {
     position: fixed;
-    bottom: -100px; /* Start off-screen */
+    bottom: -100px; 
     left: 50%;
     transform: translateX(-50%);
-    background-color: #f44336; /* Red background */
+    background-color: #f44336;
     color: white;
     width: 300px;
     text-align: center;
@@ -144,9 +139,9 @@ input[type="text"], input[type="password"] {
 
 .modal-content {
     display: flex;
-    align-items: center; /* Center content vertically */
-    justify-content: center; /* Center content horizontally */
-    gap: 10px; /* Space between cross and text */
+    align-items: center; 
+    justify-content: center; 
+    gap: 10px; 
 }
 
 .modal-icon {
@@ -158,12 +153,12 @@ input[type="text"], input[type="password"] {
     display: flex;
     justify-content: center;
     align-items: center;
-    animation: rotate 2s linear infinite; /* Cross rotation animation */
+    animation: rotate 2s linear infinite;
 }
 
 .cross {
     position: relative;
-    width: 14px; /* Adjusted size of the cross */
+    width: 14px; 
     height: 14px;
 }
 
@@ -171,24 +166,23 @@ input[type="text"], input[type="password"] {
 .cross::after {
     content: "";
     position: absolute;
-    width: 100%;  /* Full width to ensure equal length */
-    height: 2px; /* Thickness of the cross */
+    width: 100%; 
+    height: 2px; 
     background-color: #f44336;
     top: 40%;
     left: 0;
     transform-origin: center;
-    transform: translateY(-50%); /* Center the cross pieces */
+    transform: translateY(-50%); 
 }
 
 .cross::before {
-    transform: rotate(45deg); /* Diagonal from top-left to bottom-right */
+    transform: rotate(45deg); 
 }
 
 .cross::after {
-    transform: rotate(-45deg); /* Diagonal from top-right to bottom-left */
+    transform: rotate(-45deg); 
 }
 
-/* Cross rotation animation */
 @keyframes rotate {
     from {
         transform: rotate(0deg);
@@ -200,5 +194,6 @@ input[type="text"], input[type="password"] {
 
 #modalErrorText {
     font-size: 1.2em;
-    line-height: 30px; /* Align text vertically within the modal */
+    line-height: 30px; 
 }
+
