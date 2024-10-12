@@ -550,6 +550,7 @@ text {
   margin-bottom: 20px;
   background: -webkit-linear-gradient(#febd01, #ff6600);
   -webkit-background-clip: text;
+  background-clip: border-box;
   -webkit-text-fill-color: transparent;
   transition: color 0.3s ease;
 }
