@@ -7,16 +7,33 @@
     <title>VUper Auto Pets - Start</title>
     <link rel="stylesheet" href="start.css">
 </head>
+
 <body style="background-image: url(../assets/background.png); background-size: auto;">
     <div class="main">
-        <img src="../assets/VUVUVU.png" alt="Logo">
-        <div>
-            <p class="title">Register Your Username</p>
-            <form id="registrationForm">
-                <input type="text" id="username" placeholder="Enter your username">
-                <p id="error"></p>
-                <input type="submit" value="Play">
-            </form>
+        <img id="logo" src="../assets/VUVUVU.png" alt="Logo">
+        <div id="loginCard">
+            <div class="header">
+                <span id="registerTab">Register</span> | <span id="loginTab">Login</span>
+            </div>
+            <div class="content">
+                <form id="registrationForm" style="display: none;">
+                    <p class="title">Register Your Account</p>
+                    <input type="text" id="registerUsername" placeholder="Enter your username" required>
+                    <input type="password" id="registerPassword" placeholder="Enter your password" required>
+                    <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
+                    <p id="registerError" class="error"></p>
+                    <input type="submit" value="Register">
+                </form>
+
+                
+                <form id="loginForm" style="display: none;">
+                    <p class="title">Login to Your Account</p>
+                    <input type="text" id="loginUsername" placeholder="Enter your username" required>
+                    <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                    <p id="loginError" class="error"></p>
+                    <input type="submit" value="Login">
+                </form>
+            </div>
         </div>
     </div>
     <script src="start.js"></script>

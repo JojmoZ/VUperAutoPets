@@ -1,44 +1,119 @@
- .main {
-     display: flex;
-     justify-content: center;
-     align-items: center;
-     height: 100vh;
-     color: white;
-     font-family: Arial, sans-serif;
-     padding: 20px;
-     border-radius: 10px;
- }
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: black;
+}
 
- .title {
-     font-size: 2em;
-     margin-bottom: 10px;
-     color: #cbac24;
-     /* font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; */
- }
+.main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
 
- form {
-     width: 200px;
- }
+img#logo {
+    transition: transform 1s ease, left 1s ease, width 1s ease;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+    z-index: 1;
+    width: 50vw; /* Smaller logo */
+}
 
- input[type="submit"] {
-     padding: 10px 20px;
-     background-color: #4CAF50;
-     color: white;
-     border: none;
-     cursor: pointer;
-     border-radius: 5px;
-     margin-top: 10px;
- }
+#loginCard {
+    opacity: 0;
+    position: absolute;
+    right: -50%; /* Start outside of the screen */
+    transition: opacity 1s ease, right 1s ease;
+    z-index: 2;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 400px;
+    background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Shadow effect */
+}
 
- input[type="text"] {
-     padding: 10px;
-     margin-bottom: 10px;
-     border: none;
-     border-radius: 5px;
-     width: 100%;
- }
+#loginCard.active {
+    opacity: 1;
+    right: 10%; /* Slide in from the right */
+}
 
- #error {
-     color: red;
-     display: hidden;
- }
+/* Animations for form transitions */
+form {
+    opacity: 0;
+    transform: translateY(20px); /* Slide effect */
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    width: 100%;
+}
+
+form.active {
+    opacity: 1;
+    transform: translateY(0); /* Bring back to normal position */
+}
+
+#loginCard .header {
+    background-color: #cbac24;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    font-size: 1.5em;
+    color: white;
+    font-weight: bold;
+    display: flex;
+    justify-content: center; /* Ensures both elements are centered */
+    gap: 50px; /* Add space between the two */
+}
+
+#loginCard .header span {
+    cursor: pointer;
+    padding: 0 10px;
+}
+
+#loginCard .content {
+    padding: 20px;
+    width: 100%;
+    text-align: center;
+}
+
+.title {
+    font-size: 2em;
+    /* margin-bottom: 10px; */
+    color: #cbac24;
+}
+
+input[type="submit"] {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+input[type="text"], input[type="password"] {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box; /* Ensures padding is included in the width */
+}
+
+#error {
+    color: red;
+    display: none;
+}
