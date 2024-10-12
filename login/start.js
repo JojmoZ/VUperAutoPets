@@ -63,27 +63,50 @@ if (logged) {
 
   });
   function showSuccessModal() {
+    const existingModal = document.getElementById("successModal");
+    if (existingModal) {
+      existingModal.remove();
+    }
+    const successModalHTML = `
+        <div id="successModal">
+            <div class="modal-content">
+                <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                    <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none" style="stroke-dasharray: 166; stroke-dashoffset: 166;" />
+                    <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" style="stroke-dasharray: 48; stroke-dashoffset: 48;" />
+                </svg>
+                <p id="modalSuccessText">Registration Successful!</p>
+            </div>
+        </div>
+    `;
+    document.body.insertAdjacentHTML("beforeend", successModalHTML);
     const successModal = document.getElementById("successModal");
-    const checkmarkCircle = document.querySelector(".checkmark-circle");
-    const checkmarkCheck = document.querySelector(".checkmark-check");
-    checkmarkCircle.style.strokeDashoffset = "166";
-    checkmarkCheck.style.strokeDashoffset = "48";
-    successModal.classList.remove("show");
-    void successModal.offsetWidth; 
-    successModal.style.bottom = "20px";
+    const checkmarkCircle = successModal.querySelector(".checkmark-circle");
+    const checkmarkCheck = successModal.querySelector(".checkmark-check");
+    successModal.style.position = "fixed";
+    successModal.style.bottom = "-100px";
+    successModal.style.left = "50%";
+    successModal.style.transform = "translateX(-50%)";
+    successModal.style.backgroundColor = "#4CAF50";
+    successModal.style.color = "white";
+    successModal.style.width = "300px";
+    successModal.style.textAlign = "center";
+    successModal.style.padding = "15px";
+    successModal.style.borderRadius = "10px";
+    successModal.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.2)";
+    successModal.style.transition = "all 0.5s ease";
+    void successModal.offsetWidth;
     setTimeout(() => {
-      successModal.classList.add("show");
+      successModal.style.bottom = "20px";
+      checkmarkCircle.style.transition = "stroke-dashoffset 1.5s ease-in-out";
+      checkmarkCheck.style.transition = "stroke-dashoffset 1s ease-in-out 1.5s"; 
+      checkmarkCircle.style.strokeDashoffset = "0"; 
+      checkmarkCheck.style.strokeDashoffset = "0"; 
     }, 10); 
     setTimeout(() => {
       successModal.style.bottom = "-100px";
-      successModal.classList.remove("show");
+      setTimeout(() => successModal.remove(), 500);
     }, 5000);
   }
-
-
-
-
-
   loginForm.addEventListener("submit", function (e) {
     e.preventDefault();
     const username = document.getElementById("loginUsername").value;

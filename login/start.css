@@ -197,6 +197,23 @@ input[type="text"], input[type="password"] {
     line-height: 30px; 
 }
 
+.checkmark-circle,
+.checkmark-check {
+    stroke-dasharray: 166, 48; /* Respective dasharray values */
+    stroke-dashoffset: 166, 48; /* Hide the paths initially */
+    transition: stroke-dashoffset 1.5s ease-in-out; /* Define animation timing */
+}
+
+#successModal.show .checkmark-circle {
+    stroke-dashoffset: 0; /* Show the circle */
+    transition: stroke-dashoffset 1.5s ease-in-out; /* Circle animation duration */
+}
+
+#successModal.show .checkmark-check {
+    stroke-dashoffset: 0; /* Show the checkmark */
+    transition: stroke-dashoffset 1s 1.5s ease-in-out; /* Checkmark delay and duration */
+}
+
 #successModal {
     position: fixed;
     bottom: -100px;
@@ -229,23 +246,6 @@ input[type="text"], input[type="password"] {
     stroke-miterlimit: 10;
 }
 
-.checkmark-circle,
-.checkmark-check {
-    stroke-dasharray: 166, 48; /* Respective dasharray values */
-    stroke-dashoffset: 166, 48; /* Start with full dashoffset to hide paths */
-    transition: stroke-dashoffset 0.6s ease-in-out;
-}
-
-/* Animation for when the modal is shown */
-#successModal.show .checkmark-circle {
-    stroke-dashoffset: 0;
-    transition: stroke-dashoffset 1.5s ease-in-out; /* Longer animation */
-}
-
-#successModal.show .checkmark-check {
-    stroke-dashoffset: 0;
-    transition: stroke-dashoffset 1s 1.5s ease-in-out; /* Longer checkmark animation with delay */
-}
 
 
 @keyframes strokeCircle {
