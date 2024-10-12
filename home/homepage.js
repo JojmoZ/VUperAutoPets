@@ -24,6 +24,26 @@ window.onload = function () {
   fadeInElements.forEach((element) => {
     elementObserver.observe(element);
   });
+   const sectionTitles = document.querySelectorAll(".section-title");
+
+   // Create an IntersectionObserver to observe each section title
+   const titleObserver = new IntersectionObserver(
+     (entries) => {
+       entries.forEach((entry) => {
+         if (entry.isIntersecting) {
+           entry.target.classList.add("visible"); // Add the "visible" class when in view
+         } else {
+           entry.target.classList.remove("visible"); // Remove it when out of view
+         }
+       });
+     },
+     { threshold: 0.5 } // Trigger when 50% of the title is visible
+   );
+
+   // Observe each section title
+   sectionTitles.forEach((title) => {
+     titleObserver.observe(title);
+   });
   const carouselSection = document.querySelector(".game-maker");
   const carouselImages = [
     "../assets/LogoVUPER.jpg",
@@ -133,6 +153,80 @@ window.onload = function () {
   gotoplay.addEventListener("click", function (e) {
     window.location = "/loading/loading.html";
   });
+
+  const audio = document.getElementById("audio");
+  const visualization = document.getElementById("visualization");
+  const context = new (window.AudioContext || window.webkitAudioContext)();
+
+    if (context.state === "suspended") {
+      context.resume();
+    }
+    audio.play();
+
+  const analyser = context.createAnalyser();
+  const source = context.createMediaElementSource(audio);
+  source.connect(analyser);
+  analyser.connect(context.destination);
+
+  analyser.fftSize = 512;
+  const bufferLength = analyser.frequencyBinCount;
+  const dataArray = new Uint8Array(bufferLength);
+
+  const canvasCtx = visualization.getContext("2d");
+  const canvasHeight = visualization.height;
+  const canvasWidth = visualization.width;
+  const barWidth = (canvasWidth / bufferLength) * 2.5;
+  const barHeightFactor = 0.4; // Adjust this value to reduce overall bar height
+
+  function renderFrame() {
+    canvasCtx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+    analyser.getByteFrequencyData(dataArray);
+
+    let x = 0;
+
+    for (let i = 0; i < bufferLength; i++) {
+      // Reduce the overall bar height
+      const barHeight =
+        (Math.pow(dataArray[i], 3) / 210 ** 2) * barHeightFactor;
+      const color = `rgb(253, ${250 * (i / bufferLength)}, 50)`;
+
+      // Move the bars down by adjusting the y-position
+      const barYPosition = canvasHeight / 1.6; // Move it lower by reducing this value
+
+      // Draw the bar
+      canvasCtx.fillStyle = color;
+      canvasCtx.fillRect(x, barYPosition - barHeight, barWidth, barHeight);
+
+      // Draw the reflection (mirror the bar below the center)
+      canvasCtx.fillStyle = `rgba(103, ${250 * (i / bufferLength)}, 50, 0.5)`; // Lighter color with transparency for reflection
+      canvasCtx.fillRect(x, barYPosition, barWidth, barHeight);
+
+      x += barWidth + 1; // Space between bars
+    }
+
+    requestAnimationFrame(renderFrame);
+  }
+
+  renderFrame();
+
+  // Play/pause audio based on section visibility
+  const ostSection = document.querySelector(".ost-section");
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          audio.play(); // Play the audio when the section is visible
+        } else {
+          audio.pause(); // Pause the audio when the section is not visible
+        }
+      });
+    },
+    { threshold: 0.5 } // Trigger when 50% of the section is visible
+  );
+
+  observer.observe(ostSection);
 };
 
 

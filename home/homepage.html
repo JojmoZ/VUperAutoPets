@@ -18,34 +18,38 @@
     </div>
     <div class="navbar-right">
       <div class="menu-container">
-        <div class="three-dots">&#x22EE;</div> 
+        <div class="three-dots">&#x22EE;</div>
         <button class="logout-button" id="logoutButton">Logout</button>
       </div>
     </div>
   </div>
-<section class="jumbotron">
-  <div class="jumbotron-box">
-    <div class="curved-text-container">
-      <svg viewBox="0 0 500 150">
-        <defs>
-          <path id="curvedPath" d="M50,150 A200,100 0 0,1 450,150" />
-        </defs>
-        <text font-size="40" fill="#FEBD01" font-weight="bold">
-          <textPath href="#curvedPath" startOffset="50%" text-anchor="middle">
-            <tspan class="fade-left">VUPER</tspan>
-            <tspan class="fade-top" dx="20">AUTO</tspan>
-            <tspan class="fade-right" dx="20">PETS</tspan>
-          </textPath>
-        </text>
-      </svg>
+  <section class="jumbotron">
+    <div class="jumbotron-box">
+      <div class="curved-text-container">
+        <svg viewBox="0 0 500 150">
+          <defs>
+            <path id="curvedPath" d="M50,150 A200,100 0 0,1 450,150" />
+          </defs>
+          <text font-size="40" fill="#FEBD01" font-weight="bold">
+            <textPath href="#curvedPath" startOffset="50%" text-anchor="middle">
+              <tspan class="fade-left">VUPER</tspan>
+              <tspan class="fade-top" dx="20">AUTO</tspan>
+              <tspan class="fade-right" dx="20">PETS</tspan>
+            </textPath>
+          </text>
+        </svg>
+      </div>
+      <p id="useruser" class="fade-bottom">Welcome</p>
+      <button id="play-button" class="play-button fade-bottom">Play</button>
     </div>
-    <p id="useruser" class="fade-bottom">Welcome</p>
-    <button id="play-button" class="play-button fade-bottom">Play</button>
-  </div>
-</section>
+  </section>
 
   <section class="game-desc">
-    <img src="../assets/banner.jpg" alt="Game Image" class="fade-in-element"/>
+    <div class="title-wrapper">
+
+      <h2 class="section-title">Game Description</h2>
+    </div>
+    <img src="../assets/banner.jpg" alt="Game Image" class="fade-in-element" />
     <div class="description-card fade-in-element">
       <h2>Build the strongest team of pets and tussle with your friends!</h2>
       <p>
@@ -55,7 +59,11 @@
     </div>
   </section>
   <section class="game-maker">
-    <div class="text fade-in-element" >
+    <div class="title-wrapper">
+
+      <h2 class="section-title">More Information</h2>
+    </div>
+    <div class="text fade-in-element">
       <div class="fancy-card">
         <p id="carousel-text">
           Super Auto Pets is the first game out of independent studio Team Wood Games, and is available both as a free
@@ -65,7 +73,7 @@
       </div>
 
     </div>
-    <div class="carousel fade-in-element" >
+    <div class="carousel fade-in-element">
       <img id="carousel-image" src="../assets/LogoVUPER.jpg" alt="Carousel Image" />
       <div class="carousel-indicators">
         <div class="indicator" data-index="0"></div>
@@ -74,13 +82,36 @@
       </div>
     </div>
   </section>
+  <section class="ost-section">
+    <div class="title-wrapper">
+      <h2 class="section-title">Original OST</h2>
 
+    </div>
+    <div class="visualizer-container">
+      <audio src="../assets/Super Auto Pets  - Menu Theme.mp3" id="audio" loop></audio>
+      <canvas id="visualization" width="400" height="300"></canvas>
+    </div>
+    <div class="ost-card fade-in-element">
+      <div class="card-content">
+        <p>
+          VUper Auto Pets also provide an original OST that all players of all age ranges can enjoy
+        </p>
+      </div>
+    </div>
+  </section>
+  <!-- <section class="map-section">
+</section> -->
   <section class="social-media">
+    <div class="title-wrapper">
+      <h2 class="section-title">Social Media</h2>
+
+    </div>
     <a href="https://instagram/slcbinusuniv" target="_blank" class="tooltip" data-tooltip="Instagram">
       <img src="../assets/insta.png" alt="Instagram" class="instagram" />
     </a>
 
-    <a href="https://store.steampowered.com/app/1714040/Super_Auto_Pets/" target="_blank" class="tooltip" data-tooltip="Steam">
+    <a href="https://store.steampowered.com/app/1714040/Super_Auto_Pets/" target="_blank" class="tooltip"
+      data-tooltip="Steam">
       <img src="../assets/Steam.png" alt="Steam" class="steam" />
     </a>
     <a href="https://x.com/TeamWoodGames" target="_blank" class="tooltip" data-tooltip="Twitter">
@@ -92,4 +123,5 @@
 
 <script src="homepage.js"></script>
 <script src="../navbar.js"></script>
+
 </html>

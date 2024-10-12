@@ -7,7 +7,7 @@ body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background-size: cover;
 }
-section {
+/* section {
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -15,7 +15,7 @@ section {
   scroll-snap-align: start;
   padding: 20px;
   box-sizing: border-box;
-}
+} */
 .jumbotron {
   background-color: rgba(255, 255, 255, 0.8);
   text-align: center;
@@ -145,7 +145,7 @@ text {
 }
 #useruser {
   font-size: 2.5em;
-  background-color: #febd01;
+  /* background-color: #febd01; */
   border-radius: 15px;
   width: fit-content;
   text-align: center;
@@ -488,3 +488,155 @@ text {
     opacity: 1;
     transform: translateY(0);
 }
+
+.ost-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-image: url(../assets/Desert.webp);
+  color: white;
+}
+
+.visualizer-container {
+  width: 45%;
+}
+
+#visualization {
+  display: block;
+  width: 100%;
+}
+
+.ost-card {
+  width: 50%;
+  padding: 30px;
+  border-radius: 25px;
+  background: linear-gradient(145deg, #febd01, #ff6600);
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+}
+
+.ost-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("../assets/Desert.webp");
+  opacity: 0.05;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.ost-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0px 15px 35px rgba(0, 0, 0, 0.4);
+}
+
+.card-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+.card-content h2 {
+  font-size: 2.5em;
+  margin-bottom: 20px;
+  background: -webkit-linear-gradient(#febd01, #ff6600);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: color 0.3s ease;
+}
+
+.card-content p {
+  font-size: 1.4em;
+  line-height: 1.8;
+  color: white;
+  margin-bottom: 20px;
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 10px 20px;
+  border-radius: 10px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.play-ost-button {
+  padding: 15px 30px;
+  background-color: #ff6600;
+  color: white;
+  font-size: 1.5em;
+  font-weight: bold;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.play-ost-button:hover {
+  background-color: #febd01;
+  transform: translateY(-5px);
+  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.3);
+}
+.title-wrapper {
+  position: absolute; 
+  top: 60px; 
+  width: 100%; 
+  text-align: center; 
+}
+
+.section-title {
+  font-size: 2.5em;
+  margin-bottom: 50px;
+  color: #333;
+  opacity: 0;  
+  transition: opacity 1s ease, transform 1s ease; 
+  display: inline-block; 
+  position: relative; 
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background-color: #febd01;
+  transition: width 1s ease; 
+}
+
+.section-title.visible {
+  opacity: 1;
+  transform: translateY(0); 
+}
+
+.section-title.visible::after {
+  width: 100%; 
+}
+
+section {
+  position: relative; 
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  scroll-snap-align: start;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* section {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  scroll-snap-align: start;
+  padding: 20px;
+  box-sizing: border-box;
+} */
