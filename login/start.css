@@ -6,6 +6,7 @@ body {
     align-items: center;
     height: 100vh;
     background-color: black;
+    overflow: hidden;
 }
 
 .main {
@@ -24,13 +25,24 @@ img#logo {
     transform: translateX(-50%);
     cursor: pointer;
     z-index: 1;
-    width: 50vw; /* Smaller logo */
+    width: 50vw;
+    animation: float 3s ease-in-out infinite;
+}
+
+/* Floating animation */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0) translateX(-50%);
+    }
+    50% {
+        transform: translateY(-20px) translateX(-50%);
+    }
 }
 
 #loginCard {
     opacity: 0;
     position: absolute;
-    right: -50%; /* Start outside of the screen */
+    right: -50%;
     transition: opacity 1s ease, right 1s ease;
     z-index: 2;
     color: white;
@@ -38,28 +50,28 @@ img#logo {
     flex-direction: column;
     align-items: center;
     width: 400px;
-    background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
+    background-color: rgba(0, 0, 0, 0.8);
     border-radius: 10px;
     padding: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Shadow effect */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 #loginCard.active {
     opacity: 1;
-    right: 10%; /* Slide in from the right */
+    right: 10%;
 }
 
 /* Animations for form transitions */
 form {
     opacity: 0;
-    transform: translateY(20px); /* Slide effect */
+    transform: translateY(20px);
     transition: opacity 0.5s ease, transform 0.5s ease;
     width: 100%;
 }
 
 form.active {
     opacity: 1;
-    transform: translateY(0); /* Bring back to normal position */
+    transform: translateY(0);
 }
 
 #loginCard .header {
@@ -73,8 +85,8 @@ form.active {
     color: white;
     font-weight: bold;
     display: flex;
-    justify-content: center; /* Ensures both elements are centered */
-    gap: 50px; /* Add space between the two */
+    justify-content: center;
+    gap: 50px;
 }
 
 #loginCard .header span {
@@ -90,13 +102,12 @@ form.active {
 
 .title {
     font-size: 2em;
-    /* margin-bottom: 10px; */
     color: #cbac24;
 }
 
 input[type="submit"] {
     padding: 10px 20px;
-    background-color: #4CAF50;
+    background-color: #cbac24;
     color: white;
     border: none;
     cursor: pointer;
@@ -110,10 +121,84 @@ input[type="text"], input[type="password"] {
     border: none;
     border-radius: 5px;
     width: 100%;
-    box-sizing: border-box; /* Ensures padding is included in the width */
+    box-sizing: border-box;
 }
 
-#error {
-    color: red;
-    display: none;
+/* Error Modal Styles */
+/* Error Modal Styles */
+#errorModal {
+    position: fixed;
+    bottom: -100px; /* Start off-screen */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #f44336; /* Red background */
+    color: white;
+    width: 300px;
+    text-align: center;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.5s ease;
+    z-index: 3;
+}
+
+.modal-content {
+    display: flex;
+    align-items: center; /* Center content vertically */
+    justify-content: center; /* Center content horizontally */
+    gap: 10px; /* Space between cross and text */
+}
+
+.modal-icon {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: rotate 2s linear infinite; /* Cross rotation animation */
+}
+
+.cross {
+    position: relative;
+    width: 14px; /* Adjusted size of the cross */
+    height: 14px;
+}
+
+.cross::before,
+.cross::after {
+    content: "";
+    position: absolute;
+    width: 100%;  /* Full width to ensure equal length */
+    height: 2px; /* Thickness of the cross */
+    background-color: #f44336;
+    top: 40%;
+    left: 0;
+    transform-origin: center;
+    transform: translateY(-50%); /* Center the cross pieces */
+}
+
+.cross::before {
+    transform: rotate(45deg); /* Diagonal from top-left to bottom-right */
+}
+
+.cross::after {
+    transform: rotate(-45deg); /* Diagonal from top-right to bottom-left */
+}
+
+/* Cross rotation animation */
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+#modalErrorText {
+    font-size: 1.2em;
+    line-height: 30px; /* Align text vertically within the modal */
 }
