@@ -210,8 +210,6 @@ document.addEventListener("DOMContentLoaded", () => {
       isDragging = false; 
     }
   });
-
-  
   canvas.addEventListener("mouseup", () => {
     if (isHolding && activeDragCircle) {
       circles = circles.filter((circle) => circle !== activeDragCircle); 
