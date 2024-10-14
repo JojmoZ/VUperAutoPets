@@ -243,3 +243,16 @@ function simulateBattle() {
 
 updateCoinsDisplay();
 render();
+
+// canvas.addEventListener("click", function (event) {
+//   const rect = canvas.getBoundingClientRect();
+//   const x = event.clientX - rect.left;
+//   const y = event.clientY - rect.top;
+
+//   // Use the coordinates to clear a specific area
+//   ctx.clearRect(x, y, 60, 60); // This clears a 60x60 rectangle starting from the clicked point
+//   console.log(`Clearing area at X: ${x}, Y: ${y}`);
+// });
+
+//  ctx.clearRect(499.5, 18.125, 60, 60); // Clear area for player's team
+//     ctx.clearRect(748.5, 20.125, 60, 60); // Clear area for enemy's team

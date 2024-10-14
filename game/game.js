@@ -235,12 +235,127 @@ function calculateTeamCost(team) {
     0
   );
 }
+function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
+  const playerStartX = 100 + (maxSlots - 1) * 100; // Player's initial position
+  const enemyStartX = canvas.width - 550; // Enemy's initial position
+  const centerX = canvas.width / 2 - 30; // Center of the canvas
+  const duration = 1000; // Total animation time in milliseconds
+  const frameRate = 60; // Frames per second
+  const totalFrames = (duration / 1000) * frameRate;
+  let currentFrame = 0;
+
+  // Preload the images for both animals
+  const playerImg = new Image();
+  playerImg.src = playerAnimal.img;
+
+  const enemyImg = new Image();
+  enemyImg.src = enemyAnimal.img;
+
+  // Ensure the images are loaded before starting the animation
+  playerImg.onload = () => {
+    enemyImg.onload = () => {
+      requestAnimationFrame(animate);
+    };
+  };
+
+  function animate() {
+    // Clear the entire canvas at the beginning of each frame
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Re-render all animals except the ones in battle
+    renderFullTeam();
+
+    // Animate the first animals of both teams towards each other
+    const playerX =
+      playerStartX - (playerStartX - centerX) * (currentFrame / totalFrames);
+    const enemyX =
+      enemyStartX + (centerX - enemyStartX) * (currentFrame / totalFrames);
+
+    // Draw player's charging animal
+    ctx.drawImage(playerImg, playerX, 20, 60, 60);
+    ctx.fillText(
+      `A:${playerAnimal.attack}/H:${playerAnimal.health}`,
+      playerX,
+      100
+    );
+
+    // Draw enemy's charging animal
+    ctx.drawImage(enemyImg, enemyX, 20, 60, 60);
+    ctx.fillText(
+      `A:${enemyAnimal.attack}/H:${enemyAnimal.health}`,
+      enemyX,
+      100
+    );
+
+    currentFrame++;
+
+    if (currentFrame <= totalFrames) {
+      requestAnimationFrame(animate); // Continue animation
+    } else {
+      onComplete(); // Animation complete
+    }
+  }
+}
+
+// Renders all animals in the player's and enemy's lineup, except the first ones
+function renderFullTeam() {
+  const teamOffsetX = 100; // Positioning of player's team
+  const enemyOffsetX = canvas.width - 550; // Positioning of enemy's team
+
+  // Render player's team (right to left), except for the first animal
+  battleLineup.forEach((animal, index) => {
+    if (animal && index !== 0) {
+      // Don't render the first one in this case
+      ctx.drawImage(
+        getAnimalImage(animal.img),
+        teamOffsetX + (maxSlots - 1 - index) * 100, // Flip to render from right to left
+        20,
+        60,
+        60
+      );
+      ctx.fillText(
+        `A:${animal.attack}/H:${animal.health}`,
+        teamOffsetX + (maxSlots - 1 - index) * 100,
+        100
+      );
+    }
+  });
+
+  // Render enemy's team (left to right), except for the first animal
+  enemyLineup.forEach((animal, index) => {
+    if (animal && index !== 0) {
+      // Don't render the first one in this case
+      ctx.drawImage(
+        getAnimalImage(animal.img),
+        enemyOffsetX + index * 100,
+        20,
+        60,
+        60
+      );
+      ctx.fillText(
+        `A:${animal.attack}/H:${animal.health}`,
+        enemyOffsetX + index * 100,
+        100
+      );
+    }
+  });
+}
+
+// Helper function to return a preloaded image object
+function getAnimalImage(src) {
+  const img = new Image();
+  img.src = src;
+  return img;
+}
+
+
+
+
 function simulateBattle() {
   console.clear();
   let turnCount = 1;
   const maxTurns = 10;
 
-  // Add a pause before the first attack for proper rendering
   function pauseBeforeFirstTurn() {
     renderTeams();
     setTimeout(playTurn, 1500); // Pause for 1.5 seconds before starting the battle
@@ -252,6 +367,7 @@ function simulateBattle() {
       !battleLineup.some((animal) => animal) ||
       !enemyLineup.some((animal) => animal)
     ) {
+      // Check the outcome of the battle and return
       const playerSurvivors = battleLineup.filter(
         (animal) => animal !== null
       ).length;
@@ -284,57 +400,45 @@ function simulateBattle() {
       );
       const enemyAnimal = enemyLineup[enemyAnimalIndex];
       if (enemyAnimal) {
-        console.log(`User's ${playerAnimal.name} attacks`);
-        console.log(`Enemy's ${enemyAnimal.name} attacks`);
-        enemyAnimal.health -= playerAnimal.attack;
-        playerAnimal.health -= enemyAnimal.attack;
+        // Animate the headbutt
+        animateHeadbutt(playerAnimal, enemyAnimal, () => {
+          // Resolve the damage and health after the animation
+          enemyAnimal.health -= playerAnimal.attack;
+          playerAnimal.health -= enemyAnimal.attack;
 
-        if (enemyAnimal.health <= 0 && playerAnimal.health <= 0) {
-          console.log(`Enemy's ${enemyAnimal.name} died`);
-          console.log(`User's ${playerAnimal.name} died`);
-          enemyLineup[enemyAnimalIndex] = null;
-          battleLineup[playerAnimalIndex] = null;
-          shiftAnimalsInLineup(battleLineup); // Shift player's team to fill the gap
-          shiftAnimalsInLineup(enemyLineup); // Shift enemy team to fill the gap
-          renderTeams(); // Update the visuals after shifting
-        } else {
-          if (enemyAnimal.health <= 0) {
+          if (enemyAnimal.health <= 0 && playerAnimal.health <= 0) {
             console.log(`Enemy's ${enemyAnimal.name} died`);
-            enemyLineup[enemyAnimalIndex] = null;
-            shiftAnimalsInLineup(enemyLineup); // Shift enemy team
-            renderTeams(); // Update the visuals after shifting
-          }
-          if (playerAnimal.health <= 0) {
             console.log(`User's ${playerAnimal.name} died`);
+            enemyLineup[enemyAnimalIndex] = null;
             battleLineup[playerAnimalIndex] = null;
-            shiftAnimalsInLineup(battleLineup); // Shift player's team
+            shiftAnimalsInLineup(battleLineup); // Shift player's team to fill the gap
+            shiftAnimalsInLineup(enemyLineup); // Shift enemy team to fill the gap
             renderTeams(); // Update the visuals after shifting
+          } else {
+            if (enemyAnimal.health <= 0) {
+              console.log(`Enemy's ${enemyAnimal.name} died`);
+              enemyLineup[enemyAnimalIndex] = null;
+              shiftAnimalsInLineup(enemyLineup); // Shift enemy team
+              renderTeams(); // Update the visuals after shifting
+            }
+            if (playerAnimal.health <= 0) {
+              console.log(`User's ${playerAnimal.name} died`);
+              battleLineup[playerAnimalIndex] = null;
+              shiftAnimalsInLineup(battleLineup); // Shift player's team
+              renderTeams(); // Update the visuals after shifting
+            }
           }
-        }
+
+          turnCount++;
+          setTimeout(playTurn, 2500); // Delay between turns
+        });
       }
     }
-
-    if (!battleLineup.some((animal) => animal)) {
-      if (!enemyLineup.some((animal) => animal)) {
-        console.log("It's a draw!");
-      } else {
-        console.log("You lose!");
-      }
-      showNonBattleElements(); // Show elements after game ends
-      return;
-    }
-    if (!enemyLineup.some((animal) => animal)) {
-      console.log("You win!");
-      showNonBattleElements(); // Show elements after game ends
-      return;
-    }
-
-    turnCount++;
-    setTimeout(playTurn, 2500); // Delay between turns
   }
 
-  pauseBeforeFirstTurn(); // Call the function to introduce a pause before the first round
+  pauseBeforeFirstTurn();
 }
+
 
 // Function to shift the lineup when an animal dies
 function shiftAnimalsInLineup(lineup) {
@@ -347,3 +451,5 @@ function shiftAnimalsInLineup(lineup) {
     lineup[i] = shiftedLineup[i]; // Update the original lineup
   }
 }
+
+
