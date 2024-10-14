@@ -1,28 +1,45 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f7f7f7;
 }
 
-body, html {
-  height: 100%;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #000;
+#chatbox {
+    width: 400px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    text-align: center;
 }
 
-.background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #210002;
-  transition: background-color 0.3s ease;
+#chat-log {
+    width: 100%;
+    height: 200px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    overflow-y: auto;
+    padding: 10px;
+    background-color: #f9f9f9;
 }
 
-audio {
-  z-index: 1;
+#message {
+    width: calc(100% - 60px);
+    padding: 10px;
+}
+
+#send-btn {
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+#send-btn:hover {
+    background-color: #0056b3;
 }

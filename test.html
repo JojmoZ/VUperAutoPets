@@ -4,17 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Music Reactive Background</title>
+    <title>Chat App with BroadcastChannel</title>
     <link rel="stylesheet" href="test.css">
 </head>
 
 <body>
-    <audio id="audio-player" controls>
-        <source src="assets/NGGK PAKE LAMA - COVER VESTIA ZETA (AI).mp3" type="audio/mp3">
-        Your browser does not support the audio element.
-    </audio>
-
-    <div class="background"></div>
+    <div id="chatbox">
+        <h3>Chat with BroadcastChannel</h3>
+        <div id="chat-log"></div>
+        <input type="text" id="message" placeholder="Enter message" />
+        <button id="send-btn">Send</button>
+    </div>
 
     <script src="test.js"></script>
 </body>

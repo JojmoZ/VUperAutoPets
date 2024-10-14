@@ -1,4 +1,25 @@
 window.onload = function () {
+  const captchaChallenge = document.getElementById("captchaChallenge");
+  const captchaInput = document.getElementById("captchaInput");
+  const captchaError = document.getElementById("captchaError");
+
+  // Function to generate a random CAPTCHA
+  function generateCaptcha() {
+    const operators = ["+", "-", "*"]; // You can choose the operators you like
+    const num1 = Math.floor(Math.random() * 10) + 1; // Random number between 1 and 10
+    const num2 = Math.floor(Math.random() * 10) + 1;
+    const operator = operators[Math.floor(Math.random() * operators.length)];
+
+    let captcha;
+    if (operator === "+") captcha = num1 + num2;
+    else if (operator === "-") captcha = num1 - num2;
+    else if (operator === "*") captcha = num1 * num2;
+
+    captchaChallenge.textContent = `${num1} ${operator} ${num2}`;
+    return captcha;
+  }
+
+  let generatedCaptcha = generateCaptcha(); // Store the generated CAPTCHA result
   const logo = document.getElementById("logo");
   const loginCard = document.getElementById("loginCard");
   const registerTab = document.getElementById("registerTab");
@@ -10,10 +31,10 @@ window.onload = function () {
   const errorModal = document.getElementById("errorModal");
   const modalErrorText = document.getElementById("modalErrorText");
   let isLoginCardVisible = false;
- const logged = localStorage.getItem("loggedin");
-if (logged) {
-  window.location.href = "/home/homepage.html";
-}
+  const logged = localStorage.getItem("loggedin");
+  if (logged) {
+    window.location.href = "/home/homepage.html";
+  }
   registerTab.classList.add("active");
   registrationForm.classList.add("active");
   registrationForm.style.display = "block";
@@ -43,25 +64,35 @@ if (logged) {
     const username = document.getElementById("registerUsername").value;
     const password = document.getElementById("registerPassword").value;
     const confirmPassword = document.getElementById("confirmPassword").value;
-    if (username === "" || password === "" || confirmPassword === ""){
-        modalErrorText.innerHTML = "Please fill all fields"
-        showErrorModal();
-        return;
+    const captchaAnswer = parseInt(captchaInput.value, 10);
+
+    if (username === "" || password === "" || confirmPassword === "") {
+      modalErrorText.innerHTML = "Please fill all fields";
+      showErrorModal();
+      return;
     }
     if (password !== confirmPassword) {
       modalErrorText.innerText = "Passwords do not match.";
       showErrorModal();
       return;
     }
+    if (captchaAnswer !== generatedCaptcha) {
+     modalErrorText.innerHTML = "Captcha Incorrect";
+     showErrorModal();
+      return;
+    }
     localStorage.setItem("username", username);
     localStorage.setItem("password", password);
-    
+
     registrationForm.reset();
     registerError.style.display = "none";
+    captchaError.textContent = "";
 
-     showSuccessModal();
-
+    showSuccessModal();
+    generatedCaptcha = generateCaptcha();
   });
+  generatedCaptcha = generateCaptcha();
+
   function showSuccessModal() {
     const existingModal = document.getElementById("successModal");
     if (existingModal) {
@@ -98,15 +129,16 @@ if (logged) {
     setTimeout(() => {
       successModal.style.bottom = "20px";
       checkmarkCircle.style.transition = "stroke-dashoffset 1.5s ease-in-out";
-      checkmarkCheck.style.transition = "stroke-dashoffset 1s ease-in-out 1.5s"; 
-      checkmarkCircle.style.strokeDashoffset = "0"; 
-      checkmarkCheck.style.strokeDashoffset = "0"; 
-    }, 10); 
+      checkmarkCheck.style.transition = "stroke-dashoffset 1s ease-in-out 1.5s";
+      checkmarkCircle.style.strokeDashoffset = "0";
+      checkmarkCheck.style.strokeDashoffset = "0";
+    }, 10);
     setTimeout(() => {
       successModal.style.bottom = "-100px";
       setTimeout(() => successModal.remove(), 500);
     }, 5000);
   }
+
   loginForm.addEventListener("submit", function (e) {
     e.preventDefault();
     const username = document.getElementById("loginUsername").value;
@@ -116,16 +148,16 @@ if (logged) {
     const storedPassword = localStorage.getItem("password");
     if (username === storedUsername && password === storedPassword) {
       window.location.href = "/home/homepage.html";
-      localStorage.setItem('loggedin', true);
+      localStorage.setItem("loggedin", true);
     } else {
       modalErrorText.innerText = "Invalid username or password.";
       showErrorModal();
     }
   });
   function showErrorModal() {
-    errorModal.style.bottom = "20px"; 
+    errorModal.style.bottom = "20px";
     setTimeout(() => {
-      errorModal.style.bottom = "-100px"; 
+      errorModal.style.bottom = "-100px";
     }, 3000);
   }
   logo.addEventListener("click", function () {

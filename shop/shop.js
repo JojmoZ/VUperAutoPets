@@ -18,7 +18,62 @@ document.addEventListener("DOMContentLoaded", function () {
   coinsDisplay.style.fontSize = "20px";
   coinsDisplay.style.zIndex = "9999";
   document.body.appendChild(coinsDisplay);
-
+let shopAnimals = [
+  {
+    name: "Ant",
+    attack: 2,
+    health: 1,
+    cost: 2,
+    star: 1,
+    ability: "Faint: Give +2/+1 to a random ally",
+    img: "../assets/Ant.webp",
+  },
+  {
+    name: "Fish",
+    attack: 2,
+    health: 3,
+    cost: 5,
+    star: 2,
+    ability: "Level-Up: Give all friends +1/+1",
+    img: "../assets/Fish.webp",
+  },
+  {
+    name: "Lion",
+    attack: 3,
+    health: 4,
+    cost: 7,
+    star: 3,
+    ability: "Start of battle: Gain +3/+3 if you are the highest tier",
+    img: "../assets/Lion.webp",
+  },
+  {
+    name: "Pig",
+    attack: 3,
+    health: 1,
+    cost: 3,
+    star: 1,
+    ability: "Sell: Gain +1 coin",
+    img: "../assets/Pig.webp",
+  },
+  {
+    name: "Turtle",
+    attack: 1,
+    health: 2,
+    cost: 4,
+    star: 2,
+    ability: "Faint: Give friend behind Melon Armor",
+    img: "../assets/Turtle.webp",
+  },
+  {
+    name: "Elephant",
+    attack: 8,
+    health: 7,
+    cost: 5,
+    star: 4,
+    ability: "Start of battle: Gain +3/+3 if you are the highest tier",
+    img: "../assets/Elephant.webp",
+  },
+];
   function updateCoinsDisplay() {
     const coins = localStorage.getItem("coins");
     coinsDisplay.textContent = `Coins: ${coins}`;
@@ -44,10 +99,11 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Mark sold out animals on page load
-  const ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
+  const ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals")) || [];
   ownedAnimals.forEach((animal) => {
-    markSoldOut(animal);
+    markSoldOut(animal.name); // Use animal.name instead of just animal
   });
+
 
   cards.forEach((card) => {
     card.addEventListener("click", function () {
@@ -80,21 +136,30 @@ document.addEventListener("DOMContentLoaded", function () {
     const animalName = modal.getAttribute("data-animal");
     const price = parseInt(modal.getAttribute("data-price"), 10);
     let coins = parseInt(localStorage.getItem("coins"), 10);
-    let ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
+    let ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals")) || [];
+
     if (coins >= price) {
+      // Find the full animal object from shopAnimals
+      const animal = shopAnimals.find((a) => a.name === animalName);
+
+      // Deduct the price and store the full animal object in localStorage
       coins -= price;
-      ownedAnimals.push(animalName);
+      ownedAnimals.push(animal); // Store the full object instead of just the name
       localStorage.setItem("coins", coins.toString());
       localStorage.setItem("ownedAnimals", JSON.stringify(ownedAnimals));
+
       updateCoinsDisplay();
       playSound();
-      markSoldOut(animalName);
+      markSoldOut(animalName); // Mark this animal as sold out on the page
     } else {
       alert("You don't have enough coins to buy this animal!");
     }
+
     modal.classList.remove("show");
     setTimeout(() => {
       modal.style.display = "none";
     }, 500);
   });
+
+
 });

@@ -21,6 +21,14 @@
                     <input type="text" id="registerUsername" placeholder="Enter your username">
                     <input type="password" id="registerPassword" placeholder="Enter your password">
                     <input type="password" id="confirmPassword" placeholder="Confirm your password">
+
+                    <div class="captcha-container">
+                        <span id="captchaChallenge"></span>
+                        <input type="text" id="captchaInput" placeholder="Enter the CAPTCHA">
+                        <p id="captchaError" class="error"></p>
+                    </div>
+
+                    
                     <p id="registerError" class="error"></p>
                     <input type="submit" value="Register">
                 </form>

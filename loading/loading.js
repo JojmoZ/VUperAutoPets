@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const canvas = document.getElementById("gameCanvas");
   const ctx = canvas.getContext("2d");
   const scoreElement = document.getElementById("score");
-  const totalGameTime = 60 * 1000; 
+  const totalGameTime = 15 * 1000; 
   const startTime = Date.now();
   let score = 0;
   let circles = [];
@@ -231,7 +231,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     requestAnimationFrame(gameLoop);
   }
-  let circleInterval = setInterval(generateCircle, totalGameTime / 30); 
+  let circleInterval = setInterval(generateCircle, totalGameTime / 15); 
 
   window.addEventListener("scroll", () => {
     const scrollTop = window.pageYOffset;

@@ -1,41 +1,31 @@
-// Select the audio player and background div
-const audio = document.getElementById("audio-player");
-const background = document.querySelector(".background");
+const chatLog = document.getElementById("chat-log");
+const messageInput = document.getElementById("message");
+const sendBtn = document.getElementById("send-btn");
 
-// Create AudioContext and analyzer
-const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-const analyzer = audioContext.createAnalyser();
-analyzer.fftSize = 256;
+// Create a BroadcastChannel for cross-tab communication
+const channel = new BroadcastChannel("chat_channel");
 
-// Create an audio source from the audio element
-const source = audioContext.createMediaElementSource(audio);
-source.connect(analyzer);
-analyzer.connect(audioContext.destination);
-
-const dataArray = new Uint8Array(analyzer.frequencyBinCount);
-
-// Function to change the background based on music data
-function updateBackground() {
-  analyzer.getByteFrequencyData(dataArray);
-
-  // Get the average volume from the frequency data
-  let sum = 0;
-  for (let i = 0; i < dataArray.length; i++) {
-    sum += dataArray[i];
-  }
-  const average = sum / dataArray.length;
-
-  // Map the average volume to a color intensity (0 to 255)
-  const intensity = Math.min(Math.max(average, 50), 255);
-  background.style.backgroundColor = `rgb(${intensity}, 50, 50)`;
-
-  requestAnimationFrame(updateBackground);
+// Function to add a message to the chat log
+function addMessageToLog(message, isSelf = false) {
+  const msgElem = document.createElement("p");
+  msgElem.textContent = message;
+  msgElem.style.color = isSelf ? "blue" : "black";
+  chatLog.appendChild(msgElem);
+  chatLog.scrollTop = chatLog.scrollHeight;
 }
 
-// Start the audio context when the audio plays
-audio.addEventListener("play", () => {
-  if (audioContext.state === "suspended") {
-    audioContext.resume();
+// Send message to the BroadcastChannel
+sendBtn.onclick = () => {
+  const message = messageInput.value.trim();
+  if (message !== "") {
+    const fullMessage = `You: ${message}`;
+    addMessageToLog(fullMessage, true);
+    channel.postMessage(fullMessage); // Broadcast to other tabs
+    messageInput.value = "";
   }
-  requestAnimationFrame(updateBackground);
-});
+};
+
+// Listen for messages from the BroadcastChannel
+channel.onmessage = (event) => {
+  addMessageToLog(event.data);
+};

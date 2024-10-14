@@ -8,7 +8,25 @@ window.onload = function () {
     window.location.href = "/login/start.html";
   }
    const fadeInElements = document.querySelectorAll(".fade-in-element");
+      const ostCard = document.querySelector(".ost-card");
+      const cardContent = document.querySelector(".card-content");
 
+      const aaa = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              ostCard.classList.add("visible");
+              cardContent.classList.add("visible");
+            } else {
+              ostCard.classList.remove("visible");
+              cardContent.classList.remove("visible");
+            }
+          });
+        },
+        { threshold: 0.5 } // Trigger when 50% of the section is visible
+      );
+
+      aaa.observe(ostCard);
   const elementObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {

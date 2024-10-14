@@ -264,3 +264,18 @@ input[type="text"], input[type="password"] {
     font-size: 1.2em;
     line-height: 30px;
 }
+.captcha-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+#captchaChallenge {
+    padding: 10px;
+    background-color: #cbac24;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    user-select: none;
+}
