@@ -259,17 +259,17 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
   };
 
   function animate() {
-    // Clear the entire canvas at the beginning of each frame
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
 
     // Re-render all animals except the ones in battle
     renderFullTeam();
 
+    // Calculate eased progress based on current frame
+    const progress = easeInOutQuad(currentFrame / totalFrames);
+
     // Animate the first animals of both teams towards each other
-    const playerX =
-      playerStartX - (playerStartX - centerX) * (currentFrame / totalFrames);
-    const enemyX =
-      enemyStartX + (centerX - enemyStartX) * (currentFrame / totalFrames);
+    const playerX = playerStartX - (playerStartX - centerX) * progress;
+    const enemyX = enemyStartX + (centerX - enemyStartX) * progress;
 
     // Draw player's charging animal
     ctx.drawImage(playerImg, playerX, 20, 60, 60);
@@ -290,12 +290,14 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
     currentFrame++;
 
     if (currentFrame <= totalFrames) {
-      requestAnimationFrame(animate); // Continue animation
+      requestAnimationFrame(animate);
     } else {
-      onComplete(); // Animation complete
+      // Add a slight delay after the headbutt to make the transition smooth
+      setTimeout(onComplete, 500); // 500ms delay before the next turn
     }
   }
 }
+
 
 // Renders all animals in the player's and enemy's lineup, except the first ones
 function renderFullTeam() {
@@ -339,6 +341,9 @@ function renderFullTeam() {
       );
     }
   });
+}
+function easeInOutQuad(t) {
+  return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
 }
 
 // Helper function to return a preloaded image object
