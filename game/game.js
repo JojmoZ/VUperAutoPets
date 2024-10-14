@@ -240,6 +240,12 @@ function simulateBattle() {
   let turnCount = 1;
   const maxTurns = 10;
 
+  // Add a pause before the first attack for proper rendering
+  function pauseBeforeFirstTurn() {
+    renderTeams();
+    setTimeout(playTurn, 1500); // Pause for 1.5 seconds before starting the battle
+  }
+
   function playTurn() {
     if (
       turnCount > maxTurns ||
@@ -252,6 +258,7 @@ function simulateBattle() {
       const enemySurvivors = enemyLineup.filter(
         (animal) => animal !== null
       ).length;
+
       if (playerSurvivors > enemySurvivors) {
         console.log("User wins!");
       } else if (playerSurvivors < enemySurvivors) {
@@ -281,26 +288,32 @@ function simulateBattle() {
         console.log(`Enemy's ${enemyAnimal.name} attacks`);
         enemyAnimal.health -= playerAnimal.attack;
         playerAnimal.health -= enemyAnimal.attack;
+
         if (enemyAnimal.health <= 0 && playerAnimal.health <= 0) {
           console.log(`Enemy's ${enemyAnimal.name} died`);
           console.log(`User's ${playerAnimal.name} died`);
           enemyLineup[enemyAnimalIndex] = null;
           battleLineup[playerAnimalIndex] = null;
-          renderTeams();
+          shiftAnimalsInLineup(battleLineup); // Shift player's team to fill the gap
+          shiftAnimalsInLineup(enemyLineup); // Shift enemy team to fill the gap
+          renderTeams(); // Update the visuals after shifting
         } else {
           if (enemyAnimal.health <= 0) {
             console.log(`Enemy's ${enemyAnimal.name} died`);
             enemyLineup[enemyAnimalIndex] = null;
-            renderTeams();
+            shiftAnimalsInLineup(enemyLineup); // Shift enemy team
+            renderTeams(); // Update the visuals after shifting
           }
           if (playerAnimal.health <= 0) {
             console.log(`User's ${playerAnimal.name} died`);
             battleLineup[playerAnimalIndex] = null;
-            renderTeams();
+            shiftAnimalsInLineup(battleLineup); // Shift player's team
+            renderTeams(); // Update the visuals after shifting
           }
         }
       }
     }
+
     if (!battleLineup.some((animal) => animal)) {
       if (!enemyLineup.some((animal) => animal)) {
         console.log("It's a draw!");
@@ -315,8 +328,22 @@ function simulateBattle() {
       showNonBattleElements(); // Show elements after game ends
       return;
     }
+
     turnCount++;
-    setTimeout(playTurn, 2500);
+    setTimeout(playTurn, 2500); // Delay between turns
   }
-  playTurn();
+
+  pauseBeforeFirstTurn(); // Call the function to introduce a pause before the first round
+}
+
+// Function to shift the lineup when an animal dies
+function shiftAnimalsInLineup(lineup) {
+  // Remove any null values and shift animals left
+  let shiftedLineup = lineup.filter((animal) => animal !== null);
+  while (shiftedLineup.length < maxSlots) {
+    shiftedLineup.push(null); // Fill remaining slots with null
+  }
+  for (let i = 0; i < maxSlots; i++) {
+    lineup[i] = shiftedLineup[i]; // Update the original lineup
+  }
 }
