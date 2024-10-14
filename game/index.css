@@ -9,6 +9,11 @@ body {
     justify-content: center;
     margin: 20px auto;
 }
+#coins {
+    font-size: 18px;
+    margin-top: 10px;
+    color: black; /* Ensure it's visible */
+}
 
 .animal {
     width: 100px;
