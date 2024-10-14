@@ -1,9 +1,10 @@
 const canvas = document.getElementById("battleCanvas");
 const ctx = canvas.getContext("2d");
-let battleLineup = [null, null, null, null, null]; 
 let enemyLineup = [null, null, null, null, null];
-let randomAnimals = [];
-let coins = parseInt(localStorage.getItem("gamecoins")) || 10;
+let battleLineup = JSON.parse(localStorage.getItem("battleLineup")) || [null,null,null,null,null,];
+let randomAnimals = JSON.parse(localStorage.getItem("randomAnimals")) || [];
+let coins = parseInt(localStorage.getItem("gamecoins")) || 0;
+document.getElementById("coins").textContent = `Coins: ${coins}`;
 const maxShopAnimals = 3;
 const maxSlots = 5;
 let shopAnimals = [
@@ -11,42 +12,32 @@ let shopAnimals = [
   { name: "Fish", attack: 2, health: 3, cost: 5, img: "../assets/Fish.webp" },
   { name: "Lion", attack: 3, health: 4, cost: 7, img: "../assets/Lion.webp" },
   { name: "Pig", attack: 3, health: 1, cost: 3, img: "../assets/Pig.webp" },
-  {
-    name: "Turtle",
-    attack: 1,
-    health: 2,
-    cost: 4,
-    img: "../assets/Turtle.webp",
-  },
-  {
-    name: "Elephant",
-    attack: 8,
-    health: 7,
-    cost: 5,
-    img: "../assets/Elephant.webp",
-  },
+  { name: "Turtle", attack: 1, health: 2,cost: 4,img: "../assets/Turtle.webp",},
+  { name: "Elephant",attack: 8,health: 7,cost: 5,img: "../assets/Elephant.webp",},
 ];
+function saveRandomAnimals() {
+  localStorage.setItem("randomAnimals", JSON.stringify(randomAnimals));
+}
 function rollShopAnimals() {
   if (coins >= 1) {
-    // Deduct 1 coin for refresh
     coins -= 1;
-    document.getElementById("coins").textContent = `Coins: ${coins}`;
+    updateCoinsDisplay();
 
     const ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
-    const shuffledAnimals = ownedAnimals.sort(() => Math.random() - 0.5);
-    randomAnimals =
-      shuffledAnimals.length > 0
-        ? shuffledAnimals.slice(0, maxShopAnimals)
-        : shopAnimals.slice(0, maxShopAnimals);
+    const shuffledAnimals = ownedAnimals
+      ? ownedAnimals.sort(() => Math.random() - 0.5)
+      : shopAnimals.sort(() => Math.random() - 0.5);
+    randomAnimals = shuffledAnimals.slice(0, maxShopAnimals);
 
     renderRandomAnimals();
+    saveRandomAnimals(); 
   } else {
     alert("Not enough coins to refresh!");
   }
 }
 function renderRandomAnimals() {
   const randomAnimalsContainer = document.getElementById("random-animals");
-  randomAnimalsContainer.innerHTML = ""; 
+  randomAnimalsContainer.innerHTML = "";
   randomAnimals.forEach((animal, index) => {
     const animalDiv = document.createElement("div");
     animalDiv.classList.add("animal");
@@ -62,6 +53,9 @@ function dragStart(event) {
   const index = event.target.getAttribute("data-index");
   event.dataTransfer.setData("text/plain", index);
 }
+function saveBattleLineup() {
+  localStorage.setItem("battleLineup", JSON.stringify(battleLineup));
+}
 function handleDrop(event) {
   event.preventDefault();
   const slotIndex = event.target.getAttribute("data-slot");
@@ -71,12 +65,11 @@ function handleDrop(event) {
   if (!battleLineup[slotIndex] && coins >= selectedAnimal.cost) {
     battleLineup[slotIndex] = selectedAnimal;
     event.target.innerHTML = `<img src="${selectedAnimal.img}" alt="${selectedAnimal.name}">`;
-
-    // Deduct coins based on animal's cost
     coins -= selectedAnimal.cost;
-    document.getElementById("coins").textContent = `Coins: ${coins}`;
+    updateCoinsDisplay();
 
     renderTeams();
+    saveBattleLineup(); 
   } else {
     alert("Not enough coins or slot is already filled!");
   }
@@ -86,15 +79,17 @@ function handleDragOver(event) {
 }
 function renderTeams() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+  const teamOffsetX = 100; 
+  const enemyOffsetX = canvas.width - 550; 
   battleLineup.forEach((animal, index) => {
     if (animal) {
       const img = new Image();
       img.src = animal.img;
-      img.onload = () => ctx.drawImage(img, index * 100 + 20, 20, 60, 60);
+      img.onload = () =>
+        ctx.drawImage(img, teamOffsetX + index * 100, 20, 60, 60); 
       ctx.fillText(
         `A:${animal.attack}/H:${animal.health}`,
-        index * 100 + 20,
+        teamOffsetX + index * 100,
         100
       );
     }
@@ -104,10 +99,10 @@ function renderTeams() {
       const img = new Image();
       img.src = animal.img;
       img.onload = () =>
-        ctx.drawImage(img, canvas.width - (index * 100 + 80), 20, 60, 60);
+        ctx.drawImage(img, enemyOffsetX + index * 100, 20, 60, 60); 
       ctx.fillText(
         `A:${animal.attack}/H:${animal.health}`,
-        canvas.width - (index * 100 + 80),
+        enemyOffsetX + index * 100,
         100
       );
     }
@@ -128,10 +123,24 @@ document
     simulateBattle();
   });
 document.addEventListener("DOMContentLoaded", function () {
-  rollShopAnimals();
-  renderTeams();
-  document.getElementById("coins").textContent = `Coins: ${coins}`;
+  if (localStorage.getItem("randomAnimals")) {
+    randomAnimals = JSON.parse(localStorage.getItem("randomAnimals"));
+    renderRandomAnimals();
+  } else {
+    rollShopAnimals();
+  }
+
+  if (localStorage.getItem("battleLineup")) {
+    battleLineup = JSON.parse(localStorage.getItem("battleLineup"));
+    renderTeams();
+  }
+
+  updateCoinsDisplay();
 });
+function updateCoinsDisplay() {
+  localStorage.setItem("gamecoins", coins); // Save to localStorage
+  document.getElementById("coins").textContent = `Coins: ${coins}`;
+}
 function generateEnemyTeam() {
   const totalTeamCost = calculateTeamCost(battleLineup);
   enemyLineup = [];
