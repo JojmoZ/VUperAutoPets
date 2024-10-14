@@ -71,34 +71,41 @@ function dragStart(event) {
   const index = event.target.getAttribute("data-index");
   event.dataTransfer.setData("text/plain", index);
 }
+
 function saveBattleLineup() {
   localStorage.setItem("battleLineup", JSON.stringify(battleLineup));
 }
 function handleDrop(event) {
   event.preventDefault();
   const slotIndex = event.target.getAttribute("data-slot");
+
+  // Reverse the slot index to place animals in the correct slot in the lineup
+  const reversedSlotIndex = maxSlots - 1 - slotIndex;
+
   const animalIndex = event.dataTransfer.getData("text/plain");
   const selectedAnimal = randomAnimals[animalIndex];
 
-  if (!battleLineup[slotIndex] && coins >= selectedAnimal.cost) {
-    battleLineup[slotIndex] = selectedAnimal;
-    event.target.innerHTML = `<img src="${selectedAnimal.img}" alt="${selectedAnimal.name}">`;
+  if (!battleLineup[reversedSlotIndex] && coins >= selectedAnimal.cost) {
+    battleLineup[reversedSlotIndex] = selectedAnimal;
+    // Render the animal on top of the stone tablet
+    event.target.innerHTML = `<img src="${selectedAnimal.img}" alt="${selectedAnimal.name}" style="position: absolute; width: 80px; height: 80px; top: 10px; left: 10px;">`;
     coins -= selectedAnimal.cost;
     updateCoinsDisplay();
-
-    renderTeams();
     saveBattleLineup();
   } else {
     alert("Not enough coins or slot is already filled!");
   }
 }
+
 function handleDragOver(event) {
   event.preventDefault();
 }
 function renderTeams() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  const teamOffsetX = 100;
-  const enemyOffsetX = canvas.width - 550;
+  const teamOffsetX = 100; // Positioning of player's team
+  const enemyOffsetX = canvas.width - 550; // Positioning of enemy's team
+
+  // Render player's team (right to left)
   battleLineup.forEach((animal, index) => {
     if (animal) {
       const img = new Image();
@@ -106,7 +113,11 @@ function renderTeams() {
       img.onload = () =>
         ctx.drawImage(
           img,
-          teamOffsetX + (maxSlots - 1 - index) * 100,20,60,60);
+          teamOffsetX + (maxSlots - 1 - index) * 100, // Flip to render from right to left
+          20,
+          60,
+          60
+        );
       ctx.fillText(
         `A:${animal.attack}/H:${animal.health}`,
         teamOffsetX + (maxSlots - 1 - index) * 100,
@@ -114,6 +125,8 @@ function renderTeams() {
       );
     }
   });
+
+  // Render enemy's team (left to right)
   enemyLineup.forEach((animal, index) => {
     if (animal) {
       const img = new Image();
@@ -125,6 +138,18 @@ function renderTeams() {
         enemyOffsetX + index * 100,
         100
       );
+    }
+  });
+}
+
+function renderBattleSlots() {
+  const battleSlots = document.querySelectorAll(".battle-slot");
+  battleSlots.forEach((slot, index) => {
+    const animal = battleLineup[maxSlots -1 -index];
+    if (animal) {
+      slot.innerHTML = `<img src="${animal.img}" alt="${animal.name}" style="width: 80px; height: 80px;">`;
+    } else {
+      slot.innerHTML = ""; // Clear if no animal is in this slot
     }
   });
 }
@@ -141,8 +166,36 @@ document
   .addEventListener("click", function () {
     generateEnemyTeam();
     renderTeams();
+    hideNonBattleElements(); // Hide other elements
+    showCanvas(); // Show the canvas for the battle
     simulateBattle();
   });
+
+// Function to hide elements when the battle starts
+function hideNonBattleElements() {
+  document.getElementById("battleSlotsContainer").classList.add("hidden"); // Hide slots
+  document.getElementById("controls").classList.add("hidden"); // Hide refresh and start buttons
+  document.getElementById("backArrow").classList.add("hidden"); // Hide back button
+}
+
+// Function to show the canvas
+function showCanvas() {
+  document.getElementById("battleCanvas").classList.remove("hidden"); // Show canvas
+}
+
+// Function to hide the canvas
+function hideCanvas() {
+  document.getElementById("battleCanvas").classList.add("hidden"); // Hide canvas
+}
+
+// Function to show elements when the battle finishes
+function showNonBattleElements() {
+  document.getElementById("battleSlotsContainer").classList.remove("hidden"); // Show slots
+  document.getElementById("controls").classList.remove("hidden"); // Show refresh and start buttons
+  document.getElementById("backArrow").classList.remove("hidden"); // Show back button
+  hideCanvas(); // Hide the canvas after the battle
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   if (localStorage.getItem("randomAnimals")) {
     randomAnimals = JSON.parse(localStorage.getItem("randomAnimals"));
@@ -154,10 +207,12 @@ document.addEventListener("DOMContentLoaded", function () {
   if (localStorage.getItem("battleLineup")) {
     battleLineup = JSON.parse(localStorage.getItem("battleLineup"));
     renderTeams();
+    renderBattleSlots(); // Auto-fill the battle slots with user's animals
   }
 
   updateCoinsDisplay();
 });
+
 function updateCoinsDisplay() {
   localStorage.setItem("gamecoins", coins);
   document.getElementById("coins").textContent = `Coins: ${coins}`;
@@ -181,7 +236,7 @@ function calculateTeamCost(team) {
   );
 }
 function simulateBattle() {
-  console.clear(); 
+  console.clear();
   let turnCount = 1;
   const maxTurns = 10;
 
@@ -206,6 +261,7 @@ function simulateBattle() {
       }
 
       renderTeams();
+      showNonBattleElements(); // Show elements when the game ends
       return;
     }
 
@@ -251,14 +307,16 @@ function simulateBattle() {
       } else {
         console.log("You lose!");
       }
+      showNonBattleElements(); // Show elements after game ends
       return;
     }
     if (!enemyLineup.some((animal) => animal)) {
       console.log("You win!");
+      showNonBattleElements(); // Show elements after game ends
       return;
     }
     turnCount++;
-    setTimeout(playTurn, 1000);
+    setTimeout(playTurn, 2500);
   }
   playTurn();
 }

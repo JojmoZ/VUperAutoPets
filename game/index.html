@@ -7,29 +7,25 @@
 </head>
 
 <body>
+  <a href="/home/homepage.html" id="backArrow" class="back-arrow">&#8592; Back</a>
   <h1>VUper Auto Pets</h1>
   <p id="coins"></p>
   <div id="shop-container" class="shop"></div>
-  <div class="battle-slots">
+  <div id="battleSlotsContainer" class="battle-slots">
     <div class="battle-slot" data-slot="0"></div>
     <div class="battle-slot" data-slot="1"></div>
     <div class="battle-slot" data-slot="2"></div>
     <div class="battle-slot" data-slot="3"></div>
     <div class="battle-slot" data-slot="4"></div>
   </div>
-
-<canvas id="battleCanvas" width="1300" height="200"></canvas>
-
-
-
-  <div class="selection-area">
+  <canvas id="battleCanvas" width="1300" height="200" class="hidden"></canvas>
+  <div id="controls" class="selection-area">
     <div id="random-animals" class="random-animals"></div>
     <button id="refreshButton">Refresh</button>
     <button id="startBattleButton">Start</button>
   </div>
-
-  <div class="terminal" id="terminal" style="display: none;"></div>
 </body>
+
 
 <script src="game.js"></script>
 
