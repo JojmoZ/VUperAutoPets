@@ -138,7 +138,7 @@ document.addEventListener("DOMContentLoaded", function () {
   updateCoinsDisplay();
 });
 function updateCoinsDisplay() {
-  localStorage.setItem("gamecoins", coins); // Save to localStorage
+  localStorage.setItem("gamecoins", coins); 
   document.getElementById("coins").textContent = `Coins: ${coins}`;
 }
 function generateEnemyTeam() {
