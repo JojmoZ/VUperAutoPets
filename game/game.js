@@ -78,16 +78,11 @@ function saveBattleLineup() {
 function handleDrop(event) {
   event.preventDefault();
   const slotIndex = event.target.getAttribute("data-slot");
-
-  // Reverse the slot index to place animals in the correct slot in the lineup
   const reversedSlotIndex = maxSlots - 1 - slotIndex;
-
   const animalIndex = event.dataTransfer.getData("text/plain");
   const selectedAnimal = randomAnimals[animalIndex];
-
   if (!battleLineup[reversedSlotIndex] && coins >= selectedAnimal.cost) {
     battleLineup[reversedSlotIndex] = selectedAnimal;
-    // Render the animal on top of the stone tablet
     event.target.innerHTML = `<img src="${selectedAnimal.img}" alt="${selectedAnimal.name}" style="position: absolute; width: 80px; height: 80px; top: 10px; left: 10px;">`;
     coins -= selectedAnimal.cost;
     updateCoinsDisplay();
@@ -102,8 +97,8 @@ function handleDragOver(event) {
 }
 function renderTeams() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  const teamOffsetX = 100; // Positioning of player's team
-  const enemyOffsetX = canvas.width - 550; // Positioning of enemy's team
+  const teamOffsetX = 100; 
+  const enemyOffsetX = canvas.width - 550; 
 
   // Render player's team (right to left)
   battleLineup.forEach((animal, index) => {
@@ -113,7 +108,7 @@ function renderTeams() {
       img.onload = () =>
         ctx.drawImage(
           img,
-          teamOffsetX + (maxSlots - 1 - index) * 100, // Flip to render from right to left
+          teamOffsetX + (maxSlots - 1 - index) * 100, 
           20,
           60,
           60
@@ -125,8 +120,6 @@ function renderTeams() {
       );
     }
   });
-
-  // Render enemy's team (left to right)
   enemyLineup.forEach((animal, index) => {
     if (animal) {
       const img = new Image();
@@ -149,7 +142,7 @@ function renderBattleSlots() {
     if (animal) {
       slot.innerHTML = `<img src="${animal.img}" alt="${animal.name}" style="width: 80px; height: 80px;">`;
     } else {
-      slot.innerHTML = ""; // Clear if no animal is in this slot
+      slot.innerHTML = ""; 
     }
   });
 }
@@ -166,34 +159,26 @@ document
   .addEventListener("click", function () {
     generateEnemyTeam();
     renderTeams();
-    hideNonBattleElements(); // Hide other elements
-    showCanvas(); // Show the canvas for the battle
+    hideNonBattleElements();
+    showCanvas(); 
     simulateBattle();
   });
-
-// Function to hide elements when the battle starts
 function hideNonBattleElements() {
-  document.getElementById("battleSlotsContainer").classList.add("hidden"); // Hide slots
-  document.getElementById("controls").classList.add("hidden"); // Hide refresh and start buttons
-  document.getElementById("backArrow").classList.add("hidden"); // Hide back button
+  document.getElementById("battleSlotsContainer").classList.add("hidden"); 
+  document.getElementById("controls").classList.add("hidden"); 
+  document.getElementById("backArrow").classList.add("hidden");
 }
-
-// Function to show the canvas
 function showCanvas() {
-  document.getElementById("battleCanvas").classList.remove("hidden"); // Show canvas
+  document.getElementById("battleCanvas").classList.remove("hidden"); 
 }
-
-// Function to hide the canvas
 function hideCanvas() {
-  document.getElementById("battleCanvas").classList.add("hidden"); // Hide canvas
+  document.getElementById("battleCanvas").classList.add("hidden"); 
 }
-
-// Function to show elements when the battle finishes
 function showNonBattleElements() {
-  document.getElementById("battleSlotsContainer").classList.remove("hidden"); // Show slots
-  document.getElementById("controls").classList.remove("hidden"); // Show refresh and start buttons
-  document.getElementById("backArrow").classList.remove("hidden"); // Show back button
-  hideCanvas(); // Hide the canvas after the battle
+  document.getElementById("battleSlotsContainer").classList.remove("hidden"); 
+  document.getElementById("controls").classList.remove("hidden"); 
+  document.getElementById("backArrow").classList.remove("hidden"); 
+  hideCanvas(); 
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -207,7 +192,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (localStorage.getItem("battleLineup")) {
     battleLineup = JSON.parse(localStorage.getItem("battleLineup"));
     renderTeams();
-    renderBattleSlots(); // Auto-fill the battle slots with user's animals
+    renderBattleSlots(); 
   }
 
   updateCoinsDisplay();
@@ -236,50 +221,34 @@ function calculateTeamCost(team) {
   );
 }
 function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
-  const playerStartX = 100 + (maxSlots - 1) * 100; // Player's initial position
-  const enemyStartX = canvas.width - 550; // Enemy's initial position
-  const centerX = canvas.width / 2 - 30; // Center of the canvas
-  const duration = 1000; // Total animation time in milliseconds
-  const frameRate = 60; // Frames per second
+  const playerStartX = 100 + (maxSlots - 1) * 100;
+  const enemyStartX = canvas.width - 550; 
+  const centerX = canvas.width / 2 - 30; 
+  const duration = 1000; 
+  const frameRate = 60; 
   const totalFrames = (duration / 1000) * frameRate;
   let currentFrame = 0;
-
-  // Preload the images for both animals
   const playerImg = new Image();
   playerImg.src = playerAnimal.img;
-
   const enemyImg = new Image();
   enemyImg.src = enemyAnimal.img;
-
-  // Ensure the images are loaded before starting the animation
   playerImg.onload = () => {
     enemyImg.onload = () => {
       requestAnimationFrame(animate);
     };
   };
-
   function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
-
-    // Re-render all animals except the ones in battle
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     renderFullTeam();
-
-    // Calculate eased progress based on current frame
     const progress = easeInOutQuad(currentFrame / totalFrames);
-
-    // Animate the first animals of both teams towards each other
     const playerX = playerStartX - (playerStartX - centerX) * progress;
     const enemyX = enemyStartX + (centerX - enemyStartX) * progress;
-
-    // Draw player's charging animal
     ctx.drawImage(playerImg, playerX, 20, 60, 60);
     ctx.fillText(
       `A:${playerAnimal.attack}/H:${playerAnimal.health}`,
       playerX,
       100
     );
-
-    // Draw enemy's charging animal
     ctx.drawImage(enemyImg, enemyX, 20, 60, 60);
     ctx.fillText(
       `A:${enemyAnimal.attack}/H:${enemyAnimal.health}`,
@@ -292,25 +261,18 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
     if (currentFrame <= totalFrames) {
       requestAnimationFrame(animate);
     } else {
-      // Add a slight delay after the headbutt to make the transition smooth
-      setTimeout(onComplete, 500); // 500ms delay before the next turn
+      setTimeout(onComplete, 500); 
     }
   }
 }
-
-
-// Renders all animals in the player's and enemy's lineup, except the first ones
 function renderFullTeam() {
-  const teamOffsetX = 100; // Positioning of player's team
-  const enemyOffsetX = canvas.width - 550; // Positioning of enemy's team
-
-  // Render player's team (right to left), except for the first animal
+  const teamOffsetX = 100; 
+  const enemyOffsetX = canvas.width - 550; 
   battleLineup.forEach((animal, index) => {
     if (animal && index !== 0) {
-      // Don't render the first one in this case
       ctx.drawImage(
         getAnimalImage(animal.img),
-        teamOffsetX + (maxSlots - 1 - index) * 100, // Flip to render from right to left
+        teamOffsetX + (maxSlots - 1 - index) * 100, 
         20,
         60,
         60
@@ -322,11 +284,8 @@ function renderFullTeam() {
       );
     }
   });
-
-  // Render enemy's team (left to right), except for the first animal
   enemyLineup.forEach((animal, index) => {
     if (animal && index !== 0) {
-      // Don't render the first one in this case
       ctx.drawImage(
         getAnimalImage(animal.img),
         enemyOffsetX + index * 100,
@@ -345,8 +304,6 @@ function renderFullTeam() {
 function easeInOutQuad(t) {
   return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
 }
-
-// Helper function to return a preloaded image object
 function getAnimalImage(src) {
   const img = new Image();
   img.src = src;
@@ -363,7 +320,7 @@ function simulateBattle() {
 
   function pauseBeforeFirstTurn() {
     renderTeams();
-    setTimeout(playTurn, 1500); // Pause for 1.5 seconds before starting the battle
+    setTimeout(playTurn, 1500); 
   }
 
   function playTurn() {
@@ -372,7 +329,6 @@ function simulateBattle() {
       !battleLineup.some((animal) => animal) ||
       !enemyLineup.some((animal) => animal)
     ) {
-      // Check the outcome of the battle and return
       const playerSurvivors = battleLineup.filter(
         (animal) => animal !== null
       ).length;
@@ -389,7 +345,7 @@ function simulateBattle() {
       }
 
       renderTeams();
-      showNonBattleElements(); // Show elements when the game ends
+      showNonBattleElements(); 
       return;
     }
 
@@ -405,9 +361,7 @@ function simulateBattle() {
       );
       const enemyAnimal = enemyLineup[enemyAnimalIndex];
       if (enemyAnimal) {
-        // Animate the headbutt
         animateHeadbutt(playerAnimal, enemyAnimal, () => {
-          // Resolve the damage and health after the animation
           enemyAnimal.health -= playerAnimal.attack;
           playerAnimal.health -= enemyAnimal.attack;
 
@@ -416,26 +370,26 @@ function simulateBattle() {
             console.log(`User's ${playerAnimal.name} died`);
             enemyLineup[enemyAnimalIndex] = null;
             battleLineup[playerAnimalIndex] = null;
-            shiftAnimalsInLineup(battleLineup); // Shift player's team to fill the gap
-            shiftAnimalsInLineup(enemyLineup); // Shift enemy team to fill the gap
-            renderTeams(); // Update the visuals after shifting
+            shiftAnimalsInLineup(battleLineup); 
+            shiftAnimalsInLineup(enemyLineup); 
+            renderTeams(); 
           } else {
             if (enemyAnimal.health <= 0) {
               console.log(`Enemy's ${enemyAnimal.name} died`);
               enemyLineup[enemyAnimalIndex] = null;
-              shiftAnimalsInLineup(enemyLineup); // Shift enemy team
-              renderTeams(); // Update the visuals after shifting
+              shiftAnimalsInLineup(enemyLineup); 
+              renderTeams(); 
             }
             if (playerAnimal.health <= 0) {
               console.log(`User's ${playerAnimal.name} died`);
               battleLineup[playerAnimalIndex] = null;
-              shiftAnimalsInLineup(battleLineup); // Shift player's team
-              renderTeams(); // Update the visuals after shifting
+              shiftAnimalsInLineup(battleLineup); 
+              renderTeams(); 
             }
           }
 
           turnCount++;
-          setTimeout(playTurn, 2500); // Delay between turns
+          setTimeout(playTurn, 2500); 
         });
       }
     }
@@ -443,17 +397,13 @@ function simulateBattle() {
 
   pauseBeforeFirstTurn();
 }
-
-
-// Function to shift the lineup when an animal dies
 function shiftAnimalsInLineup(lineup) {
-  // Remove any null values and shift animals left
   let shiftedLineup = lineup.filter((animal) => animal !== null);
   while (shiftedLineup.length < maxSlots) {
-    shiftedLineup.push(null); // Fill remaining slots with null
+    shiftedLineup.push(null); 
   }
   for (let i = 0; i < maxSlots; i++) {
-    lineup[i] = shiftedLineup[i]; // Update the original lineup
+    lineup[i] = shiftedLineup[i]; 
   }
 }
 
