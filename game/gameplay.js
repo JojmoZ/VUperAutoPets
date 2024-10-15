@@ -1,258 +1,422 @@
 const canvas = document.getElementById("battleCanvas");
 const ctx = canvas.getContext("2d");
-const terminal = document.getElementById("terminal");
-
-let coins = 10;
+let enemyLineup = [null, null, null, null, null];
+let battleLineup = JSON.parse(localStorage.getItem("battleLineup")) || [
+  null,
+  null,
+  null,
+  null,
+  null,
+];
+let randomAnimals = JSON.parse(localStorage.getItem("randomAnimals")) || [];
+let coins = parseInt(localStorage.getItem("gamecoins")) || 0;
+document.getElementById("coins").textContent = `Coins: ${coins}`;
+const maxShopAnimals = 3;
+const maxSlots = 5;
 let shopAnimals = [
+  { name: "Ant", attack: 2, health: 1, cost: 2, img: "../assets/Ant.webp" },
+  { name: "Fish", attack: 2, health: 3, cost: 5, img: "../assets/Fish.webp" },
+  { name: "Lion", attack: 3, health: 4, cost: 7, img: "../assets/Lion.webp" },
+  { name: "Pig", attack: 3, health: 1, cost: 3, img: "../assets/Pig.webp" },
   {
-    name: "Ant",
-    attack: 2,
-    health: 1,
-    cost: 2,
-    star: 1,
-    ability: "Faint: Give +2/+1 to a random ally",
-    img: "../assets/Ant.webp",
+    name: "Turtle",
+    attack: 1,
+    health: 2,
+    cost: 4,
+    img: "../assets/Turtle.webp",
   },
   {
-    name: "Fish",
-    attack: 2,
-    health: 3,
+    name: "Elephant",
+    attack: 8,
+    health: 7,
     cost: 5,
-    star: 2,
-    ability: "Level-Up: Give all friends +1/+1",
-    img: "../assets/Fish.webp",
-  },
-  {
-    name: "Lion",
-    attack: 3,
-    health: 4,
-    cost: 7,
-    star: 3,
-    ability: "Start of battle: Gain +3/+3 if you are the highest tier",
-    img: "../assets/Lion.webp",
+    img: "../assets/Elephant.webp",
   },
 ];
+function saveRandomAnimals() {
+  localStorage.setItem("randomAnimals", JSON.stringify(randomAnimals));
+}
+function rollShopAnimals() {
+  if (coins >= 1) {
+    coins -= 1;
+    updateCoinsDisplay();
 
-let team = [null, null, null];
-let enemyTeam = [];
-let selectedTeamSlot = null;
+    const ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
+    const shuffledAnimals = ownedAnimals
+      ? ownedAnimals.sort(() => Math.random() - 0.5)
+      : shopAnimals.sort(() => Math.random() - 0.5);
+    randomAnimals = shuffledAnimals.slice(0, maxShopAnimals);
 
+    renderRandomAnimals();
+    saveRandomAnimals();
+  } else {
+    alert("Not enough coins to refresh!");
+  }
+}
+function renderRandomAnimals() {
+  const randomAnimalsContainer = document.getElementById("random-animals");
+  randomAnimalsContainer.innerHTML = "";
+  randomAnimals.forEach((animal, index) => {
+    const animalDiv = document.createElement("div");
+    animalDiv.classList.add("animal");
+    animalDiv.setAttribute("draggable", true);
+    animalDiv.setAttribute("data-index", index);
+    animalDiv.innerHTML = `<img src="${animal.img}" alt="${animal.name}">
+                           <p>A:${animal.attack} / H:${animal.health}</p>`;
+    randomAnimalsContainer.appendChild(animalDiv);
+    animalDiv.addEventListener("dragstart", dragStart);
+  });
+}
+function saveBattleLineup() {
+  localStorage.setItem("battleLineup", JSON.stringify(battleLineup));
+}
+function dragStart(event) {
+  const index = event.target.getAttribute("data-index");
+  event.dataTransfer.setData("text/plain", index);
+}
+
+function handleDrop(event) {
+  event.preventDefault();
+  const slotIndex = event.target.getAttribute("data-slot");
+  const reversedSlotIndex = maxSlots - 1 - slotIndex;
+  const animalIndex = event.dataTransfer.getData("text/plain");
+  const selectedAnimal = randomAnimals[animalIndex];
+  if (!battleLineup[reversedSlotIndex] && coins >= selectedAnimal.cost) {
+    battleLineup[reversedSlotIndex] = selectedAnimal;
+    event.target.innerHTML = `<img src="${selectedAnimal.img}" alt="${selectedAnimal.name}" style="position: absolute; width: 80px; height: 80px; top: 10px; left: 10px;">`;
+    coins -= selectedAnimal.cost;
+    updateCoinsDisplay();
+    saveBattleLineup();
+  } else {
+    alert("Not enough coins or slot is already filled!");
+  }
+}
+function handleDragOver(event) {
+  event.preventDefault();
+}
+function renderBattleSlots() {
+  const battleSlots = document.querySelectorAll(".battle-slot");
+  battleSlots.forEach((slot, index) => {
+    const animal = battleLineup[maxSlots - 1 - index];
+    if (animal) {
+      slot.innerHTML = `<img src="${animal.img}" alt="${animal.name}" style="width: 80px; height: 80px;">`;
+    } else {
+      slot.innerHTML = "";
+    }
+  });
+}
+function renderTeams() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const teamOffsetX = 100;
+  const enemyOffsetX = canvas.width - 550;
+  battleLineup.forEach((animal, index) => {
+    if (animal) {
+      const img = new Image();
+      img.src = animal.img;
+      img.onload = () =>
+        ctx.drawImage(
+          img,
+          teamOffsetX + (maxSlots - 1 - index) * 100,
+          20,
+          60,
+          60
+        );
+      ctx.fillText(
+        `A:${animal.attack}/H:${animal.health}`,
+        teamOffsetX + (maxSlots - 1 - index) * 100,
+        100
+      );
+    }
+  });
+  enemyLineup.forEach((animal, index) => {
+    if (animal) {
+      const img = new Image();
+      img.src = animal.img;
+      img.onload = () =>
+        ctx.drawImage(img, enemyOffsetX + index * 100, 20, 60, 60);
+      ctx.fillText(
+        `A:${animal.attack}/H:${animal.health}`,
+        enemyOffsetX + index * 100,
+        100
+      );
+    }
+  });
+}
+
+document.querySelectorAll(".battle-slot").forEach((slot) => {
+  slot.addEventListener("drop", handleDrop);
+  slot.addEventListener("dragover", handleDragOver);
+});
+document.getElementById("refreshButton").addEventListener("click", function () {
+  rollShopAnimals();
+});
+document
+  .getElementById("startBattleButton")
+  .addEventListener("click", function () {
+    generateEnemyTeam();
+    renderTeams();
+    hideNonBattleElements();
+    showCanvas();
+    simulateBattle();
+  });
+function hideNonBattleElements() {
+  document.getElementById("battleSlotsContainer").classList.add("hidden");
+  document.getElementById("controls").classList.add("hidden");
+  document.getElementById("backArrow").classList.add("hidden");
+}
+function showCanvas() {
+  document.getElementById("battleCanvas").classList.remove("hidden");
+}
+function hideCanvas() {
+  document.getElementById("battleCanvas").classList.add("hidden");
+}
+function showNonBattleElements() {
+  document.getElementById("battleSlotsContainer").classList.remove("hidden");
+  document.getElementById("controls").classList.remove("hidden");
+  document.getElementById("backArrow").classList.remove("hidden");
+  hideCanvas();
+}
+document.addEventListener("DOMContentLoaded", function () {
+  if (localStorage.getItem("randomAnimals")) {
+    randomAnimals = JSON.parse(localStorage.getItem("randomAnimals"));
+    renderRandomAnimals();
+  } else {
+    rollShopAnimals();
+  }
+
+  if (localStorage.getItem("battleLineup")) {
+    battleLineup = JSON.parse(localStorage.getItem("battleLineup"));
+    renderTeams();
+    renderBattleSlots();
+  }
+
+  updateCoinsDisplay();
+});
 function updateCoinsDisplay() {
+  localStorage.setItem("gamecoins", coins);
   document.getElementById("coins").textContent = `Coins: ${coins}`;
 }
-
-// Function to handle buying an animal from the shop
-function buyAnimal(shopIndex) {
-  const animal = shopAnimals[shopIndex];
-  // Find the first available slot
-  const availableSlotIndex = team.findIndex((slot) => slot === null);
-
-  if (availableSlotIndex !== -1 && coins >= animal.cost) {
-    team[availableSlotIndex] = { ...animal };
-    coins -= animal.cost;
-    updateCoinsDisplay();
-    render();
-  } else if (availableSlotIndex === -1) {
-    alert("Your team is full!");
-  }
-}
-
-// Function to handle selecting a team slot
-function selectTeamSlot(slotIndex) {
-  selectedTeamSlot = slotIndex;
-}
 function generateEnemyTeam() {
-  let enemyCoins = 10;
-  enemyTeam = [null, null, null];
+  const totalTeamCost = calculateTeamCost(battleLineup);
+  enemyLineup = [];
 
-  while (enemyCoins > 0 && enemyTeam.filter((a) => a).length < 3) {
+  while (enemyLineup.length < maxSlots && totalTeamCost > 0) {
     const randomAnimal =
       shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
-    if (enemyCoins >= randomAnimal.cost) {
-      for (let i = 0; i < enemyTeam.length; i++) {
-        if (!enemyTeam[i]) {
-          enemyTeam[i] = { ...randomAnimal };
-          enemyCoins -= randomAnimal.cost;
-          break;
-        }
-      }
+    if (totalTeamCost >= randomAnimal.cost) {
+      enemyLineup.push(randomAnimal);
     }
   }
 }
+function calculateTeamCost(team) {
+  return team.reduce(
+    (total, animal) => (animal ? total + animal.cost : total),
+    0
+  );
+}
+function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
+  const playerStartX = 100 + (maxSlots - 1) * 100;
+  const enemyStartX = canvas.width - 550;
+  const centerX = canvas.width / 2 - 60;
+  const duration = 1000;
+  const frameRate = 60;
+  const totalFrames = (duration / 1000) * frameRate;
+  let currentFrame = 0;
+  const playerImg = new Image();
+  playerImg.src = playerAnimal.img;
+  const enemyImg = new Image();
+  enemyImg.src = enemyAnimal.img;
+  const bandageImg = new Image();
+  bandageImg.src = "../assets/hurt.png";
+  playerImg.onload = () => {
+    enemyImg.onload = () => {
+      requestAnimationFrame(animate);
+    };
+  };
 
-function render() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    renderFullTeam();
+    const progress = easeInOutQuad(currentFrame / totalFrames);
+    const playerX = playerStartX - (playerStartX - centerX) * progress;
+    const enemyX = enemyStartX + (centerX + 60 - enemyStartX) * progress;
+    ctx.drawImage(playerImg, playerX, 20, 60, 60);
+    ctx.fillText(
+      `A:${playerAnimal.attack}/H:${playerAnimal.health}`,
+      playerX,
+      100
+    );
+    ctx.drawImage(enemyImg, enemyX, 20, 60, 60);
+    ctx.fillText(
+      `A:${enemyAnimal.attack}/H:${enemyAnimal.health}`,
+      enemyX,
+      100
+    );
+    if (progress > 0.8) {
+      const bandageSize = 60;
+      ctx.drawImage(bandageImg, playerX + 10, 20, bandageSize, bandageSize);
+      ctx.drawImage(bandageImg, enemyX + 10, 20, bandageSize, bandageSize);
+    }
+    if (currentFrame >= totalFrames) {
+      showDamage(playerX, playerAnimal.attack, enemyX, enemyAnimal.attack);
+    }
+    currentFrame++;
+    if (currentFrame <= totalFrames) {
+      requestAnimationFrame(animate);
+    } else {
+      setTimeout(onComplete, 500);
+    }
+  }
+}
+function showDamage(playerX, playerDamage, enemyX, enemyDamage) {
+  let alpha = 1.0;
+  const fadeDuration = 1000;
+  function drawDamage() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    renderFullTeam();
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.font = "30px Arial";
+    ctx.fillStyle = "red";
+    ctx.fillText(`-${playerDamage}`, playerX + 20, 50);
+    ctx.fillText(`-${enemyDamage}`, enemyX + 20, 50);
 
-  // Render player's team on the left
-  team.forEach((animal, index) => {
-    if (animal) {
-      let img = new Image();
-      img.src = animal.img;
-      img.onload = () => {
-        ctx.drawImage(img, index * 100 + 20, 20, 60, 60);
-      };
-      ctx.fillStyle = "black";
+    ctx.restore();
+    alpha -= 0.05;
+    if (alpha > 0) {
+      requestAnimationFrame(drawDamage);
+    } else {
+      ctx.globalAlpha = 1.0;
+    }
+  }
+  drawDamage();
+}
+function renderFullTeam() {
+  const teamOffsetX = 100;
+  const enemyOffsetX = canvas.width - 550;
+  battleLineup.forEach((animal, index) => {
+    if (animal && index !== 0) {
+      ctx.drawImage(
+        getAnimalImage(animal.img),
+        teamOffsetX + (maxSlots - 1 - index) * 100,
+        20,
+        60,
+        60
+      );
       ctx.fillText(
         `A:${animal.attack}/H:${animal.health}`,
-        index * 100 + 20,
+        teamOffsetX + (maxSlots - 1 - index) * 100,
         100
       );
     }
   });
-
-  // Render enemy's team on the right
-  enemyTeam.forEach((animal, index) => {
-    if (animal) {
-      let img = new Image();
-      img.src = animal.img;
-      img.onload = () => {
-        ctx.drawImage(img, canvas.width - (index * 100 + 80), 20, 60, 60);
-      };
-      ctx.fillStyle = "red";
+  enemyLineup.forEach((animal, index) => {
+    if (animal && index !== 0) {
+      ctx.drawImage(
+        getAnimalImage(animal.img),
+        enemyOffsetX + index * 100,
+        20,
+        60,
+        60
+      );
       ctx.fillText(
         `A:${animal.attack}/H:${animal.health}`,
-        canvas.width - (index * 100 + 80),
+        enemyOffsetX + index * 100,
         100
       );
     }
   });
 }
-
-// Function to log messages to the terminal
-function logToTerminal(message) {
-  const paragraph = document.createElement("p");
-  paragraph.textContent = message;
-  terminal.appendChild(paragraph);
-  terminal.scrollTop = terminal.scrollHeight; // Scroll to bottom
+function easeInOutQuad(t) {
+  return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
 }
-
-function startBattle() {
-  if (team.some((animal) => animal)) {
-    generateEnemyTeam();
-    render(); // Ensure rendering occurs before battle simulation
-    setTimeout(simulateBattle, 100); // Delay battle to ensure rendering completes
-  } else {
-    alert("Please select at least one animal for your team!");
-  }
+function getAnimalImage(src) {
+  const img = new Image();
+  img.src = src;
+  return img;
 }
-
 function simulateBattle() {
-  terminal.innerHTML = ""; // Clear terminal for new battle log
+  console.clear();
   let turnCount = 1;
   const maxTurns = 10;
-
+  function pauseBeforeFirstTurn() {
+    renderTeams();
+    setTimeout(playTurn, 1500);
+  }
   function playTurn() {
     if (
       turnCount > maxTurns ||
-      !team.some((animal) => animal) ||
-      !enemyTeam.some((animal) => animal)
+      !battleLineup.some((animal) => animal) ||
+      !enemyLineup.some((animal) => animal)
     ) {
-      // Determine the winner after the loop ends
-      const playerSurvivors = team.filter((animal) => animal !== null).length;
-      const enemySurvivors = enemyTeam.filter(
+      const playerSurvivors = battleLineup.filter(
+        (animal) => animal !== null
+      ).length;
+      const enemySurvivors = enemyLineup.filter(
         (animal) => animal !== null
       ).length;
 
       if (playerSurvivors > enemySurvivors) {
-        logToTerminal("User wins!");
+        console.log("User wins!");
       } else if (playerSurvivors < enemySurvivors) {
-        logToTerminal("Enemy wins!");
+        console.log("Enemy wins!");
       } else {
-        logToTerminal("It's a draw!");
+        console.log("It's a draw!");
       }
-
-      render(); // Final render to show the final state
+      renderTeams();
+      showNonBattleElements();
       return;
     }
-
-    logToTerminal(`Turn ${turnCount}`);
-
-    // Start with the first alive animal in the player's team
-    const playerAnimalIndex = team.findIndex((animal) => animal !== null);
-    const playerAnimal = team[playerAnimalIndex];
-
+    console.log(`Turn ${turnCount}`);
+    const playerAnimalIndex = battleLineup.findIndex(
+      (animal) => animal !== null
+    );
+    const playerAnimal = battleLineup[playerAnimalIndex];
     if (playerAnimal) {
-      // Find the first alive animal in the enemy's team
-      const enemyAnimalIndex = enemyTeam.findIndex((animal) => animal !== null);
-      const enemyAnimal = enemyTeam[enemyAnimalIndex];
-
+      const enemyAnimalIndex = enemyLineup.findIndex(
+        (animal) => animal !== null
+      );
+      const enemyAnimal = enemyLineup[enemyAnimalIndex];
       if (enemyAnimal) {
-        logToTerminal(`User's ${playerAnimal.name} attacks`);
-        logToTerminal(`Enemy's ${enemyAnimal.name} attacks`);
-
-        // Simultaneous attack
-        enemyAnimal.health -= playerAnimal.attack;
-        playerAnimal.health -= enemyAnimal.attack;
-
-        // Check if both animals die in the same turn
-        if (enemyAnimal.health <= 0 && playerAnimal.health <= 0) {
-          logToTerminal(`Enemy's ${enemyAnimal.name} died`);
-          logToTerminal(`User's ${playerAnimal.name} died`);
-          enemyTeam[enemyAnimalIndex] = null; // Remove the defeated enemy
-          team[playerAnimalIndex] = null; // Remove the defeated player's animal
-          render(); // Update canvas
-
-          // If both teams have no animals left, it's a draw
-          if (
-            !team.some((animal) => animal) &&
-            !enemyTeam.some((animal) => animal)
-          ) {
-            logToTerminal("It's a draw!");
-            return; // Exit the function after showing the result
+        animateHeadbutt(playerAnimal, enemyAnimal, () => {
+          enemyAnimal.health -= playerAnimal.attack;
+          playerAnimal.health -= enemyAnimal.attack;
+          if (enemyAnimal.health <= 0 && playerAnimal.health <= 0) {
+            console.log(`Enemy's ${enemyAnimal.name} died`);
+            console.log(`User's ${playerAnimal.name} died`);
+            enemyLineup[enemyAnimalIndex] = null;
+            battleLineup[playerAnimalIndex] = null;
+            shiftAnimalsInLineup(battleLineup);
+            shiftAnimalsInLineup(enemyLineup);
+            renderTeams();
+          } else {
+            if (enemyAnimal.health <= 0) {
+              console.log(`Enemy's ${enemyAnimal.name} died`);
+              enemyLineup[enemyAnimalIndex] = null;
+              shiftAnimalsInLineup(enemyLineup);
+              renderTeams();
+            }
+            if (playerAnimal.health <= 0) {
+              console.log(`User's ${playerAnimal.name} died`);
+              battleLineup[playerAnimalIndex] = null;
+              shiftAnimalsInLineup(battleLineup);
+              renderTeams();
+            }
           }
-        } else {
-          // Check if the enemy animal dies
-          if (enemyAnimal.health <= 0) {
-            logToTerminal(`Enemy's ${enemyAnimal.name} died`);
-            enemyTeam[enemyAnimalIndex] = null; // Remove the defeated enemy
-            render(); // Update canvas after enemy animal dies
-          }
-
-          // Check if the player's animal dies
-          if (playerAnimal.health <= 0) {
-            logToTerminal(`User's ${playerAnimal.name} died`);
-            team[playerAnimalIndex] = null; // Remove the defeated player's animal
-            render(); // Update canvas after player animal dies
-          }
-        }
+          turnCount++;
+          setTimeout(playTurn, 1500);
+        });
       }
     }
-
-    // Check if all player's animals are dead
-    if (!team.some((animal) => animal)) {
-      if (!enemyTeam.some((animal) => animal)) {
-        logToTerminal("It's a draw!");
-      } else {
-        logToTerminal("You lose!");
-      }
-      return; // Exit the loop after showing the result
-    }
-
-    // Check if all enemy's animals are dead
-    if (!enemyTeam.some((animal) => animal)) {
-      logToTerminal("You win!");
-      return; // Exit the loop after showing the result
-    }
-
-    turnCount++;
-    setTimeout(playTurn, 1000);
   }
-
-  playTurn();
+  pauseBeforeFirstTurn();
 }
-
-updateCoinsDisplay();
-render();
-
-// canvas.addEventListener("click", function (event) {
-//   const rect = canvas.getBoundingClientRect();
-//   const x = event.clientX - rect.left;
-//   const y = event.clientY - rect.top;
-
-//   // Use the coordinates to clear a specific area
-//   ctx.clearRect(x, y, 60, 60); // This clears a 60x60 rectangle starting from the clicked point
-//   console.log(`Clearing area at X: ${x}, Y: ${y}`);
-// });
-
-//  ctx.clearRect(499.5, 18.125, 60, 60); // Clear area for player's team
-//     ctx.clearRect(748.5, 20.125, 60, 60); // Clear area for enemy's team
+function shiftAnimalsInLineup(lineup) {
+  let shiftedLineup = lineup.filter((animal) => animal !== null);
+  while (shiftedLineup.length < maxSlots) {
+    shiftedLineup.push(null);
+  }
+  for (let i = 0; i < maxSlots; i++) {
+    lineup[i] = shiftedLineup[i];
+  }
+}
