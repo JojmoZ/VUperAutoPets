@@ -268,7 +268,17 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
     if (currentFrame <= totalFrames) {
       requestAnimationFrame(animate);
     } else {
-      animateReturn(playerStartX, playerY, enemyStartX, enemyY);
+       showDamage(
+         playerX,
+         playerAnimal.attack,
+         enemyX,
+         enemyAnimal.attack,
+         playerImg,
+         enemyImg,
+         () => {
+           animateReturn(playerStartX, playerY, enemyStartX, enemyY);
+         }
+       );
     }
   }
   function animateReturn(playerStartX, playerY, enemyStartX, enemyY) {
@@ -304,29 +314,122 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
   }
 }
 
-function showDamage(playerX, playerDamage, enemyX, enemyDamage) {
-  let alpha = 1.0;
-  const fadeDuration = 1000;
+function showDamage(
+  playerX,
+  playerDamage,
+  enemyX,
+  enemyDamage,
+  playerImg,
+  enemyImg,
+  onComplete
+) {
+  let alpha = 1.0; // Start fully opaque
+  const fadeDuration = 1000; // Time for the damage to fade out
+  const displayDuration = 1000; // How long the damage stays on screen
+  const maxFontSize = 40; // The largest size of the expanding text
+  const minFontSize = 10; // The initial size of the expanding text
   const commonY = 150;
-  function drawDamage() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    renderFullTeam();
+
+  // Adjust the offset for damage text positioning
+  const playerDamageOffsetX = -25; // Move damage to the left for the player
+  const playerDamageOffsetY = -1; // Move damage slightly above the player's head
+  const enemyDamageOffsetX = 35; // Move damage to the right for the enemy
+  const enemyDamageOffsetY = -4; // Move damage slightly above the enemy's head
+
+  // Variable to track current frame for size and transparency animation
+  let currentFrame = 0;
+  const totalFrames = 30; // How many frames to take for expanding
+
+  function drawExpandingDamage() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the entire canvas
+    renderFullTeam(); // Redraw the entire team
+
+    // Redraw the player and enemy in their positions during headbutt
+    ctx.drawImage(playerImg, playerX, commonY, 60, 60);
+    ctx.fillText(`A:${playerDamage}/H:${enemyDamage}`, playerX, commonY + 80);
+    ctx.drawImage(enemyImg, enemyX, commonY, 60, 60);
+    ctx.fillText(`A:${enemyDamage}/H:${playerDamage}`, enemyX, commonY + 80);
+
     ctx.save();
-    ctx.globalAlpha = alpha;
-    ctx.font = "30px Arial";
+    const progress = currentFrame / totalFrames;
+    const fontSize = minFontSize + progress * (maxFontSize - minFontSize); // Text expands
+    ctx.font = `${fontSize}px Arial`;
     ctx.fillStyle = "red";
-    ctx.fillText(`-${playerDamage}`, playerX + 20, commonY - 20);
-    ctx.fillText(`-${enemyDamage}`, enemyX + 20, commonY - 20);
+    ctx.globalAlpha = alpha;
+
+    // Adjusted damage number positions
+    ctx.fillText(
+      `-${enemyDamage}`,
+      playerX + playerDamageOffsetX,
+      commonY + playerDamageOffsetY
+    ); // Damage to player
+    ctx.fillText(
+      `-${playerDamage}`,
+      enemyX + enemyDamageOffsetX,
+      commonY + enemyDamageOffsetY
+    ); // Damage to enemy
     ctx.restore();
-    alpha -= 0.05;
-    if (alpha > 0) {
-      requestAnimationFrame(drawDamage);
+
+    if (currentFrame < totalFrames) {
+      currentFrame++;
+      requestAnimationFrame(drawExpandingDamage); // Continue expanding
     } else {
-      ctx.globalAlpha = 1.0;
+      setTimeout(() => {
+        alpha = 1.0; // Reset alpha for shrinking
+        currentFrame = 0; // Reset for shrinking phase
+        requestAnimationFrame(drawShrinkingDamage); // Shrink after display duration
+      }, displayDuration);
     }
   }
-  drawDamage();
+
+  function drawShrinkingDamage() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the entire canvas
+    renderFullTeam(); // Redraw the entire team
+
+    // Redraw the player and enemy in their positions
+    ctx.drawImage(playerImg, playerX, commonY, 60, 60);
+    ctx.fillText(`A:${playerDamage}/H:${enemyDamage}`, playerX, commonY + 80);
+    ctx.drawImage(enemyImg, enemyX, commonY, 60, 60);
+    ctx.fillText(`A:${enemyDamage}/H:${playerDamage}`, enemyX, commonY + 80);
+
+    ctx.save();
+    const progress = currentFrame / totalFrames;
+    const fontSize = maxFontSize - progress * (maxFontSize - minFontSize); // Shrink text
+    alpha = 1 - progress; // Fade out text as it shrinks
+    ctx.font = `${fontSize}px Arial`;
+    ctx.fillStyle = "red";
+    ctx.globalAlpha = alpha;
+
+    // Adjusted damage number positions for shrinking phase
+    ctx.fillText(
+      `-${enemyDamage}`,
+      playerX + playerDamageOffsetX,
+      commonY + playerDamageOffsetY
+    );
+    ctx.fillText(
+      `-${playerDamage}`,
+      enemyX + enemyDamageOffsetX,
+      commonY + enemyDamageOffsetY
+    );
+    ctx.restore();
+
+    if (currentFrame < totalFrames) {
+      currentFrame++;
+      requestAnimationFrame(drawShrinkingDamage); // Continue shrinking and fading out
+    } else {
+      // Fully complete animation, call onComplete
+      ctx.globalAlpha = 1.0; // Reset transparency
+      onComplete(); // Call the completion callback to continue the game
+    }
+  }
+
+  // Start with the expanding phase
+  drawExpandingDamage();
 }
+
+
+
+
 function renderFullTeam() {
   // ctx.clearRect(0, 0, canvas.width, canvas.height);
   const commonY = 150;
