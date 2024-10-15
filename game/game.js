@@ -410,7 +410,7 @@ function animateDeathFlyOff(animal, index, teamType, onComplete) {
 
   const endX = teamType === "player" ? -100 : canvas.width + 100; // Final X position off-screen
   const controlPointX = (startX + endX) / 2; // Midpoint for the Bézier curve
-  const controlPointY = startY - 200; // Raise the control point for the curve
+  const controlPointY = startY - 400; // Lift the control point higher for a more pronounced arc
 
   function animate() {
     // Clear only the area where the animal was drawn on the previous frame
@@ -433,7 +433,7 @@ function animateDeathFlyOff(animal, index, teamType, onComplete) {
         controlPointY +
       (currentFrame / totalFrames) *
         (currentFrame / totalFrames) *
-        (startY + 300);
+        (startY + 100); // Curve ends lower
 
     // Clear the area of the previous frame
     ctx.clearRect(previousX - 30, previousY - 30, 120, 120);
@@ -451,7 +451,7 @@ function animateDeathFlyOff(animal, index, teamType, onComplete) {
     const curveY =
       (1 - progress) * (1 - progress) * startY +
       2 * (1 - progress) * progress * controlPointY +
-      progress * progress * (startY + 300); // Curve ends lower
+      progress * progress * (startY + 100); // Lowering the end
 
     // Draw the animal flying off along the curved path
     ctx.drawImage(img, curveX, curveY, 60, 60);
@@ -466,6 +466,7 @@ function animateDeathFlyOff(animal, index, teamType, onComplete) {
 
   animate(); // Start the animation
 }
+
 
 function handleBothDeaths(playerAnimal, enemyAnimal, onComplete) {
   const deathPromises = [];
