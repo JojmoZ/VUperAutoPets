@@ -67,13 +67,14 @@ function renderRandomAnimals() {
     animalDiv.addEventListener("dragstart", dragStart);
   });
 }
+function saveBattleLineup() {
+  localStorage.setItem("battleLineup", JSON.stringify(battleLineup));
+}
 function dragStart(event) {
   const index = event.target.getAttribute("data-index");
   event.dataTransfer.setData("text/plain", index);
 }
-function saveBattleLineup() {
-  localStorage.setItem("battleLineup", JSON.stringify(battleLineup));
-}
+
 function handleDrop(event) {
   event.preventDefault();
   const slotIndex = event.target.getAttribute("data-slot");
@@ -92,6 +93,17 @@ function handleDrop(event) {
 }
 function handleDragOver(event) {
   event.preventDefault();
+}
+function renderBattleSlots() {
+  const battleSlots = document.querySelectorAll(".battle-slot");
+  battleSlots.forEach((slot, index) => {
+    const animal = battleLineup[maxSlots - 1 - index];
+    if (animal) {
+      slot.innerHTML = `<img src="${animal.img}" alt="${animal.name}" style="width: 80px; height: 80px;">`;
+    } else {
+      slot.innerHTML = "";
+    }
+  });
 }
 function renderTeams() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -130,17 +142,7 @@ function renderTeams() {
     }
   });
 }
-function renderBattleSlots() {
-  const battleSlots = document.querySelectorAll(".battle-slot");
-  battleSlots.forEach((slot, index) => {
-    const animal = battleLineup[maxSlots -1 -index];
-    if (animal) {
-      slot.innerHTML = `<img src="${animal.img}" alt="${animal.name}" style="width: 80px; height: 80px;">`;
-    } else {
-      slot.innerHTML = ""; 
-    }
-  });
-}
+
 document.querySelectorAll(".battle-slot").forEach((slot) => {
   slot.addEventListener("drop", handleDrop);
   slot.addEventListener("dragover", handleDragOver);
@@ -220,17 +222,12 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
   const frameRate = 60;
   const totalFrames = (duration / 1000) * frameRate;
   let currentFrame = 0;
-
   const playerImg = new Image();
   playerImg.src = playerAnimal.img;
-
   const enemyImg = new Image();
   enemyImg.src = enemyAnimal.img;
-
-  // Load the bandage image
   const bandageImg = new Image();
-  bandageImg.src = "../assets/hurt.png"; // Update this with the correct path
-
+  bandageImg.src = "../assets/hurt.png"; 
   playerImg.onload = () => {
     enemyImg.onload = () => {
       requestAnimationFrame(animate);
@@ -240,43 +237,30 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
   function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     renderFullTeam();
-
     const progress = easeInOutQuad(currentFrame / totalFrames);
     const playerX = playerStartX - (playerStartX - centerX) * progress;
     const enemyX = enemyStartX + (centerX + 60 - enemyStartX) * progress;
-
-    // Draw player's charging animal
     ctx.drawImage(playerImg, playerX, 20, 60, 60);
     ctx.fillText(
       `A:${playerAnimal.attack}/H:${playerAnimal.health}`,
       playerX,
       100
     );
-
-    // Draw enemy's charging animal
     ctx.drawImage(enemyImg, enemyX, 20, 60, 60);
     ctx.fillText(
       `A:${enemyAnimal.attack}/H:${enemyAnimal.health}`,
       enemyX,
       100
     );
-
-    // Show bandage when animals are close enough to each other
    if (progress > 0.8) {
      const bandageSize = 60;
-     // Draw bandage over player's animal
      ctx.drawImage(bandageImg, playerX + 10, 20, bandageSize, bandageSize);
-     // Draw bandage over enemy's animal
      ctx.drawImage(bandageImg, enemyX + 10, 20, bandageSize, bandageSize);
    }
-
-    // Show damage numbers when the headbutt happens
     if (currentFrame >= totalFrames) {
       showDamage(playerX, playerAnimal.attack, enemyX, enemyAnimal.attack);
     }
-
     currentFrame++;
-
     if (currentFrame <= totalFrames) {
       requestAnimationFrame(animate);
     } else {
@@ -290,32 +274,23 @@ function showDamage(playerX, playerDamage, enemyX, enemyDamage) {
   function drawDamage() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     renderFullTeam(); 
-
-    // Render damage text above player and enemy
-    ctx.save(); // Save the current context state before applying styles for damage
-
-    ctx.globalAlpha = alpha; // Set opacity for fading
+    ctx.save();
+    ctx.globalAlpha = alpha;
     ctx.font = "30px Arial";
     ctx.fillStyle = "red";
-    ctx.fillText(`-${playerDamage}`, playerX + 20, 50); // Player's damage above its head
-    ctx.fillText(`-${enemyDamage}`, enemyX + 20, 50); // Enemy's damage above its head
+    ctx.fillText(`-${playerDamage}`, playerX + 20, 50);
+    ctx.fillText(`-${enemyDamage}`, enemyX + 20, 50); 
 
-    ctx.restore(); // Restore the context to the original state to avoid affecting other elements
-
-    // Decrease opacity over time
-    alpha -= 0.05; // Adjust this value for smoother fade-out
-
+    ctx.restore(); 
+    alpha -= 0.05; 
     if (alpha > 0) {
       requestAnimationFrame(drawDamage);
     } else {
-      ctx.globalAlpha = 1.0; // Reset alpha back to full opacity for future renderings
+      ctx.globalAlpha = 1.0; 
     }
   }
-
-  drawDamage(); // Start animating the damage display
+  drawDamage(); 
 }
-
-
 function renderFullTeam() {
   const teamOffsetX = 100; 
   const enemyOffsetX = canvas.width - 550; 
