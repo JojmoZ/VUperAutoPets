@@ -71,7 +71,6 @@ function dragStart(event) {
   const index = event.target.getAttribute("data-index");
   event.dataTransfer.setData("text/plain", index);
 }
-
 function saveBattleLineup() {
   localStorage.setItem("battleLineup", JSON.stringify(battleLineup));
 }
@@ -91,7 +90,6 @@ function handleDrop(event) {
     alert("Not enough coins or slot is already filled!");
   }
 }
-
 function handleDragOver(event) {
   event.preventDefault();
 }
@@ -99,8 +97,6 @@ function renderTeams() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   const teamOffsetX = 100; 
   const enemyOffsetX = canvas.width - 550; 
-
-  // Render player's team (right to left)
   battleLineup.forEach((animal, index) => {
     if (animal) {
       const img = new Image();
@@ -134,7 +130,6 @@ function renderTeams() {
     }
   });
 }
-
 function renderBattleSlots() {
   const battleSlots = document.querySelectorAll(".battle-slot");
   battleSlots.forEach((slot, index) => {
@@ -146,7 +141,6 @@ function renderBattleSlots() {
     }
   });
 }
-
 document.querySelectorAll(".battle-slot").forEach((slot) => {
   slot.addEventListener("drop", handleDrop);
   slot.addEventListener("dragover", handleDragOver);
@@ -180,7 +174,6 @@ function showNonBattleElements() {
   document.getElementById("backArrow").classList.remove("hidden"); 
   hideCanvas(); 
 }
-
 document.addEventListener("DOMContentLoaded", function () {
   if (localStorage.getItem("randomAnimals")) {
     randomAnimals = JSON.parse(localStorage.getItem("randomAnimals"));
@@ -197,7 +190,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   updateCoinsDisplay();
 });
-
 function updateCoinsDisplay() {
   localStorage.setItem("gamecoins", coins);
   document.getElementById("coins").textContent = `Coins: ${coins}`;
@@ -222,33 +214,46 @@ function calculateTeamCost(team) {
 }
 function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
   const playerStartX = 100 + (maxSlots - 1) * 100;
-  const enemyStartX = canvas.width - 550; 
-  const centerX = canvas.width / 2 - 30; 
-  const duration = 1000; 
-  const frameRate = 60; 
+  const enemyStartX = canvas.width - 550;
+  const centerX = canvas.width / 2 - 60;
+  const duration = 1000;
+  const frameRate = 60;
   const totalFrames = (duration / 1000) * frameRate;
   let currentFrame = 0;
+
   const playerImg = new Image();
   playerImg.src = playerAnimal.img;
+
   const enemyImg = new Image();
   enemyImg.src = enemyAnimal.img;
+
+  // Load the bandage image
+  const bandageImg = new Image();
+  bandageImg.src = "../assets/hurt.png"; // Update this with the correct path
+
   playerImg.onload = () => {
     enemyImg.onload = () => {
       requestAnimationFrame(animate);
     };
   };
+
   function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     renderFullTeam();
+
     const progress = easeInOutQuad(currentFrame / totalFrames);
     const playerX = playerStartX - (playerStartX - centerX) * progress;
-    const enemyX = enemyStartX + (centerX - enemyStartX) * progress;
+    const enemyX = enemyStartX + (centerX + 60 - enemyStartX) * progress;
+
+    // Draw player's charging animal
     ctx.drawImage(playerImg, playerX, 20, 60, 60);
     ctx.fillText(
       `A:${playerAnimal.attack}/H:${playerAnimal.health}`,
       playerX,
       100
     );
+
+    // Draw enemy's charging animal
     ctx.drawImage(enemyImg, enemyX, 20, 60, 60);
     ctx.fillText(
       `A:${enemyAnimal.attack}/H:${enemyAnimal.health}`,
@@ -256,15 +261,61 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
       100
     );
 
+    // Show bandage when animals are close enough to each other
+   if (progress > 0.8) {
+     const bandageSize = 60;
+     // Draw bandage over player's animal
+     ctx.drawImage(bandageImg, playerX + 10, 20, bandageSize, bandageSize);
+     // Draw bandage over enemy's animal
+     ctx.drawImage(bandageImg, enemyX + 10, 20, bandageSize, bandageSize);
+   }
+
+    // Show damage numbers when the headbutt happens
+    if (currentFrame >= totalFrames) {
+      showDamage(playerX, playerAnimal.attack, enemyX, enemyAnimal.attack);
+    }
+
     currentFrame++;
 
     if (currentFrame <= totalFrames) {
       requestAnimationFrame(animate);
     } else {
-      setTimeout(onComplete, 500); 
+      setTimeout(onComplete, 500);
     }
   }
 }
+function showDamage(playerX, playerDamage, enemyX, enemyDamage) {
+  let alpha = 1.0; 
+  const fadeDuration = 1000; 
+  function drawDamage() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    renderFullTeam(); 
+
+    // Render damage text above player and enemy
+    ctx.save(); // Save the current context state before applying styles for damage
+
+    ctx.globalAlpha = alpha; // Set opacity for fading
+    ctx.font = "30px Arial";
+    ctx.fillStyle = "red";
+    ctx.fillText(`-${playerDamage}`, playerX + 20, 50); // Player's damage above its head
+    ctx.fillText(`-${enemyDamage}`, enemyX + 20, 50); // Enemy's damage above its head
+
+    ctx.restore(); // Restore the context to the original state to avoid affecting other elements
+
+    // Decrease opacity over time
+    alpha -= 0.05; // Adjust this value for smoother fade-out
+
+    if (alpha > 0) {
+      requestAnimationFrame(drawDamage);
+    } else {
+      ctx.globalAlpha = 1.0; // Reset alpha back to full opacity for future renderings
+    }
+  }
+
+  drawDamage(); // Start animating the damage display
+}
+
+
 function renderFullTeam() {
   const teamOffsetX = 100; 
   const enemyOffsetX = canvas.width - 550; 
@@ -309,20 +360,14 @@ function getAnimalImage(src) {
   img.src = src;
   return img;
 }
-
-
-
-
 function simulateBattle() {
   console.clear();
   let turnCount = 1;
   const maxTurns = 10;
-
   function pauseBeforeFirstTurn() {
     renderTeams();
     setTimeout(playTurn, 1500); 
   }
-
   function playTurn() {
     if (
       turnCount > maxTurns ||
@@ -343,14 +388,11 @@ function simulateBattle() {
       } else {
         console.log("It's a draw!");
       }
-
       renderTeams();
       showNonBattleElements(); 
       return;
     }
-
     console.log(`Turn ${turnCount}`);
-
     const playerAnimalIndex = battleLineup.findIndex(
       (animal) => animal !== null
     );
@@ -364,7 +406,6 @@ function simulateBattle() {
         animateHeadbutt(playerAnimal, enemyAnimal, () => {
           enemyAnimal.health -= playerAnimal.attack;
           playerAnimal.health -= enemyAnimal.attack;
-
           if (enemyAnimal.health <= 0 && playerAnimal.health <= 0) {
             console.log(`Enemy's ${enemyAnimal.name} died`);
             console.log(`User's ${playerAnimal.name} died`);
@@ -387,14 +428,12 @@ function simulateBattle() {
               renderTeams(); 
             }
           }
-
           turnCount++;
-          setTimeout(playTurn, 2500); 
+          setTimeout(playTurn, 1500); 
         });
       }
     }
   }
-
   pauseBeforeFirstTurn();
 }
 function shiftAnimalsInLineup(lineup) {
