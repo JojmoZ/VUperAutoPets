@@ -216,19 +216,17 @@ function calculateTeamCost(team) {
 function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
   const playerStartX = 100 + (maxSlots - 1) * 100;
   const playerY = 150;
-  const enemyStartX = canvas.width - 550;
+  const enemyStartX = canvas.width - 550; 
   const enemyY = 150;
-  const centerX = canvas.width / 2 - 60;
-  const duration = 1000;
-  const frameRate = 60;
+  const centerX = canvas.width / 2 - 60; 
+  const duration = 1000; 
+  const frameRate = 60; 
   const totalFrames = (duration / 1000) * frameRate;
   let currentFrame = 0;
   const playerImg = new Image();
   playerImg.src = playerAnimal.img;
   const enemyImg = new Image();
   enemyImg.src = enemyAnimal.img;
-  const bandageImg = new Image();
-  bandageImg.src = "../assets/hurt.png";
   playerImg.onload = () => {
     enemyImg.onload = () => {
       requestAnimationFrame(animate);
@@ -236,7 +234,7 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
   };
   function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    renderFullTeam();
+    renderFullTeam(); 
     const progress = easeInOutQuad(currentFrame / totalFrames);
     const playerX = playerStartX - (playerStartX - centerX) * progress;
     const enemyX = enemyStartX + (centerX + 60 - enemyStartX) * progress;
@@ -246,6 +244,7 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
       playerX,
       playerY + 80
     );
+
     ctx.drawImage(enemyImg, enemyX, enemyY, 60, 60);
     ctx.fillText(
       `A:${enemyAnimal.attack}/H:${enemyAnimal.health}`,
@@ -254,6 +253,8 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
     );
     if (progress > 0.8) {
       const bandageSize = 60;
+      const bandageImg = new Image();
+      bandageImg.src = "../assets/hurt.png";
       ctx.drawImage(
         bandageImg,
         playerX + 10,
@@ -263,20 +264,46 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
       );
       ctx.drawImage(bandageImg, enemyX + 10, enemyY, bandageSize, bandageSize);
     }
-    if (currentFrame >= totalFrames) {
-      showDamage(playerX, playerAnimal.attack, enemyX, enemyAnimal.attack);
-    }
     currentFrame++;
     if (currentFrame <= totalFrames) {
       requestAnimationFrame(animate);
     } else {
-      setTimeout(
-        () => handleBothDeaths(playerAnimal, enemyAnimal, onComplete),
-        500
-      );
+      animateReturn(playerStartX, playerY, enemyStartX, enemyY);
     }
   }
+  function animateReturn(playerStartX, playerY, enemyStartX, enemyY) {
+    let returnFrame = 0;
+    const returnFrames = totalFrames; 
+    function animateBack() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      renderFullTeam(); 
+      const progress = easeInOutQuad(returnFrame / returnFrames);
+      const playerX = centerX + (playerStartX - centerX) * progress;
+      const enemyX = centerX + 60 + (enemyStartX - centerX - 60) * progress;
+      ctx.drawImage(playerImg, playerX, playerY, 60, 60);
+      ctx.fillText(
+        `A:${playerAnimal.attack}/H:${playerAnimal.health}`,
+        playerX,
+        playerY + 80
+      );
+
+      ctx.drawImage(enemyImg, enemyX, enemyY, 60, 60);
+      ctx.fillText(
+        `A:${enemyAnimal.attack}/H:${enemyAnimal.health}`,
+        enemyX,
+        enemyY + 80
+      );
+      returnFrame++;
+      if (returnFrame <= returnFrames) {
+        requestAnimationFrame(animateBack);
+      } else {
+        onComplete();
+      }
+    }
+    requestAnimationFrame(animateBack);
+  }
 }
+
 function showDamage(playerX, playerDamage, enemyX, enemyDamage) {
   let alpha = 1.0;
   const fadeDuration = 1000;
@@ -298,7 +325,6 @@ function showDamage(playerX, playerDamage, enemyX, enemyDamage) {
       ctx.globalAlpha = 1.0;
     }
   }
-
   drawDamage();
 }
 function renderFullTeam() {
@@ -408,8 +434,6 @@ function animateDeathFlyOff(animal, index, teamType, onComplete) {
 }
 function handleBothDeaths(playerAnimal, enemyAnimal, onComplete) {
   const deathPromises = [];
-
-  // Add player's death animation if they die
   if (playerAnimal.health <= 0) {
     deathPromises.push(
       new Promise((resolve) => {
@@ -422,8 +446,6 @@ function handleBothDeaths(playerAnimal, enemyAnimal, onComplete) {
       })
     );
   }
-
-  // Add enemy's death animation if they die
   if (enemyAnimal.health <= 0) {
     deathPromises.push(
       new Promise((resolve) => {
@@ -436,26 +458,18 @@ function handleBothDeaths(playerAnimal, enemyAnimal, onComplete) {
       })
     );
   }
-
-  // Ensure both animations are completed before proceeding to the next step
   Promise.all(deathPromises).then(() => {
-    // Now update both teams after both deaths are handled
     if (enemyAnimal.health <= 0) {
       console.log(`Enemy's ${enemyAnimal.name} died`);
       enemyLineup[enemyLineup.indexOf(enemyAnimal)] = null;
       shiftAnimalsInLineup(enemyLineup);
     }
-
     if (playerAnimal.health <= 0) {
       console.log(`User's ${playerAnimal.name} died`);
       battleLineup[battleLineup.indexOf(playerAnimal)] = null;
       shiftAnimalsInLineup(battleLineup);
     }
-
-    // After handling deaths for both sides, render the updated teams
     renderTeams();
-
-    // Delay a little before proceeding to the next turn
     setTimeout(() => {
       onComplete();
     }, 500);
@@ -538,7 +552,6 @@ function simulateBattle() {
 
   pauseBeforeFirstTurn();
 }
-
 function shiftAnimalsInLineup(lineup) {
   let shiftedLineup = lineup.filter((animal) => animal !== null);
   while (shiftedLineup.length < maxSlots) {
