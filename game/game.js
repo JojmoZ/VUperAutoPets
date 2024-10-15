@@ -408,6 +408,8 @@ function animateDeathFlyOff(animal, index, teamType, onComplete) {
 }
 function handleBothDeaths(playerAnimal, enemyAnimal, onComplete) {
   const deathPromises = [];
+
+  // Add player's death animation if they die
   if (playerAnimal.health <= 0) {
     deathPromises.push(
       new Promise((resolve) => {
@@ -420,6 +422,8 @@ function handleBothDeaths(playerAnimal, enemyAnimal, onComplete) {
       })
     );
   }
+
+  // Add enemy's death animation if they die
   if (enemyAnimal.health <= 0) {
     deathPromises.push(
       new Promise((resolve) => {
@@ -432,12 +436,32 @@ function handleBothDeaths(playerAnimal, enemyAnimal, onComplete) {
       })
     );
   }
+
+  // Ensure both animations are completed before proceeding to the next step
   Promise.all(deathPromises).then(() => {
+    // Now update both teams after both deaths are handled
+    if (enemyAnimal.health <= 0) {
+      console.log(`Enemy's ${enemyAnimal.name} died`);
+      enemyLineup[enemyLineup.indexOf(enemyAnimal)] = null;
+      shiftAnimalsInLineup(enemyLineup);
+    }
+
+    if (playerAnimal.health <= 0) {
+      console.log(`User's ${playerAnimal.name} died`);
+      battleLineup[battleLineup.indexOf(playerAnimal)] = null;
+      shiftAnimalsInLineup(battleLineup);
+    }
+
+    // After handling deaths for both sides, render the updated teams
+    renderTeams();
+
+    // Delay a little before proceeding to the next turn
     setTimeout(() => {
       onComplete();
     }, 500);
   });
 }
+
 function simulateBattle() {
   console.clear();
   let turnCount = 1;
@@ -447,6 +471,7 @@ function simulateBattle() {
   function pauseBeforeFirstTurn() {
     setTimeout(playTurn, 1500);
   }
+
   function playTurn() {
     if (
       turnCount > maxTurns ||
@@ -459,6 +484,7 @@ function simulateBattle() {
       const enemySurvivors = enemyLineup.filter(
         (animal) => animal !== null
       ).length;
+
       if (playerSurvivors > enemySurvivors) {
         console.log("User wins!");
       } else if (playerSurvivors < enemySurvivors) {
@@ -466,37 +492,30 @@ function simulateBattle() {
       } else {
         console.log("It's a draw!");
       }
+
       renderTeams();
       showNonBattleElements();
       return;
     }
+
     console.log(`Turn ${turnCount}`);
     const playerAnimalIndex = battleLineup.findIndex(
       (animal) => animal !== null
     );
     const playerAnimal = battleLineup[playerAnimalIndex];
+
     if (playerAnimal) {
       const enemyAnimalIndex = enemyLineup.findIndex(
         (animal) => animal !== null
       );
       const enemyAnimal = enemyLineup[enemyAnimalIndex];
+
       if (enemyAnimal) {
         animateHeadbutt(playerAnimal, enemyAnimal, () => {
           enemyAnimal.health -= playerAnimal.attack;
           playerAnimal.health -= enemyAnimal.attack;
+
           handleBothDeaths(playerAnimal, enemyAnimal, () => {
-            if (enemyAnimal.health <= 0) {
-              console.log(`Enemy's ${enemyAnimal.name} died`);
-              enemyLineup[enemyAnimalIndex] = null;
-              shiftAnimalsInLineup(enemyLineup);
-              renderTeams();
-            }
-            if (playerAnimal.health <= 0) {
-              console.log(`User's ${playerAnimal.name} died`);
-              battleLineup[playerAnimalIndex] = null;
-              shiftAnimalsInLineup(battleLineup);
-              renderTeams();
-            }
             if (
               !battleLineup.some((animal) => animal) ||
               !enemyLineup.some((animal) => animal)
@@ -508,6 +527,7 @@ function simulateBattle() {
               }, 1500);
               return;
             }
+
             turnCount++;
             setTimeout(playTurn, 1500);
           });
@@ -515,8 +535,10 @@ function simulateBattle() {
       }
     }
   }
+
   pauseBeforeFirstTurn();
 }
+
 function shiftAnimalsInLineup(lineup) {
   let shiftedLineup = lineup.filter((animal) => animal !== null);
   while (shiftedLineup.length < maxSlots) {
