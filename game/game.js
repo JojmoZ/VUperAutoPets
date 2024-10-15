@@ -308,43 +308,6 @@
  }
 
 
-function handleBothDeaths(playerAnimal, enemyAnimal, onComplete) {
-  const deathPromises = [];
-
-  // Add player's death animation if they die
-  if (playerAnimal.health <= 0) {
-    deathPromises.push(
-      new Promise((resolve) => {
-        animateDeathFlyOff(
-          playerAnimal,
-          battleLineup.indexOf(playerAnimal),
-          "player",
-          resolve
-        );
-      })
-    );
-  }
-
-  // Add enemy's death animation if they die
-  if (enemyAnimal.health <= 0) {
-    deathPromises.push(
-      new Promise((resolve) => {
-        animateDeathFlyOff(
-          enemyAnimal,
-          enemyLineup.indexOf(enemyAnimal),
-          "enemy",
-          resolve
-        );
-      })
-    );
-  }
-
-  // Ensure both animations are completed before proceeding to the next step
-  Promise.all(deathPromises).then(() => {
-    // After both animations finish, we continue to onComplete
-    onComplete();
-  });
-}
 
 
 
@@ -445,47 +408,104 @@ function animateDeathFlyOff(animal, index, teamType, onComplete) {
     startY = 150; // Common Y position for enemy
   }
 
+  const endX = teamType === "player" ? -100 : canvas.width + 100; // Final X position off-screen
+  const controlPointX = (startX + endX) / 2; // Midpoint for the Bézier curve
+  const controlPointY = startY - 200; // Raise the control point for the curve
+
   function animate() {
-    // Dynamically calculate the width to clear based on the movement direction and frame
-    const flyOffDistance = 300 * (currentFrame / totalFrames);
-    const clearWidth = 60 + flyOffDistance; // Clear width adjusts dynamically
+    // Clear only the area where the animal was drawn on the previous frame
+    const previousX =
+      (1 - currentFrame / totalFrames) *
+        (1 - currentFrame / totalFrames) *
+        startX +
+      2 *
+        (1 - currentFrame / totalFrames) *
+        (currentFrame / totalFrames) *
+        controlPointX +
+      (currentFrame / totalFrames) * (currentFrame / totalFrames) * endX;
+    const previousY =
+      (1 - currentFrame / totalFrames) *
+        (1 - currentFrame / totalFrames) *
+        startY +
+      2 *
+        (1 - currentFrame / totalFrames) *
+        (currentFrame / totalFrames) *
+        controlPointY +
+      (currentFrame / totalFrames) *
+        (currentFrame / totalFrames) *
+        (startY + 300);
 
-    // **Fix**: Clear area dynamically based on the motion direction of the player's pet
-    const clearX = teamType === "player" ? startX - flyOffDistance : startX;
+    // Clear the area of the previous frame
+    ctx.clearRect(previousX - 30, previousY - 30, 120, 120);
 
-    // Clear the affected area, including a bit more space for smoother animation
-    ctx.clearRect(clearX, startY - 150, clearWidth, 300);
-
-    // Re-render the entire team (excluding the dying animal)
+    // Re-render the full team without the dying animal
     renderFullTeam();
 
+    // Calculate the Bézier curve position for the animal
     const progress = currentFrame / totalFrames;
-    let flyOffX, flyOffY;
+    const curveX =
+      (1 - progress) * (1 - progress) * startX +
+      2 * (1 - progress) * progress * controlPointX +
+      progress * progress * endX;
 
-    // Calculate the movement based on the team type
-    if (teamType === "player") {
-      // Fly off to the left for player team
-      flyOffX = startX - 300 * progress; // Move left (negative direction)
-      flyOffY = startY - 150 * progress; // Move slightly upward
-    } else {
-      // Fly off to the right for enemy team
-      flyOffX = startX + 300 * progress; // Move right (positive direction)
-      flyOffY = startY - 150 * progress; // Move slightly upward
-    }
+    const curveY =
+      (1 - progress) * (1 - progress) * startY +
+      2 * (1 - progress) * progress * controlPointY +
+      progress * progress * (startY + 300); // Curve ends lower
 
-    // Draw the animal flying off
-    ctx.drawImage(img, flyOffX, flyOffY, 60, 60);
+    // Draw the animal flying off along the curved path
+    ctx.drawImage(img, curveX, curveY, 60, 60);
 
     currentFrame++;
     if (currentFrame < totalFrames) {
       requestAnimationFrame(animate); // Continue the animation
     } else {
-      onComplete(); // Run the callback once the animation is done
+      onComplete(); // Call the callback after animation completes
     }
   }
 
   animate(); // Start the animation
 }
+
+function handleBothDeaths(playerAnimal, enemyAnimal, onComplete) {
+  const deathPromises = [];
+
+  // Add player's death animation if they die
+  if (playerAnimal.health <= 0) {
+    deathPromises.push(
+      new Promise((resolve) => {
+        animateDeathFlyOff(
+          playerAnimal,
+          battleLineup.indexOf(playerAnimal),
+          "player",
+          resolve
+        );
+      })
+    );
+  }
+
+  // Add enemy's death animation if they die
+  if (enemyAnimal.health <= 0) {
+    deathPromises.push(
+      new Promise((resolve) => {
+        animateDeathFlyOff(
+          enemyAnimal,
+          enemyLineup.indexOf(enemyAnimal),
+          "enemy",
+          resolve
+        );
+      })
+    );
+  }
+
+  // Ensure both animations are completed before proceeding to the next step
+  Promise.all(deathPromises).then(() => {
+    // After both animations finish, we continue to onComplete
+    onComplete();
+  });
+}
+
+
 
 
   // Call this function in simulateBattle when an animal dies
