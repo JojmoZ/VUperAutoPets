@@ -1,13 +1,7 @@
   const canvas = document.getElementById("battleCanvas");
   const ctx = canvas.getContext("2d");
   let enemyLineup = [null, null, null, null, null];
-  let battleLineup = JSON.parse(localStorage.getItem("battleLineup")) || [
-    null,
-    null,
-    null,
-    null,
-    null,
-  ];
+  let battleLineup = JSON.parse(localStorage.getItem("battleLineup")) || [null,null,null,null,null,];
   let randomAnimals = JSON.parse(localStorage.getItem("randomAnimals")) || [];
   let coins = parseInt(localStorage.getItem("gamecoins")) || 0;
   document.getElementById("coins").textContent = `Coins: ${coins}`;
@@ -18,20 +12,8 @@
     { name: "Fish", attack: 2, health: 3, cost: 5, img: "../assets/Fish.webp" },
     { name: "Lion", attack: 3, health: 4, cost: 7, img: "../assets/Lion.webp" },
     { name: "Pig", attack: 3, health: 1, cost: 3, img: "../assets/Pig.webp" },
-    {
-      name: "Turtle",
-      attack: 1,
-      health: 2,
-      cost: 4,
-      img: "../assets/Turtle.webp",
-    },
-    {
-      name: "Elephant",
-      attack: 8,
-      health: 7,
-      cost: 5,
-      img: "../assets/Elephant.webp",
-    },
+    { name: "Turtle",attack: 1,health: 2,cost: 4,img: "../assets/Turtle.webp",},
+    { name: "Elephant",attack: 8,health: 7,cost: 5,img: "../assets/Elephant.webp",},
   ];
   function saveRandomAnimals() {
     localStorage.setItem("randomAnimals", JSON.stringify(randomAnimals));
@@ -74,7 +56,6 @@
     const index = event.target.getAttribute("data-index");
     event.dataTransfer.setData("text/plain", index);
   }
-
   function handleDrop(event) {
     event.preventDefault();
     const slotIndex = event.target.getAttribute("data-slot");
@@ -110,7 +91,6 @@
     const teamOffsetX = 100;
     const commonY = 150;
     const enemyOffsetX = canvas.width - 550;
-
     battleLineup.forEach((animal, index) => {
       if (animal) {
         const img = new Image();
@@ -119,18 +99,17 @@
           ctx.drawImage(
             img,
             teamOffsetX + (maxSlots - 1 - index) * 100,
-            commonY, // Use common Y position for consistency
+            commonY, 
             60,
             60
           );
         ctx.fillText(
           `A:${animal.attack}/H:${animal.health}`,
           teamOffsetX + (maxSlots - 1 - index) * 100,
-          commonY + 80 // Text positioned consistently
+          commonY + 80 
         );
       }
     });
-
     enemyLineup.forEach((animal, index) => {
       if (animal) {
         const img = new Image();
@@ -139,19 +118,18 @@
           ctx.drawImage(
             img,
             enemyOffsetX + index * 100,
-            commonY, // Use common Y position for consistency
+            commonY, 
             60,
             60
           );
         ctx.fillText(
           `A:${animal.attack}/H:${animal.health}`,
           enemyOffsetX + index * 100,
-          commonY + 80 // Text positioned consistently
+          commonY + 80 
         );
       }
     });
   }
-
   document.querySelectorAll(".battle-slot").forEach((slot) => {
     slot.addEventListener("drop", handleDrop);
     slot.addEventListener("dragover", handleDragOver);
@@ -224,59 +202,44 @@
     );
   }
  function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
-   const playerStartX = 100 + (maxSlots - 1) * 100; // Player's starting X position
-   const playerY = 150; // Lower Y position to keep animals lower in the canvas
-   const enemyStartX = canvas.width - 550; // Enemy's starting X position
-   const enemyY = 150; // Lower Y position for the enemy as well
-   const centerX = canvas.width / 2 - 60; // Center X for headbutt animation
-   const duration = 1000; // Animation duration
-   const frameRate = 60; // Frame rate for smooth animation
+   const playerStartX = 100 + (maxSlots - 1) * 100;
+   const playerY = 150;
+   const enemyStartX = canvas.width - 550; 
+   const enemyY = 150; 
+   const centerX = canvas.width / 2 - 60; 
+   const duration = 1000; 
+   const frameRate = 60; 
    const totalFrames = (duration / 1000) * frameRate;
    let currentFrame = 0;
-
    const playerImg = new Image();
    playerImg.src = playerAnimal.img;
-
    const enemyImg = new Image();
    enemyImg.src = enemyAnimal.img;
-
    const bandageImg = new Image();
-   bandageImg.src = "../assets/hurt.png"; // Path to your bandage image
-
+   bandageImg.src = "../assets/hurt.png"; 
    playerImg.onload = () => {
      enemyImg.onload = () => {
        requestAnimationFrame(animate);
      };
    };
-
    function animate() {
-     // Clear the entire canvas before rendering anything
      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-     // Re-render the rest of the team
      renderFullTeam();
-
-     // Calculate the positions of the player and enemy during the animation
      const progress = easeInOutQuad(currentFrame / totalFrames);
      const playerX = playerStartX - (playerStartX - centerX) * progress;
      const enemyX = enemyStartX + (centerX + 60 - enemyStartX) * progress;
-
-     // Draw the headbutting animals
-     ctx.drawImage(playerImg, playerX, playerY, 60, 60); // Player animal
+     ctx.drawImage(playerImg, playerX, playerY, 60, 60); 
      ctx.fillText(
        `A:${playerAnimal.attack}/H:${playerAnimal.health}`,
        playerX,
        playerY + 80
-     ); // Player stats
-
-     ctx.drawImage(enemyImg, enemyX, enemyY, 60, 60); // Enemy animal
+     ); 
+     ctx.drawImage(enemyImg, enemyX, enemyY, 60, 60);
      ctx.fillText(
        `A:${enemyAnimal.attack}/H:${enemyAnimal.health}`,
        enemyX,
        enemyY + 80
-     ); // Enemy stats
-
-     // Bandage effect when animals are close
+     ); 
      if (progress > 0.8) {
        const bandageSize = 60;
        ctx.drawImage(
@@ -288,17 +251,13 @@
        );
        ctx.drawImage(bandageImg, enemyX + 10, enemyY, bandageSize, bandageSize);
      }
-
-     // When the animation finishes, show the damage
      if (currentFrame >= totalFrames) {
        showDamage(playerX, playerAnimal.attack, enemyX, enemyAnimal.attack);
      }
-
      currentFrame++;
      if (currentFrame <= totalFrames) {
        requestAnimationFrame(animate);
      } else {
-       // Handle both deaths after the headbutt completes
        setTimeout(
          () => handleBothDeaths(playerAnimal, enemyAnimal, onComplete),
          500
@@ -306,26 +265,13 @@
      }
    }
  }
-
-
-
-
-
-
-
   function showDamage(playerX, playerDamage, enemyX, enemyDamage) {
     let alpha = 1.0;
     const fadeDuration = 1000;
     const commonY = 150;
-
     function drawDamage() {
-      // Clear the entire canvas before rendering anything
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // Re-render the entire team
       renderFullTeam();
-
-      // Render the damage with fading effect
       ctx.save();
       ctx.globalAlpha = alpha;
       ctx.font = "30px Arial";
@@ -333,19 +279,16 @@
       ctx.fillText(`-${playerDamage}`, playerX + 20, commonY - 20);
       ctx.fillText(`-${enemyDamage}`, enemyX + 20, commonY - 20);
       ctx.restore();
-
-      // Fade out effect
       alpha -= 0.05;
       if (alpha > 0) {
         requestAnimationFrame(drawDamage);
       } else {
-        ctx.globalAlpha = 1.0; // Reset the global alpha after fading out
+        ctx.globalAlpha = 1.0; 
       }
     }
 
     drawDamage();
   }
-
   function renderFullTeam() {
     // ctx.clearRect(0, 0, canvas.width, canvas.height);
     const commonY = 150;
@@ -396,24 +339,19 @@ function animateDeathFlyOff(animal, index, teamType, onComplete) {
   const img = new Image();
   img.src = animal.img;
   let currentFrame = 0;
-  const totalFrames = 60; // Number of frames for the animation
-
-  // Determine the starting positions based on team type (player or enemy)
+  const totalFrames = 60; 
   let startX, startY;
   if (teamType === "player") {
-    startX = 100 + (maxSlots - 1 - index) * 100; // Player team's starting X position
-    startY = 150; // Common Y position for player
+    startX = 100 + (maxSlots - 1 - index) * 100; 
+    startY = 150; 
   } else {
-    startX = canvas.width - 550 + index * 100; // Enemy team's starting X position
-    startY = 150; // Common Y position for enemy
+    startX = canvas.width - 550 + index * 100; 
+    startY = 150; 
   }
-
-  const endX = teamType === "player" ? -100 : canvas.width + 100; // Final X position off-screen
-  const controlPointX = (startX + endX) / 2; // Midpoint for the Bézier curve
-  const controlPointY = startY - 400; // Lift the control point higher for a more pronounced arc
-
+  const endX = teamType === "player" ? -100 : canvas.width + 100; 
+  const controlPointX = (startX + endX) / 2; 
+  const controlPointY = startY - 400; 
   function animate() {
-    // Clear only the area where the animal was drawn on the previous frame
     const previousX =
       (1 - currentFrame / totalFrames) *
         (1 - currentFrame / totalFrames) *
@@ -433,45 +371,31 @@ function animateDeathFlyOff(animal, index, teamType, onComplete) {
         controlPointY +
       (currentFrame / totalFrames) *
         (currentFrame / totalFrames) *
-        (startY + 100); // Curve ends lower
-
-    // Clear the area of the previous frame
+        (startY + 100); 
     ctx.clearRect(previousX - 30, previousY - 30, 120, 120);
-
-    // Re-render the full team without the dying animal
     renderFullTeam();
-
-    // Calculate the Bézier curve position for the animal
     const progress = currentFrame / totalFrames;
     const curveX =
       (1 - progress) * (1 - progress) * startX +
       2 * (1 - progress) * progress * controlPointX +
       progress * progress * endX;
-
     const curveY =
       (1 - progress) * (1 - progress) * startY +
       2 * (1 - progress) * progress * controlPointY +
-      progress * progress * (startY + 100); // Lowering the end
-
-    // Draw the animal flying off along the curved path
+      progress * progress * (startY + 100); 
     ctx.drawImage(img, curveX, curveY, 60, 60);
 
     currentFrame++;
     if (currentFrame < totalFrames) {
-      requestAnimationFrame(animate); // Continue the animation
+      requestAnimationFrame(animate);
     } else {
-      onComplete(); // Call the callback after animation completes
+      onComplete(); 
     }
   }
-
-  animate(); // Start the animation
+  animate(); 
 }
-
-
 function handleBothDeaths(playerAnimal, enemyAnimal, onComplete) {
   const deathPromises = [];
-
-  // Add player's death animation if they die
   if (playerAnimal.health <= 0) {
     deathPromises.push(
       new Promise((resolve) => {
@@ -484,8 +408,6 @@ function handleBothDeaths(playerAnimal, enemyAnimal, onComplete) {
       })
     );
   }
-
-  // Add enemy's death animation if they die
   if (enemyAnimal.health <= 0) {
     deathPromises.push(
       new Promise((resolve) => {
@@ -498,18 +420,10 @@ function handleBothDeaths(playerAnimal, enemyAnimal, onComplete) {
       })
     );
   }
-
-  // Ensure both animations are completed before proceeding to the next step
   Promise.all(deathPromises).then(() => {
-    // After both animations finish, we continue to onComplete
     onComplete();
   });
 }
-
-
-
-
-  // Call this function in simulateBattle when an animal dies
   function simulateBattle() {
     console.clear();
     let turnCount = 1;
@@ -520,7 +434,6 @@ function handleBothDeaths(playerAnimal, enemyAnimal, onComplete) {
       renderTeams();
       setTimeout(playTurn, 1500);
     }
-
     function playTurn() {
       if (
         turnCount > maxTurns ||
@@ -546,54 +459,42 @@ function handleBothDeaths(playerAnimal, enemyAnimal, onComplete) {
         showNonBattleElements();
         return;
       }
-
       console.log(`Turn ${turnCount}`);
       const playerAnimalIndex = battleLineup.findIndex(
         (animal) => animal !== null
       );
       const playerAnimal = battleLineup[playerAnimalIndex];
-
       if (playerAnimal) {
         const enemyAnimalIndex = enemyLineup.findIndex(
           (animal) => animal !== null
         );
         const enemyAnimal = enemyLineup[enemyAnimalIndex];
-
         if (enemyAnimal) {
           animateHeadbutt(playerAnimal, enemyAnimal, () => {
             enemyAnimal.health -= playerAnimal.attack;
             playerAnimal.health -= enemyAnimal.attack;
-
-            // Handle both deaths after headbutt animation finishes
             handleBothDeaths(playerAnimal, enemyAnimal, () => {
-              // Update enemy team if dead
               if (enemyAnimal.health <= 0) {
                 console.log(`Enemy's ${enemyAnimal.name} died`);
                 enemyLineup[enemyAnimalIndex] = null;
                 shiftAnimalsInLineup(enemyLineup);
                 renderTeams();
               }
-
-              // Update player team if dead
               if (playerAnimal.health <= 0) {
                 console.log(`User's ${playerAnimal.name} died`);
                 battleLineup[playerAnimalIndex] = null;
                 shiftAnimalsInLineup(battleLineup);
                 renderTeams();
               }
-
               turnCount++;
-              setTimeout(playTurn, 1500); // Proceed to next turn after the animations
+              setTimeout(playTurn, 1500); 
             });
           });
         }
       }
     }
-
     pauseBeforeFirstTurn();
   }
-
-
   function shiftAnimalsInLineup(lineup) {
     let shiftedLineup = lineup.filter((animal) => animal !== null);
     while (shiftedLineup.length < maxSlots) {
