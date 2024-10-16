@@ -1,10 +1,9 @@
 const animalContainer = document.getElementById("animals");
 const walkingSpeed = 50;
 const frameDuration = 1000 / 60;
-const gridSize = 10; // Adjust this based on your canvas size
+const gridSize = 10; 
 let animationId;
-let foodElement = null; // Variable to store the current food
-
+let foodElement = null; 
 const restrictedZones = [
   { x: 100, y: 100, width: 200, height: 150 },
   { x: 400, y: 300, width: 100, height: 100 },
@@ -32,14 +31,9 @@ function isInRestrictedZone(animalX, animalY, animalWidth, animalHeight) {
     return isOverlapping;
   });
 }
-// Get grid dimensions based on the canvas size
 const rows = Math.floor(window.innerHeight / gridSize);
 const cols = Math.floor(window.innerWidth / gridSize);
-
-// Create grid (empty cells = 0, restricted zones = 1)
 const grid = Array.from({ length: rows }, () => Array(cols).fill(0));
-
-// Populate grid with restricted zones
 restrictedZones.forEach((zone) => {
   const startX = Math.floor(zone.x / gridSize);
   const startY = Math.floor(zone.y / gridSize);
@@ -47,41 +41,33 @@ restrictedZones.forEach((zone) => {
   const endY = Math.floor((zone.y + zone.height) / gridSize);
   for (let i = startY; i <= endY; i++) {
     for (let j = startX; j <= endX; j++) {
-      grid[i][j] = 1; // Mark as restricted
+      grid[i][j] = 1; 
     }
   }
 });
-
 function getUserAnimals() {
   const storedAnimals = localStorage.getItem("ownedAnimals");
   return storedAnimals ? JSON.parse(storedAnimals) : [];
 }
-
 function createAnimal(animal) {
   const animalElement = document.createElement("img");
   animalElement.src = `../assets/${animal.name}.webp`;
   animalElement.className = "animal";
   animalElement.style.position = "absolute";
-  animalElement.style.width = "50px"; // Adjust if necessary
-  animalElement.style.height = "50px"; // Adjust if necessary
-
+  animalElement.style.width = "50px"; 
+  animalElement.style.height = "50px"; 
   let spawnX, spawnY;
-
-  // Try to find a valid spawn position (outside restricted zones)
   do {
     spawnX = Math.random() * (window.innerWidth - 50);
     spawnY = Math.random() * (window.innerHeight - 60);
-  } while (isInRestrictedZone(spawnX, spawnY, 50, 50)); // Retry if inside restricted zone
-
+  } while (isInRestrictedZone(spawnX, spawnY, 50, 50)); 
   animalElement.style.left = `${spawnX}px`;
   animalElement.style.top = `${spawnY}px`;
-
   animalElement.dataset.isMovingToFood = "false";
   animalContainer.appendChild(animalElement);
-  roamAnimal(animalElement); // Start roaming
+  roamAnimal(animalElement); 
   return animalElement;
 }
-// A* pathfinding algorithm (unchanged)
 function astar(start, end) {
   const openSet = [];
   const closedSet = [];
@@ -152,30 +138,24 @@ function astar(start, end) {
   }
   return null;
 }
-
-// Helper function to calculate the heuristic (Manhattan distance)
 function heuristic(a, b) {
   return Math.abs(a.row - b.row) + Math.abs(a.col - b.col);
 }
-
-// Helper function to check if a cell is valid and not an obstacle
 function isValidCell(row, col) {
   return (
     row >= 0 && row < rows && col >= 0 && col < cols && grid[row][col] !== 1
   );
 }
 function roamAnimal(animal) {
-  if (animal.dataset.isMovingToFood === "true") return; // Prevent roaming if moving to food
+  if (animal.dataset.isMovingToFood === "true") return;
 
-  const walkDuration = Math.random() * (7000 - 3000) + 3000; // Random walk duration
+  const walkDuration = Math.random() * (7000 - 3000) + 3000; 
   const direction = Math.random() * 2 * Math.PI;
-  const distance = Math.random() * 100 + 50; // Random movement distance
-
+  const distance = Math.random() * 100 + 50;
   const deltaX = Math.cos(direction) * distance;
   const deltaY = Math.sin(direction) * distance;
-
-  const startX = parseFloat(animal.style.left) + animal.offsetWidth / 2; // Start position centered
-  const startY = parseFloat(animal.style.top) + animal.offsetHeight / 2; // Start position centered
+  const startX = parseFloat(animal.style.left) + animal.offsetWidth / 2
+  const startY = parseFloat(animal.style.top) + animal.offsetHeight / 2; 
   const endX = Math.min(
     Math.max(startX + deltaX, animal.offsetWidth / 2),
     window.innerWidth - animal.offsetWidth / 2
@@ -184,8 +164,6 @@ function roamAnimal(animal) {
     Math.max(startY + deltaY, animal.offsetHeight / 2),
     window.innerHeight - animal.offsetHeight / 2
   );
-
-  // Check if the new position is within a restricted zone
   if (
     isInRestrictedZone(
       endX - animal.offsetWidth / 2,
@@ -194,48 +172,41 @@ function roamAnimal(animal) {
       animal.offsetHeight
     )
   ) {
-    setTimeout(() => roamAnimal(animal), 100); // Retry with a new direction
+    setTimeout(() => roamAnimal(animal), 100); 
     return;
   }
 
   const duration = walkDuration / 1000;
   const startTime = performance.now();
-  let roamAnimationId; // Store animation ID so it can be canceled
-
+  let roamAnimationId; 
   function animateRoaming(currentTime) {
     if (animal.dataset.isMovingToFood === "true") {
-      cancelAnimationFrame(roamAnimationId); // Stop roaming if animal is marked for food
+      cancelAnimationFrame(roamAnimationId); 
       return;
     }
-
     const elapsedTime = (currentTime - startTime) / 1000;
     const progress = Math.min(elapsedTime / duration, 1);
 
     animal.style.left = `${
       startX + (endX - startX) * progress - animal.offsetWidth / 2
-    }px`; // Adjust left to center
+    }px`; 
     animal.style.top = `${
       startY + (endY - startY) * progress - animal.offsetHeight / 2
-    }px`; // Adjust top to center
-
+    }px`;
     if (progress < 1) {
       roamAnimationId = requestAnimationFrame(animateRoaming);
     } else {
       setTimeout(() => {
-        roamAnimal(animal); // Continue roaming
-      }, Math.random() * 2000); // Random idle before next roam
+        roamAnimal(animal); 
+      }, Math.random() * 2000); 
     }
   }
-
   roamAnimationId = requestAnimationFrame(animateRoaming);
 }
-
-// Function to create food and make the closest animal go to it
 function createFood(event) {
   if (foodElement) {
-    foodElement.remove(); // Remove existing food before creating new one
+    foodElement.remove(); 
   }
-
   foodElement = document.createElement("div");
   foodElement.className = "food";
   foodElement.style.position = "absolute";
@@ -246,14 +217,11 @@ function createFood(event) {
   foodElement.style.left = `${event.clientX - 10}px`;
   foodElement.style.top = `${event.clientY - 10}px`;
   animalContainer.appendChild(foodElement);
-
   const foodRow = Math.floor(event.clientY / gridSize);
   const foodCol = Math.floor(event.clientX / gridSize);
-
   const animals = document.querySelectorAll(".animal");
   let closestAnimal = null;
   let minDistance = Infinity;
-
   animals.forEach((animal) => {
     const animalRow = Math.floor(parseFloat(animal.style.top) / gridSize);
     const animalCol = Math.floor(parseFloat(animal.style.left) / gridSize);
@@ -267,12 +235,8 @@ function createFood(event) {
   });
 
   if (closestAnimal) {
-    closestAnimal.dataset.isMovingToFood = "true"; // Mark as moving to food
-
-    // Immediately stop roaming by cancelling any ongoing animation
+    closestAnimal.dataset.isMovingToFood = "true";
     cancelAnimationFrame(closestAnimal.roamAnimationId);
-
-    // Introduce a 500ms delay before starting A* pathfinding
     setTimeout(() => {
       const start = {
         row: Math.floor(parseFloat(closestAnimal.style.top) / gridSize),
@@ -283,41 +247,47 @@ function createFood(event) {
       const path = astar(start, end);
       if (path) {
         followPath(closestAnimal, path, () => {
-          foodElement.remove(); // Remove food once eaten
-          closestAnimal.dataset.isMovingToFood = "false"; // Resume roaming
-          roamAnimal(closestAnimal); // Return to roaming after eating
+          foodElement.remove(); 
+          closestAnimal.dataset.isMovingToFood = "false"; 
+          roamAnimal(closestAnimal); 
         });
       }
-    }, 500); // 500ms delay before pathfinding starts
+    }, 200); 
   }
 }
-
-// Function to move animal along the path and trigger callback after reaching the food
 function followPath(animal, path, callback) {
   let index = 0;
-
+  const speed = 0.7; 
   function moveStep() {
     if (index >= path.length) {
-      if (callback) callback(); // Trigger the callback (e.g., remove food and return to roaming)
+      if (callback) callback();
       return;
     }
-
     const node = path[index];
     const nextX = node.col * gridSize;
     const nextY = node.row * gridSize;
-
-    animal.style.left = `${nextX - animal.offsetWidth / 2}px`; // Adjust left to center
-    animal.style.top = `${nextY - animal.offsetHeight / 2}px`; // Adjust top to center
-
-    index++;
-
-    setTimeout(moveStep, 100); // Adjust speed here
+    const currentX = parseFloat(animal.style.left) + animal.offsetWidth / 2;
+    const currentY = parseFloat(animal.style.top) + animal.offsetHeight / 2;
+    const deltaX = nextX - currentX;
+    const deltaY = nextY - currentY;
+    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    if (distance > speed) {
+      const moveX = (deltaX / distance) * speed;
+      const moveY = (deltaY / distance) * speed;
+      animal.style.left = `${currentX + moveX - animal.offsetWidth / 2}px`;
+      animal.style.top = `${currentY + moveY - animal.offsetHeight / 2}px`;
+      requestAnimationFrame(moveStep); 
+    } else {
+      animal.style.left = `${nextX - animal.offsetWidth / 2}px`;
+      animal.style.top = `${nextY - animal.offsetHeight / 2}px`;
+      index++; 
+      setTimeout(moveStep, 10); 
+    }
   }
-
-  moveStep();
+  moveStep(); 
 }
 
-// Draw restricted zones (unchanged)
+
 function drawRestrictedZones() {
   restrictedZones.forEach((zone) => {
     const zoneElement = document.createElement("div");
@@ -331,13 +301,9 @@ function drawRestrictedZones() {
   });
 }
 drawRestrictedZones();
-
-// Create animals from stored data
 const userAnimals = getUserAnimals();
 userAnimals.forEach((animal) => {
   const animalElement = createAnimal(animal);
 });
-
-// Add event listener for food creation
 animalContainer.addEventListener("dblclick", createFood);
 
