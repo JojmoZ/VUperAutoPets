@@ -62,17 +62,25 @@ function createAnimal(animal) {
   animalElement.src = `../assets/${animal.name}.webp`;
   animalElement.className = "animal";
   animalElement.style.position = "absolute";
-  animalElement.style.left = `${Math.random() * (window.innerWidth - 50)}px`;
-  animalElement.style.top = `${Math.random() * (window.innerHeight - 60)}px`;
   animalElement.style.width = "50px"; // Adjust if necessary
   animalElement.style.height = "50px"; // Adjust if necessary
+
+  let spawnX, spawnY;
+
+  // Try to find a valid spawn position (outside restricted zones)
+  do {
+    spawnX = Math.random() * (window.innerWidth - 50);
+    spawnY = Math.random() * (window.innerHeight - 60);
+  } while (isInRestrictedZone(spawnX, spawnY, 50, 50)); // Retry if inside restricted zone
+
+  animalElement.style.left = `${spawnX}px`;
+  animalElement.style.top = `${spawnY}px`;
+
   animalElement.dataset.isMovingToFood = "false";
   animalContainer.appendChild(animalElement);
   roamAnimal(animalElement); // Start roaming
   return animalElement;
 }
-
-
 // A* pathfinding algorithm (unchanged)
 function astar(start, end) {
   const openSet = [];
