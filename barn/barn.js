@@ -11,8 +11,9 @@ function getUserAnimals() {
 
 // Function to create an animal element
 function createAnimal(animal) {
+  // console.log(animal)
   const animalElement = document.createElement("img");
-  animalElement.src = `../assets/${animal}.webp`;
+  animalElement.src = `../assets/${animal.name}.webp`;
   animalElement.className = "animal";
   animalElement.style.position = "absolute"; // Ensure absolute positioning for movement
   animalElement.style.left = `${Math.random() * (window.innerWidth - 50)}px`; // Random start position
