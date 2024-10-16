@@ -29,7 +29,7 @@ canvas {
     left: 0;
     width: 100%;
     height: 100%;
-    /* background-image: url('path/to/your/pixel-barn.png'); Use your pixel barn image here */
+    background-image: url('../assets/BARNA.png'); 
     background-size: cover;
 }
 
