@@ -44,5 +44,6 @@ canvas {
   height: 50px; 
 }
 .restricted-area {
-  border: 2px solid red; 
+  background-color: rgba(255, 0, 0, 0.3); /* Transparent red */
+  border: 2px solid red;
 }

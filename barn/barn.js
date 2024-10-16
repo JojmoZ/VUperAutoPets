@@ -115,59 +115,116 @@ function searchForFood(animal) {
 }
 
 // Function to move an animal randomly
+// Define restricted zones as an array of objects with x, y, width, and height
+const restrictedZones = [
+  { x: 100, y: 100, width: 200, height: 150 }, // Restricted zone 1
+  { x: 400, y: 300, width: 100, height: 100 }, // Restricted zone 2
+  { x: 600, y: 150, width: 150, height: 200 }, // Restricted zone 3
+  { x: 250, y: 450, width: 180, height: 120 }, // Restricted zone 4
+  { x: 500, y: 500, width: 100, height: 150 }, // Restricted zone 5
+  { x: 700, y: 50, width: 120, height: 180 }, // Restricted zone 6
+  { x: 800, y: 400, width: 200, height: 100 }, // Restricted zone 7
+  { x: 150, y: 600, width: 140, height: 140 }, // Restricted zone 8
+  { x: 900, y: 250, width: 100, height: 100 }, // Restricted zone 9
+  { x: 300, y: 750, width: 160, height: 100 }, // Restricted zone 10
+];
+
+// Function to check if a position is inside a restricted zone
+function isInRestrictedZone(animalX, animalY, animalWidth, animalHeight) {
+  return restrictedZones.some((zone) => {
+    const zoneX = zone.x;
+    const zoneY = zone.y;
+    const zoneWidth = zone.width;
+    const zoneHeight = zone.height;
+
+    // Check if the animal's bounding box intersects the zone's bounding box
+    const isOverlapping =
+      animalX < zoneX + zoneWidth && // Right edge of the animal is left of the zone's right edge
+      animalX + animalWidth > zoneX && // Left edge of the animal is right of the zone's left edge
+      animalY < zoneY + zoneHeight && // Bottom edge of the animal is above the zone's bottom edge
+      animalY + animalHeight > zoneY; // Top edge of the animal is below the zone's top edge
+
+    return isOverlapping;
+  });
+}
+
+// Modify moveAnimal to avoid restricted zones
 function moveAnimal(animalElement) {
-  if (animalElement.dataset.isMovingToFood === "true") return; // Prevent movement if heading to food
+  if (animalElement.dataset.isMovingToFood === "true") return;
 
-  const walkDuration = Math.random() * (7000 - 3000) + 3000; // Random walk duration between 3s and 7s
-  const idleDuration = Math.random() * (3000 - 2000) + 2000; // Random idle duration between 2s and 3s
-  const direction = Math.random() * 2 * Math.PI; // Random direction in radians
-  const distance = 50; // Move distance
+  const walkDuration = Math.random() * (7000 - 3000) + 3000;
+  const idleDuration = Math.random() * (3000 - 2000) + 2000;
+  const direction = Math.random() * 2 * Math.PI;
+  const distance = 50;
 
-  const deltaX = Math.cos(direction) * distance; // Calculate deltaX based on direction
-  const deltaY = Math.sin(direction) * distance; // Calculate deltaY based on direction
+  const deltaX = Math.cos(direction) * distance;
+  const deltaY = Math.sin(direction) * distance;
 
-  // Current position
   const startX = parseFloat(animalElement.style.left);
   const startY = parseFloat(animalElement.style.top);
+  const animalWidth = animalElement.offsetWidth;
+  const animalHeight = animalElement.offsetHeight;
 
-  // New positions with boundaries
   const endX = Math.min(
     Math.max(startX + deltaX, 0),
-    animalContainer.clientWidth - 50
+    animalContainer.clientWidth - animalWidth
   );
   const endY = Math.min(
     Math.max(startY + deltaY, 0),
-    animalContainer.clientHeight - 60
+    animalContainer.clientHeight - animalHeight
   );
 
-  // Animate movement smoothly using requestAnimationFrame
-  const duration = walkDuration / 1000; // Convert to seconds
-  const startTime = performance.now(); // Record start time
+  // Check if the next position would cause the animal to enter a restricted zone
+  if (isInRestrictedZone(endX, endY, animalWidth, animalHeight)) {
+    console.log(
+      "Animal trying to enter restricted zone, changing direction..."
+    );
+    moveAnimal(animalElement); // Recalculate new movement
+    return;
+  }
+
+  const duration = walkDuration / 1000;
+  const startTime = performance.now();
 
   function animateMovement(currentTime) {
-    const elapsedTime = (currentTime - startTime) / 1000; // Convert to seconds
-    const progress = Math.min(elapsedTime / duration, 1); // Progress of the animation
+    const elapsedTime = (currentTime - startTime) / 1000;
+    const progress = Math.min(elapsedTime / duration, 1);
 
-    // Update position based on easing
     animalElement.style.left = `${startX + (endX - startX) * progress}px`;
     animalElement.style.top = `${startY + (endY - startY) * progress}px`;
 
-    // Continue animating until the duration is completed
     if (progress < 1) {
       animationId = requestAnimationFrame(animateMovement);
     } else {
-      // Set a timeout to idle after walking
       setTimeout(() => {
-        animalElement.style.transition = "none"; // Disable transition for idle
+        animalElement.style.transition = "none";
         setTimeout(() => {
-          moveAnimal(animalElement); // Continue walking after idling
-        }, idleDuration); // Wait for idle duration
-      }, 0); // Allow some time before starting idle
+          moveAnimal(animalElement);
+        }, idleDuration);
+      }, 0);
     }
   }
 
-  requestAnimationFrame(animateMovement); // Start the animation
+  requestAnimationFrame(animateMovement);
 }
+
+// Add restricted zones to your canvas visually (optional)
+function drawRestrictedZones() {
+  restrictedZones.forEach(zone => {
+    const zoneElement = document.createElement("div");
+    zoneElement.className = "restricted-area";
+    zoneElement.style.position = "absolute";
+    zoneElement.style.left = `${zone.x}px`;
+    zoneElement.style.top = `${zone.y}px`;
+    zoneElement.style.width = `${zone.width}px`;
+    zoneElement.style.height = `${zone.height}px`;
+    animalContainer.appendChild(zoneElement);
+  });
+}
+
+// Call the function to render restricted zones visually
+drawRestrictedZones();
+
 
 // Get user animals and create them in the barn
 const userAnimals = getUserAnimals();
