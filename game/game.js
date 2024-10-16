@@ -18,21 +18,18 @@ let shopAnimals = [
   { name: "Fish", attack: 2, health: 3, cost: 5, img: "../assets/Fish.webp" },
   { name: "Lion", attack: 3, health: 4, cost: 7, img: "../assets/Lion.webp" },
   { name: "Pig", attack: 3, health: 1, cost: 3, img: "../assets/Pig.webp" },
-  {
-    name: "Turtle",
-    attack: 1,
-    health: 2,
-    cost: 4,
-    img: "../assets/Turtle.webp",
-  },
-  {
-    name: "Elephant",
-    attack: 8,
-    health: 7,
-    cost: 5,
-    img: "../assets/Elephant.webp",
+  { name: "Turtle",attack: 1, health: 2, cost: 4, img: "../assets/Turtle.webp",},
+  { name: "Elephant",attack: 8, health: 7, cost: 5,img: "../assets/Elephant.webp",
   },
 ];
+let middleHeart = document.getElementById("middleHeart");
+let lives = parseInt(localStorage.getItem("lives")) || 3;
+let hearts = [
+  document.getElementById("heart1"),
+  document.getElementById("heart2"),
+  document.getElementById("heart3"),
+];
+let originalBattleLineup = []; 
 function saveRandomAnimals() {
   localStorage.setItem("randomAnimals", JSON.stringify(randomAnimals));
 }
@@ -174,9 +171,7 @@ document.querySelectorAll(".battle-slot").forEach((slot) => {
 document.getElementById("refreshButton").addEventListener("click", function () {
   rollShopAnimals();
 });
-document
-  .getElementById("startBattleButton")
-  .addEventListener("click", function () {
+document.getElementById("startBattleButton").addEventListener("click", function () {
     backupLineup(); // Backup the lineup before battle
     shiftAnimalsToFront(); // Shift animals to the front
     generateEnemyTeam(); // Generate enemy team
@@ -184,8 +179,7 @@ document
     hideNonBattleElements();
     showCanvas();
     simulateBattle(); // Start the battle
-  });
-
+});
 function hideNonBattleElements() {
   document.getElementById("battleSlotsContainer").classList.add("hidden");
   document.getElementById("controls").classList.add("hidden");
@@ -345,12 +339,9 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
     requestAnimationFrame(animateBack);
   }
 }
-let originalBattleLineup = []; // To store the original lineup
-
 function backupLineup() {
   originalBattleLineup = [...battleLineup]; // Create a backup of the original lineup
 }
-
 function shiftAnimalsToFront() {
   const shiftedLineup = battleLineup.filter((animal) => animal !== null); // Filter out null values
   while (shiftedLineup.length < maxSlots) {
@@ -358,7 +349,6 @@ function shiftAnimalsToFront() {
   }
   battleLineup = [...shiftedLineup]; // Update the battle lineup to the shifted one
 }
-
 function restoreOriginalLineup() {
   battleLineup = [...originalBattleLineup]; // Restore the backup lineup
   renderBattleSlots(); // Re-render the slots with the restored lineup
@@ -457,10 +447,6 @@ function showDamage(
   }
   drawExpandingDamage();
 }
-
-
-
-
 function renderFullTeam() {
   const commonY = 150;
   const teamOffsetX = 100;
@@ -608,7 +594,6 @@ function handleBothDeaths(playerAnimal, enemyAnimal, onComplete) {
     }, 500);
   });
 }
-
 function simulateBattle() {
   console.clear();
   let turnCount = 1;
@@ -679,8 +664,6 @@ function simulateBattle() {
 
   pauseBeforeFirstTurn();
 }
-
-
 function shiftAnimalsInLineup(lineup) {
   let shiftedLineup = lineup.filter((animal) => animal !== null);
   while (shiftedLineup.length < maxSlots) {
@@ -690,16 +673,6 @@ function shiftAnimalsInLineup(lineup) {
     lineup[i] = shiftedLineup[i];
   }
 }
-let hearts = [
-  document.getElementById("heart1"),
-  document.getElementById("heart2"),
-  document.getElementById("heart3"),
-];
-let middleHeart = document.getElementById("middleHeart");
-// Initialize lives from localStorage, or default to 3 if not set
-let lives = parseInt(localStorage.getItem("lives")) || 3;
-
-// Update hearts display based on lives
 function updateHeartsDisplay() {
   hearts.forEach((heart, index) => {
     if (index < lives) {
@@ -709,8 +682,6 @@ function updateHeartsDisplay() {
     }
   });
 }
-
-
 function loseLife() {
   if (lives > 0) {
     middleHeart.src = "../assets/heart.png";
@@ -734,8 +705,6 @@ function loseLife() {
     }, 1500);
   }
 }
-
-
 function resetGame() {
   // Reset battleLineup, enemyLineup, and randomAnimals
   battleLineup = [null, null, null, null, null];
@@ -762,17 +731,15 @@ function resetGame() {
   saveRandomAnimals();
   showNonBattleElements();
 }
-
 function checkGameOver(playerSurvivors, enemySurvivors) {
   if (playerSurvivors > enemySurvivors) {
     console.log("User wins!");
     alert("You won this battle! Continue to the next.");
-    // Continue to the next battle without resetting the game
     showNonBattleElements();
     location.reload();
     
   } else if (playerSurvivors < enemySurvivors) {
-    loseLife(); // Lose a life
+    loseLife(); 
     
   } else {
     console.log("It's a draw!");
@@ -784,11 +751,9 @@ function checkGameOver(playerSurvivors, enemySurvivors) {
 }
 function showDefeatScreen() {
   const defeatScreen = document.getElementById("defeatScreen");
-  defeatScreen.classList.remove("hidden"); // Show defeat screen
-
-  // Redirect to homepage after 3 seconds
+  defeatScreen.classList.remove("hidden"); 
   setTimeout(() => {
      resetGame();
-    window.location.href = "/home/homepage.html"; // Redirect to homepage
-  }, 3000); // Wait for 3 seconds before redirecting
+    window.location.href = "/home/homepage.html"; 
+  }, 3000); 
 }
