@@ -176,12 +176,15 @@ document.getElementById("refreshButton").addEventListener("click", function () {
 document
   .getElementById("startBattleButton")
   .addEventListener("click", function () {
-    generateEnemyTeam();
-    renderTeams();
+    backupLineup(); // Backup the lineup before battle
+    shiftAnimalsToFront(); // Shift animals to the front
+    generateEnemyTeam(); // Generate enemy team
+    renderTeams(); // Render both teams (player and enemy)
     hideNonBattleElements();
     showCanvas();
-    simulateBattle();
+    simulateBattle(); // Start the battle
   });
+
 function hideNonBattleElements() {
   document.getElementById("battleSlotsContainer").classList.add("hidden");
   document.getElementById("controls").classList.add("hidden");
@@ -306,6 +309,8 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
        );
     }
   }
+  
+
   function animateReturn(playerStartX, playerY, enemyStartX, enemyY) {
     let returnFrame = 0;
     const returnFrames = totalFrames; 
@@ -338,7 +343,24 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
     requestAnimationFrame(animateBack);
   }
 }
+let originalBattleLineup = []; // To store the original lineup
 
+function backupLineup() {
+  originalBattleLineup = [...battleLineup]; // Create a backup of the original lineup
+}
+
+function shiftAnimalsToFront() {
+  const shiftedLineup = battleLineup.filter((animal) => animal !== null); // Filter out null values
+  while (shiftedLineup.length < maxSlots) {
+    shiftedLineup.push(null); // Add nulls to the end to maintain maxSlots length
+  }
+  battleLineup = [...shiftedLineup]; // Update the battle lineup to the shifted one
+}
+
+function restoreOriginalLineup() {
+  battleLineup = [...originalBattleLineup]; // Restore the backup lineup
+  renderBattleSlots(); // Re-render the slots with the restored lineup
+}
 function showDamage(
   playerX,
   playerDamage,
@@ -587,7 +609,6 @@ function handleBothDeaths(playerAnimal, enemyAnimal, onComplete) {
 
 function simulateBattle() {
   console.clear();
-  
   let turnCount = 1;
   const maxTurns = 10;
   renderTeams();
@@ -706,7 +727,7 @@ function loseLife() {
         showDefeatScreen(); 
       } else {
         showNonBattleElements();
-        location.reload();
+        location.reload()
       }
     }, 1500);
   }
