@@ -202,6 +202,7 @@ function isValidCell(row, col) {
 }
 
 // Function to create food and make the closest animal go to it
+// Function to create food and make the closest animal go to it
 function createFood(event) {
   if (foodElement) {
     foodElement.remove(); // Remove existing food before creating new one
@@ -236,25 +237,30 @@ function createFood(event) {
       closestAnimal = animal;
     }
   });
-
+  console.log(closestAnimal)
   if (closestAnimal) {
     closestAnimal.dataset.isMovingToFood = "true"; // Mark as moving to food
-    const start = {
-      row: Math.floor(parseFloat(closestAnimal.style.top) / gridSize),
-      col: Math.floor(parseFloat(closestAnimal.style.left) / gridSize),
-    };
-    const end = { row: foodRow, col: foodCol };
 
-    const path = astar(start, end);
-    if (path) {
-      followPath(closestAnimal, path, () => {
-        foodElement.remove(); // Remove food once eaten
-        closestAnimal.dataset.isMovingToFood = "false"; // Resume roaming
-        roamAnimal(closestAnimal); // Return to roaming after eating
-      });
-    }
+    // Introduce a 500ms delay before starting A* pathfinding
+    setTimeout(() => {
+      const start = {
+        row: Math.floor(parseFloat(closestAnimal.style.top) / gridSize),
+        col: Math.floor(parseFloat(closestAnimal.style.left) / gridSize),
+      };
+      const end = { row: foodRow, col: foodCol };
+
+      const path = astar(start, end);
+      if (path) {
+        followPath(closestAnimal, path, () => {
+          foodElement.remove(); // Remove food once eaten
+          closestAnimal.dataset.isMovingToFood = "false"; // Resume roaming
+          roamAnimal(closestAnimal); // Return to roaming after eating
+        });
+      }
+    }, 500); // 500ms delay before pathfinding starts
   }
 }
+
 
 // Function to move animal along the path and trigger callback after reaching the food
 function followPath(animal, path, callback) {
