@@ -37,6 +37,7 @@ function saveRandomAnimals() {
   localStorage.setItem("randomAnimals", JSON.stringify(randomAnimals));
 }
 function rollfirst(){
+  console.log("a")
    const ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
    if(ownedAnimals == null){
      alert("GK PUNYA OWNED ANIMALS");
@@ -203,6 +204,7 @@ function showNonBattleElements() {
   hideCanvas();
 }
 document.addEventListener("DOMContentLoaded", function () {
+  console.log("ab")
   updateHeartsDisplay();  
   if (localStorage.getItem("randomAnimals")) {
     randomAnimals = JSON.parse(localStorage.getItem("randomAnimals"));
@@ -738,7 +740,7 @@ function resetGame() {
   // Reset battleLineup, enemyLineup, and randomAnimals
   battleLineup = [null, null, null, null, null];
   enemyLineup = [null, null, null, null, null];
-  randomAnimals = [];
+  localStorage.removeItem("randomAnimals");
 
   // Reset coins
   coins = 10; // or any default value
