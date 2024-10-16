@@ -9,7 +9,7 @@ let battleLineup = JSON.parse(localStorage.getItem("battleLineup")) || [
   null,
 ];
 let randomAnimals = JSON.parse(localStorage.getItem("randomAnimals")) || [];
-let coins = parseInt(localStorage.getItem("gamecoins")) || 0;
+let coins = parseInt(localStorage.getItem("gamecoins")) || 11;
 document.getElementById("coins").textContent = `Coins: ${coins}`;
 const maxShopAnimals = 3;
 const maxSlots = 5;
@@ -35,6 +35,30 @@ let shopAnimals = [
 ];
 function saveRandomAnimals() {
   localStorage.setItem("randomAnimals", JSON.stringify(randomAnimals));
+}
+function rollfirst(){
+   const ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
+   if(ownedAnimals == null){
+     alert("GK PUNYA OWNED ANIMALS");
+     alert("redirecting");
+     setTimeout(() => {
+       window.location.href = "/home/homepage.html"; // Redirect to homepage
+     }, 3000); // Wait for 3 seconds before redirecting
+   }else if(ownedAnimals.length ==0){
+     alert("GK PUNYA OWNED ANIMALS");
+     alert("redirecting");
+     setTimeout(() => {
+       window.location.href = "/home/homepage.html"; // Redirect to homepage
+     }, 3000); // Wait for 3 seconds before redirecting
+   }else{
+     const shuffledAnimals = ownedAnimals
+       ? ownedAnimals.sort(() => Math.random() - 0.5)
+       : shopAnimals.sort(() => Math.random() - 0.5);
+     randomAnimals = shuffledAnimals.slice(0, maxShopAnimals);
+    renderRandomAnimals();
+    saveRandomAnimals();
+   }
+  
 }
 function rollShopAnimals() {
   if (coins >= 1) {
@@ -176,11 +200,12 @@ function showNonBattleElements() {
   hideCanvas();
 }
 document.addEventListener("DOMContentLoaded", function () {
+  updateHeartsDisplay();  
   if (localStorage.getItem("randomAnimals")) {
     randomAnimals = JSON.parse(localStorage.getItem("randomAnimals"));
     renderRandomAnimals();
   } else {
-    rollShopAnimals();
+    rollfirst();
   }
 
   if (localStorage.getItem("battleLineup")) {
@@ -324,8 +349,8 @@ function showDamage(
   onComplete
 ) {
   let alpha = 1.0; 
-  const fadeDuration = 1000; 
-  const displayDuration = 1000; 
+  const fadeDuration = 50; 
+  const displayDuration = 50; 
   const maxFontSize = 40; 
   const minFontSize = 10;
   const commonY = 150;
@@ -562,6 +587,7 @@ function handleBothDeaths(playerAnimal, enemyAnimal, onComplete) {
 
 function simulateBattle() {
   console.clear();
+  
   let turnCount = 1;
   const maxTurns = 10;
   renderTeams();
@@ -583,16 +609,8 @@ function simulateBattle() {
         (animal) => animal !== null
       ).length;
 
-      if (playerSurvivors > enemySurvivors) {
-        console.log("User wins!");
-      } else if (playerSurvivors < enemySurvivors) {
-        console.log("Enemy wins!");
-      } else {
-        console.log("It's a draw!");
-      }
-
+      checkGameOver(playerSurvivors, enemySurvivors);
       renderTeams();
-      showNonBattleElements();
       return;
     }
 
@@ -620,14 +638,16 @@ function simulateBattle() {
             ) {
               setTimeout(() => {
                 console.log("Game over.");
-                renderTeams();
-                showNonBattleElements();
+                checkGameOver(
+                  battleLineup.filter((animal) => animal !== null).length,
+                  enemyLineup.filter((animal) => animal !== null).length
+                );
               }, 1500);
               return;
             }
 
             turnCount++;
-            setTimeout(playTurn, 1500);
+            setTimeout(playTurn, 500);
           });
         });
       }
@@ -636,6 +656,8 @@ function simulateBattle() {
 
   pauseBeforeFirstTurn();
 }
+
+
 function shiftAnimalsInLineup(lineup) {
   let shiftedLineup = lineup.filter((animal) => animal !== null);
   while (shiftedLineup.length < maxSlots) {
@@ -644,4 +666,106 @@ function shiftAnimalsInLineup(lineup) {
   for (let i = 0; i < maxSlots; i++) {
     lineup[i] = shiftedLineup[i];
   }
+}
+let hearts = [
+  document.getElementById("heart1"),
+  document.getElementById("heart2"),
+  document.getElementById("heart3"),
+];
+let middleHeart = document.getElementById("middleHeart");
+// Initialize lives from localStorage, or default to 3 if not set
+let lives = parseInt(localStorage.getItem("lives")) || 3;
+
+// Update hearts display based on lives
+function updateHeartsDisplay() {
+  hearts.forEach((heart, index) => {
+    if (index < lives) {
+      heart.src = "../assets/heart.png"; // Full heart
+    } else {
+      heart.src = "../assets/broken heart.png"; // Broken heart
+    }
+  });
+}
+
+
+function loseLife() {
+  if (lives > 0) {
+    middleHeart.src = "../assets/heart.png";
+    middleHeart.classList.remove("hidden");
+
+    setTimeout(() => {
+      middleHeart.src = "../assets/semibroken.png"; 
+    }, 500); 
+    setTimeout(() => {
+      middleHeart.src = "../assets/broken heart.png"; 
+      middleHeart.classList.add("hidden"); 
+      hearts[lives - 1].src = "../assets/broken heart.png";
+      lives--; 
+      localStorage.setItem("lives", lives); 
+      if (lives <= 0) {
+        showDefeatScreen(); 
+      } else {
+        showNonBattleElements();
+        location.reload();
+      }
+    }, 1500);
+  }
+}
+
+
+function resetGame() {
+  // Reset battleLineup, enemyLineup, and randomAnimals
+  battleLineup = [null, null, null, null, null];
+  enemyLineup = [null, null, null, null, null];
+  randomAnimals = [];
+
+  // Reset coins
+  coins = 10; // or any default value
+  updateCoinsDisplay();
+
+  // Reset hearts if lives are gone
+  if (lives <= 0) {
+    lives = 3;
+    localStorage.setItem("lives", lives); // Reset lives in localStorage
+    hearts.forEach((heart) => {
+      heart.src = "../assets/heart.png"; // Reset hearts to full
+    });
+  }
+
+  // Re-render everything
+  renderBattleSlots();
+  renderRandomAnimals();
+  saveBattleLineup();
+  saveRandomAnimals();
+  showNonBattleElements();
+}
+
+function checkGameOver(playerSurvivors, enemySurvivors) {
+  if (playerSurvivors > enemySurvivors) {
+    console.log("User wins!");
+    alert("You won this battle! Continue to the next.");
+    // Continue to the next battle without resetting the game
+    showNonBattleElements();
+    location.reload();
+    
+  } else if (playerSurvivors < enemySurvivors) {
+    loseLife(); // Lose a life
+    
+  } else {
+    console.log("It's a draw!");
+    alert("It's a draw! Continue to the next battle.");
+   showNonBattleElements();
+   location.reload();
+  }
+  
+}
+function showDefeatScreen() {
+  const defeatScreen = document.getElementById("defeatScreen");
+  defeatScreen.classList.remove("hidden"); // Show defeat screen
+
+  // Redirect to homepage after 3 seconds
+  setTimeout(() => {
+     resetGame();
+    window.location.href = "/home/homepage.html"; // Redirect to homepage
+  }, 3000); // Wait for 3 seconds before redirecting
 }

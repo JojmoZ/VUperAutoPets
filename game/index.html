@@ -7,9 +7,20 @@
 </head>
 
 <body>
+  <div id="heartsContainer" class="hearts-container">
+    <img id="heart1" src="../assets/heart.png" alt="Heart 1">
+    <img id="heart2" src="../assets/heart.png" alt="Heart 2">
+    <img id="heart3" src="../assets/heart.png" alt="Heart 3">
+  </div>
+  
+  <!-- The animated heart in the middle of the screen -->
+  <img id="middleHeart" class="hidden" src="../assets/heart.png" alt="Middle Heart">
+
   <a href="/home/homepage.html" id="backArrow" class="back-arrow">&#8592; Back</a>
   <h1>VUper Auto Pets</h1>
   <p id="coins"></p>
+  
+
   <div id="shop-container" class="shop"></div>
   <div id="battleSlotsContainer" class="battle-slots">
     <div class="battle-slot" data-slot="0"></div>
@@ -24,6 +35,12 @@
     <button id="refreshButton">Refresh</button>
     <button id="startBattleButton">Start</button>
   </div>
+  <div id="defeatScreen" class="hidden">
+    <h1>Defeat!</h1>
+    <p>You have lost all your hearts.</p>
+    <p>Redirecting to homepage...</p>
+  </div>
+
 </body>
 
 
