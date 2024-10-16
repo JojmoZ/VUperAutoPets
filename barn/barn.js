@@ -64,58 +64,14 @@ function createAnimal(animal) {
   animalElement.style.position = "absolute";
   animalElement.style.left = `${Math.random() * (window.innerWidth - 50)}px`;
   animalElement.style.top = `${Math.random() * (window.innerHeight - 60)}px`;
+  animalElement.style.width = "50px"; // Adjust if necessary
+  animalElement.style.height = "50px"; // Adjust if necessary
   animalElement.dataset.isMovingToFood = "false";
   animalContainer.appendChild(animalElement);
   roamAnimal(animalElement); // Start roaming
   return animalElement;
 }
 
-// Function to randomly move animals when no food is present
-// Function to randomly move animals when no food is present, avoiding restricted zones
-function roamAnimal(animal) {
-  if (animal.dataset.isMovingToFood === "true") return; // Prevent roaming if moving to food
-
-  const walkDuration = Math.random() * (7000 - 3000) + 3000; // Random walk duration
-  const direction = Math.random() * 2 * Math.PI;
-  const distance = Math.random() * 100 + 50; // Random movement distance
-
-  const deltaX = Math.cos(direction) * distance;
-  const deltaY = Math.sin(direction) * distance;
-
-  const startX = parseFloat(animal.style.left);
-  const startY = parseFloat(animal.style.top);
-  const endX = Math.min(Math.max(startX + deltaX, 0), window.innerWidth - 50);
-  const endY = Math.min(Math.max(startY + deltaY, 0), window.innerHeight - 60);
-
-  // Check if the new position is within a restricted zone
-  if (isInRestrictedZone(endX, endY, 50, 50)) {
-    console.log("Animal trying to move to restricted zone, choosing new direction...");
-    setTimeout(() => roamAnimal(animal), 100); // Retry with a new direction
-    return;
-  }
-
-  // Move animal randomly if not in a restricted zone
-  const duration = walkDuration / 1000;
-  const startTime = performance.now();
-
-  function animateRoaming(currentTime) {
-    const elapsedTime = (currentTime - startTime) / 1000;
-    const progress = Math.min(elapsedTime / duration, 1);
-
-    animal.style.left = `${startX + (endX - startX) * progress}px`;
-    animal.style.top = `${startY + (endY - startY) * progress}px`;
-
-    if (progress < 1) {
-      requestAnimationFrame(animateRoaming);
-    } else {
-      setTimeout(() => {
-        roamAnimal(animal); // Continue roaming
-      }, Math.random() * 2000); // Random idle before next roam
-    }
-  }
-
-  requestAnimationFrame(animateRoaming);
-}
 
 // A* pathfinding algorithm (unchanged)
 function astar(start, end) {
@@ -200,8 +156,72 @@ function isValidCell(row, col) {
     row >= 0 && row < rows && col >= 0 && col < cols && grid[row][col] !== 1
   );
 }
+function roamAnimal(animal) {
+  if (animal.dataset.isMovingToFood === "true") return; // Prevent roaming if moving to food
 
-// Function to create food and make the closest animal go to it
+  const walkDuration = Math.random() * (7000 - 3000) + 3000; // Random walk duration
+  const direction = Math.random() * 2 * Math.PI;
+  const distance = Math.random() * 100 + 50; // Random movement distance
+
+  const deltaX = Math.cos(direction) * distance;
+  const deltaY = Math.sin(direction) * distance;
+
+  const startX = parseFloat(animal.style.left) + animal.offsetWidth / 2; // Start position centered
+  const startY = parseFloat(animal.style.top) + animal.offsetHeight / 2; // Start position centered
+  const endX = Math.min(
+    Math.max(startX + deltaX, animal.offsetWidth / 2),
+    window.innerWidth - animal.offsetWidth / 2
+  );
+  const endY = Math.min(
+    Math.max(startY + deltaY, animal.offsetHeight / 2),
+    window.innerHeight - animal.offsetHeight / 2
+  );
+
+  // Check if the new position is within a restricted zone
+  if (
+    isInRestrictedZone(
+      endX - animal.offsetWidth / 2,
+      endY - animal.offsetHeight / 2,
+      animal.offsetWidth,
+      animal.offsetHeight
+    )
+  ) {
+    setTimeout(() => roamAnimal(animal), 100); // Retry with a new direction
+    return;
+  }
+
+  const duration = walkDuration / 1000;
+  const startTime = performance.now();
+  let roamAnimationId; // Store animation ID so it can be canceled
+
+  function animateRoaming(currentTime) {
+    if (animal.dataset.isMovingToFood === "true") {
+      cancelAnimationFrame(roamAnimationId); // Stop roaming if animal is marked for food
+      return;
+    }
+
+    const elapsedTime = (currentTime - startTime) / 1000;
+    const progress = Math.min(elapsedTime / duration, 1);
+
+    animal.style.left = `${
+      startX + (endX - startX) * progress - animal.offsetWidth / 2
+    }px`; // Adjust left to center
+    animal.style.top = `${
+      startY + (endY - startY) * progress - animal.offsetHeight / 2
+    }px`; // Adjust top to center
+
+    if (progress < 1) {
+      roamAnimationId = requestAnimationFrame(animateRoaming);
+    } else {
+      setTimeout(() => {
+        roamAnimal(animal); // Continue roaming
+      }, Math.random() * 2000); // Random idle before next roam
+    }
+  }
+
+  roamAnimationId = requestAnimationFrame(animateRoaming);
+}
+
 // Function to create food and make the closest animal go to it
 function createFood(event) {
   if (foodElement) {
@@ -237,9 +257,12 @@ function createFood(event) {
       closestAnimal = animal;
     }
   });
-  console.log(closestAnimal)
+
   if (closestAnimal) {
     closestAnimal.dataset.isMovingToFood = "true"; // Mark as moving to food
+
+    // Immediately stop roaming by cancelling any ongoing animation
+    cancelAnimationFrame(closestAnimal.roamAnimationId);
 
     // Introduce a 500ms delay before starting A* pathfinding
     setTimeout(() => {
@@ -261,7 +284,6 @@ function createFood(event) {
   }
 }
 
-
 // Function to move animal along the path and trigger callback after reaching the food
 function followPath(animal, path, callback) {
   let index = 0;
@@ -276,8 +298,8 @@ function followPath(animal, path, callback) {
     const nextX = node.col * gridSize;
     const nextY = node.row * gridSize;
 
-    animal.style.left = `${nextX}px`;
-    animal.style.top = `${nextY}px`;
+    animal.style.left = `${nextX - animal.offsetWidth / 2}px`; // Adjust left to center
+    animal.style.top = `${nextY - animal.offsetHeight / 2}px`; // Adjust top to center
 
     index++;
 
@@ -310,3 +332,4 @@ userAnimals.forEach((animal) => {
 
 // Add event listener for food creation
 animalContainer.addEventListener("dblclick", createFood);
+
