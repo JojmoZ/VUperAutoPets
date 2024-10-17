@@ -28,6 +28,10 @@
       localStorage.removeItem("username");
       localStorage.removeItem("loggedin");
       localStorage.removeItem("coins");
+      localStorage.removeItem("battleLineup")
+      localStorage.removeItem("randomAnimals")
+      localStorage.removeItem("lives")
+      localStorage.removeItem("gamecoins");
       localStorage.removeItem("ownedAnimals");
       window.location.href = "/login/start.html";
     });

@@ -38,6 +38,8 @@ window.onload = function () {
   registerTab.classList.add("active");
   registrationForm.classList.add("active");
   registrationForm.style.display = "block";
+
+  // Function to show form
   function showForm(formToShow, formToHide) {
     formToHide.classList.remove("active");
     setTimeout(() => {
@@ -48,6 +50,8 @@ window.onload = function () {
       }, 20);
     }, 500);
   }
+
+  // Tab switching
   registerTab.addEventListener("click", () => {
     showForm(registrationForm, loginForm);
     registerError.style.display = "none";
@@ -59,6 +63,8 @@ window.onload = function () {
     registerError.style.display = "none";
     loginError.style.display = "none";
   });
+
+  // Registration Form Submission
   registrationForm.addEventListener("submit", function (e) {
     e.preventDefault();
     const username = document.getElementById("registerUsername").value;
@@ -77,23 +83,45 @@ window.onload = function () {
       return;
     }
     if (captchaAnswer !== generatedCaptcha) {
-     modalErrorText.innerHTML = "Captcha Incorrect";
-     showErrorModal();
+      modalErrorText.innerHTML = "Captcha Incorrect";
+      showErrorModal();
       return;
     }
-    localStorage.setItem("username", username);
-    localStorage.setItem("password", password);
-    
 
+    // Retrieve the stored users from localStorage
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+
+    // Check if the username already exists
+    if (users.some((user) => user.username === username)) {
+      modalErrorText.innerText = "Username already exists.";
+      showErrorModal();
+      return;
+    }
+
+    // Add new user to the users array
+    users.push({
+      username: username,
+      password: password,
+      coins: 15,
+      ownedAnimals:[]});
+
+    // Save the updated users array back to localStorage
+    localStorage.setItem("users", JSON.stringify(users));
+
+    // Clear form and reset captcha
     registrationForm.reset();
     registerError.style.display = "none";
     captchaError.textContent = "";
-
-    showSuccessModal();
     generatedCaptcha = generateCaptcha();
+
+    // Show success modal
+    showSuccessModal();
   });
+
+  // Generate the first captcha
   generatedCaptcha = generateCaptcha();
 
+  // Success modal
   function showSuccessModal() {
     const existingModal = document.getElementById("successModal");
     if (existingModal) {
@@ -140,27 +168,41 @@ window.onload = function () {
     }, 5000);
   }
 
+  // Login Form Submission
   loginForm.addEventListener("submit", function (e) {
     e.preventDefault();
     const username = document.getElementById("loginUsername").value;
     const password = document.getElementById("loginPassword").value;
 
-    const storedUsername = localStorage.getItem("username");
-    const storedPassword = localStorage.getItem("password");
-    if (username === storedUsername && password === storedPassword) {
-      window.location.href = "/home/homepage.html";
+    // Retrieve the users from localStorage
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+
+    // Check if username and password match a stored user
+    const user = users.find(
+      (user) => user.username === username && user.password === password
+    );
+
+    if (user) {
       localStorage.setItem("loggedin", true);
+      localStorage.setItem("username", user.username);
+      localStorage.setItem("coins", user.coins);
+       localStorage.setItem("ownedAnimals", JSON.stringify(user.ownedAnimals));
+
+      window.location.href = "/home/homepage.html";
     } else {
       modalErrorText.innerText = "Invalid username or password.";
       showErrorModal();
     }
   });
+
   function showErrorModal() {
     errorModal.style.bottom = "20px";
     setTimeout(() => {
       errorModal.style.bottom = "-100px";
     }, 3000);
   }
+
+  // Handle logo click for login card animation
   logo.addEventListener("click", function () {
     if (isLoginCardVisible) {
       logo.style.left = "50%";

@@ -1,9 +1,11 @@
 document.addEventListener("DOMContentLoaded", function () {
-  
   if (!localStorage.getItem("coins")) {
     localStorage.setItem("coins", "15");
     localStorage.setItem("ownedAnimals", JSON.stringify([]));
   }
+
+  const username = localStorage.getItem("username"); // Retrieve the logged-in username
+
   const cards = document.querySelectorAll(".card");
   const modal = document.getElementById("modal");
   const modalImage = document.getElementById("modal-animal-image");
@@ -18,62 +20,64 @@ document.addEventListener("DOMContentLoaded", function () {
   coinsDisplay.style.fontSize = "20px";
   coinsDisplay.style.zIndex = "9999";
   document.body.appendChild(coinsDisplay);
-let shopAnimals = [
-  {
-    name: "Ant",
-    attack: 2,
-    health: 1,
-    cost: 2,
-    star: 1,
-    ability: "Faint: Give +2/+1 to a random ally",
-    img: "../assets/Ant.webp",
-  },
-  {
-    name: "Fish",
-    attack: 2,
-    health: 3,
-    cost: 5,
-    star: 2,
-    ability: "Level-Up: Give all friends +1/+1",
-    img: "../assets/Fish.webp",
-  },
-  {
-    name: "Lion",
-    attack: 3,
-    health: 4,
-    cost: 7,
-    star: 3,
-    ability: "Start of battle: Gain +3/+3 if you are the highest tier",
-    img: "../assets/Lion.webp",
-  },
-  {
-    name: "Pig",
-    attack: 3,
-    health: 1,
-    cost: 3,
-    star: 1,
-    ability: "Sell: Gain +1 coin",
-    img: "../assets/Pig.webp",
-  },
-  {
-    name: "Turtle",
-    attack: 1,
-    health: 2,
-    cost: 4,
-    star: 2,
-    ability: "Faint: Give friend behind Melon Armor",
-    img: "../assets/Turtle.webp",
-  },
-  {
-    name: "Elephant",
-    attack: 8,
-    health: 7,
-    cost: 5,
-    star: 4,
-    ability: "Start of battle: Gain +3/+3 if you are the highest tier",
-    img: "../assets/Elephant.webp",
-  },
-];
+
+  let shopAnimals = [
+    {
+      name: "Ant",
+      attack: 2,
+      health: 1,
+      cost: 2,
+      star: 1,
+      ability: "Faint: Give +2/+1 to a random ally",
+      img: "../assets/Ant.webp",
+    },
+    {
+      name: "Fish",
+      attack: 2,
+      health: 3,
+      cost: 5,
+      star: 2,
+      ability: "Level-Up: Give all friends +1/+1",
+      img: "../assets/Fish.webp",
+    },
+    {
+      name: "Lion",
+      attack: 3,
+      health: 4,
+      cost: 7,
+      star: 3,
+      ability: "Start of battle: Gain +3/+3 if you are the highest tier",
+      img: "../assets/Lion.webp",
+    },
+    {
+      name: "Pig",
+      attack: 3,
+      health: 1,
+      cost: 3,
+      star: 1,
+      ability: "Sell: Gain +1 coin",
+      img: "../assets/Pig.webp",
+    },
+    {
+      name: "Turtle",
+      attack: 1,
+      health: 2,
+      cost: 4,
+      star: 2,
+      ability: "Faint: Give friend behind Melon Armor",
+      img: "../assets/Turtle.webp",
+    },
+    {
+      name: "Elephant",
+      attack: 8,
+      health: 7,
+      cost: 5,
+      star: 4,
+      ability: "Start of battle: Gain +3/+3 if you are the highest tier",
+      img: "../assets/Elephant.webp",
+    },
+  ];
+
   function updateCoinsDisplay() {
     const coins = localStorage.getItem("coins");
     coinsDisplay.textContent = `Coins: ${coins}`;
@@ -104,13 +108,12 @@ let shopAnimals = [
     markSoldOut(animal.name); // Use animal.name instead of just animal
   });
 
-
   cards.forEach((card) => {
     card.addEventListener("click", function () {
       const animalName = this.querySelector("h3").textContent;
       const animalImage = this.querySelector("img").src;
       let ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
-      if (ownedAnimals.includes(animalName)) {
+      if (ownedAnimals.some((animal) => animal.name === animalName)) {
         alert("You already own this animal!");
         return;
       }
@@ -148,6 +151,16 @@ let shopAnimals = [
       localStorage.setItem("coins", coins.toString());
       localStorage.setItem("ownedAnimals", JSON.stringify(ownedAnimals));
 
+      // Now update the users JSON
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+      const userIndex = users.findIndex((user) => user.username === username);
+
+      if (userIndex !== -1) {
+        users[userIndex].coins = coins;
+        users[userIndex].ownedAnimals = ownedAnimals; // Update the user's owned animals
+        localStorage.setItem("users", JSON.stringify(users));
+      }
+
       updateCoinsDisplay();
       playSound();
       markSoldOut(animalName); // Mark this animal as sold out on the page
@@ -160,6 +173,4 @@ let shopAnimals = [
       modal.style.display = "none";
     }, 500);
   });
-
-
 });
