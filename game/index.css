@@ -4,38 +4,42 @@ body {
     background-color: #f0f0f0;
     overflow: hidden;
     height:100vh;
-     background-image: url('../assets/Field.webp'); /* Path to your image */
-    background-size: cover; /* Makes the image cover the entire area */
+     background-image: url('../assets/Field.webp'); 
+    background-size: cover; 
     background-position: center;
 }
-
-/* .shop {
-    display: flex;
-    justify-content: center;
-    margin: 20px auto;
-   
-    padding: 20px;
-    border-radius: 10px; */
-/* } */
-
 #coins {
     font-size: 18px;
     margin-top: 10px;
-    color: black; /* Ensure it's visible */
+    color: black; 
 }
 
 .animal {
     width: 100px;
     height: 120px;
-    border: 2px solid #000;
-    background-color: #eee;
+    background-image: url(../assets/stone.png); /* Stone background */
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: bottom;
     margin: 10px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    cursor: grab;
+    cursor: default; /* Disable the grab cursor for the whole div */
 }
+
+/* Prevent the entire .animal div from being draggable */
+.animal {
+    pointer-events: none;
+}
+
+/* Only the img within .animal should be draggable */
+.animal img {
+    pointer-events: all; /* Re-enable pointer events for the img tag */
+    cursor: grab; /* Indicate that the image is draggable */
+}
+
 
 .battle-slots {
     display: flex;
@@ -47,7 +51,10 @@ body {
     width: 100px;
     height: 100px;
     margin: 0 10px;
-    border: 2px solid red;
+    background-image: url(../assets/stone.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: bottom;
     position: relative;
 }
 
@@ -55,7 +62,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 180px;
+    margin-top: 160px;
 }
 
 .random-animals {
@@ -91,7 +98,15 @@ img {
     background-color: #f0f0f0;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
-
+#startBattleButton{
+    background-image: url(../assets/gobattle.png);
+    height: 100px;
+    width: 110px;
+    border: none;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-color: transparent;
+}
 .back-arrow:hover {
     background-color: #d0d0d0;
     color: #333;

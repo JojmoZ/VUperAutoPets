@@ -81,19 +81,25 @@ function renderRandomAnimals() {
   randomAnimals.forEach((animal, index) => {
     const animalDiv = document.createElement("div");
     animalDiv.classList.add("animal");
-    animalDiv.setAttribute("draggable", true);
     animalDiv.setAttribute("data-index", index);
-    animalDiv.innerHTML = `<img src="${animal.img}" alt="${animal.name}">
-                            <p>A:${animal.attack} / H:${animal.health}</p>`;
+     const animalImage = document.createElement("img");
+    animalImage.src = animal.img;
+    animalImage.alt = animal.name;
+     animalImage.setAttribute("draggable", true); // Only the img is draggable
+    animalImage.addEventListener("dragstart", dragStart);
+    const animalStats = document.createElement("p");
+    animalStats.innerHTML = `A:${animal.attack} / H:${animal.health}`;
+
+    animalDiv.appendChild(animalImage); // Append the img
+    animalDiv.appendChild(animalStats); // Append the stats text
     randomAnimalsContainer.appendChild(animalDiv);
-    animalDiv.addEventListener("dragstart", dragStart);
   });
 }
 function saveBattleLineup() {
   localStorage.setItem("battleLineup", JSON.stringify(battleLineup));
 }
 function dragStart(event) {
-  const index = event.target.getAttribute("data-index");
+  const index = event.target.closest(".animal").getAttribute("data-index");
   event.dataTransfer.setData("text/plain", index);
 }
 function handleDrop(event) {
