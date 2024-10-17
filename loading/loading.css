@@ -120,3 +120,19 @@
     transform: scale(0); /* Shrinks to disappear */
   }
 }
+.combo-display {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 2rem;
+  color: #ffd700;
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
+  opacity: 0;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.combo-animate {
+  opacity: 1;
+  transform: scale(1.3);
+}

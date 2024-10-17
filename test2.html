@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Save Photo to LocalStorage</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        #video {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        #canvas {
+            display: none;
+        }
+
+        #photo {
+            margin-top: 20px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Camera Feed and Capture Photo</h2>
+
+    <!-- Video feed where the camera feed will be shown -->
+    <video id="video" autoplay></video>
+
+    <!-- Button to capture the photo -->
+    <button id="takePhoto">Take Photo</button>
+
+    <!-- Button to clear the saved photo -->
+    <button id="clearPhoto" style="background-color: red;">Clear Saved Photo</button>
+
+    <!-- Canvas used for capturing the image (hidden) -->
+    <canvas id="canvas"></canvas>
+
+    <!-- Image element to display the captured photo -->
+    <img id="photo" alt="Captured photo will appear here">
+
+    <script>
+        // Select elements
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const photo = document.getElementById('photo');
+        const takePhotoButton = document.getElementById('takePhoto');
+        const clearPhotoButton = document.getElementById('clearPhoto');
+
+        // Function to load the saved image from localStorage
+        function loadSavedPhoto() {
+            const savedImage = localStorage.getItem('capturedPhoto');
+            if (savedImage) {
+                photo.src = savedImage;
+                photo.style.display = 'block';
+            }
+        }
+
+        // Load the saved photo (if any) when the page is loaded
+        window.addEventListener('load', loadSavedPhoto);
+
+        // Get access to the camera
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                // Set the video stream to the video element
+                video.srcObject = stream;
+            })
+            .catch(err => {
+                console.error("Error accessing the camera: " + err);
+            });
+
+        // Capture a still image from the video feed and save it in localStorage
+        takePhotoButton.addEventListener('click', function () {
+            // Set the canvas dimensions to match the video dimensions
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+
+            // Draw the current frame from the video onto the canvas
+            const context = canvas.getContext('2d');
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            // Convert the canvas to a data URL (base64 string)
+            const imageData = canvas.toDataURL('image/png');
+
+            // Save the image in localStorage
+            localStorage.setItem('capturedPhoto', imageData);
+
+            // Display the captured photo
+            photo.src = imageData;
+            photo.style.display = 'block';
+        });
+
+        // Clear the saved photo from localStorage and the page
+        clearPhotoButton.addEventListener('click', function () {
+            localStorage.removeItem('capturedPhoto');
+            photo.src = '';
+            photo.style.display = 'none';
+        });
+    </script>
+</body>
+
+</html>

@@ -4,13 +4,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const canvas = document.getElementById("gameCanvas");
   const ctx = canvas.getContext("2d");
   const scoreElement = document.getElementById("score");
-  const totalGameTime = 15 * 1000; 
+  const totalGameTime = 15 * 1000;
   const startTime = Date.now();
   let score = 0;
   let circles = [];
   let isHolding = false;
-  let activeDragCircle = null; 
-  let isDragging = false; 
+  let activeDragCircle = null;
+  let isDragging = false;
+  let isGameRunning = false;
   function resizeCanvas() {
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
@@ -26,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
       this.maxRadius = radius;
       this.minRadius = 25;
       this.innerRadius = 25;
-      this.speed = Math.random() * (0.5-0.3) + 0.3
+      this.speed = Math.random() * (0.5 - 0.3) + 0.3;
       this.shrinking = true;
       this.type = type;
       this.dragStartX = null;
@@ -34,11 +35,11 @@ document.addEventListener("DOMContentLoaded", () => {
       this.dragEndX = null;
       this.dragEndY = null;
       this.isDragCompleted = false;
-      this.dragProgress = 0; 
-      this.isMoving = false; 
-      this.wasClicked = false; 
+      this.dragProgress = 0;
+      this.isMoving = false;
+      this.wasClicked = false;
 
-      if(this.type === "drag"){
+      if (this.type === "drag") {
         this.moveSpeed = Math.random() * (0.004 - 0.001) + 0.001;
       }
     }
@@ -92,21 +93,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     update() {
       if (this.type === "normal" && this.shrinking) {
-        this.radius -= this.speed; 
+        this.radius -= this.speed;
         if (this.radius <= this.minRadius) {
           this.radius = this.minRadius;
           this.shrinking = false;
-          circles = circles.filter((circle) => circle !== this); 
+          circles = circles.filter((circle) => circle !== this);
         }
       } else if (this.type === "drag") {
         if (this.isMoving) {
-          this.dragProgress += this.moveSpeed; 
+          this.dragProgress += this.moveSpeed;
           if (this.dragProgress >= 1) {
             this.isDragCompleted = true;
             score += 5;
-            scoreElement.textContent = score; 
-            circles = circles.filter((circle) => circle !== this); 
-            isDragging = false; 
+            scoreElement.textContent = score;
+            circles = circles.filter((circle) => circle !== this);
+            isDragging = false;
           }
         } else if (this.shrinking) {
           this.radius -= this.speed;
@@ -127,7 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const currentY =
         this.dragStartY + this.dragProgress * (this.dragEndY - this.dragStartY);
       const distance = Math.sqrt((x - currentX) ** 2 + (y - currentY) ** 2);
-      return distance < 50; 
+      return distance < 50;
     }
 
     clicked(x, y) {
@@ -138,7 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const distance = Math.sqrt(
           (x - this.dragStartX) ** 2 + (y - this.dragStartY) ** 2
         );
-        return distance <= this.radius && !this.isMoving; 
+        return distance <= this.radius && !this.isMoving;
       }
       return false;
     }
@@ -146,15 +147,15 @@ document.addEventListener("DOMContentLoaded", () => {
     calculateScore() {
       const remainingRadius = this.radius - this.minRadius;
       if (remainingRadius < 10) {
-        return 3; 
+        return 3;
       } else if (remainingRadius < 25) {
-        return 1; 
+        return 1;
       }
       return 0;
     }
   }
   function generateCircle() {
-    if (isDragging) return;
+     if (isDragging || !isGameRunning) return;
 
     const x = Math.random() * (canvas.width - 100) + 50;
     const y = Math.random() * (canvas.height - 100) + 50;
@@ -179,16 +180,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     circles.forEach((circle) => {
       if (circle.type === "normal" && circle.clicked(x, y)) {
-        score += circle.calculateScore(); 
+        score += circle.calculateScore();
         scoreElement.textContent = score;
-        circles = circles.filter((c) => c !== circle); 
+        circles = circles.filter((c) => c !== circle);
         normalCircleClicked = true;
       } else if (circle.type === "drag" && circle.clicked(x, y)) {
         isHolding = true;
-        isDragging = true; 
-        activeDragCircle = circle; 
-        activeDragCircle.wasClicked = true; 
-        activeDragCircle.startMoving(); 
+        isDragging = true;
+        activeDragCircle = circle;
+        activeDragCircle.wasClicked = true;
+        activeDragCircle.startMoving();
       }
     });
 
@@ -207,16 +208,16 @@ document.addEventListener("DOMContentLoaded", () => {
       circles = circles.filter((circle) => circle !== activeDragCircle);
       isHolding = false;
       activeDragCircle = null;
-      isDragging = false; 
+      isDragging = false;
     }
   });
   canvas.addEventListener("mouseup", () => {
     if (isHolding && activeDragCircle) {
-      circles = circles.filter((circle) => circle !== activeDragCircle); 
+      circles = circles.filter((circle) => circle !== activeDragCircle);
     }
     isHolding = false;
-    activeDragCircle = null; 
-    isDragging = false; 
+    activeDragCircle = null;
+    isDragging = false;
   });
 
   function gameLoop() {
@@ -229,7 +230,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     requestAnimationFrame(gameLoop);
   }
-  let circleInterval = setInterval(generateCircle, totalGameTime / 15); 
+  let circleInterval = setInterval(generateCircle, totalGameTime / 15);
 
   window.addEventListener("scroll", () => {
     const scrollTop = window.pageYOffset;
@@ -254,4 +255,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
   setInterval(updateLoading, 100);
   gameLoop();
+  window.addEventListener("scroll", () => {
+    const scrollTop = window.pageYOffset;
+
+    layers.forEach((layer) => {
+      const speed = layer.getAttribute("data-speed");
+      const movement = -((scrollTop * speed) / 100);
+      layer.style.transform = `translate3d(0px, ${movement}px, 0px)`;
+    });
+  });
+
+  // IntersectionObserver to detect if game section is visible
+  const gameSection = document.querySelector(".main-content");
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          // When the game section is visible
+          isGameRunning = true;
+          circleInterval = setInterval(generateCircle, totalGameTime / 15);
+        } else {
+          // When the game section is not visible
+          isGameRunning = false;
+          clearInterval(circleInterval);
+        }
+      });
+    },
+    { threshold: 0.5 } // Adjust the threshold if needed
+  );
+
+  // Observe the game section
+  observer.observe(gameSection);
 });
+
