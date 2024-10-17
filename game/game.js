@@ -82,19 +82,31 @@ function renderRandomAnimals() {
     const animalDiv = document.createElement("div");
     animalDiv.classList.add("animal");
     animalDiv.setAttribute("data-index", index);
-     const animalImage = document.createElement("img");
+
+    const animalImage = document.createElement("img");
     animalImage.src = animal.img;
     animalImage.alt = animal.name;
-     animalImage.setAttribute("draggable", true); // Only the img is draggable
+    animalImage.setAttribute("draggable", true); 
     animalImage.addEventListener("dragstart", dragStart);
-    const animalStats = document.createElement("p");
-    animalStats.innerHTML = `A:${animal.attack} / H:${animal.health}`;
+
+    const statContainer = document.createElement("div");
+    statContainer.classList.add("stat-container");
+    const attack = document.createElement("p");
+    const health = document.createElement("p");
+    // statContainer.innerHTML = `${animal.attack}/${animal.health}`; 
+    attack.textContent = `${animal.attack}`;
+    health.textContent = `${animal.health}`;
+    statContainer.appendChild(attack);
+    statContainer.appendChild(health);
 
     animalDiv.appendChild(animalImage); // Append the img
-    animalDiv.appendChild(animalStats); // Append the stats text
+    animalDiv.appendChild(statContainer); // Append the stats container
     randomAnimalsContainer.appendChild(animalDiv);
   });
 }
+
+
+
 function saveBattleLineup() {
   localStorage.setItem("battleLineup", JSON.stringify(battleLineup));
 }
@@ -113,11 +125,15 @@ function handleDrop(event) {
     event.target.innerHTML = `<img src="${selectedAnimal.img}" alt="${selectedAnimal.name}" style="position: absolute; width: 80px; height: 80px; top: 10px; left: 10px;">`;
     coins -= selectedAnimal.cost;
     updateCoinsDisplay();
+    randomAnimals.splice(animalIndex, 1);
+    renderRandomAnimals();
     saveBattleLineup();
+    saveRandomAnimals();
   } else {
     alert("Not enough coins or slot is already filled!");
   }
 }
+
 function handleDragOver(event) {
   event.preventDefault();
 }
@@ -137,39 +153,113 @@ function renderTeams() {
   const teamOffsetX = 100;
   const commonY = 150;
   const enemyOffsetX = canvas.width - 550;
+  const iconSize = 40;
+
   battleLineup.forEach((animal, index) => {
     if (animal) {
       const img = new Image();
       img.src = animal.img;
-      img.onload = () =>
+      img.onload = () => {
+        // Draw animal image
         ctx.drawImage(
           img,
           teamOffsetX + (maxSlots - 1 - index) * 100,
           commonY,
-          60,
-          60
+          80,
+          80
         );
-      ctx.fillText(
-        `A:${animal.attack}/H:${animal.health}`,
-        teamOffsetX + (maxSlots - 1 - index) * 100,
-        commonY + 80
-      );
+
+        // Draw fist icon (attack)
+        const fistImg = new Image();
+        fistImg.src = "../assets/fist.png";
+        fistImg.onload = () => {
+          ctx.drawImage(
+            fistImg,
+            teamOffsetX + (maxSlots - 1 - index) * 100,
+            commonY + 60,
+            iconSize,
+            iconSize
+          );
+          // Draw attack number over fist icon
+          ctx.fillStyle = "white";
+          ctx.font = "16px Arial";
+          ctx.fillText(
+            `${animal.attack}`,
+            teamOffsetX + (maxSlots - 1 - index) * 100 + 10,
+            commonY + 75
+          );
+        };
+
+        // Draw heart icon (health)
+        const heartImg = new Image();
+        heartImg.src = "../assets/heart.png";
+        heartImg.onload = () => {
+          ctx.drawImage(
+            heartImg,
+            teamOffsetX + (maxSlots - 1 - index) * 100 + 50,
+            commonY + 60,
+            iconSize,
+            iconSize
+          );
+          // Draw health number over heart icon
+          ctx.fillText(
+            `${animal.health}`,
+            teamOffsetX + (maxSlots - 1 - index) * 100 + 60,
+            commonY + 75
+          );
+        };
+      };
     }
   });
+
   enemyLineup.forEach((animal, index) => {
     if (animal) {
       const img = new Image();
       img.src = animal.img;
-      img.onload = () =>
-        ctx.drawImage(img, enemyOffsetX + index * 100, commonY, 60, 60);
-      ctx.fillText(
-        `A:${animal.attack}/H:${animal.health}`,
-        enemyOffsetX + index * 100,
-        commonY + 80
-      );
+      img.onload = () => {
+        ctx.drawImage(img, enemyOffsetX + index * 100, commonY, 80, 80);
+        const fistImg = new Image();
+        fistImg.src = "../assets/fist.png";
+        fistImg.onload = () => {
+          ctx.drawImage(
+            fistImg,
+            enemyOffsetX + index * 100,
+            commonY + 60,
+            iconSize,
+            iconSize
+          );
+          ctx.fillStyle = "white";
+          ctx.font = "16px Arial";
+          ctx.fillText(
+            `${animal.attack}`,
+            enemyOffsetX + index * 100 + 10,
+            commonY + 75
+          );
+        };
+
+        // Draw health icon (heart)
+        const heartImg = new Image();
+        heartImg.src = "../assets/heart.png";
+        heartImg.onload = () => {
+          ctx.drawImage(
+            heartImg,
+            enemyOffsetX + index * 100 + 50,
+            commonY + 60,
+            iconSize,
+            iconSize
+          );
+          // Draw health number over heart icon
+          ctx.fillText(
+            `${animal.health}`,
+            enemyOffsetX + index * 100 + 60,
+            commonY + 75
+          );
+        };
+      };
     }
   });
 }
+
 document.querySelectorAll(".battle-slot").forEach((slot) => {
   slot.addEventListener("drop", handleDrop);
   slot.addEventListener("dragover", handleDragOver);
@@ -712,25 +802,18 @@ function loseLife() {
   }
 }
 function resetGame() {
-  // Reset battleLineup, enemyLineup, and randomAnimals
   battleLineup = [null, null, null, null, null];
   enemyLineup = [null, null, null, null, null];
   localStorage.removeItem("randomAnimals");
-
-  // Reset coins
-  coins = 10; // or any default value
+  coins = 10;
   updateCoinsDisplay();
-
-  // Reset hearts if lives are gone
   if (lives <= 0) {
     lives = 3;
-    localStorage.setItem("lives", lives); // Reset lives in localStorage
+    localStorage.setItem("lives", lives); 
     hearts.forEach((heart) => {
-      heart.src = "../assets/heart.png"; // Reset hearts to full
+      heart.src = "../assets/heart.png"; 
     });
   }
-
-  // Re-render everything
   renderBattleSlots();
   renderRandomAnimals();
   saveBattleLineup();
