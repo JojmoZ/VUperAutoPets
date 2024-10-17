@@ -148,6 +148,44 @@ function renderBattleSlots() {
     }
   });
 }
+function renderFullTeam() {
+  const commonY = 150;
+  const teamOffsetX = 100;
+  const enemyOffsetX = canvas.width - 550;
+  const iconSize = 40;
+  battleLineup.forEach((animal, index) => {
+    if (animal && index !== 0) {
+      ctx.drawImage(
+        getAnimalImage(animal.img),
+        teamOffsetX + (maxSlots - 1 - index) * 100,
+        commonY,
+        60,
+        60
+      );
+      ctx.fillText(
+        `A:${animal.attack}/H:${animal.health}`,
+        teamOffsetX + (maxSlots - 1 - index) * 100,
+        commonY + 80
+      );
+    }
+  });
+  enemyLineup.forEach((animal, index) => {
+    if (animal && index !== 0) {
+      ctx.drawImage(
+        getAnimalImage(animal.img),
+        enemyOffsetX + index * 100,
+        commonY,
+        60,
+        60
+      );
+      ctx.fillText(
+        `A:${animal.attack}/H:${animal.health}`,
+        enemyOffsetX + index * 100,
+        commonY + 80
+      );
+    }
+  });
+}
 function renderTeams() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   const teamOffsetX = 100;
@@ -324,95 +362,108 @@ function calculateTeamCost(team) {
 function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
   const playerStartX = 100 + (maxSlots - 1) * 100;
   const playerY = 150;
-  const enemyStartX = canvas.width - 550; 
+  const enemyStartX = canvas.width - 550;
   const enemyY = 150;
-  const centerX = canvas.width / 2 - 60; 
-  const duration = 1000; 
-  const frameRate = 60; 
+  const centerX = canvas.width / 2 - 60;
+  const duration = 1000;
+  const frameRate = 60;
   const totalFrames = (duration / 1000) * frameRate;
   let currentFrame = 0;
+
   const playerImg = new Image();
   playerImg.src = playerAnimal.img;
+  
   const enemyImg = new Image();
   enemyImg.src = enemyAnimal.img;
+  
+  const fistImg = new Image();
+  fistImg.src = "../assets/fist.png";
+  
+  const heartImg = new Image();
+  heartImg.src = "../assets/heart.png";
+
   playerImg.onload = () => {
     enemyImg.onload = () => {
-      requestAnimationFrame(animate);
+      fistImg.onload = () => {
+        heartImg.onload = () => {
+          requestAnimationFrame(animate);
+        };
+      };
     };
   };
+
   function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     renderFullTeam(); 
+
     const progress = easeInOutQuad(currentFrame / totalFrames);
     const playerX = playerStartX - (playerStartX - centerX) * progress;
     const enemyX = enemyStartX + (centerX + 60 - enemyStartX) * progress;
-    ctx.drawImage(playerImg, playerX, playerY, 60, 60);
-    ctx.fillText(
-      `A:${playerAnimal.attack}/H:${playerAnimal.health}`,
-      playerX,
-      playerY + 80
-    );
+    ctx.drawImage(playerImg, playerX, playerY, 80, 80);
+    ctx.drawImage(fistImg, playerX, playerY + 60, 40, 40);
+    ctx.drawImage(heartImg, playerX + 40, playerY + 60, 40, 40);
+    ctx.fillStyle = "white";
+    ctx.font = "16px Arial";
+    ctx.fillText(`${playerAnimal.attack}`, playerX + 15, playerY + 85);
+    ctx.fillText(`${playerAnimal.health}`, playerX + 55, playerY + 85);
+    ctx.drawImage(enemyImg, enemyX, enemyY, 80, 80);
+    ctx.drawImage(fistImg, enemyX, enemyY + 60, 40, 40);
+    ctx.drawImage(heartImg, enemyX + 40, enemyY + 60, 40, 40);
+    ctx.fillText(`${enemyAnimal.attack}`, enemyX + 15, enemyY + 85);
+    ctx.fillText(`${enemyAnimal.health}`, enemyX + 55, enemyY + 85);
 
-    ctx.drawImage(enemyImg, enemyX, enemyY, 60, 60);
-    ctx.fillText(
-      `A:${enemyAnimal.attack}/H:${enemyAnimal.health}`,
-      enemyX,
-      enemyY + 80
-    );
     if (progress > 0.8) {
       const bandageSize = 60;
       const bandageImg = new Image();
       bandageImg.src = "../assets/hurt.png";
-      ctx.drawImage(
-        bandageImg,
-        playerX + 10,
-        playerY,
-        bandageSize,
-        bandageSize
-      );
+      ctx.drawImage(bandageImg, playerX + 10, playerY, bandageSize, bandageSize);
       ctx.drawImage(bandageImg, enemyX + 10, enemyY, bandageSize, bandageSize);
     }
+    
     currentFrame++;
     if (currentFrame <= totalFrames) {
       requestAnimationFrame(animate);
     } else {
-       showDamage(
-         playerX,
-         playerAnimal.attack,
-         enemyX,
-         enemyAnimal.attack,
-         playerImg,
-         enemyImg,
-         () => {
-           animateReturn(playerStartX, playerY, enemyStartX, enemyY);
-         }
-       );
+      showDamage(
+        playerX,
+        playerAnimal.attack,
+        enemyX,
+        enemyAnimal.attack,
+        playerImg,
+        enemyImg,
+        () => {
+          animateReturn(playerStartX, playerY, enemyStartX, enemyY);
+        }
+      );
     }
   }
-  
 
   function animateReturn(playerStartX, playerY, enemyStartX, enemyY) {
     let returnFrame = 0;
-    const returnFrames = totalFrames; 
+    const returnFrames = totalFrames;
+
     function animateBack() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      renderFullTeam(); 
+      renderFullTeam();
+
       const progress = easeInOutQuad(returnFrame / returnFrames);
       const playerX = centerX + (playerStartX - centerX) * progress;
       const enemyX = centerX + 60 + (enemyStartX - centerX - 60) * progress;
-      ctx.drawImage(playerImg, playerX, playerY, 60, 60);
-      ctx.fillText(
-        `A:${playerAnimal.attack}/H:${playerAnimal.health}`,
-        playerX,
-        playerY + 80
-      );
 
+      // Redraw player animal and stats
+      ctx.drawImage(playerImg, playerX, playerY, 60, 60);
+      ctx.drawImage(fistImg, playerX, playerY + 60, 40, 40);
+      ctx.drawImage(heartImg, playerX + 40, playerY + 60, 40, 40);
+      ctx.fillText(`${playerAnimal.attack}`, playerX + 10, playerY + 85);
+      ctx.fillText(`${playerAnimal.health}`, playerX + 50, playerY + 85);
+
+      // Redraw enemy animal and stats
       ctx.drawImage(enemyImg, enemyX, enemyY, 60, 60);
-      ctx.fillText(
-        `A:${enemyAnimal.attack}/H:${enemyAnimal.health}`,
-        enemyX,
-        enemyY + 80
-      );
+      ctx.drawImage(fistImg, enemyX, enemyY + 60, 40, 40);
+      ctx.drawImage(heartImg, enemyX + 40, enemyY + 60, 40, 40);
+      ctx.fillText(`${enemyAnimal.attack}`, enemyX + 10, enemyY + 85);
+      ctx.fillText(`${enemyAnimal.health}`, enemyX + 50, enemyY + 85);
+
       returnFrame++;
       if (returnFrame <= returnFrames) {
         requestAnimationFrame(animateBack);
@@ -420,9 +471,11 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
         onComplete();
       }
     }
+
     requestAnimationFrame(animateBack);
   }
 }
+
 function backupLineup() {
   originalBattleLineup = [...battleLineup]; // Create a backup of the original lineup
 }
@@ -531,43 +584,7 @@ function showDamage(
   }
   drawExpandingDamage();
 }
-function renderFullTeam() {
-  const commonY = 150;
-  const teamOffsetX = 100;
-  const enemyOffsetX = canvas.width - 550;
-  battleLineup.forEach((animal, index) => {
-    if (animal && index !== 0) {
-      ctx.drawImage(
-        getAnimalImage(animal.img),
-        teamOffsetX + (maxSlots - 1 - index) * 100,
-        commonY,
-        60,
-        60
-      );
-      ctx.fillText(
-        `A:${animal.attack}/H:${animal.health}`,
-        teamOffsetX + (maxSlots - 1 - index) * 100,
-        commonY + 80
-      );
-    }
-  });
-  enemyLineup.forEach((animal, index) => {
-    if (animal && index !== 0) {
-      ctx.drawImage(
-        getAnimalImage(animal.img),
-        enemyOffsetX + index * 100,
-        commonY,
-        60,
-        60
-      );
-      ctx.fillText(
-        `A:${animal.attack}/H:${animal.health}`,
-        enemyOffsetX + index * 100,
-        commonY + 80
-      );
-    }
-  });
-}
+
 function easeInOutQuad(t) {
   return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
 }
