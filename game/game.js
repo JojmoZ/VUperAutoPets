@@ -154,7 +154,6 @@ function renderTeams() {
   const commonY = 150;
   const enemyOffsetX = canvas.width - 550;
   const iconSize = 40;
-
   battleLineup.forEach((animal, index) => {
     if (animal) {
       const img = new Image();
@@ -177,17 +176,14 @@ function renderTeams() {
             iconSize,
             iconSize
           );
-          // Draw attack number over fist icon
           ctx.fillStyle = "white";
           ctx.font = "16px Arial";
           ctx.fillText(
             `${animal.attack}`,
-            teamOffsetX + (maxSlots - 1 - index) * 100 + 10,
-            commonY + 75
+            teamOffsetX + (maxSlots - 1 - index) * 100 + 17,
+            commonY + 85
           );
         };
-
-        // Draw heart icon (health)
         const heartImg = new Image();
         heartImg.src = "../assets/heart.png";
         heartImg.onload = () => {
@@ -198,17 +194,15 @@ function renderTeams() {
             iconSize,
             iconSize
           );
-          // Draw health number over heart icon
           ctx.fillText(
             `${animal.health}`,
-            teamOffsetX + (maxSlots - 1 - index) * 100 + 60,
-            commonY + 75
+            teamOffsetX + (maxSlots - 1 - index) * 100 + 65,
+            commonY + 85
           );
         };
       };
     }
   });
-
   enemyLineup.forEach((animal, index) => {
     if (animal) {
       const img = new Image();
@@ -229,12 +223,10 @@ function renderTeams() {
           ctx.font = "16px Arial";
           ctx.fillText(
             `${animal.attack}`,
-            enemyOffsetX + index * 100 + 10,
-            commonY + 75
+            enemyOffsetX + index * 100 + 17,
+            commonY + 85
           );
         };
-
-        // Draw health icon (heart)
         const heartImg = new Image();
         heartImg.src = "../assets/heart.png";
         heartImg.onload = () => {
@@ -245,11 +237,10 @@ function renderTeams() {
             iconSize,
             iconSize
           );
-          // Draw health number over heart icon
           ctx.fillText(
             `${animal.health}`,
-            enemyOffsetX + index * 100 + 60,
-            commonY + 75
+            enemyOffsetX + index * 100 + 65,
+            commonY + 85
           );
         };
       };
