@@ -122,7 +122,7 @@ function handleDrop(event) {
   const selectedAnimal = randomAnimals[animalIndex];
   if (!battleLineup[reversedSlotIndex] && coins >= selectedAnimal.cost) {
     battleLineup[reversedSlotIndex] = selectedAnimal;
-    event.target.innerHTML = `<img src="${selectedAnimal.img}" alt="${selectedAnimal.name}" style="position: absolute; width: 80px; height: 80px; top: 10px; left: 10px;">`;
+    event.target.innerHTML = `<img src="${selectedAnimal.img}" alt="${selectedAnimal.name}" style="position: absolute; width: 80px; height: 80px; left: 10px;">`;
     coins -= selectedAnimal.cost;
     updateCoinsDisplay();
     randomAnimals.splice(animalIndex, 1);
@@ -160,7 +160,6 @@ function renderTeams() {
       const img = new Image();
       img.src = animal.img;
       img.onload = () => {
-        // Draw animal image
         ctx.drawImage(
           img,
           teamOffsetX + (maxSlots - 1 - index) * 100,
@@ -168,8 +167,6 @@ function renderTeams() {
           80,
           80
         );
-
-        // Draw fist icon (attack)
         const fistImg = new Image();
         fistImg.src = "../assets/fist.png";
         fistImg.onload = () => {
