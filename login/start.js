@@ -2,11 +2,9 @@ window.onload = function () {
   const captchaChallenge = document.getElementById("captchaChallenge");
   const captchaInput = document.getElementById("captchaInput");
   const captchaError = document.getElementById("captchaError");
-
-  // Function to generate a random CAPTCHA
   function generateCaptcha() {
-    const operators = ["+", "-", "*"]; // You can choose the operators you like
-    const num1 = Math.floor(Math.random() * 10) + 1; // Random number between 1 and 10
+    const operators = ["+", "-", "*"]; 
+    const num1 = Math.floor(Math.random() * 10) + 1; 
     const num2 = Math.floor(Math.random() * 10) + 1;
     const operator = operators[Math.floor(Math.random() * operators.length)];
 
@@ -19,7 +17,7 @@ window.onload = function () {
     return captcha;
   }
 
-  let generatedCaptcha = generateCaptcha(); // Store the generated CAPTCHA result
+  let generatedCaptcha = generateCaptcha(); 
   const logo = document.getElementById("logo");
   const loginCard = document.getElementById("loginCard");
   const registerTab = document.getElementById("registerTab");
@@ -39,7 +37,6 @@ window.onload = function () {
   registrationForm.classList.add("active");
   registrationForm.style.display = "block";
 
-  // Function to show form
   function showForm(formToShow, formToHide) {
     formToHide.classList.remove("active");
     setTimeout(() => {
@@ -50,21 +47,13 @@ window.onload = function () {
       }, 20);
     }, 500);
   }
-
-  // Tab switching
   registerTab.addEventListener("click", () => {
     showForm(registrationForm, loginForm);
-    registerError.style.display = "none";
-    loginError.style.display = "none";
   });
 
   loginTab.addEventListener("click", () => {
     showForm(loginForm, registrationForm);
-    registerError.style.display = "none";
-    loginError.style.display = "none";
   });
-
-  // Registration Form Submission
   registrationForm.addEventListener("submit", function (e) {
     e.preventDefault();
     const username = document.getElementById("registerUsername").value;
@@ -87,41 +76,27 @@ window.onload = function () {
       showErrorModal();
       return;
     }
-
-    // Retrieve the stored users from localStorage
     let users = JSON.parse(localStorage.getItem("users")) || [];
-
-    // Check if the username already exists
     if (users.some((user) => user.username === username)) {
       modalErrorText.innerText = "Username already exists.";
       showErrorModal();
       return;
     }
-
-    // Add new user to the users array
     users.push({
       username: username,
       password: password,
       coins: 15,
       ownedAnimals:[]});
-
-    // Save the updated users array back to localStorage
     localStorage.setItem("users", JSON.stringify(users));
-
-    // Clear form and reset captcha
     registrationForm.reset();
     registerError.style.display = "none";
     captchaError.textContent = "";
     generatedCaptcha = generateCaptcha();
-
-    // Show success modal
     showSuccessModal();
+    showForm(loginForm,registrationForm)
+
   });
-
-  // Generate the first captcha
   generatedCaptcha = generateCaptcha();
-
-  // Success modal
   function showSuccessModal() {
     const existingModal = document.getElementById("successModal");
     if (existingModal) {
@@ -167,17 +142,13 @@ window.onload = function () {
       setTimeout(() => successModal.remove(), 500);
     }, 5000);
   }
-
-  // Login Form Submission
   loginForm.addEventListener("submit", function (e) {
     e.preventDefault();
     const username = document.getElementById("loginUsername").value;
     const password = document.getElementById("loginPassword").value;
 
-    // Retrieve the users from localStorage
     const users = JSON.parse(localStorage.getItem("users")) || [];
 
-    // Check if username and password match a stored user
     const user = users.find(
       (user) => user.username === username && user.password === password
     );
@@ -202,7 +173,6 @@ window.onload = function () {
     }, 3000);
   }
 
-  // Handle logo click for login card animation
   logo.addEventListener("click", function () {
     if (isLoginCardVisible) {
       logo.style.left = "50%";

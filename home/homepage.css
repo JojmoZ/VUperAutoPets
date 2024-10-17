@@ -644,33 +644,31 @@ section {
 
 @keyframes slideInRight {
   0% {
-    transform: translateX(100%); /* Starts off-screen to the right */
+    transform: translateX(100%);
     opacity: 0;
   }
   100% {
-    transform: translateX(0); /* Moves to its final position */
+    transform: translateX(0);
     opacity: 1;
   }
 }
-
-/* Apply the animations when the elements become visible */
 .ost-card {
   opacity: 0;
-  transform: translateX(-100%); /* Start off-screen to the left */
+  transform: translateX(-100%); 
   transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
 .ost-card.visible {
-  animation: slideInLeft 2s ease forwards; /* Slide in from the left */
+  animation: slideInLeft 2s ease forwards; 
 }
 
 .card-content {
   opacity: 0;
-  transform: translateX(100%); /* Start off-screen to the right */
+  transform: translateX(100%); 
   transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
 .card-content.visible {
-  animation: slideInRight 2s ease forwards; /* Slide in from the right */
-  animation-delay: 0.5s; /* Delay for smoother transition */
+  animation: slideInRight 2s ease forwards;
+  animation-delay: 0.5s; 
 }

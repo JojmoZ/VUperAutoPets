@@ -199,19 +199,19 @@ input[type="text"], input[type="password"] {
 
 .checkmark-circle,
 .checkmark-check {
-    stroke-dasharray: 166, 48; /* Respective dasharray values */
-    stroke-dashoffset: 166, 48; /* Hide the paths initially */
-    transition: stroke-dashoffset 1.5s ease-in-out; /* Define animation timing */
+    stroke-dasharray: 166, 48;
+    stroke-dashoffset: 166, 48; 
+    transition: stroke-dashoffset 1.5s ease-in-out;
 }
 
 #successModal.show .checkmark-circle {
-    stroke-dashoffset: 0; /* Show the circle */
-    transition: stroke-dashoffset 1.5s ease-in-out; /* Circle animation duration */
+    stroke-dashoffset: 0; 
+    transition: stroke-dashoffset 1.5s ease-in-out; 
 }
 
 #successModal.show .checkmark-check {
-    stroke-dashoffset: 0; /* Show the checkmark */
-    transition: stroke-dashoffset 1s 1.5s ease-in-out; /* Checkmark delay and duration */
+    stroke-dashoffset: 0; 
+    transition: stroke-dashoffset 1s 1.5s ease-in-out;
 }
 
 #successModal {

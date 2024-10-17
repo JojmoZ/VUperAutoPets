@@ -97,16 +97,16 @@ function astar(start, end) {
       return path.reverse();
     }
 
-    // Include diagonal directions by adding appropriate changes to row and col
+    
     const directions = [
-      [0, 1], // Right
-      [1, 0], // Down
-      [0, -1], // Left
-      [-1, 0], // Up
-      [-1, 1], // Top-right
-      [-1, -1], // Top-left
-      [1, 1], // Bottom-right
-      [1, -1], // Bottom-left
+      [0, 1], 
+      [1, 0], 
+      [0, -1], 
+      [-1, 0], 
+      [-1, 1], 
+      [-1, -1],
+      [1, 1], 
+      [1, -1], 
     ];
 
     for (let dir of directions) {

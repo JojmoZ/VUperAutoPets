@@ -23,7 +23,7 @@ window.onload = function () {
             }
           });
         },
-        { threshold: 0.5 } // Trigger when 50% of the section is visible
+        { threshold: 0.5 } 
       );
 
       aaa.observe(ostCard);
@@ -187,8 +187,7 @@ window.onload = function () {
   const canvasHeight = visualization.height;
   const canvasWidth = visualization.width;
   const barWidth = (canvasWidth / bufferLength) * 2.5;
-  const barHeightFactor = 0.4; // Adjust this value to reduce overall bar height
-
+  const barHeightFactor = 0.4; 
   function renderFrame() {
     canvasCtx.clearRect(0, 0, canvasWidth, canvasHeight);
 
@@ -197,23 +196,20 @@ window.onload = function () {
     let x = 0;
 
     for (let i = 0; i < bufferLength; i++) {
-      // Reduce the overall bar height
+      
       const barHeight =
         (Math.pow(dataArray[i], 3) / 210 ** 2) * barHeightFactor;
       const color = `rgb(253, ${250 * (i / bufferLength)}, 50)`;
 
-      // Move the bars down by adjusting the y-position
-      const barYPosition = canvasHeight / 1.6; // Move it lower by reducing this value
+      const barYPosition = canvasHeight / 1.6; 
 
-      // Draw the bar
       canvasCtx.fillStyle = color;
       canvasCtx.fillRect(x, barYPosition - barHeight, barWidth, barHeight);
 
-      // Draw the reflection (mirror the bar below the center)
-      canvasCtx.fillStyle = `rgba(103, ${250 * (i / bufferLength)}, 50, 0.5)`; // Lighter color with transparency for reflection
+      canvasCtx.fillStyle = `rgba(103, ${250 * (i / bufferLength)}, 50, 0.5)`; 
       canvasCtx.fillRect(x, barYPosition, barWidth, barHeight);
 
-      x += barWidth + 1; // Space between bars
+      x += barWidth + 1; 
     }
 
     requestAnimationFrame(renderFrame);
@@ -221,20 +217,20 @@ window.onload = function () {
 
   renderFrame();
 
-  // Play/pause audio based on section visibility
+  
   const ostSection = document.querySelector(".ost-section");
 
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          audio.play(); // Play the audio when the section is visible
+          audio.play(); 
         } else {
-          audio.pause(); // Pause the audio when the section is not visible
+          audio.pause(); 
         }
       });
     },
-    { threshold: 0.5 } // Trigger when 50% of the section is visible
+    { threshold: 0.5 } 
   );
 
   observer.observe(ostSection);

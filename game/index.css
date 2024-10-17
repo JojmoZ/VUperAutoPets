@@ -113,11 +113,6 @@ img {
   height: 100px;
   transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
 }
-
-/* .hidden {
-  opacity: 0;
-  pointer-events: none;
-} */
 #defeatScreen {
   position: absolute;
   top: 50%;
@@ -130,7 +125,3 @@ img {
   border-radius: 10px;
   z-index: 10;
 }
-
-/* .hidden {
-  display: none;
-} */

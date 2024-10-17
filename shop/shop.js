@@ -3,8 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.setItem("coins", "15");
     localStorage.setItem("ownedAnimals", JSON.stringify([]));
   }
-
-  const username = localStorage.getItem("username"); // Retrieve the logged-in username
+  const username = localStorage.getItem("username"); 
 
   const cards = document.querySelectorAll(".card");
   const modal = document.getElementById("modal");
@@ -102,10 +101,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Mark sold out animals on page load
+  
   const ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals")) || [];
   ownedAnimals.forEach((animal) => {
-    markSoldOut(animal.name); // Use animal.name instead of just animal
+    markSoldOut(animal.name); 
   });
 
   cards.forEach((card) => {
@@ -142,28 +141,23 @@ document.addEventListener("DOMContentLoaded", function () {
     let ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals")) || [];
 
     if (coins >= price) {
-      // Find the full animal object from shopAnimals
       const animal = shopAnimals.find((a) => a.name === animalName);
-
-      // Deduct the price and store the full animal object in localStorage
       coins -= price;
-      ownedAnimals.push(animal); // Store the full object instead of just the name
+      ownedAnimals.push(animal); 
       localStorage.setItem("coins", coins.toString());
       localStorage.setItem("ownedAnimals", JSON.stringify(ownedAnimals));
-
-      // Now update the users JSON
       let users = JSON.parse(localStorage.getItem("users")) || [];
       const userIndex = users.findIndex((user) => user.username === username);
 
       if (userIndex !== -1) {
         users[userIndex].coins = coins;
-        users[userIndex].ownedAnimals = ownedAnimals; // Update the user's owned animals
+        users[userIndex].ownedAnimals = ownedAnimals; 
         localStorage.setItem("users", JSON.stringify(users));
       }
 
       updateCoinsDisplay();
       playSound();
-      markSoldOut(animalName); // Mark this animal as sold out on the page
+      markSoldOut(animalName); 
     } else {
       alert("You don't have enough coins to buy this animal!");
     }
