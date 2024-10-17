@@ -5,16 +5,16 @@ const gridSize = 10;
 let animationId;
 let foodElement = null; 
 const restrictedZones = [
-  { x: 100, y: 100, width: 200, height: 150 },
-  { x: 400, y: 300, width: 100, height: 100 },
-  { x: 600, y: 150, width: 150, height: 200 },
-  { x: 250, y: 450, width: 180, height: 120 },
-  { x: 500, y: 500, width: 100, height: 150 },
-  { x: 700, y: 50, width: 120, height: 180 },
-  { x: 800, y: 400, width: 200, height: 100 },
-  { x: 150, y: 600, width: 140, height: 140 },
-  { x: 900, y: 250, width: 100, height: 100 },
-  { x: 300, y: 750, width: 160, height: 100 },
+  { x: 0, y: 100, width: 200, height: 200 },
+  { x: 0, y: 0, width: 100, height: 200 },
+  // { x: 600, y: 150, width: 150, height: 200 },
+  // { x: 250, y: 450, width: 180, height: 120 },
+  // { x: 500, y: 500, width: 100, height: 150 },
+  // { x: 700, y: 50, width: 120, height: 180 },
+  // { x: 800, y: 400, width: 200, height: 100 },
+  // { x: 150, y: 600, width: 140, height: 140 },
+  // { x: 900, y: 250, width: 100, height: 100 },
+  // { x: 300, y: 750, width: 160, height: 100 },
 ];
 function isInRestrictedZone(animalX, animalY, animalWidth, animalHeight) {
   return restrictedZones.some((zone) => {
