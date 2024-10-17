@@ -83,6 +83,7 @@ window.onload = function () {
     }
     localStorage.setItem("username", username);
     localStorage.setItem("password", password);
+    
 
     registrationForm.reset();
     registerError.style.display = "none";
