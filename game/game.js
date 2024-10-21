@@ -872,19 +872,3 @@ function showDefeatScreen() {
     window.location.href = "/home/homepage.html"; 
   }, 3000); 
 }
-let lastTimestamp = 0;
-
-function updateCanvas(timestamp) {
-  if (!lastTimestamp) lastTimestamp = timestamp;
-
-  const deltaTime = (timestamp - lastTimestamp) / 1000; // deltaTime in seconds
-  lastTimestamp = timestamp;
-
-  // Call functions here that use deltaTime, such as rendering teams, animating movements, etc.
-  renderTeams(deltaTime); // Pass deltaTime into your render function
-  // Update animations that require delta time
-
-  requestAnimationFrame(updateCanvas);
-}
-
-requestAnimationFrame(updateCanvas);
