@@ -282,7 +282,7 @@ function showNonBattleElements() {
   hideCanvas();
 }
 document.addEventListener("DOMContentLoaded", function () {
-  console.log("ab")
+
   updateHeartsDisplay();  
   if (localStorage.getItem("randomAnimals")) {
     randomAnimals = JSON.parse(localStorage.getItem("randomAnimals"));
@@ -393,6 +393,8 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
         enemyAnimal.attack,
         playerImg,
         enemyImg,
+        playerAnimal.health,
+        enemyAnimal.health,
         () => {
           animateReturn(playerStartX, playerY, enemyStartX, enemyY);
         }
@@ -456,6 +458,8 @@ function showDamage(
   enemyDamage,
   playerImg,
   enemyImg,
+  playerHealth,
+  enemyHealth,
   onComplete
 ) {
   let alpha = 1.0; 
@@ -477,20 +481,21 @@ function showDamage(
     heartImg.src = "../assets/heart.png";
   function drawExpandingDamage() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    renderFullTeam(); 
+    renderFullTeam();
     ctx.drawImage(playerImg, playerX, commonY, 80, 80);
-    ctx.fillText(`${playerDamage}`, playerX + 15, commonY + 85);
-    ctx.fillText(`${enemyDamage}`, playerX + 55, commonY + 85);
     ctx.drawImage(fistImg, playerX, commonY + 60, 40, 40);
     ctx.drawImage(heartImg, playerX + 40, commonY + 60, 40, 40);
     ctx.drawImage(enemyImg, enemyX, commonY, 80, 80);
     ctx.drawImage(fistImg, enemyX, commonY + 60, 40, 40);
     ctx.drawImage(heartImg, enemyX + 40, commonY + 60, 40, 40);
-    ctx.fillText(`${enemyDamage}`, commonY + 15, commonY + 85);
-    ctx.fillText(`${playerDamage}`, commonY + 55, commonY + 85);
+    ctx.fillText(`${playerDamage}`, playerX + 15, commonY + 85);
+    ctx.fillText(`${playerHealth}`, playerX + 55, commonY + 85);
+    ctx.fillText(`${enemyDamage}`, enemyX + 15, commonY + 85);
+    ctx.fillText(`${enemyHealth}`, enemyX + 55, commonY + 85);
+
     ctx.save();
     const progress = currentFrame / totalFrames;
-    const fontSize = minFontSize + progress * (maxFontSize - minFontSize); 
+    const fontSize = minFontSize + progress * (maxFontSize - minFontSize);
     ctx.font = `${fontSize}px Arial`;
     ctx.fillStyle = "red";
     ctx.globalAlpha = alpha;
@@ -503,16 +508,16 @@ function showDamage(
       `-${playerDamage}`,
       enemyX + enemyDamageOffsetX,
       commonY + enemyDamageOffsetY
-    ); 
+    );
     ctx.restore();
     if (currentFrame < totalFrames) {
       currentFrame++;
-      requestAnimationFrame(drawExpandingDamage); 
+      requestAnimationFrame(drawExpandingDamage);
     } else {
       setTimeout(() => {
         alpha = 1.0;
-        currentFrame = 0; 
-        requestAnimationFrame(drawShrinkingDamage); 
+        currentFrame = 0;
+        requestAnimationFrame(drawShrinkingDamage);
       }, displayDuration);
     }
   }
@@ -521,15 +526,16 @@ function showDamage(
     ctx.clearRect(0, 0, canvas.width, canvas.height); 
     renderFullTeam();
     ctx.drawImage(playerImg, playerX, commonY, 80, 80);
-    ctx.fillText(`${playerDamage}`, playerX + 15, commonY + 85);
-    ctx.fillText(`${enemyDamage}`, playerX + 55, commonY + 85);
     ctx.drawImage(fistImg, playerX, commonY + 60, 40, 40);
     ctx.drawImage(heartImg, playerX + 40, commonY + 60, 40, 40);
     ctx.drawImage(enemyImg, enemyX, commonY, 80, 80);
     ctx.drawImage(fistImg, enemyX, commonY + 60, 40, 40);
     ctx.drawImage(heartImg, enemyX + 40, commonY + 60, 40, 40);
-    ctx.fillText(`${enemyDamage}`, commonY + 15, commonY + 85);
-    ctx.fillText(`${playerDamage}`, commonY + 55, commonY + 85);
+    ctx.fillText(`${playerDamage}`, playerX + 15, commonY + 85);
+    ctx.fillText(`${playerHealth}`, playerX + 55, commonY + 85);
+    ctx.fillText(`${enemyDamage}`, enemyX + 15, commonY + 85);
+    ctx.fillText(`${enemyHealth}`, enemyX + 55, commonY + 85);
+    
 
     ctx.save();
     const progress = currentFrame / totalFrames;
@@ -872,3 +878,4 @@ function showDefeatScreen() {
     window.location.href = "/home/homepage.html"; 
   }, 3000); 
 }
+
