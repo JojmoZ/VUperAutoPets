@@ -40,14 +40,14 @@ function rollfirst(){
      alert("GK PUNYA OWNED ANIMALS");
      alert("redirecting");
      setTimeout(() => {
-       window.location.href = "/home/homepage.html"; // Redirect to homepage
-     }, 3000); // Wait for 3 seconds before redirecting
+       window.location.href = "/home/homepage.html"; 
+     }, 3000); 
    }else if(ownedAnimals.length ==0){
      alert("GK PUNYA OWNED ANIMALS");
      alert("redirecting");
      setTimeout(() => {
-       window.location.href = "/home/homepage.html"; // Redirect to homepage
-     }, 3000); // Wait for 3 seconds before redirecting
+       window.location.href = "/home/homepage.html"; 
+     }, 3000); 
    }else{
      const shuffledAnimals = ownedAnimals
        ? ownedAnimals.sort(() => Math.random() - 0.5)
@@ -93,14 +93,12 @@ function renderRandomAnimals() {
     statContainer.classList.add("stat-container");
     const attack = document.createElement("p");
     const health = document.createElement("p");
-    // statContainer.innerHTML = `${animal.attack}/${animal.health}`; 
     attack.textContent = `${animal.attack}`;
     health.textContent = `${animal.health}`;
     statContainer.appendChild(attack);
     statContainer.appendChild(health);
-
-    animalDiv.appendChild(animalImage); // Append the img
-    animalDiv.appendChild(statContainer); // Append the stats container
+    animalDiv.appendChild(animalImage); 
+    animalDiv.appendChild(statContainer); 
     randomAnimalsContainer.appendChild(animalDiv);
   });
 }
@@ -255,14 +253,16 @@ document.querySelectorAll(".battle-slot").forEach((slot) => {
 document.getElementById("refreshButton").addEventListener("click", function () {
   rollShopAnimals();
 });
+
+
 document.getElementById("startBattleButton").addEventListener("click", function () {
-    backupLineup(); // Backup the lineup before battle
-    shiftAnimalsToFront(); // Shift animals to the front
-    generateEnemyTeam(); // Generate enemy team
-    renderTeams(); // Render both teams (player and enemy)
+    backupLineup(); 
+    shiftAnimalsToFront();
+    generateEnemyTeam(); 
+    renderTeams(); 
     hideNonBattleElements();
     showCanvas();
-    simulateBattle(); // Start the battle
+    simulateBattle(); 
 });
 function hideNonBattleElements() {
   document.getElementById("battleSlotsContainer").classList.add("hidden");
