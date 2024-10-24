@@ -193,3 +193,26 @@ img {
   bottom: 0;
   height: 0; /* Start hidden */
 }
+/* Keyframe for bounce effect */
+@keyframes bounceIn {
+  0% {
+    transform: translateX(-100%) translateY(0); /* Start off-screen to the left */
+  }
+  25% {
+    transform: translateX(-50%) translateY(-10px); /* Slide halfway and bounce up */
+  }
+  50% {
+    transform: translateX(0) translateY(5px); /* Reach position with slight down */
+  }
+  75% {
+    transform: translateX(0) translateY(-5px); /* Slight bounce up again */
+  }
+  100% {
+    transform: translateX(0) translateY(0); /* Settle in position */
+  }
+}
+
+/* Apply the animation with timing */
+.animal-bounce-in {
+  animation: bounceIn 0.8s ease-out;
+}

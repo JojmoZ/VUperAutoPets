@@ -285,10 +285,78 @@ document
       hideNonBattleElements();
       showCanvas();
       openCurtains(() => {
-        simulateBattle();
+        animateAnimalsIntoPosition(() => {
+          simulateBattle();
+        });
       });
-    }, 1000); 
+    }, 1000);
   });
+function animateAnimalsIntoPosition(onComplete) {
+  const teamOffsetX = 100;
+  const commonY = 150;
+  const bounceHeight = 30; // Height of the bounce effect
+  const duration = 3000; // Duration of the entire animation in ms
+  const frameRate = 60; // Frames per second
+  const totalFrames = (duration / 1000) * frameRate;
+  const bounceFrequency = 5; // Increase this number for more bounces
+
+  // Preload all images for the player's lineup
+  const preloadedImages = battleLineup.map((animal) => {
+    if (animal) {
+      const img = new Image();
+      img.src = animal.img;
+      return img;
+    }
+    return null;
+  });
+
+  let currentFrame = 0;
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    renderTeams(); // This will redraw the enemy team if needed
+
+    const progress = currentFrame / totalFrames;
+    const bounceY =
+      Math.sin(progress * Math.PI * 2 * bounceFrequency) *
+      bounceHeight *
+      (1 - progress);
+
+    // Draw each preloaded image with horizontal slide-in + vertical bounce
+    preloadedImages.forEach((img, index) => {
+      if (img) {
+        const startX = -80; // Start off-screen to the left
+        const endX = teamOffsetX + (maxSlots - 1 - index) * 100;
+        const delay = index * 0.3;
+
+        // Apply the delay effect
+        const adjustedProgress = Math.min(
+          Math.max(progress - delay, 0) / (1 - delay),
+          1
+        );
+
+        // Calculate the current position with easing for smoother movement
+        const currentX = startX + (endX - startX) * adjustedProgress;
+        const targetY = commonY - bounceY;
+
+        ctx.drawImage(img, currentX, targetY, 80, 80);
+      }
+    });
+
+    currentFrame++;
+    if (currentFrame <= totalFrames) {
+      requestAnimationFrame(animate);
+    } else {
+      if (onComplete) {
+        onComplete(); // Call the onComplete callback when the animation is complete
+      }
+    }
+  }
+
+  // Start the animation loop
+  requestAnimationFrame(animate);
+}
+
 function hideNonBattleElements() {
   document.getElementById("battleSlotsContainer").classList.add("hidden");
   document.getElementById("controls").classList.add("hidden");
