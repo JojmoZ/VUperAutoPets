@@ -165,3 +165,31 @@ img {
   border-radius: 10px;
   z-index: 10;
 }
+/* Curtain Styles */
+.curtain {
+  position: absolute;
+  width: 120%;
+  left:-100px;
+  background-color: black;
+  z-index: 1000; /* Ensures it's above everything */
+  transition: height 0.5s ease; /* Smooth transition for the curtain movement */
+  overflow: hidden;
+}
+
+#curtainTop, #curtainBottom {
+  position: absolute;
+  width: 120%;
+  left:-100px;
+  background-color: black; /* Adjust color as needed */
+  transition: height 1s ease-in-out; /* Smooth animation */
+}
+
+#curtainTop {
+  top: 0;
+  height: 0; /* Start hidden */
+}
+
+#curtainBottom {
+  bottom: 0;
+  height: 0; /* Start hidden */
+}

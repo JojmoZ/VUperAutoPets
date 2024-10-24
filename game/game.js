@@ -1,4 +1,6 @@
 const canvas = document.getElementById("battleCanvas");
+const curtainTop = document.getElementById("curtainTop");
+const curtainBottom = document.getElementById("curtainBottom");
 let ctx = canvas.getContext("2d");
 let enemyLineup = [null, null, null, null, null];
 let battleLineup = JSON.parse(localStorage.getItem("battleLineup")) || [
@@ -58,6 +60,36 @@ function rollfirst(){
    }
   
 }
+  function showCurtains() {
+    curtainTop.style.visibility = "visible";
+    curtainBottom.style.visibility = "visible";
+  }
+
+  // Function to hide the curtains
+  function hideCurtains() {
+    curtainTop.style.visibility = "hidden";
+    curtainBottom.style.visibility = "hidden";
+  }
+
+  // Function to close the curtains to the middle
+ function closeCurtains() {
+   showCurtains(); // Make sure curtains are visible
+   curtainTop.style.height = "50vh"; // Animate to the middle
+   curtainBottom.style.height = "50vh"; // Animate to the middle
+ }
+
+ function openCurtains(onComplete) {
+   setTimeout(() => {
+     curtainTop.style.height = "0"; // Animate back to hidden
+     curtainBottom.style.height = "0"; // Animate back to hidden
+     setTimeout(() => {
+       if (onComplete) onComplete(); // Callback after curtains are fully opened
+     }, 500); // Match the curtain opening animation duration
+   }, 500); // Delay to allow the closing animation to finish
+ }
+
+
+
 function rollShopAnimals() {
   if (coins >= 1) {
     coins -= 1;
@@ -257,15 +289,28 @@ document.getElementById("refreshButton").addEventListener("click", function () {
 });
 
 
-document.getElementById("startBattleButton").addEventListener("click", function () {
-    backupLineup(); 
-    shiftAnimalsToFront();
-    generateEnemyTeam(); 
-    renderTeams(); 
-    hideNonBattleElements();
-    showCanvas();
-    simulateBattle(); 
-});
+document
+  .getElementById("startBattleButton")
+  .addEventListener("click", function () {
+    showCurtains();
+    closeCurtains();
+
+    // Wait for the curtains to fully close before opening
+    setTimeout(() => {
+      backupLineup();
+      shiftAnimalsToFront();
+      generateEnemyTeam();
+      renderTeams();
+      hideNonBattleElements();
+      showCanvas();
+      openCurtains(() => {
+        // Once curtains are fully open, start the battle simulation
+        
+        simulateBattle();
+      });
+    }, 1000); // Adjust this delay to match the closing animation duration
+  });
+
 function hideNonBattleElements() {
   document.getElementById("battleSlotsContainer").classList.add("hidden");
   document.getElementById("controls").classList.add("hidden");
@@ -290,6 +335,7 @@ function adjustCanvasSize() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
+  hideCurtains();
   adjustCanvasSize(); 
   window.addEventListener("resize", adjustCanvasSize); 
   updateHeartsDisplay();
