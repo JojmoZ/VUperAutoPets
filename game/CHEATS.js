@@ -1,6 +1,6 @@
 let userInput = "";
-const targetSequenceCoins = "CUTCUTCUT"; // Sequence for updating coins
-const targetSequenceLives = "JANGANAMPAS"; // Sequence for refreshing lives
+const targetSequenceCoins = "CUTCUTCUT"; 
+const targetSequenceLives = "JANGANAMPAS"; 
 
 function checkSequence() {
   if (userInput === targetSequenceCoins) {
