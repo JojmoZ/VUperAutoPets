@@ -261,6 +261,7 @@ function createFood(event) {
     }, 200); 
   }
 }
+
 function followPath(animal, path, callback) {
   let index = 0;
   const speed = 0.7; 
