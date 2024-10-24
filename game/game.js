@@ -1,5 +1,5 @@
 const canvas = document.getElementById("battleCanvas");
-const ctx = canvas.getContext("2d");
+let ctx = canvas.getContext("2d");
 let enemyLineup = [null, null, null, null, null];
 let battleLineup = JSON.parse(localStorage.getItem("battleLineup")) || [
   null,
@@ -146,6 +146,8 @@ function renderBattleSlots() {
     }
   });
 }
+
+
 function renderTeams() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   const teamOffsetX = 100;
@@ -281,9 +283,16 @@ function showNonBattleElements() {
   document.getElementById("backArrow").classList.remove("hidden");
   hideCanvas();
 }
-document.addEventListener("DOMContentLoaded", function () {
+function adjustCanvasSize() {
+  const canvas = document.getElementById("battleCanvas");
+  canvas.width = window.innerWidth;
+  ctx = canvas.getContext("2d"); 
+}
 
-  updateHeartsDisplay();  
+document.addEventListener("DOMContentLoaded", function () {
+  adjustCanvasSize(); 
+  window.addEventListener("resize", adjustCanvasSize); 
+  updateHeartsDisplay();
   if (localStorage.getItem("randomAnimals")) {
     randomAnimals = JSON.parse(localStorage.getItem("randomAnimals"));
     renderRandomAnimals();

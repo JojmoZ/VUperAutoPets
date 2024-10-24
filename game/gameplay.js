@@ -1,99 +1,17 @@
-const canvas = document.getElementById("battleCanvas");
-const ctx = canvas.getContext("2d");
 let enemyLineup = [null, null, null, null, null];
-let battleLineup = JSON.parse(localStorage.getItem("battleLineup")) || [
-  null,
-  null,
-  null,
-  null,
-  null,
+let originalBattleLineup = [];
+let lives = parseInt(localStorage.getItem("lives")) || 3;
+let hearts = [
+  document.getElementById("heart1"),
+  document.getElementById("heart2"),
+  document.getElementById("heart3"),
 ];
-let randomAnimals = JSON.parse(localStorage.getItem("randomAnimals")) || [];
-let coins = parseInt(localStorage.getItem("gamecoins")) || 0;
-document.getElementById("coins").textContent = `Coins: ${coins}`;
-const maxShopAnimals = 3;
-const maxSlots = 5;
-let shopAnimals = [
-  { name: "Ant", attack: 2, health: 1, cost: 2, img: "../assets/Ant.webp" },
-  { name: "Fish", attack: 2, health: 3, cost: 5, img: "../assets/Fish.webp" },
-  { name: "Lion", attack: 3, health: 4, cost: 7, img: "../assets/Lion.webp" },
-  { name: "Pig", attack: 3, health: 1, cost: 3, img: "../assets/Pig.webp" },
-  {
-    name: "Turtle",
-    attack: 1,
-    health: 2,
-    cost: 4,
-    img: "../assets/Turtle.webp",
-  },
-  {
-    name: "Elephant",
-    attack: 8,
-    health: 7,
-    cost: 5,
-    img: "../assets/Elephant.webp",
-  },
-];
-function saveRandomAnimals() {
-  localStorage.setItem("randomAnimals", JSON.stringify(randomAnimals));
-}
-function rollShopAnimals() {
-  if (coins >= 1) {
-    coins -= 1;
-    updateCoinsDisplay();
+let middleHeart = document.getElementById("middleHeart");
 
-    const ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
-    const shuffledAnimals = ownedAnimals
-      ? ownedAnimals.sort(() => Math.random() - 0.5)
-      : shopAnimals.sort(() => Math.random() - 0.5);
-    randomAnimals = shuffledAnimals.slice(0, maxShopAnimals);
-
-    renderRandomAnimals();
-    saveRandomAnimals();
-  } else {
-    alert("Not enough coins to refresh!");
-  }
-}
-function renderRandomAnimals() {
-  const randomAnimalsContainer = document.getElementById("random-animals");
-  randomAnimalsContainer.innerHTML = "";
-  randomAnimals.forEach((animal, index) => {
-    const animalDiv = document.createElement("div");
-    animalDiv.classList.add("animal");
-    animalDiv.setAttribute("draggable", true);
-    animalDiv.setAttribute("data-index", index);
-    animalDiv.innerHTML = `<img src="${animal.img}" alt="${animal.name}">
-                           <p>A:${animal.attack} / H:${animal.health}</p>`;
-    randomAnimalsContainer.appendChild(animalDiv);
-    animalDiv.addEventListener("dragstart", dragStart);
-  });
-}
 function saveBattleLineup() {
   localStorage.setItem("battleLineup", JSON.stringify(battleLineup));
 }
-function dragStart(event) {
-  const index = event.target.getAttribute("data-index");
-  event.dataTransfer.setData("text/plain", index);
-}
 
-function handleDrop(event) {
-  event.preventDefault();
-  const slotIndex = event.target.getAttribute("data-slot");
-  const reversedSlotIndex = maxSlots - 1 - slotIndex;
-  const animalIndex = event.dataTransfer.getData("text/plain");
-  const selectedAnimal = randomAnimals[animalIndex];
-  if (!battleLineup[reversedSlotIndex] && coins >= selectedAnimal.cost) {
-    battleLineup[reversedSlotIndex] = selectedAnimal;
-    event.target.innerHTML = `<img src="${selectedAnimal.img}" alt="${selectedAnimal.name}" style="position: absolute; width: 80px; height: 80px; top: 10px; left: 10px;">`;
-    coins -= selectedAnimal.cost;
-    updateCoinsDisplay();
-    saveBattleLineup();
-  } else {
-    alert("Not enough coins or slot is already filled!");
-  }
-}
-function handleDragOver(event) {
-  event.preventDefault();
-}
 function renderBattleSlots() {
   const battleSlots = document.querySelectorAll(".battle-slot");
   battleSlots.forEach((slot, index) => {
@@ -105,101 +23,95 @@ function renderBattleSlots() {
     }
   });
 }
+
 function renderTeams() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   const teamOffsetX = 100;
+  const commonY = 150;
   const enemyOffsetX = canvas.width - 550;
+  const iconSize = 40;
   battleLineup.forEach((animal, index) => {
     if (animal) {
       const img = new Image();
       img.src = animal.img;
-      img.onload = () =>
+      img.onload = () => {
         ctx.drawImage(
           img,
           teamOffsetX + (maxSlots - 1 - index) * 100,
-          20,
-          60,
-          60
+          commonY,
+          80,
+          80
         );
-      ctx.fillText(
-        `A:${animal.attack}/H:${animal.health}`,
-        teamOffsetX + (maxSlots - 1 - index) * 100,
-        100
-      );
+        drawAnimalStats(
+          animal,
+          teamOffsetX + (maxSlots - 1 - index) * 100,
+          commonY,
+          iconSize
+        );
+      };
     }
   });
   enemyLineup.forEach((animal, index) => {
     if (animal) {
       const img = new Image();
       img.src = animal.img;
-      img.onload = () =>
-        ctx.drawImage(img, enemyOffsetX + index * 100, 20, 60, 60);
-      ctx.fillText(
-        `A:${animal.attack}/H:${animal.health}`,
-        enemyOffsetX + index * 100,
-        100
-      );
+      img.onload = () => {
+        ctx.drawImage(img, enemyOffsetX + index * 100, commonY, 80, 80);
+        drawAnimalStats(animal, enemyOffsetX + index * 100, commonY, iconSize);
+      };
     }
   });
 }
 
-document.querySelectorAll(".battle-slot").forEach((slot) => {
-  slot.addEventListener("drop", handleDrop);
-  slot.addEventListener("dragover", handleDragOver);
-});
-document.getElementById("refreshButton").addEventListener("click", function () {
-  rollShopAnimals();
-});
+function drawAnimalStats(animal, xPos, yPos, iconSize) {
+  const fistImg = new Image();
+  fistImg.src = "../assets/fist.png";
+  fistImg.onload = () => {
+    ctx.drawImage(fistImg, xPos, yPos + 60, iconSize, iconSize);
+    ctx.fillStyle = "white";
+    ctx.font = "16px Arial";
+    ctx.fillText(`${animal.attack}`, xPos + 15, yPos + 85);
+  };
+  const heartImg = new Image();
+  heartImg.src = "../assets/heart.png";
+  heartImg.onload = () => {
+    ctx.drawImage(heartImg, xPos + 40, yPos + 60, iconSize, iconSize);
+    ctx.fillText(`${animal.health}`, xPos + 55, yPos + 85);
+  };
+}
+
 document
   .getElementById("startBattleButton")
   .addEventListener("click", function () {
+    backupLineup();
+    shiftAnimalsToFront();
     generateEnemyTeam();
     renderTeams();
     hideNonBattleElements();
     showCanvas();
     simulateBattle();
   });
-function hideNonBattleElements() {
-  document.getElementById("battleSlotsContainer").classList.add("hidden");
-  document.getElementById("controls").classList.add("hidden");
-  document.getElementById("backArrow").classList.add("hidden");
-}
-function showCanvas() {
-  document.getElementById("battleCanvas").classList.remove("hidden");
-}
-function hideCanvas() {
-  document.getElementById("battleCanvas").classList.add("hidden");
-}
-function showNonBattleElements() {
-  document.getElementById("battleSlotsContainer").classList.remove("hidden");
-  document.getElementById("controls").classList.remove("hidden");
-  document.getElementById("backArrow").classList.remove("hidden");
-  hideCanvas();
-}
-document.addEventListener("DOMContentLoaded", function () {
-  if (localStorage.getItem("randomAnimals")) {
-    randomAnimals = JSON.parse(localStorage.getItem("randomAnimals"));
-    renderRandomAnimals();
-  } else {
-    rollShopAnimals();
-  }
 
-  if (localStorage.getItem("battleLineup")) {
-    battleLineup = JSON.parse(localStorage.getItem("battleLineup"));
-    renderTeams();
-    renderBattleSlots();
-  }
-
-  updateCoinsDisplay();
-});
-function updateCoinsDisplay() {
-  localStorage.setItem("gamecoins", coins);
-  document.getElementById("coins").textContent = `Coins: ${coins}`;
+function backupLineup() {
+  originalBattleLineup = [...battleLineup];
 }
+
+function shiftAnimalsToFront() {
+  const shiftedLineup = battleLineup.filter((animal) => animal !== null);
+  while (shiftedLineup.length < maxSlots) {
+    shiftedLineup.push(null);
+  }
+  battleLineup = [...shiftedLineup];
+}
+
+function restoreOriginalLineup() {
+  battleLineup = [...originalBattleLineup];
+  renderBattleSlots();
+}
+
 function generateEnemyTeam() {
   const totalTeamCost = calculateTeamCost(battleLineup);
   enemyLineup = [];
-
   while (enemyLineup.length < maxSlots && totalTeamCost > 0) {
     const randomAnimal =
       shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
@@ -208,141 +120,24 @@ function generateEnemyTeam() {
     }
   }
 }
+
 function calculateTeamCost(team) {
   return team.reduce(
     (total, animal) => (animal ? total + animal.cost : total),
     0
   );
 }
-function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
-  const playerStartX = 100 + (maxSlots - 1) * 100;
-  const enemyStartX = canvas.width - 550;
-  const centerX = canvas.width / 2 - 60;
-  const duration = 1000;
-  const frameRate = 60;
-  const totalFrames = (duration / 1000) * frameRate;
-  let currentFrame = 0;
-  const playerImg = new Image();
-  playerImg.src = playerAnimal.img;
-  const enemyImg = new Image();
-  enemyImg.src = enemyAnimal.img;
-  const bandageImg = new Image();
-  bandageImg.src = "../assets/hurt.png";
-  playerImg.onload = () => {
-    enemyImg.onload = () => {
-      requestAnimationFrame(animate);
-    };
-  };
 
-  function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    renderFullTeam();
-    const progress = easeInOutQuad(currentFrame / totalFrames);
-    const playerX = playerStartX - (playerStartX - centerX) * progress;
-    const enemyX = enemyStartX + (centerX + 60 - enemyStartX) * progress;
-    ctx.drawImage(playerImg, playerX, 20, 60, 60);
-    ctx.fillText(
-      `A:${playerAnimal.attack}/H:${playerAnimal.health}`,
-      playerX,
-      100
-    );
-    ctx.drawImage(enemyImg, enemyX, 20, 60, 60);
-    ctx.fillText(
-      `A:${enemyAnimal.attack}/H:${enemyAnimal.health}`,
-      enemyX,
-      100
-    );
-    if (progress > 0.8) {
-      const bandageSize = 60;
-      ctx.drawImage(bandageImg, playerX + 10, 20, bandageSize, bandageSize);
-      ctx.drawImage(bandageImg, enemyX + 10, 20, bandageSize, bandageSize);
-    }
-    if (currentFrame >= totalFrames) {
-      showDamage(playerX, playerAnimal.attack, enemyX, enemyAnimal.attack);
-    }
-    currentFrame++;
-    if (currentFrame <= totalFrames) {
-      requestAnimationFrame(animate);
-    } else {
-      setTimeout(onComplete, 500);
-    }
-  }
-}
-function showDamage(playerX, playerDamage, enemyX, enemyDamage) {
-  let alpha = 1.0;
-  const fadeDuration = 1000;
-  function drawDamage() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    renderFullTeam();
-    ctx.save();
-    ctx.globalAlpha = alpha;
-    ctx.font = "30px Arial";
-    ctx.fillStyle = "red";
-    ctx.fillText(`-${playerDamage}`, playerX + 20, 50);
-    ctx.fillText(`-${enemyDamage}`, enemyX + 20, 50);
-
-    ctx.restore();
-    alpha -= 0.05;
-    if (alpha > 0) {
-      requestAnimationFrame(drawDamage);
-    } else {
-      ctx.globalAlpha = 1.0;
-    }
-  }
-  drawDamage();
-}
-function renderFullTeam() {
-  const teamOffsetX = 100;
-  const enemyOffsetX = canvas.width - 550;
-  battleLineup.forEach((animal, index) => {
-    if (animal && index !== 0) {
-      ctx.drawImage(
-        getAnimalImage(animal.img),
-        teamOffsetX + (maxSlots - 1 - index) * 100,
-        20,
-        60,
-        60
-      );
-      ctx.fillText(
-        `A:${animal.attack}/H:${animal.health}`,
-        teamOffsetX + (maxSlots - 1 - index) * 100,
-        100
-      );
-    }
-  });
-  enemyLineup.forEach((animal, index) => {
-    if (animal && index !== 0) {
-      ctx.drawImage(
-        getAnimalImage(animal.img),
-        enemyOffsetX + index * 100,
-        20,
-        60,
-        60
-      );
-      ctx.fillText(
-        `A:${animal.attack}/H:${animal.health}`,
-        enemyOffsetX + index * 100,
-        100
-      );
-    }
-  });
-}
-function easeInOutQuad(t) {
-  return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-}
-function getAnimalImage(src) {
-  const img = new Image();
-  img.src = src;
-  return img;
-}
 function simulateBattle() {
   console.clear();
   let turnCount = 1;
   const maxTurns = 10;
+  renderTeams();
+
   function pauseBeforeFirstTurn() {
-    renderTeams();
     setTimeout(playTurn, 1500);
   }
+
   function playTurn() {
     if (
       turnCount > maxTurns ||
@@ -355,68 +150,113 @@ function simulateBattle() {
       const enemySurvivors = enemyLineup.filter(
         (animal) => animal !== null
       ).length;
-
-      if (playerSurvivors > enemySurvivors) {
-        console.log("User wins!");
-      } else if (playerSurvivors < enemySurvivors) {
-        console.log("Enemy wins!");
-      } else {
-        console.log("It's a draw!");
-      }
-      renderTeams();
-      showNonBattleElements();
+      checkGameOver(playerSurvivors, enemySurvivors);
       return;
     }
-    console.log(`Turn ${turnCount}`);
     const playerAnimalIndex = battleLineup.findIndex(
       (animal) => animal !== null
     );
     const playerAnimal = battleLineup[playerAnimalIndex];
-    if (playerAnimal) {
-      const enemyAnimalIndex = enemyLineup.findIndex(
-        (animal) => animal !== null
-      );
-      const enemyAnimal = enemyLineup[enemyAnimalIndex];
-      if (enemyAnimal) {
-        animateHeadbutt(playerAnimal, enemyAnimal, () => {
-          enemyAnimal.health -= playerAnimal.attack;
-          playerAnimal.health -= enemyAnimal.attack;
-          if (enemyAnimal.health <= 0 && playerAnimal.health <= 0) {
-            console.log(`Enemy's ${enemyAnimal.name} died`);
-            console.log(`User's ${playerAnimal.name} died`);
-            enemyLineup[enemyAnimalIndex] = null;
-            battleLineup[playerAnimalIndex] = null;
-            shiftAnimalsInLineup(battleLineup);
-            shiftAnimalsInLineup(enemyLineup);
-            renderTeams();
-          } else {
-            if (enemyAnimal.health <= 0) {
-              console.log(`Enemy's ${enemyAnimal.name} died`);
-              enemyLineup[enemyAnimalIndex] = null;
-              shiftAnimalsInLineup(enemyLineup);
-              renderTeams();
-            }
-            if (playerAnimal.health <= 0) {
-              console.log(`User's ${playerAnimal.name} died`);
-              battleLineup[playerAnimalIndex] = null;
-              shiftAnimalsInLineup(battleLineup);
-              renderTeams();
-            }
-          }
+    const enemyAnimalIndex = enemyLineup.findIndex((animal) => animal !== null);
+    const enemyAnimal = enemyLineup[enemyAnimalIndex];
+    if (playerAnimal && enemyAnimal) {
+      animateHeadbutt(playerAnimal, enemyAnimal, () => {
+        enemyAnimal.health -= playerAnimal.attack;
+        playerAnimal.health -= enemyAnimal.attack;
+        handleBothDeaths(playerAnimal, enemyAnimal, () => {
           turnCount++;
-          setTimeout(playTurn, 1500);
+          setTimeout(playTurn, 500);
         });
-      }
+      });
     }
   }
+
   pauseBeforeFirstTurn();
 }
-function shiftAnimalsInLineup(lineup) {
-  let shiftedLineup = lineup.filter((animal) => animal !== null);
-  while (shiftedLineup.length < maxSlots) {
-    shiftedLineup.push(null);
+
+function checkGameOver(playerSurvivors, enemySurvivors) {
+  if (playerSurvivors > enemySurvivors) {
+    alert("You won this battle!");
+    showNonBattleElements();
+    location.reload();
+  } else if (playerSurvivors < enemySurvivors) {
+    loseLife();
+  } else {
+    alert("It's a draw!");
+    showNonBattleElements();
+    location.reload();
   }
-  for (let i = 0; i < maxSlots; i++) {
-    lineup[i] = shiftedLineup[i];
+}
+
+function loseLife() {
+  if (lives > 0) {
+    middleHeart.src = "../assets/heart.png";
+    middleHeart.classList.remove("hidden");
+    setTimeout(() => {
+      middleHeart.src = "../assets/semibroken.png";
+    }, 500);
+    setTimeout(() => {
+      middleHeart.src = "../assets/broken heart.png";
+      middleHeart.classList.add("hidden");
+      hearts[lives - 1].src = "../assets/broken heart.png";
+      lives--;
+      localStorage.setItem("lives", lives);
+      if (lives <= 0) {
+        showDefeatScreen();
+      } else {
+        showNonBattleElements();
+        location.reload();
+      }
+    }, 1500);
   }
+}
+
+function showDefeatScreen() {
+  const defeatScreen = document.getElementById("defeatScreen");
+  defeatScreen.classList.remove("hidden");
+  setTimeout(() => {
+    resetGame();
+    window.location.href = "/home/homepage.html";
+  }, 3000);
+}
+
+function hideNonBattleElements() {
+  document.getElementById("battleSlotsContainer").classList.add("hidden");
+  document.getElementById("controls").classList.add("hidden");
+  document.getElementById("backArrow").classList.add("hidden");
+}
+
+function showCanvas() {
+  document.getElementById("battleCanvas").classList.remove("hidden");
+}
+
+function hideCanvas() {
+  document.getElementById("battleCanvas").classList.add("hidden");
+}
+
+function showNonBattleElements() {
+  document.getElementById("battleSlotsContainer").classList.remove("hidden");
+  document.getElementById("controls").classList.remove("hidden");
+  document.getElementById("backArrow").classList.remove("hidden");
+  hideCanvas();
+}
+
+function resetGame() {
+  battleLineup = [null, null, null, null, null];
+  enemyLineup = [null, null, null, null, null];
+  localStorage.removeItem("randomAnimals");
+  coins = 10;
+  updateCoinsDisplay();
+  if (lives <= 0) {
+    lives = 3;
+    localStorage.setItem("lives", lives);
+    hearts.forEach((heart) => {
+      heart.src = "../assets/heart.png";
+    });
+  }
+  renderBattleSlots();
+  renderRandomAnimals();
+  saveBattleLineup();
+  saveRandomAnimals();
+  showNonBattleElements();
 }
