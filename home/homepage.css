@@ -664,3 +664,8 @@ section {
   animation: slideInRight 2s ease forwards;
   animation-delay: 0.5s; 
 }
+.trailer{
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}

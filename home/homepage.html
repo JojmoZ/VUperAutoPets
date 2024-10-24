@@ -43,7 +43,17 @@
       <button id="play-button" class="play-button fade-bottom">Play</button>
     </div>
   </section>
-
+<section class="trailer">
+  <div class="title-wrapper">
+    <h2 class="section-title">Trailer</h2>
+  </div>
+  <div class="trailer-container fade-in-element">
+    <video autoplay muted loop id="trailer-video">
+      <source src="../assets/Super Auto Pets - Gameplay Trailer.mp4" type="video/mp4">
+    </video>
+  </div>
+  <button id="pause-button" class="pause-button fade-in-element">Pause</button>
+</section>
   <section class="game-desc">
     <div class="title-wrapper">
 
@@ -88,7 +98,7 @@
 
     </div>
     <div class="visualizer-container">
-      <audio src="../assets/Super Auto Pets  - Menu Theme.mp3" id="audio" loop></audio>
+      <audio src="../assets/Super Auto Pets  - Menu Theme.mp3" id="audio" loop autoplay></audio>
       <canvas id="visualization" width="400" height="300"></canvas>
     </div>
     <div class="ost-card">
@@ -99,8 +109,9 @@
       </div>
     </div>
   </section>
-  <!-- <section class="map-section">
-</section> -->
+  <section class="map-section">
+
+  </section>
   <section class="social-media">
     <div class="title-wrapper">
       <h2 class="section-title">Social Media</h2>

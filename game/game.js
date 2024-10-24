@@ -509,12 +509,12 @@ function showDamage(
     ctx.fillStyle = "red";
     ctx.globalAlpha = alpha;
     ctx.fillText(
-      `-${enemyDamage}`,
+      `${enemyDamage}`,
       playerX + playerDamageOffsetX,
       commonY + playerDamageOffsetY
     );
     ctx.fillText(
-      `-${playerDamage}`,
+      `${playerDamage}`,
       enemyX + enemyDamageOffsetX,
       commonY + enemyDamageOffsetY
     );
@@ -554,12 +554,12 @@ function showDamage(
     ctx.fillStyle = "red";
     ctx.globalAlpha = alpha;
     ctx.fillText(
-      `-${enemyDamage}`,
+      `${enemyDamage}`,
       playerX + playerDamageOffsetX,
       commonY + playerDamageOffsetY
     );
     ctx.fillText(
-      `-${playerDamage}`,
+      `${playerDamage}`,
       enemyX + enemyDamageOffsetX,
       commonY + enemyDamageOffsetY
     );
