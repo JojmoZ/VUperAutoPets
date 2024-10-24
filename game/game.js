@@ -64,32 +64,24 @@ function rollfirst(){
     curtainTop.style.visibility = "visible";
     curtainBottom.style.visibility = "visible";
   }
-
-  // Function to hide the curtains
   function hideCurtains() {
     curtainTop.style.visibility = "hidden";
     curtainBottom.style.visibility = "hidden";
   }
-
-  // Function to close the curtains to the middle
  function closeCurtains() {
-   showCurtains(); // Make sure curtains are visible
-   curtainTop.style.height = "50vh"; // Animate to the middle
-   curtainBottom.style.height = "50vh"; // Animate to the middle
+   showCurtains(); 
+   curtainTop.style.height = "50vh"; 
+   curtainBottom.style.height = "50vh"; 
  }
-
  function openCurtains(onComplete) {
    setTimeout(() => {
-     curtainTop.style.height = "0"; // Animate back to hidden
-     curtainBottom.style.height = "0"; // Animate back to hidden
+     curtainTop.style.height = "0"; 
+     curtainBottom.style.height = "0"; 
      setTimeout(() => {
-       if (onComplete) onComplete(); // Callback after curtains are fully opened
-     }, 500); // Match the curtain opening animation duration
-   }, 500); // Delay to allow the closing animation to finish
+       if (onComplete) onComplete(); 
+     }, 500); 
+   }, 500); 
  }
-
-
-
 function rollShopAnimals() {
   if (coins >= 1) {
     coins -= 1;
@@ -134,9 +126,6 @@ function renderRandomAnimals() {
     randomAnimalsContainer.appendChild(animalDiv);
   });
 }
-
-
-
 function saveBattleLineup() {
   localStorage.setItem("battleLineup", JSON.stringify(battleLineup));
 }
@@ -163,7 +152,6 @@ function handleDrop(event) {
     alert("Not enough coins or slot is already filled!");
   }
 }
-
 function handleDragOver(event) {
   event.preventDefault();
 }
@@ -178,8 +166,6 @@ function renderBattleSlots() {
     }
   });
 }
-
-
 function renderTeams() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   const teamOffsetX = 100;
@@ -279,7 +265,6 @@ function renderTeams() {
     }
   });
 }
-
 document.querySelectorAll(".battle-slot").forEach((slot) => {
   slot.addEventListener("drop", handleDrop);
   slot.addEventListener("dragover", handleDragOver);
@@ -287,15 +272,11 @@ document.querySelectorAll(".battle-slot").forEach((slot) => {
 document.getElementById("refreshButton").addEventListener("click", function () {
   rollShopAnimals();
 });
-
-
 document
   .getElementById("startBattleButton")
   .addEventListener("click", function () {
     showCurtains();
     closeCurtains();
-
-    // Wait for the curtains to fully close before opening
     setTimeout(() => {
       backupLineup();
       shiftAnimalsToFront();
@@ -304,13 +285,10 @@ document
       hideNonBattleElements();
       showCanvas();
       openCurtains(() => {
-        // Once curtains are fully open, start the battle simulation
-        
         simulateBattle();
       });
-    }, 1000); // Adjust this delay to match the closing animation duration
+    }, 1000); 
   });
-
 function hideNonBattleElements() {
   document.getElementById("battleSlotsContainer").classList.add("hidden");
   document.getElementById("controls").classList.add("hidden");
@@ -428,7 +406,6 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
     ctx.drawImage(heartImg, enemyX + 40, enemyY + 60, 40, 40);
     ctx.fillText(`${enemyAnimal.attack}`, enemyX + 15, enemyY + 85);
     ctx.fillText(`${enemyAnimal.health}`, enemyX + 55, enemyY + 85);
-
     if (progress > 0.8) {
       const bandageSize = 60;
       const bandageImg = new Image();
@@ -436,7 +413,6 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
       ctx.drawImage(bandageImg, playerX + 10, playerY, bandageSize, bandageSize);
       ctx.drawImage(bandageImg, enemyX + 10, enemyY, bandageSize, bandageSize);
     }
-    
     currentFrame++;
     if (currentFrame <= totalFrames) {
       requestAnimationFrame(animate);
@@ -460,11 +436,9 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
   function animateReturn(playerStartX, playerY, enemyStartX, enemyY) {
     let returnFrame = 0;
     const returnFrames = totalFrames;
-
     function animateBack() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      renderFullTeam();
-
+      renderFullTeam()
       const progress = easeInOutQuad(returnFrame / returnFrames);
       const playerX = centerX + (playerStartX - centerX) * progress;
       const enemyX = centerX + 60 + (enemyStartX - centerX - 60) * progress;
@@ -479,7 +453,6 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
       ctx.drawImage(heartImg, enemyX + 40, enemyY + 60, 40, 40);
       ctx.fillText(`${enemyAnimal.attack}`, enemyX + 15, enemyY + 85);
       ctx.fillText(`${enemyAnimal.health}`, enemyX + 55, enemyY + 85);
-
       returnFrame++;
       if (returnFrame <= returnFrames) {
         requestAnimationFrame(animateBack);
@@ -487,11 +460,9 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
         onComplete();
       }
     }
-
     requestAnimationFrame(animateBack);
   }
 }
-
 function backupLineup() {
   originalBattleLineup = [...battleLineup]; 
 }
@@ -590,8 +561,6 @@ function showDamage(
     ctx.fillText(`${playerHealth}`, playerX + 55, commonY + 85);
     ctx.fillText(`${enemyDamage}`, enemyX + 15, commonY + 85);
     ctx.fillText(`${enemyHealth}`, enemyX + 55, commonY + 85);
-    
-
     ctx.save();
     const progress = currentFrame / totalFrames;
     const fontSize = maxFontSize - progress * (maxFontSize - minFontSize); 
@@ -610,7 +579,6 @@ function showDamage(
       commonY + enemyDamageOffsetY
     );
     ctx.restore();
-
     if (currentFrame < totalFrames) {
       currentFrame++;
       requestAnimationFrame(drawShrinkingDamage); 
