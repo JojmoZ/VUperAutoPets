@@ -21,7 +21,7 @@ canvas {
     left: 0;
     width: 100vw; /* Full viewport width */
     height: 100vh; /* Full viewport height */
-    background-image: url('../assets/battleback10-2.png'); /* Replace with correct path */
+    background-image: url('../assets/BARNA.png'); /* Replace with correct path */
     background-size: cover; /* Ensures the image covers the entire canvas */
     background-position: center; /* Centers the background */
     background-repeat: no-repeat;
