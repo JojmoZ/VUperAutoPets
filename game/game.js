@@ -451,11 +451,16 @@ function generateEnemyTeam() {
   while (enemyLineup.length < maxSlots && totalTeamCost > 0) {
     const randomAnimal =
       shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
+
+    // Clone the animal object to ensure separate instances
+    const clonedAnimal = { ...randomAnimal };
+
     if (totalTeamCost >= randomAnimal.cost) {
-      enemyLineup.push(randomAnimal);
+      enemyLineup.push(clonedAnimal);
     }
   }
 }
+
 function calculateTeamCost(team) {
   return team.reduce(
     (total, animal) => (animal ? total + animal.cost : total),
