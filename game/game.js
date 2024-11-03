@@ -282,10 +282,8 @@ document
       shiftAnimalsToFront();
       generateEnemyTeam();
       hideNonBattleElements();
-      // Hide the canvas until animation starts
       hideCanvas();
       openCurtains(() => {
-        // Show the canvas and start animation
         showCanvas();
         animateAnimalsIntoPosition(() => {
           simulateBattle();
@@ -297,13 +295,11 @@ function animateAnimalsIntoPosition(onComplete) {
   const teamOffsetX = 100;
   const enemyOffsetX = canvas.width - 550;
   const commonY = 150;
-  const bounceHeight = 30; // Height of the bounce effect
-  const duration = 4000; // Extended duration for the entire animation in ms
-  const frameRate = 60; // Frames per second
+  const bounceHeight = 30; 
+  const duration = 4000;
+  const frameRate = 60; 
   const totalFrames = (duration / 1000) * frameRate;
-  const bounceFrequency = 5; // Increase this number for more bounces
-
-  // Preload all images for the player's and enemy's lineup
+  const bounceFrequency = 5; 
   const preloadedPlayerImages = battleLineup.map((animal, index) => {
     if (animal) {
       const img = new Image();
@@ -325,8 +321,6 @@ function animateAnimalsIntoPosition(onComplete) {
   });
 
   let currentFrame = 0;
-
-  // Easing function for smoother motion
   function easeOutQuad(t) {
     return t * (2 - t);
   }
@@ -335,20 +329,18 @@ function animateAnimalsIntoPosition(onComplete) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     const progress = currentFrame / totalFrames;
-    const easedProgress = easeOutQuad(progress); // Applying ease-out easing
+    const easedProgress = easeOutQuad(progress);
     const bounceY =
       Math.sin(easedProgress * Math.PI * 2 * bounceFrequency) *
       bounceHeight *
       (1 - easedProgress);
 
-    // Draw each preloaded player image with horizontal slide-in + vertical bounce
     preloadedPlayerImages.forEach((img, index) => {
       if (img) {
-        const startX = -80; // Start off-screen to the left
+        const startX = -80;
         const endX = teamOffsetX + (maxSlots - 1 - index) * 100;
-        const delay = index * 0.2; // Reduced delay interval
+        const delay = index * 0.2; 
 
-        // Apply the delay effect
         const adjustedProgress = Math.min(
           Math.max(easedProgress - delay, 0) / (1 - delay),
           1
@@ -360,15 +352,12 @@ function animateAnimalsIntoPosition(onComplete) {
         ctx.drawImage(img, currentX, targetY, 80, 80);
       }
     });
-
-    // Draw each preloaded enemy image with horizontal slide-in + vertical bounce
     preloadedEnemyImages.forEach((img, index) => {
       if (img) {
-        const startX = canvas.width + 80; // Start off-screen to the right
+        const startX = canvas.width + 80; 
         const endX = enemyOffsetX + index * 100;
-        const delay = index * 0.2; // Reduced delay interval for enemies too
+        const delay = index * 0.2; 
 
-        // Apply the delay effect
         const adjustedProgress = Math.min(
           Math.max(easedProgress - delay, 0) / (1 - delay),
           1
@@ -380,18 +369,15 @@ function animateAnimalsIntoPosition(onComplete) {
         ctx.drawImage(img, currentX, targetY, 80, 80);
       }
     });
-
     currentFrame++;
     if (currentFrame <= totalFrames) {
       requestAnimationFrame(animate);
     } else {
       if (onComplete) {
-        onComplete(); // Call the onComplete callback when the animation is complete
+        onComplete(); 
       }
     }
   }
-
-  // Start the animation loop
   requestAnimationFrame(animate);
 }
 
@@ -451,8 +437,6 @@ function generateEnemyTeam() {
   while (enemyLineup.length < maxSlots && totalTeamCost > 0) {
     const randomAnimal =
       shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
-
-    // Clone the animal object to ensure separate instances
     const clonedAnimal = { ...randomAnimal };
 
     if (totalTeamCost >= randomAnimal.cost) {
