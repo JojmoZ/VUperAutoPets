@@ -779,7 +779,7 @@ function animateDeathFlyOff(animal, index, teamType, onComplete) {
   const img = new Image();
   img.src = animal.img;
   let currentFrame = 0;
-  const totalFrames = 60;
+  const totalFrames = 10; // Further reduced total frames to make the animation faster
   let startX, startY;
   if (teamType === "player") {
     startX = 100 + (maxSlots - 1 - index) * 100;
@@ -791,7 +791,12 @@ function animateDeathFlyOff(animal, index, teamType, onComplete) {
   const endX = teamType === "player" ? -100 : canvas.width + 100;
   const controlPointX = (startX + endX) / 2;
   const controlPointY = startY - 400;
-  function animate() {
+  let lastFrameTime = performance.now();
+
+  function animate(currentTime) {
+    const deltaTime = (currentTime - lastFrameTime) / 1000; // Convert to seconds
+    lastFrameTime = currentTime;
+
     const previousX =
       (1 - currentFrame / totalFrames) *
         (1 - currentFrame / totalFrames) *
@@ -812,7 +817,7 @@ function animateDeathFlyOff(animal, index, teamType, onComplete) {
       (currentFrame / totalFrames) *
         (currentFrame / totalFrames) *
         (startY + 100);
-    ctx.clearRect(previousX - 30, previousY - 30, 120, 160);  
+    ctx.clearRect(previousX - 30, previousY - 30, 120, 160);
     renderFullTeam();
     const progress = currentFrame / totalFrames;
     const curveX =
@@ -825,14 +830,14 @@ function animateDeathFlyOff(animal, index, teamType, onComplete) {
       progress * progress * (startY + 100);
     ctx.drawImage(img, curveX, curveY, 60, 60);
 
-    currentFrame++;
+    currentFrame += deltaTime * totalFrames * 2; // Increase the increment to make it faster
     if (currentFrame < totalFrames) {
       requestAnimationFrame(animate);
     } else {
       onComplete();
     }
   }
-  animate();
+  requestAnimationFrame(animate);
 }
 function handleBothDeaths(playerAnimal, enemyAnimal, onComplete) {
   const deathPromises = [];
