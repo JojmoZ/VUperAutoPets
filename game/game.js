@@ -296,11 +296,11 @@ function animateAnimalsIntoPosition(onComplete) {
   const teamOffsetX = 100;
   const enemyOffsetX = canvas.width - 550;
   const commonY = 150;
-  const bounceHeight = 30; 
-  const duration = 4000;
-  const frameRate = 60; 
-  const totalFrames = (duration / 1000) * frameRate;
-  const bounceFrequency = 5; 
+  const bounceHeight = 30; // Height of the bounce effect
+  const duration = 2000; // Extended duration for the entire animation in ms
+  const bounceFrequency = 5; // Increase this number for more bounces
+
+  // Preload all images for the player's and enemy's lineup
   const preloadedPlayerImages = battleLineup.map((animal, index) => {
     if (animal) {
       const img = new Image();
@@ -322,26 +322,34 @@ function animateAnimalsIntoPosition(onComplete) {
   });
 
   let currentFrame = 0;
+  let lastFrameTime = performance.now();
+
+  // Easing function for smoother motion
   function easeOutQuad(t) {
     return t * (2 - t);
   }
 
-  function animate() {
+  function animate(currentTime) {
+    const deltaTime = (currentTime - lastFrameTime) / 1000; // Convert to seconds
+    lastFrameTime = currentTime;
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    const progress = currentFrame / totalFrames;
-    const easedProgress = easeOutQuad(progress);
+    const progress = currentFrame / (duration / 1000); // Use delta time for progress
+    const easedProgress = easeOutQuad(progress); // Applying ease-out easing
     const bounceY =
       Math.sin(easedProgress * Math.PI * 2 * bounceFrequency) *
       bounceHeight *
       (1 - easedProgress);
 
+    // Draw each preloaded player image with horizontal slide-in + vertical bounce
     preloadedPlayerImages.forEach((img, index) => {
       if (img) {
-        const startX = -80;
+        const startX = -80; // Start off-screen to the left
         const endX = teamOffsetX + (maxSlots - 1 - index) * 100;
-        const delay = index * 0.2; 
+        const delay = index * 0.2; // Reduced delay interval
 
+        // Apply the delay effect
         const adjustedProgress = Math.min(
           Math.max(easedProgress - delay, 0) / (1 - delay),
           1
@@ -353,12 +361,15 @@ function animateAnimalsIntoPosition(onComplete) {
         ctx.drawImage(img, currentX, targetY, 80, 80);
       }
     });
+
+    // Draw each preloaded enemy image with horizontal slide-in + vertical bounce
     preloadedEnemyImages.forEach((img, index) => {
       if (img) {
-        const startX = canvas.width + 80; 
+        const startX = canvas.width + 80; // Start off-screen to the right
         const endX = enemyOffsetX + index * 100;
-        const delay = index * 0.2; 
+        const delay = index * 0.2; // Reduced delay interval for enemies too
 
+        // Apply the delay effect
         const adjustedProgress = Math.min(
           Math.max(easedProgress - delay, 0) / (1 - delay),
           1
@@ -370,15 +381,18 @@ function animateAnimalsIntoPosition(onComplete) {
         ctx.drawImage(img, currentX, targetY, 80, 80);
       }
     });
-    currentFrame++;
-    if (currentFrame <= totalFrames) {
+
+    currentFrame += deltaTime;
+    if (currentFrame <= duration / 1000) {
       requestAnimationFrame(animate);
     } else {
       if (onComplete) {
-        onComplete(); 
+        onComplete(); // Call the onComplete callback when the animation is complete
       }
     }
   }
+
+  // Start the animation loop
   requestAnimationFrame(animate);
 }
 
