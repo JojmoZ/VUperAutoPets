@@ -281,10 +281,12 @@ document
       backupLineup();
       shiftAnimalsToFront();
       generateEnemyTeam();
-      renderTeams();
       hideNonBattleElements();
-      showCanvas();
+      // Hide the canvas until animation starts
+      hideCanvas();
       openCurtains(() => {
+        // Show the canvas and start animation
+        showCanvas();
         animateAnimalsIntoPosition(() => {
           simulateBattle();
         });
@@ -293,18 +295,30 @@ document
   });
 function animateAnimalsIntoPosition(onComplete) {
   const teamOffsetX = 100;
+  const enemyOffsetX = canvas.width - 550;
   const commonY = 150;
   const bounceHeight = 30; // Height of the bounce effect
-  const duration = 3000; // Duration of the entire animation in ms
+  const duration = 4000; // Extended duration for the entire animation in ms
   const frameRate = 60; // Frames per second
   const totalFrames = (duration / 1000) * frameRate;
   const bounceFrequency = 5; // Increase this number for more bounces
 
-  // Preload all images for the player's lineup
-  const preloadedImages = battleLineup.map((animal) => {
+  // Preload all images for the player's and enemy's lineup
+  const preloadedPlayerImages = battleLineup.map((animal, index) => {
     if (animal) {
       const img = new Image();
       img.src = animal.img;
+      img.onload = () => console.log(`Player pet ${index} loaded`);
+      return img;
+    }
+    return null;
+  });
+
+  const preloadedEnemyImages = enemyLineup.map((animal, index) => {
+    if (animal) {
+      const img = new Image();
+      img.src = animal.img;
+      img.onload = () => console.log(`Enemy pet ${index} loaded`);
       return img;
     }
     return null;
@@ -312,31 +326,55 @@ function animateAnimalsIntoPosition(onComplete) {
 
   let currentFrame = 0;
 
+  // Easing function for smoother motion
+  function easeOutQuad(t) {
+    return t * (2 - t);
+  }
+
   function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    renderTeams(); // This will redraw the enemy team if needed
 
     const progress = currentFrame / totalFrames;
+    const easedProgress = easeOutQuad(progress); // Applying ease-out easing
     const bounceY =
-      Math.sin(progress * Math.PI * 2 * bounceFrequency) *
+      Math.sin(easedProgress * Math.PI * 2 * bounceFrequency) *
       bounceHeight *
-      (1 - progress);
+      (1 - easedProgress);
 
-    // Draw each preloaded image with horizontal slide-in + vertical bounce
-    preloadedImages.forEach((img, index) => {
+    // Draw each preloaded player image with horizontal slide-in + vertical bounce
+    preloadedPlayerImages.forEach((img, index) => {
       if (img) {
         const startX = -80; // Start off-screen to the left
         const endX = teamOffsetX + (maxSlots - 1 - index) * 100;
-        const delay = index * 0.3;
+        const delay = index * 0.2; // Reduced delay interval
 
         // Apply the delay effect
         const adjustedProgress = Math.min(
-          Math.max(progress - delay, 0) / (1 - delay),
+          Math.max(easedProgress - delay, 0) / (1 - delay),
           1
         );
 
-        // Calculate the current position with easing for smoother movement
         const currentX = startX + (endX - startX) * adjustedProgress;
+        const targetY = commonY - bounceY;
+
+        ctx.drawImage(img, currentX, targetY, 80, 80);
+      }
+    });
+
+    // Draw each preloaded enemy image with horizontal slide-in + vertical bounce
+    preloadedEnemyImages.forEach((img, index) => {
+      if (img) {
+        const startX = canvas.width + 80; // Start off-screen to the right
+        const endX = enemyOffsetX + index * 100;
+        const delay = index * 0.2; // Reduced delay interval for enemies too
+
+        // Apply the delay effect
+        const adjustedProgress = Math.min(
+          Math.max(easedProgress - delay, 0) / (1 - delay),
+          1
+        );
+
+        const currentX = startX - (startX - endX) * adjustedProgress;
         const targetY = commonY - bounceY;
 
         ctx.drawImage(img, currentX, targetY, 80, 80);
@@ -356,6 +394,8 @@ function animateAnimalsIntoPosition(onComplete) {
   // Start the animation loop
   requestAnimationFrame(animate);
 }
+
+
 
 function hideNonBattleElements() {
   document.getElementById("battleSlotsContainer").classList.add("hidden");
