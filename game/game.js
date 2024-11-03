@@ -24,6 +24,7 @@ let shopAnimals = [
   { name: "Elephant",attack: 8, health: 7, cost: 5,img: "../assets/Elephant.webp",
   },
 ];
+let lastFrameTime = performance.now();
 let middleHeart = document.getElementById("middleHeart");
 let lives = parseInt(localStorage.getItem("lives")) || 3;
 let hearts = [
