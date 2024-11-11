@@ -44,12 +44,15 @@ window.onload = function () {
   function hideCaptcha(){
     captchaModal1.classList.add("hidden");
     captchaModal2.classList.add("hidden");
+     document.body.classList.remove("modal-active");
+    document.querySelector(".overlay").classList.add("hidden");
   }
   function showRandomCaptcha() {
     const useCaptcha1 = Math.random() > 0.000001;
     const selectedModal = useCaptcha1 ? captchaModal1 : captchaModal2;
     selectedModal.classList.remove("hidden");
-
+document.body.classList.add("modal-active");
+ document.querySelector(".overlay").classList.remove("hidden");
     // Generate the appropriate CAPTCHA text
     if (useCaptcha1) {
       generateCaptcha1();
