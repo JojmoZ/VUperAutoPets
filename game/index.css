@@ -3,24 +3,24 @@ body {
     text-align: center;
     background-color: #f0f0f0;
     overflow: hidden;
-    height:100vh;
+    height: 100vh;
      background-image: url('../assets/Field.webp'); 
     background-size: contain; 
     background-position: center;
 }
 #coins {
-    font-size: 18px;
-    margin-top: 10px;
+    font-size: 1.25rem; /* 18px to rem */
+    margin-top: 1rem; /* 10px to rem */
     color: black; 
 }
 .animal {
-    width: 100px;
-    height: 120px;
+    width: 6.25rem; /* 100px to rem */
+    height: 7.5rem; /* 120px to rem */
     background-image: url(../assets/stone.png); /* Stone background */
     background-repeat: no-repeat;
     background-size: contain;
     background-position: bottom;
-    margin: 10px;
+    margin: 0.625rem; /* 10px to rem */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -43,13 +43,13 @@ body {
 .battle-slots {
     display: flex;
     justify-content: center;
-    margin: 330px 0px 0px 0px;
+    margin: 30vh 0 0 0; /* 330px to vh */
 }
 
 .battle-slot {
-    width: 100px;
-    height: 100px;
-    margin: 0 10px;
+    width: 6.25rem; /* 100px to rem */
+    height: 6.25rem; /* 100px to rem */
+    margin: 0 0.625rem; /* 10px to rem */
     background-image: url(../assets/stone.png);
     background-size: contain;
     background-repeat: no-repeat;
@@ -61,7 +61,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 110px;
+    margin-top: 7.5vh; /* 110px to vh */
 }
 
 .random-animals {
@@ -71,13 +71,13 @@ body {
 }
 
 button {
-    padding: 10px 20px;
-    font-size: 16px;
-    margin: 0 10px;
+    padding: 0.625rem 1.25rem; /* 10px 20px to rem */
+    font-size: 1rem; /* 16px to rem */
+    margin: 0 0.625rem; /* 10px to rem */
 }
 
 canvas {
-    margin-top: 155px;
+    margin-top: 8vh; /* 155px to vh */
 }
 img {
     width: 100%;
@@ -87,10 +87,10 @@ img {
     position: absolute;
     top: 20px;
     left: 20px;
-    font-size: 24px;
+    font-size: 1.5rem; /* 24px to rem */
     text-decoration: none;
     color: black;
-    padding: 10px;
+    padding: 0.625rem; /* 10px to rem */
     border: 1px solid black;
     border-radius: 5px;
     background-color: #f0f0f0;
@@ -100,13 +100,13 @@ img {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  width: 120px; 
-  height: 40px; 
+  width: 7.5rem; /* 120px to rem */
+  height: 2.5rem; /* 40px to rem */
   background-image: url('../assets/A\ and\ H.png'); 
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  font-size: 16px;
+  font-size: 1rem; /* 16px to rem */
   font-weight: bold;
   color: white; 
   position: relative;
@@ -115,9 +115,9 @@ img {
 
 #startBattleButton{
     background-image: url(../assets/gobattle.png);
-    height: 100px;
-    width: 110px;
-    margin-right:50px;
+    height: 6.25rem; /* 100px to rem */
+    width: 6.875rem; /* 110px to rem */
+    margin-right: 3.125rem; /* 50px to rem */
     border: none;
     background-size: cover;
     background-repeat: no-repeat;
@@ -139,9 +139,9 @@ img {
 }
 
 .hearts-container img {
-  width: 40px;
-  height: 40px;
-  margin-left: 10px;
+  width: 2.5rem; /* 40px to rem */
+  height: 2.5rem; /* 40px to rem */
+  margin-left: 0.625rem; /* 10px to rem */
 }
 
 #middleHeart {
@@ -149,8 +149,8 @@ img {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 100px;
-  height: 100px;
+  width: 6.25rem; /* 100px to rem */
+  height: 6.25rem; /* 100px to rem */
   transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
 }
 #defeatScreen {
@@ -161,7 +161,7 @@ img {
   text-align: center;
   background-color: rgba(0, 0, 0, 0.8);
   color: white;
-  padding: 20px;
+  padding: 1.25rem; /* 20px to rem */
   border-radius: 10px;
   z-index: 10;
 }

@@ -142,7 +142,7 @@ function handleDrop(event) {
   const selectedAnimal = randomAnimals[animalIndex];
   if (!battleLineup[reversedSlotIndex] && coins >= selectedAnimal.cost) {
     battleLineup[reversedSlotIndex] = selectedAnimal;
-    event.target.innerHTML = `<img src="${selectedAnimal.img}" alt="${selectedAnimal.name}" style="position: absolute; width: 80px; height: 80px; left: 10px;">`;
+    event.target.innerHTML = `<img src="${selectedAnimal.img}" alt="${selectedAnimal.name}" style="position: absolute; width: 5rem; height: 5rem; left: 10px;">`;
     coins -= selectedAnimal.cost;
     updateCoinsDisplay();
     randomAnimals.splice(animalIndex, 1);
@@ -161,7 +161,7 @@ function renderBattleSlots() {
   battleSlots.forEach((slot, index) => {
     const animal = battleLineup[maxSlots - 1 - index];
     if (animal) {
-      slot.innerHTML = `<img src="${animal.img}" alt="${animal.name}" style="width: 80px; height: 80px;">`;
+      slot.innerHTML = `<img src="${animal.img}" alt="${animal.name}" style="width: 5rem; height: 5rem;">`;
     } else {
       slot.innerHTML = "";
     }
@@ -418,7 +418,8 @@ function showNonBattleElements() {
 function adjustCanvasSize() {
   const canvas = document.getElementById("battleCanvas");
   canvas.width = window.innerWidth;
-  ctx = canvas.getContext("2d"); 
+  canvas.height = window.innerHeight * 0.5; // Adjust height based on vh
+  ctx = canvas.getContext("2d");
 }
 
 document.addEventListener("DOMContentLoaded", function () {
