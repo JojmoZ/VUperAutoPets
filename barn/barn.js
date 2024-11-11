@@ -1,20 +1,30 @@
 const animalContainer = document.getElementById("animals");
 const walkingSpeed = 50;
 const frameDuration = 1000 / 60;
-const gridSize = 10; 
+const gridSize = 10;
 let animationId;
-let foodElement = null; 
+let foodElement = null;
 const restrictedZones = [
-  { x: 0, y: 100, width: 200, height: 200 },
-  { x: 0, y: 0, width: 100, height: 200 },
-  // { x: 600, y: 150, width: 150, height: 200 },
-  // { x: 250, y: 450, width: 180, height: 120 },
+  { x: 0, y: 0, width: 40, height: 709 },
+  { x: 0, y: 0, width: 1920, height: 80 },
+  { x: 1440, y: 0, width: 50, height: 709 },
+  { x: 0, y: 0, width: 250, height: 150 },
+  { x: 0, y: 270, width: 350, height: 30 },
+  { x: 340, y: 270, width: 7, height: 120 },
+  { x: 340, y: 430, width: 7, height: 120 },
+  { x: 0, y: 570, width: 200, height: 80 },
+  // { x: 500, y: 500, width: 100, height: 150 },
+  // { x: 500, y: 500, width: 100, height: 150 },
+  // { x: 500, y: 500, width: 100, height: 150 },
+  // { x: 500, y: 500, width: 100, height: 150 },
+  // { x: 500, y: 500, width: 100, height: 150 },
+  // { x: 500, y: 500, width: 100, height: 150 },
   // { x: 500, y: 500, width: 100, height: 150 },
   // { x: 700, y: 50, width: 120, height: 180 },
   // { x: 800, y: 400, width: 200, height: 100 },
   // { x: 150, y: 600, width: 140, height: 140 },
   // { x: 900, y: 250, width: 100, height: 100 },
-  // { x: 300, y: 750, width: 160, height: 100 },
+  { x: 300, y: 750, width: 160, height: 100 }
 ];
 function isInRestrictedZone(animalX, animalY, animalWidth, animalHeight) {
   return restrictedZones.some((zone) => {
@@ -41,7 +51,7 @@ restrictedZones.forEach((zone) => {
   const endY = Math.floor((zone.y + zone.height) / gridSize);
   for (let i = startY; i <= endY; i++) {
     for (let j = startX; j <= endX; j++) {
-      grid[i][j] = 1; 
+      grid[i][j] = 1;
     }
   }
 });
@@ -54,18 +64,18 @@ function createAnimal(animal) {
   animalElement.src = `../assets/${animal.name}.webp`;
   animalElement.className = "animal";
   animalElement.style.position = "absolute";
-  animalElement.style.width = "50px"; 
-  animalElement.style.height = "50px"; 
+  animalElement.style.width = "3.125rem"; // Use relative unit
+  animalElement.style.height = "3.125rem"; // Use relative unit
   let spawnX, spawnY;
   do {
     spawnX = Math.random() * (window.innerWidth - 50);
     spawnY = Math.random() * (window.innerHeight - 60);
-  } while (isInRestrictedZone(spawnX, spawnY, 50, 50)); 
+  } while (isInRestrictedZone(spawnX, spawnY, 50, 50));
   animalElement.style.left = `${spawnX}px`;
   animalElement.style.top = `${spawnY}px`;
   animalElement.dataset.isMovingToFood = "false";
   animalContainer.appendChild(animalElement);
-  roamAnimal(animalElement); 
+  roamAnimal(animalElement);
   return animalElement;
 }
 function astar(start, end) {
@@ -97,16 +107,15 @@ function astar(start, end) {
       return path.reverse();
     }
 
-    
     const directions = [
-      [0, 1], 
-      [1, 0], 
-      [0, -1], 
-      [-1, 0], 
-      [-1, 1], 
+      [0, 1],
+      [1, 0],
+      [0, -1],
+      [-1, 0],
+      [-1, 1],
       [-1, -1],
-      [1, 1], 
-      [1, -1], 
+      [1, 1],
+      [1, -1],
     ];
 
     for (let dir of directions) {
@@ -155,13 +164,13 @@ function isValidCell(row, col) {
 function roamAnimal(animal) {
   if (animal.dataset.isMovingToFood === "true") return;
 
-  const walkDuration = Math.random() * (7000 - 3000) + 3000; 
+  const walkDuration = Math.random() * (7000 - 3000) + 3000;
   const direction = Math.random() * 2 * Math.PI;
   const distance = Math.random() * 100 + 50;
   const deltaX = Math.cos(direction) * distance;
   const deltaY = Math.sin(direction) * distance;
-  const startX = parseFloat(animal.style.left) + animal.offsetWidth / 2
-  const startY = parseFloat(animal.style.top) + animal.offsetHeight / 2; 
+  const startX = parseFloat(animal.style.left) + animal.offsetWidth / 2;
+  const startY = parseFloat(animal.style.top) + animal.offsetHeight / 2;
   const endX = Math.min(
     Math.max(startX + deltaX, animal.offsetWidth / 2),
     window.innerWidth - animal.offsetWidth / 2
@@ -178,16 +187,16 @@ function roamAnimal(animal) {
       animal.offsetHeight
     )
   ) {
-    setTimeout(() => roamAnimal(animal), 100); 
+    setTimeout(() => roamAnimal(animal), 100);
     return;
   }
 
   const duration = walkDuration / 1000;
   const startTime = performance.now();
-  let roamAnimationId; 
+  let roamAnimationId;
   function animateRoaming(currentTime) {
     if (animal.dataset.isMovingToFood === "true") {
-      cancelAnimationFrame(roamAnimationId); 
+      cancelAnimationFrame(roamAnimationId);
       return;
     }
     const elapsedTime = (currentTime - startTime) / 1000;
@@ -195,7 +204,7 @@ function roamAnimal(animal) {
 
     animal.style.left = `${
       startX + (endX - startX) * progress - animal.offsetWidth / 2
-    }px`; 
+    }px`;
     animal.style.top = `${
       startY + (endY - startY) * progress - animal.offsetHeight / 2
     }px`;
@@ -203,21 +212,21 @@ function roamAnimal(animal) {
       roamAnimationId = requestAnimationFrame(animateRoaming);
     } else {
       setTimeout(() => {
-        roamAnimal(animal); 
-      }, Math.random() * 2000); 
+        roamAnimal(animal);
+      }, Math.random() * 2000);
     }
   }
   roamAnimationId = requestAnimationFrame(animateRoaming);
 }
 function createFood(event) {
   if (foodElement) {
-    foodElement.remove(); 
+    foodElement.remove();
   }
   foodElement = document.createElement("div");
   foodElement.className = "food";
   foodElement.style.position = "absolute";
-  foodElement.style.width = "20px";
-  foodElement.style.height = "20px";
+  foodElement.style.width = "1.25rem"; // Use relative unit
+  foodElement.style.height = "1.25rem"; // Use relative unit
   foodElement.style.backgroundColor = "yellow";
   foodElement.style.borderRadius = "50%";
   foodElement.style.left = `${event.clientX - 10}px`;
@@ -253,18 +262,18 @@ function createFood(event) {
       const path = astar(start, end);
       if (path) {
         followPath(closestAnimal, path, () => {
-          foodElement.remove(); 
-          closestAnimal.dataset.isMovingToFood = "false"; 
-          roamAnimal(closestAnimal); 
+          foodElement.remove();
+          closestAnimal.dataset.isMovingToFood = "false";
+          roamAnimal(closestAnimal);
         });
       }
-    }, 200); 
+    }, 200);
   }
 }
 
 function followPath(animal, path, callback) {
   let index = 0;
-  const speed = 0.7; 
+  const speed = 0.7;
   function moveStep() {
     if (index >= path.length) {
       if (callback) callback();
@@ -283,17 +292,16 @@ function followPath(animal, path, callback) {
       const moveY = (deltaY / distance) * speed;
       animal.style.left = `${currentX + moveX - animal.offsetWidth / 2}px`;
       animal.style.top = `${currentY + moveY - animal.offsetHeight / 2}px`;
-      requestAnimationFrame(moveStep); 
+      requestAnimationFrame(moveStep);
     } else {
       animal.style.left = `${nextX - animal.offsetWidth / 2}px`;
       animal.style.top = `${nextY - animal.offsetHeight / 2}px`;
-      index++; 
-      setTimeout(moveStep, 10); 
+      index++;
+      setTimeout(moveStep, 10);
     }
   }
-  moveStep(); 
+  moveStep();
 }
-
 
 function drawRestrictedZones() {
   restrictedZones.forEach((zone) => {
@@ -313,4 +321,3 @@ userAnimals.forEach((animal) => {
   const animalElement = createAnimal(animal);
 });
 animalContainer.addEventListener("dblclick", createFood);
-
