@@ -1,147 +1,154 @@
 html,
 body {
-    margin: 0;
-    height: 100%;
-     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-size: cover;
-    background-image: url(../assets/].webp);
+  margin: 0;
+  height: 100%;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-size: cover;
+  background-image: url(../assets/].webp);
 }
 .shop-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 20px;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin-top:50px;
-    padding: 20px;
-    box-sizing: border-box;
+  display: flex;
+  margin-top: 5rem;
+  overflow-x: auto;
+  height: 100vh;
+  
+  padding: 2%;
+  box-sizing: border-box;
 }
 
 .card {
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    overflow: hidden;
-    text-align: center;
-    padding: 20px;
-    transition: transform 0.3s ease;
-    cursor: pointer;
+  background-color: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  text-align: center;
+  padding: 2%;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+  flex: 0 0 auto;
+  margin-right: 2%;
+  width: 10rem;
+  height: 10rem;
 }
+
 .sold-out-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.5em;
-    font-weight: bold;
-    pointer-events: none;
-    border-radius: 10px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5em;
+  font-weight: bold;
+  pointer-events: none;
+  border-radius: 1rem;
 }
 
 .card {
-    position: relative;
+  position: relative;
 }
 
 .card.sold-out {
-    pointer-events: none;
+  pointer-events: none;
 }
+
 .card img {
-    width: 100px;
-    height: 100px;
+  width: 50%;
+  height: auto;
 }
 
 .card h3 {
-    margin: 15px 0 10px;
+  margin: 1rem 0 0.5rem;
 }
 
 .card p {
-    margin: 5px 0;
+  margin: 0.5rem 0;
 }
 
 .card:hover {
-    transform: scale(1.05);
+  transform: scale(1.05);
 }
+
 .modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    justify-content: center;
-    align-items: center;
-    z-index: 1001;
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 1001;
 }
 
 .modal-content {
-    background-color: white;
-    border-radius: 10px;
-    display: flex;
-    overflow: hidden;
-    width: 60%;
-    max-width: 800px;
-    height: 300px;
-    padding: 30px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  background-color: white;
+  border-radius: 1rem;
+  display: flex;
+  overflow: hidden;
+  width: 60%;
+  max-width: 50rem;
+  height: 30%;
+  padding: 2%;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.3);
 }
 
 .modal-content img {
-    width: 250px;
-    height: 250px;
-    transform: translateX(-100%);
-    transition: transform 0.5s ease-in-out;
+  width: 50%;
+  height: auto;
+  transform: translateX(-100%);
+  transition: transform 0.5s ease-in-out;
 }
-.modal-img{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+
+.modal-img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
 .modal-text {
-    width: 70%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    transform: translateX(100%);
-    transition: transform 0.5s ease-in-out;
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2%;
+  transform: translateX(100%);
+  transition: transform 0.5s ease-in-out;
 }
 
 .modal.show .modal-content img {
-    transform: translateX(0);
+  transform: translateX(0);
 }
 
 .modal.show .modal-text {
-    transform: translateX(0);
+  transform: translateX(0);
 }
 
 .modal-text h2 {
-    margin-bottom: 20px;
+  margin-bottom: 2%;
 }
 
 .modal-text button {
-    margin: 5px;
-    padding: 10px 20px;
-    font-size: 1em;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
+  margin: 1%;
+  padding: 1% 2%;
+  font-size: 1em;
+  cursor: pointer;
+  border: none;
+  border-radius: 0.5rem;
 }
 
 #confirm-buy {
-    background-color: #28a745;
-    color: white;
+  background-color: #28a745;
+  color: white;
 }
 
 #cancel-buy {
-    background-color: #dc3545;
-    color: white;
+  background-color: #dc3545;
+  color: white;
 }
