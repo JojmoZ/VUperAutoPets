@@ -1,23 +1,90 @@
 window.onload = function () {
   const captchaChallenge = document.getElementById("captchaChallenge");
   const captchaInput = document.getElementById("captchaInput");
-  const captchaError = document.getElementById("captchaError");
-  function generateCaptcha() {
-    const operators = ["+", "-", "*"];
-    const num1 = Math.floor(Math.random() * 10) + 1;
-    const num2 = Math.floor(Math.random() * 10) + 1;
-    const operator = operators[Math.floor(Math.random() * operators.length)];
+  const captchaModal1 = document.getElementById("captchaModal1");
+  const captchaModal2 = document.getElementById("captchaModal2");
+  const captchaText = captchaModal1.querySelector(".captcha");
+  const reloadBtn = captchaModal1.querySelector(".reload-btn");
+     const reloadBtn2 = captchaModal2.querySelector(".reload-btn2");
+  const inputField = captchaModal1.querySelector("#captchaInput1");
+  const checkBtn = captchaModal1.querySelector(".check-btn");
+  const allCharacters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".split("");
+  let generatedCaptcha1 = "";
+  let generatedCaptcha2 = "";
+  function generateCaptcha1() {
+    captchaText.innerText = "";
+    for (let i = 0; i < 6; i++) {
+      captchaText.innerText += ` ${
+        allCharacters[Math.floor(Math.random() * allCharacters.length)]
+      }`;
+    }
+  }
+  reloadBtn.addEventListener("click", () => {
+    clearCaptcha();
+    generateCaptcha1();
+  });
+     reloadBtn2.addEventListener("click", () => {
+       clearCaptcha();
+       generateCaptcha2();
+     });
+  function clearCaptcha() {
+    inputField.value = "";
+  }
+  function generateCaptcha2() {
+    const randomString = Math.random().toString(36).substring(2, 7);
+    generatedCaptcha2 = randomString
+      .split("")
+      .map((char) => (Math.random() > 0.5 ? char.toUpperCase() : char))
+      .join("");
+    captchaModal2.querySelector("#captchaTextBox").value = generatedCaptcha2
+      .split("")
+      .join(" ");
+  }
+  function hideCaptcha(){
+    captchaModal1.classList.add("hidden");
+    captchaModal2.classList.add("hidden");
+  }
+  function showRandomCaptcha() {
+    const useCaptcha1 = Math.random() > 0.000001;
+    const selectedModal = useCaptcha1 ? captchaModal1 : captchaModal2;
+    selectedModal.classList.remove("hidden");
 
-    let captcha;
-    if (operator === "+") captcha = num1 + num2;
-    else if (operator === "-") captcha = num1 - num2;
-    else if (operator === "*") captcha = num1 * num2;
+    // Generate the appropriate CAPTCHA text
+    if (useCaptcha1) {
+      generateCaptcha1();
+    } else {
+      generateCaptcha2();
+    }
 
-    captchaChallenge.textContent = `${num1} ${operator} ${num2}`;
-    return captcha;
+    return useCaptcha1 ? "captchaModal1" : "captchaModal2";
+  }
+  function verifyCaptcha(selectedCaptchaModal) {
+    if (selectedCaptchaModal === "captchaModal1") {
+      const enteredCaptcha = inputField.value.split("").join(" ");
+      if (enteredCaptcha === captchaText.innerText) {
+        enteredCaptcha.innerHTML = "";
+        return true;
+      } else {
+       modalErrorText.innerText = "Invalid Captcha";
+       showErrorModal();
+        return false;
+      }
+    } else if (selectedCaptchaModal === "captchaModal2") {
+      const inputCaptcha2 = captchaModal2.querySelector("#captchaInput2").value;
+      if (inputCaptcha2 === generatedCaptcha2) {
+        captchaModal2.classList.add("hidden");
+        return true;
+      } else {
+        alert("Captcha not matched. Please try again!");
+        return false;
+      }
+    }
+    return false;
   }
 
-  let generatedCaptcha = generateCaptcha();
+  // Replace the existing CAPTCHA trigger in the form submit events with:
+
   const logo = document.getElementById("logo");
   const loginCard = document.getElementById("loginCard");
   const registerTab = document.getElementById("registerTab");
@@ -56,11 +123,10 @@ window.onload = function () {
   });
   registrationForm.addEventListener("submit", function (e) {
     e.preventDefault();
+
     const username = document.getElementById("registerUsername").value;
     const password = document.getElementById("registerPassword").value;
     const confirmPassword = document.getElementById("confirmPassword").value;
-    const captchaAnswer = parseInt(captchaInput.value, 10);
-
     if (username === "" || password === "" || confirmPassword === "") {
       modalErrorText.innerHTML = "Please fill all fields";
       showErrorModal();
@@ -71,17 +137,23 @@ window.onload = function () {
       showErrorModal();
       return;
     }
-    if (captchaAnswer !== generatedCaptcha) {
-      modalErrorText.innerHTML = "Captcha Incorrect";
-      showErrorModal();
-      return;
-    }
+    const selectedCaptchaModal = showRandomCaptcha();
+    captchaModal1.querySelector(".check-btn").onclick = () => {
+      if (verifyCaptcha(selectedCaptchaModal)) registerUser(username, password) ;
+    };
+    captchaModal2.querySelector("#submitCaptchaBtn2").onclick = () => {
+      if (verifyCaptcha(selectedCaptchaModal)) registerUser(username, password);
+    };
+  });
+  function registerUser(username, password) {
+    hideCaptcha();
     let users = JSON.parse(localStorage.getItem("users")) || [];
     if (users.some((user) => user.username === username)) {
       modalErrorText.innerText = "Username already exists.";
       showErrorModal();
       return;
     }
+
     users.push({
       username: username,
       password: password,
@@ -91,12 +163,9 @@ window.onload = function () {
     localStorage.setItem("users", JSON.stringify(users));
     registrationForm.reset();
     registerError.style.display = "none";
-    captchaError.textContent = "";
-    generatedCaptcha = generateCaptcha();
     showSuccessModal();
     showForm(loginForm, registrationForm);
-  });
-  generatedCaptcha = generateCaptcha();
+  }
   function showSuccessModal() {
     const existingModal = document.getElementById("successModal");
     if (existingModal) {
@@ -173,8 +242,8 @@ window.onload = function () {
     }, 3000);
   }
 
- const turtle = document.getElementById("turtle");
- const logoHeight = document.querySelector(".logocontop").offsetHeight;
+  const turtle = document.getElementById("turtle");
+  const logoHeight = document.querySelector(".logocontop").offsetHeight;
   window.addEventListener("scroll", function () {
     const scrollY = window.scrollY;
     const windowHeight = window.innerHeight;
