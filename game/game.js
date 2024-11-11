@@ -142,7 +142,7 @@ function handleDrop(event) {
   const selectedAnimal = randomAnimals[animalIndex];
   if (!battleLineup[reversedSlotIndex] && coins >= selectedAnimal.cost) {
     battleLineup[reversedSlotIndex] = selectedAnimal;
-    event.target.innerHTML = `<img src="${selectedAnimal.img}" alt="${selectedAnimal.name}" style="position: absolute; width: 5rem; height: 5rem; left: 10px;">`;
+    event.target.innerHTML = `<img src="${selectedAnimal.img}" alt="${selectedAnimal.name}" style="position: absolute; width: 5rem; height: 5rem; left: 0.625rem;">`;
     coins -= selectedAnimal.cost;
     updateCoinsDisplay();
     randomAnimals.splice(animalIndex, 1);
@@ -196,7 +196,7 @@ function renderTeams() {
             iconSize
           );
           ctx.fillStyle = "white";
-          ctx.font = "16px Arial";
+          ctx.font = "1rem Arial";
           ctx.fillText(
             `${animal.attack}`,
             teamOffsetX + (maxSlots - 1 - index) * 100 + 15,
@@ -239,7 +239,7 @@ function renderTeams() {
             iconSize
           );
           ctx.fillStyle = "white";
-          ctx.font = "16px Arial";
+          ctx.font = "1rem Arial";
           ctx.fillText(
             `${animal.attack}`,
             enemyOffsetX + index * 100 + 15,
@@ -514,7 +514,7 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
     ctx.drawImage(fistImg, playerX, playerY + 60, 40, 40);
     ctx.drawImage(heartImg, playerX + 40, playerY + 60, 40, 40);
     ctx.fillStyle = "white";
-    ctx.font = "16px Arial";
+    ctx.font = "1rem Arial";
     ctx.fillText(`${playerAnimal.attack}`, playerX + 15, playerY + 85);
     ctx.fillText(`${playerAnimal.health}`, playerX + 55, playerY + 85);
 
@@ -623,8 +623,8 @@ function showDamage(
   let alpha = 1.0; 
   const fadeDuration = 50; 
   const displayDuration = 50; 
-  const maxFontSize = 40; 
-  const minFontSize = 10;
+  const maxFontSize = 2.5; 
+  const minFontSize = 0.625;
   const commonY = 150;
   const playerDamageOffsetX = -25; 
   const playerDamageOffsetY = -1;
@@ -654,7 +654,7 @@ function showDamage(
     ctx.save();
     const progress = currentFrame / totalFrames;
     const fontSize = minFontSize + progress * (maxFontSize - minFontSize);
-    ctx.font = `${fontSize}px Arial`;
+    ctx.font = `${fontSize}rem Arial`;
     ctx.fillStyle = "red";
     ctx.globalAlpha = alpha;
     ctx.fillText(
@@ -697,7 +697,7 @@ function showDamage(
     const progress = currentFrame / totalFrames;
     const fontSize = maxFontSize - progress * (maxFontSize - minFontSize); 
     alpha = 1 - progress; 
-    ctx.font = `${fontSize}px Arial`;
+    ctx.font = `${fontSize}rem Arial`;
     ctx.fillStyle = "red";
     ctx.globalAlpha = alpha;
     ctx.fillText(
@@ -744,7 +744,7 @@ function renderFullTeam() {
       ctx.drawImage(fistImg, xPos, commonY + 60, iconSize, iconSize);
       ctx.drawImage(heartImg, xPos + 40, commonY + 60, iconSize, iconSize);
       ctx.fillStyle = "white";
-      ctx.font = "16px Arial";
+      ctx.font = "1rem Arial";
       ctx.fillText(`${animal.attack}`, xPos + 15, commonY + 85);
       ctx.fillText(`${animal.health}`, xPos + 55, commonY + 85);
     }
@@ -762,7 +762,7 @@ function renderFullTeam() {
       ctx.drawImage(fistImg, xPos, commonY + 60, iconSize, iconSize);
       ctx.drawImage(heartImg, xPos + 40, commonY + 60, iconSize, iconSize);
       ctx.fillStyle = "white";
-      ctx.font = "16px Arial";
+      ctx.font = "1rem Arial";
       ctx.fillText(`${animal.attack}`, xPos + 15, commonY + 85);
       ctx.fillText(`${animal.health}`, xPos + 55, commonY + 85);
     }
