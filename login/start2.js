@@ -1,9 +1,19 @@
 function hideCaptcha() {
-  captchaModal1.classList.add("hidden");
-  captchaModal2.classList.add("hidden");
+  captchaModal1.classList.add("hide"); // Add hide class to trigger closing animation
+  captchaModal2.classList.add("hide"); // Add hide class to trigger closing animation
+
   document.body.classList.remove("modal-active");
   document.querySelector(".overlay").classList.add("hidden");
+
+  // Wait for the animation to complete before fully hiding the modal
+  setTimeout(() => {
+    captchaModal1.classList.add("hidden");
+    captchaModal1.classList.remove("show", "hide"); // Reset classes for next show
+    captchaModal2.classList.add("hidden");
+    captchaModal2.classList.remove("show", "hide"); // Reset classes for next show
+  }, 500); // Match this timeout to the animation duration
 }
+
 window.onload = function () {
   const captchaChallenge = document.getElementById("captchaChallenge");
   const captchaInput = document.getElementById("captchaInput");
@@ -52,6 +62,7 @@ window.onload = function () {
     const useCaptcha1 = Math.random() > 0.000001;
     const selectedModal = useCaptcha1 ? captchaModal1 : captchaModal2;
     selectedModal.classList.remove("hidden");
+    selectedModal.classList.add("show");
     document.body.classList.add("modal-active");
     document.querySelector(".overlay").classList.remove("hidden");
     // Generate the appropriate CAPTCHA text

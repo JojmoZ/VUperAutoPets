@@ -8,13 +8,12 @@ body {
   display: none;
 }
 
-/* Hide scrollbar for IE, Edge and Firefox */
 .hide-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; 
+  scrollbar-width: none; 
 }
 .big {
-  height: 200vh; /* Membuat kontainer besar untuk memungkinkan scrolling */
+  height: 200vh; 
 }
 
 .logocontop {
@@ -506,4 +505,44 @@ body.modal-active {
 
 .close-btn:hover {
     color: #06c59c;
+}
+/* Animation for the captcha modal appearance */
+@keyframes slideDownFadeIn {
+  0% {
+    transform: translate(-50%, -40%);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
+}
+
+/* Apply the animation when the modal becomes visible */
+.captcha-modal {
+  opacity: 0; /* Start as hidden */
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards; /* Keep the final state of the animation */
+}
+
+.captcha-modal.show {
+  animation-name: slideDownFadeIn; /* Trigger the animation */
+}
+/* Animation for hiding the captcha modal */
+@keyframes slideUpFadeOut {
+  0% {
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -60%);
+    opacity: 0;
+  }
+}
+
+/* Apply the animation when hiding the modal */
+.captcha-modal.hide {
+  animation-name: slideUpFadeOut;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards; /* Keeps the final state after animation ends */
 }
