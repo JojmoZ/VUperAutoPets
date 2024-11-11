@@ -83,6 +83,7 @@ text {
   opacity: 1;
   display: flex;
   align-items: center;
+  gap:2rem;
   justify-content: center;
   padding: 2rem 1rem;
 }
