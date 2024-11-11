@@ -165,7 +165,6 @@ input[type="password"] {
   width: 1.4em;
   height: 1.4em;
 }
-
 .cross::before,
 .cross::after {
   content: "";
