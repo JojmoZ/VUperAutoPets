@@ -21,18 +21,37 @@ document.addEventListener("DOMContentLoaded", function () {
   document.body.appendChild(coinsDisplay);
 
   const shopContainer = document.querySelector(".shop-container");
+  console.log("shopContainer:", shopContainer); // Debugging statement
 
-  function arrangeCards() {
-    const cards = Array.from(shopContainer.children);
+  function arrangeCardsInAlternatingPattern() {
+    const cards = Array.from(
+      document.querySelectorAll(".shop-container .card")
+    );
     cards.forEach((card, index) => {
-      const row = index % 2;
-      const col = Math.floor(index / 2);
-      card.style.gridRowStart = row + 1;
-      card.style.gridColumnStart = col + 1;
+      const row = (index % 2) + 1; // Alternates between row 1 and 2
+      const col = Math.floor(index / 2) + 1; // Moves to the next column after every two items
+      card.style.gridRowStart = row;
+      card.style.gridColumnStart = col;
     });
   }
 
-  arrangeCards();
+  // Call the function to arrange the cards
+  arrangeCardsInAlternatingPattern();
+
+  // Custom scrolling behavior to move horizontally based on vertical scroll
+  shopContainer.addEventListener(
+    "wheel",
+    function (event) {
+      if (event.deltaY !== 0) {
+        console.log("event.deltaY:", event.deltaY); // Debugging statement
+        console.log("Before scrollLeft:", shopContainer.scrollLeft); // Debugging statement
+        shopContainer.scrollLeft += event.deltaY; // Move horizontally based on vertical scroll
+        console.log("After scrollLeft:", shopContainer.scrollLeft); // Debugging statement
+        event.preventDefault(); // Prevent default vertical scrolling
+      }
+    },
+    { passive: false }
+  );
 
   let shopAnimals = [
     {

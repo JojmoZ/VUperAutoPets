@@ -9,18 +9,24 @@ body {
 
 .shop-container {
   display: grid;
+  grid-auto-flow: column; /* Items flow by columns */
   grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
-  grid-auto-rows: 12rem; /* Adjust the row height as needed */
-  gap: 1rem; /* Adjust the gap between cards as needed */
-  overflow-x: auto;
-  height: 100vh;
-  padding: 2%;
-  box-sizing: border-box;
-  grid-auto-flow: column; /* Ensure the grid flows by columns */
+  grid-template-rows: repeat(2, 12rem); /* Two rows */
+  gap: 1rem; /* Gap between items */
+  overflow-x: auto; /* Enable horizontal scrolling */
+  padding: 2%; /* Padding */
+  box-sizing: border-box; /* Include padding in size */
+  white-space: nowrap;
+-webkit-overflow-scrolling: touch; /* For smooth scrolling on touch devices */
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+  -ms-overflow-style: none; /* Hide scrollbar for Internet Explorer and Edge */
 }
-
+.shop-container::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Webkit browsers */
+}
 .card {
   background-color: #fff;
+  width: 10rem;
   border-radius: 1rem;
   box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
   overflow: hidden;
