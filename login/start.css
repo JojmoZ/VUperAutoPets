@@ -127,7 +127,7 @@ input[type="password"] {
 
 #errorModal {
   position: fixed;
-  bottom: -10vh;
+  bottom: -20vh;
   left: 50%;
   transform: translateX(-50%);
   background-color: #f44336;
