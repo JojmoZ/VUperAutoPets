@@ -16,7 +16,7 @@ body {
   grid-auto-flow: column; /* Items flow by columns */
   grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
   grid-template-rows: repeat(2, 12rem); /* Two rows */
-  gap: 1rem; /* Gap between items */
+  gap: 10rem; /* Gap between items */
   overflow-x: auto; /* Enable horizontal scrolling */
   padding: 2%; /* Padding */
   box-sizing: border-box; /* Include padding in size */
@@ -30,7 +30,7 @@ body {
 }
 .card {
   background-color: #fff;
-  width: 10rem;
+  width: 15rem;
   border-radius: 1rem;
   box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
   overflow: hidden;
@@ -67,8 +67,8 @@ body {
 }
 
 .card img {
-  width: 50%;
-  height: auto;
+  width: 4rem;
+  height: 4rem;
 }
 
 .card h3 {
