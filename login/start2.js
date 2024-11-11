@@ -1,3 +1,9 @@
+function hideCaptcha() {
+  captchaModal1.classList.add("hidden");
+  captchaModal2.classList.add("hidden");
+  document.body.classList.remove("modal-active");
+  document.querySelector(".overlay").classList.add("hidden");
+}
 window.onload = function () {
   const captchaChallenge = document.getElementById("captchaChallenge");
   const captchaInput = document.getElementById("captchaInput");
@@ -5,7 +11,7 @@ window.onload = function () {
   const captchaModal2 = document.getElementById("captchaModal2");
   const captchaText = captchaModal1.querySelector(".captcha");
   const reloadBtn = captchaModal1.querySelector(".reload-btn");
-     const reloadBtn2 = captchaModal2.querySelector(".reload-btn2");
+  const reloadBtn2 = captchaModal2.querySelector(".reload-btn2");
   const inputField = captchaModal1.querySelector("#captchaInput1");
   const checkBtn = captchaModal1.querySelector(".check-btn");
   const allCharacters =
@@ -24,10 +30,10 @@ window.onload = function () {
     clearCaptcha();
     generateCaptcha1();
   });
-     reloadBtn2.addEventListener("click", () => {
-       clearCaptcha();
-       generateCaptcha2();
-     });
+  reloadBtn2.addEventListener("click", () => {
+    clearCaptcha();
+    generateCaptcha2();
+  });
   function clearCaptcha() {
     inputField.value = "";
   }
@@ -41,18 +47,13 @@ window.onload = function () {
       .split("")
       .join(" ");
   }
-  function hideCaptcha(){
-    captchaModal1.classList.add("hidden");
-    captchaModal2.classList.add("hidden");
-     document.body.classList.remove("modal-active");
-    document.querySelector(".overlay").classList.add("hidden");
-  }
+
   function showRandomCaptcha() {
     const useCaptcha1 = Math.random() > 0.000001;
     const selectedModal = useCaptcha1 ? captchaModal1 : captchaModal2;
     selectedModal.classList.remove("hidden");
-document.body.classList.add("modal-active");
- document.querySelector(".overlay").classList.remove("hidden");
+    document.body.classList.add("modal-active");
+    document.querySelector(".overlay").classList.remove("hidden");
     // Generate the appropriate CAPTCHA text
     if (useCaptcha1) {
       generateCaptcha1();
@@ -69,8 +70,8 @@ document.body.classList.add("modal-active");
         enteredCaptcha.innerHTML = "";
         return true;
       } else {
-       modalErrorText.innerText = "Invalid Captcha";
-       showErrorModal();
+        modalErrorText.innerText = "Invalid Captcha";
+        showErrorModal();
         return false;
       }
     } else if (selectedCaptchaModal === "captchaModal2") {
@@ -142,7 +143,7 @@ document.body.classList.add("modal-active");
     }
     const selectedCaptchaModal = showRandomCaptcha();
     captchaModal1.querySelector(".check-btn").onclick = () => {
-      if (verifyCaptcha(selectedCaptchaModal)) registerUser(username, password) ;
+      if (verifyCaptcha(selectedCaptchaModal)) registerUser(username, password);
     };
     captchaModal2.querySelector("#submitCaptchaBtn2").onclick = () => {
       if (verifyCaptcha(selectedCaptchaModal)) registerUser(username, password);

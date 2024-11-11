@@ -391,6 +391,8 @@ input[type="password"] {
     position: relative;
     border-radius: 5px;
     overflow: hidden;
+     user-select: none; /* Prevents text selection */
+    pointer-events: none; /* Prevents any mouse interactions */
 }
 
 .captcha-img img {
@@ -398,6 +400,8 @@ input[type="password"] {
     height: 100%;
     object-fit: cover;
     opacity: 0.7;
+     user-select: none; /* Prevents text selection */
+    pointer-events: none; /* Prevents any mouse interactions */
 }
 
 .captcha {
@@ -410,6 +414,8 @@ input[type="password"] {
     color: #fff;
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
     letter-spacing: 6px;
+     user-select: none; /* Prevents text selection */
+    pointer-events: none; /* Prevents any mouse interactions */
 }
 
 .reload-btn {
@@ -485,4 +491,19 @@ body.modal-active {
 /* Disable background interaction */
 .captcha-modal::backdrop {
     background: rgba(0, 0, 0, 0.5);
+}
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #333;
+    transition: color 0.3s;
+}
+
+.close-btn:hover {
+    color: #06c59c;
 }
