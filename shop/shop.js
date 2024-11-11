@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.setItem("coins", "15");
     localStorage.setItem("ownedAnimals", JSON.stringify([]));
   }
-  const username = localStorage.getItem("username"); 
+  const username = localStorage.getItem("username");
 
   const cards = document.querySelectorAll(".card");
   const modal = document.getElementById("modal");
@@ -19,6 +19,20 @@ document.addEventListener("DOMContentLoaded", function () {
   coinsDisplay.style.fontSize = "20px";
   coinsDisplay.style.zIndex = "9999";
   document.body.appendChild(coinsDisplay);
+
+  const shopContainer = document.querySelector(".shop-container");
+
+  function arrangeCards() {
+    const cards = Array.from(shopContainer.children);
+    cards.forEach((card, index) => {
+      const row = index % 2;
+      const col = Math.floor(index / 2);
+      card.style.gridRowStart = row + 1;
+      card.style.gridColumnStart = col + 1;
+    });
+  }
+
+  arrangeCards();
 
   let shopAnimals = [
     {
@@ -101,10 +115,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  
   const ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals")) || [];
   ownedAnimals.forEach((animal) => {
-    markSoldOut(animal.name); 
+    markSoldOut(animal.name);
   });
 
   cards.forEach((card) => {
@@ -143,7 +156,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (coins >= price) {
       const animal = shopAnimals.find((a) => a.name === animalName);
       coins -= price;
-      ownedAnimals.push(animal); 
+      ownedAnimals.push(animal);
       localStorage.setItem("coins", coins.toString());
       localStorage.setItem("ownedAnimals", JSON.stringify(ownedAnimals));
       let users = JSON.parse(localStorage.getItem("users")) || [];
@@ -151,13 +164,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (userIndex !== -1) {
         users[userIndex].coins = coins;
-        users[userIndex].ownedAnimals = ownedAnimals; 
+        users[userIndex].ownedAnimals = ownedAnimals;
         localStorage.setItem("users", JSON.stringify(users));
       }
 
       updateCoinsDisplay();
       playSound();
-      markSoldOut(animalName); 
+      markSoldOut(animalName);
     } else {
       alert("You don't have enough coins to buy this animal!");
     }
