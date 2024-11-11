@@ -13,6 +13,11 @@ const restrictedZones = [
   { x: 340, y: 270, width: 7, height: 120 },
   { x: 340, y: 430, width: 7, height: 120 },
   { x: 0, y: 570, width: 200, height: 80 },
+  { x: 200, y: 570, width: 10, height: 80 },
+  { x: 220, y: 550, width: 10, height: 80 },
+  { x: 230, y: 540, width: 10, height: 80 },
+  { x: 230, y: 540, width: 120, height: 80 },
+  { x: 210, y: 560, width: 10, height: 80 },
   // { x: 500, y: 500, width: 100, height: 150 },
   // { x: 500, y: 500, width: 100, height: 150 },
   // { x: 500, y: 500, width: 100, height: 150 },
@@ -24,7 +29,7 @@ const restrictedZones = [
   // { x: 800, y: 400, width: 200, height: 100 },
   // { x: 150, y: 600, width: 140, height: 140 },
   // { x: 900, y: 250, width: 100, height: 100 },
-  { x: 300, y: 750, width: 160, height: 100 }
+  // { x: 300, y: 750, width: 160, height: 100 }
 ];
 function isInRestrictedZone(animalX, animalY, animalWidth, animalHeight) {
   return restrictedZones.some((zone) => {
