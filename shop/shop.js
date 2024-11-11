@@ -38,20 +38,38 @@ document.addEventListener("DOMContentLoaded", function () {
   // Call the function to arrange the cards
   arrangeCardsInAlternatingPattern();
 
-  // Custom scrolling behavior to move horizontally based on vertical scroll
-  shopContainer.addEventListener(
-    "wheel",
-    function (event) {
-      if (event.deltaY !== 0) {
-        console.log("event.deltaY:", event.deltaY); // Debugging statement
-        console.log("Before scrollLeft:", shopContainer.scrollLeft); // Debugging statement
-        shopContainer.scrollLeft += event.deltaY; // Move horizontally based on vertical scroll
-        console.log("After scrollLeft:", shopContainer.scrollLeft); // Debugging statement
-        event.preventDefault(); // Prevent default vertical scrolling
+
+    let isScrolling = false;
+    let scrollAmount = 0;
+    let lastScrollLeft = 0;
+    let animationFrame;
+
+    function smoothScroll() {
+      if (Math.abs(scrollAmount) > 0.5) {
+        shopContainer.scrollLeft += scrollAmount;
+        scrollAmount *= 0.85; // Reduce the scroll amount gradually to create a smooth stopping effect
+        animationFrame = requestAnimationFrame(smoothScroll);
+      } else {
+        cancelAnimationFrame(animationFrame);
+        isScrolling = false;
       }
-    },
-    { passive: false }
-  );
+    }
+
+    shopContainer.addEventListener(
+      "wheel",
+      function (event) {
+        if (event.deltaY !== 0) {
+          event.preventDefault();
+          scrollAmount += event.deltaY; // Add delta to the scroll amount for continuous movement
+
+          if (!isScrolling) {
+            isScrolling = true;
+            animationFrame = requestAnimationFrame(smoothScroll);
+          }
+        }
+      },
+      { passive: false }
+    );
 
   let shopAnimals = [
     {

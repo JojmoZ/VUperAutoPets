@@ -14,7 +14,7 @@ body {
 .shop-container {
   display: grid;
   grid-auto-flow: column; /* Items flow by columns */
-  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+  grid-template-columns: repeat(auto-fit,15rem);
   grid-template-rows: repeat(2, 12rem); /* Two rows */
   gap: 10rem; /* Gap between items */
   overflow-x: auto; /* Enable horizontal scrolling */
@@ -71,13 +71,14 @@ body {
   height: 4rem;
 }
 
-.card h3 {
-  margin: 1rem 0 0.5rem;
+.card h3, .card p {
+  margin: 0;
+  padding: 0.5rem 0; /* Ensure uniform padding */
+  text-overflow: ellipsis; /* Handle long text */
+  white-space: nowrap; /* Prevent text wrapping */
+  overflow: hidden; /* Hide overflow */
 }
 
-.card p {
-  margin: 0.5rem 0;
-}
 
 .card:hover {
   transform: scale(1.05);
