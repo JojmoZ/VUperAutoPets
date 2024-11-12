@@ -11,7 +11,7 @@ function hideCaptcha() {
     captchaModal1.classList.remove("show", "hide"); // Reset classes for next show
     captchaModal2.classList.add("hidden");
     captchaModal2.classList.remove("show", "hide"); // Reset classes for next show
-  }, 500); // Match this timeout to the animation duration
+  }, 500); 
 }
 
 window.onload = function () {
@@ -27,7 +27,6 @@ window.onload = function () {
   const allCharacters =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".split("");
   let generatedCaptcha1 = "";
-  let generatedCaptcha2 = "";
   function generateCaptcha1() {
     captchaText.innerText = "";
     for (let i = 0; i < 6; i++) {
@@ -47,19 +46,61 @@ window.onload = function () {
   function clearCaptcha() {
     inputField.value = "";
   }
+  let generatedCaptcha2 = "";
   function generateCaptcha2() {
-    const randomString = Math.random().toString(36).substring(2, 7);
-    generatedCaptcha2 = randomString
-      .split("")
-      .map((char) => (Math.random() > 0.5 ? char.toUpperCase() : char))
-      .join("");
-    captchaModal2.querySelector("#captchaTextBox").value = generatedCaptcha2
-      .split("")
-      .join(" ");
+     const canvas = document.getElementById("captchaCanvas");
+     const ctx = canvas.getContext("2d");
+     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+     // Background color and distortion
+     ctx.fillStyle = "#f0f0f0";
+     ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+     // Generate random captcha text
+     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+     generatedCaptcha2 = Array.from({ length: 5 })
+       .map(() => chars[Math.floor(Math.random() * chars.length)])
+       .join("");
+
+     // Draw each character with random rotation and position
+     ctx.font = "30px Arial";
+     ctx.fillStyle = "#000";
+     for (let i = 0; i < generatedCaptcha2.length; i++) {
+       ctx.save();
+       const x = 20 + i * 25;
+       const y = 35 + Math.random() * 10;
+       ctx.translate(x, y);
+       ctx.rotate((Math.random() - 0.5) * 0.3); // Random rotation
+       ctx.fillText(generatedCaptcha2[i], 0, 0);
+       ctx.restore();
+     }
+
+     // Add noise lines
+     for (let i = 0; i < 10; i++) {
+       ctx.strokeStyle = "#c0c0c0";
+       ctx.beginPath();
+       ctx.moveTo(Math.random() * canvas.width, Math.random() * canvas.height);
+       ctx.lineTo(Math.random() * canvas.width, Math.random() * canvas.height);
+       ctx.stroke();
+     }
+
+     // Add noise dots
+     for (let i = 0; i < 30; i++) {
+       ctx.fillStyle = "#c0c0c0";
+       ctx.beginPath();
+       ctx.arc(
+         Math.random() * canvas.width,
+         Math.random() * canvas.height,
+         1,
+         0,
+         2 * Math.PI
+       );
+       ctx.fill();
+     }
   }
 
   function showRandomCaptcha() {
-    const useCaptcha1 = Math.random() > 0.000001;
+    const useCaptcha1 = Math.random() > 0.9999999;
     const selectedModal = useCaptcha1 ? captchaModal1 : captchaModal2;
     selectedModal.classList.remove("hidden");
     selectedModal.classList.add("show");
@@ -86,14 +127,15 @@ window.onload = function () {
         return false;
       }
     } else if (selectedCaptchaModal === "captchaModal2") {
-      const inputCaptcha2 = captchaModal2.querySelector("#captchaInput2").value;
-      if (inputCaptcha2 === generatedCaptcha2) {
-        captchaModal2.classList.add("hidden");
-        return true;
-      } else {
-        alert("Captcha not matched. Please try again!");
-        return false;
-      }
+        const inputCaptcha2 = document.getElementById("captchaInput2").value;
+        if (inputCaptcha2 === generatedCaptcha2) {
+          hideCaptcha();
+          return true;
+        } else {
+           modalErrorText.innerText = "Invalid Captcha";
+           showErrorModal();
+          return false;
+        }
     }
     return false;
   }

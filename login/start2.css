@@ -545,3 +545,21 @@ body.modal-active {
   animation-duration: 0.5s;
   animation-fill-mode: forwards; /* Keeps the final state after animation ends */
 }
+.captcha-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+#captchaCanvas {
+    border: 1px solid #ccc;
+}
+
+.refresh-button {
+    cursor: pointer;
+    color: blue;
+    text-decoration: underline;
+    font-size: 16px;
+}

@@ -66,11 +66,10 @@
 <div class="captcha-modal hidden" id="captchaModal2">
     <div class="container">
         <header>Captcha Generator</header>
-        <div class="input_field captch_box">
-            <input type="text" disabled id="captchaTextBox">
-            <button class="reload-btn2">
-                <img src="../assets/reload.png" alt="Reload" width="20" height="20">
-            </button>
+        <button class="close-btn" onclick="hideCaptcha()">✖</button>
+        <div class="captcha-area">
+            <canvas id="captchaCanvas" width="150" height="50"></canvas>
+            <div class="reload-btn2" onclick="generateCaptcha()">Refresh</div>
         </div>
         <div class="input_field captch_input">
             <input type="text" id="captchaInput2" placeholder="Enter captcha" />
@@ -81,6 +80,7 @@
         </div>
     </div>
 </div>
+
     <div id="errorModal">
         <div class="modal-content">
             <div class="modal-icon">
