@@ -331,6 +331,10 @@ function followPath(animal, path, callback) {
 
 
 function drawRestrictedZones() {
+  // Clear previously drawn restricted areas
+  const existingZones = document.querySelectorAll(".restricted-area");
+  existingZones.forEach(zone => zone.remove());
+
   restrictedZones.forEach((zone) => {
     const zoneElement = document.createElement("div");
     zoneElement.className = "restricted-area";
