@@ -111,6 +111,18 @@ document.addEventListener("DOMContentLoaded", function () {
       card.appendChild(price);
       card.appendChild(stats);
 
+      // Check if the animal is already owned and mark as sold out
+      let ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
+      if (
+        ownedAnimals.some((ownedAnimal) => ownedAnimal.name === animal.name)
+      ) {
+        const soldOutOverlay = document.createElement("div");
+        soldOutOverlay.classList.add("sold-out-overlay");
+        soldOutOverlay.textContent = "Sold Out";
+        card.appendChild(soldOutOverlay);
+        card.classList.add("sold-out");
+      }
+
       card.addEventListener("click", function () {
         const animalName = this.querySelector("h3").textContent;
         const animalImage = this.querySelector("img").src;
