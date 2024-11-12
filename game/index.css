@@ -216,3 +216,16 @@ img {
 .animal-bounce-in {
   animation: bounceIn 0.8s ease-out;
 }
+.trash-bin {
+  width: 3rem; /* Adjust size */
+  height: 3rem;
+  margin-right: 1rem;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.trash-bin.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+

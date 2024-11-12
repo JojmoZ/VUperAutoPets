@@ -116,8 +116,10 @@ function renderRandomAnimals() {
     const animalImage = document.createElement("img");
     animalImage.src = animal.img;
     animalImage.alt = animal.name;
-    animalImage.setAttribute("draggable", true); 
+    animalImage.setAttribute("draggable", true);
     animalImage.addEventListener("dragstart", dragStart);
+    animalImage.addEventListener("dragstart", showTrashBin);
+    animalImage.addEventListener("dragend", hideTrashBin);
 
     const statContainer = document.createElement("div");
     statContainer.classList.add("stat-container");
@@ -127,11 +129,12 @@ function renderRandomAnimals() {
     health.textContent = `${animal.health}`;
     statContainer.appendChild(attack);
     statContainer.appendChild(health);
-    animalDiv.appendChild(animalImage); 
-    animalDiv.appendChild(statContainer); 
+    animalDiv.appendChild(animalImage);
+    animalDiv.appendChild(statContainer);
     randomAnimalsContainer.appendChild(animalDiv);
   });
 }
+
 function saveBattleLineup() {
   localStorage.setItem("battleLineup", JSON.stringify(battleLineup));
 }
@@ -166,7 +169,15 @@ function renderBattleSlots() {
   battleSlots.forEach((slot, index) => {
     const animal = battleLineup[maxSlots - 1 - index];
     if (animal) {
-      slot.innerHTML = `<img src="${animal.img}" alt="${animal.name}" style="width: 5rem; height: 5rem;">`;
+      slot.innerHTML = `<img src="${animal.img}" alt="${animal.name}" style="width: 5rem; height: 5rem;" draggable="true">`;
+
+      // Attach drag events to the image
+      const imgElement = slot.querySelector("img");
+      imgElement.addEventListener("dragstart", (event) => {
+        event.dataTransfer.setData("text/plain", maxSlots - 1 - index); // Store slot index
+        showTrashBin();
+      });
+      imgElement.addEventListener("dragend", hideTrashBin);
     } else {
       slot.innerHTML = "";
     }
@@ -1048,4 +1059,29 @@ function showDefeatScreen() {
     window.location.href = "/home/homepage.html"; 
   }, 3000); 
 }
+const trashBin = document.getElementById("trashBin");
 
+// Show trash bin on drag start for battle lineup animals
+function showTrashBin() {
+  trashBin.classList.remove("hidden");
+}
+
+// Hide trash bin on drag end
+function hideTrashBin() {
+  trashBin.classList.add("hidden");
+}
+
+// Remove the animal from battleLineup if dropped on the trash bin
+function handleTrashDrop(event) {
+  event.preventDefault();
+  const slotIndex = event.dataTransfer.getData("text/plain");
+  battleLineup[slotIndex] = null; // Remove the animal from the lineup
+
+  // Re-render the lineup to reflect the removal
+  renderBattleSlots();
+  saveBattleLineup();
+}
+trashBin.addEventListener("dragover", (event) => {
+  event.preventDefault();
+});
+trashBin.addEventListener("drop", handleTrashDrop);
