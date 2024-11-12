@@ -229,3 +229,42 @@ img {
   pointer-events: none;
 }
 
+.bottom-controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-around; /* Space them evenly across the bottom */
+  align-items: center;
+  padding: 1rem 0; /* Add some padding for spacing */
+}
+.trash-bin {
+  width: 3rem; /* Adjust size */
+  height: 3rem;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+#refreshButton, #startBattleButton {
+  padding: 0.625rem 1.25rem; /* Adjust padding */
+  font-size: 1rem; /* Adjust font size */
+  border: none;
+  cursor: pointer;
+  background-color: #ffffff; /* Button background */
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+#startBattleButton {
+  background-image: url(../assets/sword.svg);
+  width: 6.875rem; /* 110px to rem */
+  height: 6.25rem; /* 100px to rem */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-color: transparent;
+}
+
+.trash-bin.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
