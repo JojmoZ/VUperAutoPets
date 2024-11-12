@@ -278,24 +278,29 @@ document.querySelectorAll(".battle-slot").forEach((slot) => {
 document.getElementById("refreshButton").addEventListener("click", function () {
   rollShopAnimals();
 });
+let playing =false;
 document
   .getElementById("startBattleButton")
   .addEventListener("click", function () {
-    showCurtains();
-    closeCurtains();
-    setTimeout(() => {
-      backupLineup();
-      shiftAnimalsToFront();
-      generateEnemyTeam();
-      hideNonBattleElements();
-      hideCanvas();
-      openCurtains(() => {
-        showCanvas();
-        animateAnimalsIntoPosition(() => {
-          simulateBattle();
+    if(!playing){
+      showCurtains();
+      playing=true;
+      closeCurtains();
+      setTimeout(() => {
+        backupLineup();
+        shiftAnimalsToFront();
+        generateEnemyTeam();
+        hideNonBattleElements();
+        hideCanvas();
+        openCurtains(() => {
+          showCanvas();
+          animateAnimalsIntoPosition(() => {
+            simulateBattle();
+          });
         });
-      });
-    }, 1000);
+      }, 1000);
+
+    }
   });
 function animateAnimalsIntoPosition(onComplete) {
   const teamOffsetX = 100;
