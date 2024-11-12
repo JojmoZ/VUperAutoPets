@@ -9,11 +9,11 @@ body {
 }
 
 .hide-scrollbar {
-  -ms-overflow-style: none; 
-  scrollbar-width: none; 
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 .big {
-  height: 200vh; 
+  height: 200vh;
 }
 
 .logocontop {
@@ -68,7 +68,8 @@ img#turtle {
 
 /* Turtle's position when pushing the form */
 img#turtle.pushing {
-  right: 24.25%;
+  /* Adjust right position dynamically based on the width of #loginCard */
+  right: calc(50% - 22vw); /* Adjust -10vw as needed to position the turtle relative to the login card */
   bottom: 13%;
   transition: right 2.35s ease-in-out, bottom 2.35s ease-in-out;
 }
@@ -92,12 +93,10 @@ img#turtle.offscreen {
 
 /* Centered position of the login card after being "pushed" */
 #loginCard.centered {
-  right: 34.25%; /* Adjusted to be centered */
-  transition: right 2.5s ease-in-out;
+  right: 50%;
+  transform: translateX(50%);
+  transition: right 2.5s ease-in-out, transform 2.5s ease-in-out;
 }
-
-
-
 
 @keyframes float {
   0%,
@@ -351,160 +350,160 @@ input[type="password"] {
 }
 
 .captcha-modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: white;
-    padding: 30px;
-    z-index: 1000;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    max-width: 400px;
-    width: 100%;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 30px;
+  z-index: 1000;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  max-width: 400px;
+  width: 100%;
 }
 
 .captcha-wrapper {
-    text-align: center;
+  text-align: center;
 }
 
 .captcha-header {
-    color: #06c59c;
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    font-family: "Poppins", sans-serif;
+  color: #06c59c;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  font-family: "Poppins", sans-serif;
 }
 
 .captcha-area {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
-    position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  position: relative;
 }
 
 .captcha-img {
-    width: 300px;
-    height: 80px;
-    position: relative;
-    border-radius: 5px;
-    overflow: hidden;
-     user-select: none; /* Prevents text selection */
-    pointer-events: none; /* Prevents any mouse interactions */
+  width: 300px;
+  height: 80px;
+  position: relative;
+  border-radius: 5px;
+  overflow: hidden;
+  user-select: none; /* Prevents text selection */
+  pointer-events: none; /* Prevents any mouse interactions */
 }
 
 .captcha-img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0.7;
-     user-select: none; /* Prevents text selection */
-    pointer-events: none; /* Prevents any mouse interactions */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.7;
+  user-select: none; /* Prevents text selection */
+  pointer-events: none; /* Prevents any mouse interactions */
 }
 
 .captcha {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 32px;
-    font-family: 'Noto Serif', serif;
-    color: #fff;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
-    letter-spacing: 6px;
-     user-select: none; /* Prevents text selection */
-    pointer-events: none; /* Prevents any mouse interactions */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 32px;
+  font-family: "Noto Serif", serif;
+  color: #fff;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  letter-spacing: 6px;
+  user-select: none; /* Prevents text selection */
+  pointer-events: none; /* Prevents any mouse interactions */
 }
 
 .reload-btn {
-    background-color: #06c59c;
-    border: none;
-    border-radius: 5px;
-    padding: 10px;
-    cursor: pointer;
-    position: absolute;
-    right: -50px;
-    top: 15px;
-    transition: background-color 0.3s;
+  background-color: #06c59c;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+  position: absolute;
+  right: -50px;
+  top: 15px;
+  transition: background-color 0.3s;
 }
 
 .reload-btn:hover {
-    background-color: #04a587;
+  background-color: #04a587;
 }
 
 .input-area {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .input-area input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-bottom: 15px;
-    font-size: 16px;
-    text-align: center;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  font-size: 16px;
+  text-align: center;
 }
 
 .check-btn {
-    background-color: #06c59c;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
+  background-color: #06c59c;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
 }
 
 .check-btn:hover {
-    background-color: #04a587;
+  background-color: #04a587;
 }
 
 .footer {
-    margin-top: 10px;
-    font-size: 12px;
-    color: #06c59c;
+  margin-top: 10px;
+  font-size: 12px;
+  color: #06c59c;
 }
 body.modal-active {
-    overflow: hidden;
+  overflow: hidden;
 }
 /* Overlay to block interaction with background */
 .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Slightly darken the background */
-    z-index: 999; /* Place it below the captcha modal but above other content */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Slightly darken the background */
+  z-index: 999; /* Place it below the captcha modal but above other content */
 }
 
 .overlay.hidden {
-    display: none;
+  display: none;
 }
 
 /* Disable background interaction */
 .captcha-modal::backdrop {
-    background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.5);
 }
 .close-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: none;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-    color: #333;
-    transition: color 0.3s;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #333;
+  transition: color 0.3s;
 }
 
 .close-btn:hover {
-    color: #06c59c;
+  color: #06c59c;
 }
 /* Animation for the captcha modal appearance */
 @keyframes slideDownFadeIn {
