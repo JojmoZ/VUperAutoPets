@@ -170,7 +170,7 @@ function renderBattleSlots() {
 function renderTeams() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   const teamOffsetX = 100;
-  const commonY = 150;
+  const commonY = 210;
   const enemyOffsetX = canvas.width - 550;
   const iconSize = 40;
   battleLineup.forEach((animal, index) => {
@@ -295,7 +295,7 @@ document
 function animateAnimalsIntoPosition(onComplete) {
   const teamOffsetX = 100;
   const enemyOffsetX = canvas.width - 550;
-  const commonY = 150;
+  const commonY = 210;
   const bounceHeight = 30; // Height of the bounce effect
   const duration = 2000; // Extended duration for the entire animation in ms
   const bounceFrequency = 5; // Increase this number for more bounces
@@ -469,9 +469,9 @@ function calculateTeamCost(team) {
 }
 function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
   const playerStartX = 100 + (maxSlots - 1) * 100;
-  const playerY = 150;
+  const playerY = 210;
   const enemyStartX = canvas.width - 550;
-  const enemyY = 150;
+  const enemyY = 210;
   const centerX = canvas.width / 2 - 60;
   const duration = 500; // Duration in milliseconds
   let currentFrame = 0;
@@ -625,7 +625,7 @@ function showDamage(
   const displayDuration = 50; 
   const maxFontSize = 2.5; 
   const minFontSize = 0.625;
-  const commonY = 150;
+  const commonY = 210;
   const playerDamageOffsetX = -25; 
   const playerDamageOffsetY = -1;
   const enemyDamageOffsetX = 35; 
@@ -722,7 +722,7 @@ function showDamage(
   drawExpandingDamage();
 }
 function renderFullTeam() {
-  const commonY = 150;
+  const commonY = 210;
   const teamOffsetX = 100;
   const enemyOffsetX = canvas.width - 550;
   const imgSize = 80;
@@ -784,10 +784,10 @@ function animateDeathFlyOff(animal, index, teamType, onComplete) {
   let startX, startY;
   if (teamType === "player") {
     startX = 100 + (maxSlots - 1 - index) * 100;
-    startY = 150;
+    startY = 210;
   } else {
     startX = canvas.width - 550 + index * 100;
-    startY = 150;
+    startY = 210;
   }
   const endX = teamType === "player" ? -100 : canvas.width + 100;
   const controlPointX = (startX + endX) / 2;
