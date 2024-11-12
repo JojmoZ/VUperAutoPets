@@ -157,7 +157,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function markSoldOut(animalName) {
-    const animalCard = [...cards].find(
+    const animalCard = [...document.querySelectorAll(".card")].find(
       (card) => card.querySelector("h3").textContent === animalName
     );
     if (animalCard) {
@@ -204,7 +204,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       updateCoinsDisplay();
       playSound();
-      markSoldOut(animalName);
+      markSoldOut(animalName); // Mark the animal as sold out immediately
     } else {
       alert("You don't have enough coins to buy this animal!");
     }

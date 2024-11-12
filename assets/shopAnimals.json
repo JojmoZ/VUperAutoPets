@@ -133,11 +133,11 @@
     "img": "../assets/Animals/ZKug.webp"
   },
   {
-    "name": "tXYrannosaurus",
+    "name": "t-reXY",
     "attack": 15,
     "health": 18,
     "cost": 20,
-    "img": "../assets/Animals/tXYrannosaurus.webp"
+    "img": "../assets/Animals/t-reXY.webp"
   },
   {
     "name": "VrocodiLe",
@@ -145,5 +145,19 @@
     "health": 15,
     "cost": 12,
     "img": "../assets/Animals/VrocodiLe.webp"
-  }
+  },
+  {
+    "name": "WLeopard",
+    "attack": 6,
+    "health": 9,
+    "cost": 9,
+    "img": "../assets/Animals/WLeopard.webp"
+  },
+   {
+     "name": "Liberian_Husky",
+     "attack": 9,
+     "health": 7,
+     "cost": 11,
+     "img": "../assets/Animals/Liberian_Husky.webp"
+   }
 ]
