@@ -38,53 +38,100 @@ document.addEventListener("DOMContentLoaded", function () {
   // Call the function to arrange the cards
   arrangeCardsInAlternatingPattern();
 
+  let isScrolling = false;
+  let scrollAmount = 0;
+  let lastScrollLeft = 0;
+  let animationFrame;
 
-    let isScrolling = false;
-    let scrollAmount = 0;
-    let lastScrollLeft = 0;
-    let animationFrame;
-
-    function smoothScroll() {
-      if (Math.abs(scrollAmount) > 0.5) {
-        shopContainer.scrollLeft += scrollAmount;
-        scrollAmount *= 0.85; // Reduce the scroll amount gradually to create a smooth stopping effect
-        animationFrame = requestAnimationFrame(smoothScroll);
-      } else {
-        cancelAnimationFrame(animationFrame);
-        isScrolling = false;
-      }
+  function smoothScroll() {
+    if (Math.abs(scrollAmount) > 0.5) {
+      shopContainer.scrollLeft += scrollAmount;
+      scrollAmount *= 0.85; // Reduce the scroll amount gradually to create a smooth stopping effect
+      animationFrame = requestAnimationFrame(smoothScroll);
+    } else {
+      cancelAnimationFrame(animationFrame);
+      isScrolling = false;
     }
+  }
 
-    shopContainer.addEventListener(
-      "wheel",
-      function (event) {
-        if (event.deltaY !== 0) {
-          event.preventDefault();
-          scrollAmount += event.deltaY; // Add delta to the scroll amount for continuous movement
+  shopContainer.addEventListener(
+    "wheel",
+    function (event) {
+      if (event.deltaY !== 0) {
+        event.preventDefault();
+        scrollAmount += event.deltaY; // Add delta to the scroll amount for continuous movement
 
-          if (!isScrolling) {
-            isScrolling = true;
-            animationFrame = requestAnimationFrame(smoothScroll);
-          }
+        if (!isScrolling) {
+          isScrolling = true;
+          animationFrame = requestAnimationFrame(smoothScroll);
         }
-      },
-      { passive: false }
-    );
+      }
+    },
+    { passive: false }
+  );
 
   let shopAnimals = [];
 
-  fetch('../assets/shopAnimals.json')
-    .then(response => {
+  fetch("../assets/shopAnimals.json")
+    .then((response) => {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       return response.json();
     })
-    .then(data => {
+    .then((data) => {
       shopAnimals = data;
-      console.log('shopAnimals loaded:', shopAnimals); 
+      console.log("shopAnimals loaded:", shopAnimals);
+      generateCards(shopAnimals); // Generate cards after loading data
     })
-    .catch(error => console.error('Error loading shopAnimals:', error));
+    .catch((error) => console.error("Error loading shopAnimals:", error));
+
+  function generateCards(animals) {
+    const shopContainer = document.getElementById("shopContainer");
+    animals.forEach((animal) => {
+      const card = document.createElement("div");
+      card.classList.add("card");
+      card.setAttribute("data-animal", animal.name);
+
+      const img = document.createElement("img");
+      img.src = animal.img;
+      img.alt = animal.name;
+
+      const name = document.createElement("h3");
+      name.textContent = animal.name;
+
+      const price = document.createElement("p");
+      price.textContent = `Price: ${animal.cost} Coins`;
+
+      const stats = document.createElement("p");
+      stats.textContent = `Attack: ${animal.attack}, Health: ${animal.health}`;
+
+      card.appendChild(img);
+      card.appendChild(name);
+      card.appendChild(price);
+      card.appendChild(stats);
+
+      card.addEventListener("click", function () {
+        const animalName = this.querySelector("h3").textContent;
+        const animalImage = this.querySelector("img").src;
+        let ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
+        if (ownedAnimals.some((animal) => animal.name === animalName)) {
+          alert("You already own this animal!");
+          return;
+        }
+        modalImage.src = animalImage;
+        modal.setAttribute("data-animal", animalName);
+        modal.setAttribute(
+          "data-price",
+          this.querySelector("p").textContent.match(/\d+/)[0]
+        );
+        modal.classList.add("show");
+        modal.style.display = "flex";
+      });
+
+      shopContainer.appendChild(card);
+    });
+  }
 
   function updateCoinsDisplay() {
     const coins = localStorage.getItem("coins");
@@ -113,26 +160,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals")) || [];
   ownedAnimals.forEach((animal) => {
     markSoldOut(animal.name);
-  });
-
-  cards.forEach((card) => {
-    card.addEventListener("click", function () {
-      const animalName = this.querySelector("h3").textContent;
-      const animalImage = this.querySelector("img").src;
-      let ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
-      if (ownedAnimals.some((animal) => animal.name === animalName)) {
-        alert("You already own this animal!");
-        return;
-      }
-      modalImage.src = animalImage;
-      modal.setAttribute("data-animal", animalName);
-      modal.setAttribute(
-        "data-price",
-        this.querySelector("p").textContent.match(/\d+/)[0]
-      );
-      modal.classList.add("show");
-      modal.style.display = "flex";
-    });
   });
 
   cancelButton.addEventListener("click", function () {
