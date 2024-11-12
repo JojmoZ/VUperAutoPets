@@ -328,33 +328,27 @@ function animateAnimalsIntoPosition(onComplete) {
 
   let currentFrame = 0;
   let lastFrameTime = performance.now();
-
-  // Easing function for smoother motion
   function easeOutQuad(t) {
     return t * (2 - t);
   }
 
   function animate(currentTime) {
-    const deltaTime = (currentTime - lastFrameTime) / 1000; // Convert to seconds
+    const deltaTime = (currentTime - lastFrameTime) / 1000; 
     lastFrameTime = currentTime;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    const progress = currentFrame / (duration / 1000); // Use delta time for progress
-    const easedProgress = easeOutQuad(progress); // Applying ease-out easing
+    const progress = currentFrame / (duration / 1000); 
+    const easedProgress = easeOutQuad(progress); 
     const bounceY =
       Math.sin(easedProgress * Math.PI * 2 * bounceFrequency) *
       bounceHeight *
       (1 - easedProgress);
-
-    // Draw each preloaded player image with horizontal slide-in + vertical bounce
     preloadedPlayerImages.forEach((img, index) => {
       if (img) {
-        const startX = -80; // Start off-screen to the left
+        const startX = -80; 
         const endX = teamOffsetX + (maxSlots - 1 - index) * 100;
-        const delay = index * 0.2; // Reduced delay interval
-
-        // Apply the delay effect
+        const delay = index * 0.2; 
         const adjustedProgress = Math.min(
           Math.max(easedProgress - delay, 0) / (1 - delay),
           1
@@ -366,15 +360,11 @@ function animateAnimalsIntoPosition(onComplete) {
         ctx.drawImage(img, currentX, targetY, 80, 80);
       }
     });
-
-    // Draw each preloaded enemy image with horizontal slide-in + vertical bounce
     preloadedEnemyImages.forEach((img, index) => {
       if (img) {
-        const startX = canvas.width + 80; // Start off-screen to the right
+        const startX = canvas.width + 80; 
         const endX = enemyOffsetX + index * 100;
-        const delay = index * 0.2; // Reduced delay interval for enemies too
-
-        // Apply the delay effect
+        const delay = index * 0.2; 
         const adjustedProgress = Math.min(
           Math.max(easedProgress - delay, 0) / (1 - delay),
           1
@@ -392,17 +382,12 @@ function animateAnimalsIntoPosition(onComplete) {
       requestAnimationFrame(animate);
     } else {
       if (onComplete) {
-        onComplete(); // Call the onComplete callback when the animation is complete
+        onComplete();
       }
     }
   }
-
-  // Start the animation loop
   requestAnimationFrame(animate);
 }
-
-
-
 function hideNonBattleElements() {
   document.getElementById("battleSlotsContainer").classList.add("hidden");
   document.getElementById("controls").classList.add("hidden");
@@ -423,10 +408,9 @@ function showNonBattleElements() {
 function adjustCanvasSize() {
   const canvas = document.getElementById("battleCanvas");
   canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight * 0.5; // Adjust height based on vh
+  canvas.height = window.innerHeight * 0.5; 
   ctx = canvas.getContext("2d");
 }
-
 document.addEventListener("DOMContentLoaded", function () {
   hideCurtains();
   adjustCanvasSize(); 
@@ -438,13 +422,11 @@ document.addEventListener("DOMContentLoaded", function () {
   } else {
     rollfirst();
   }
-
   if (localStorage.getItem("battleLineup")) {
     battleLineup = JSON.parse(localStorage.getItem("battleLineup"));
     renderTeams();
     renderBattleSlots();
   }
-
   updateCoinsDisplay();
 });
 function updateCoinsDisplay() {
@@ -454,7 +436,6 @@ function updateCoinsDisplay() {
 function generateEnemyTeam() {
   const totalTeamCost = calculateTeamCost(battleLineup);
   enemyLineup = [];
-
   while (enemyLineup.length < maxSlots && totalTeamCost > 0) {
     const randomAnimal =
       shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
@@ -465,7 +446,6 @@ function generateEnemyTeam() {
     }
   }
 }
-
 function calculateTeamCost(team) {
   return team.reduce(
     (total, animal) => (animal ? total + animal.cost : total),
@@ -478,22 +458,17 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
   const enemyStartX = canvas.width - 550;
   const enemyY = 210;
   const centerX = canvas.width / 2 - 60;
-  const duration = 500; // Duration in milliseconds
+  const duration = 500;
   let currentFrame = 0;
   let lastFrameTime = performance.now();
-
   const playerImg = new Image();
   playerImg.src = playerAnimal.img;
-
   const enemyImg = new Image();
   enemyImg.src = enemyAnimal.img;
-
   const fistImg = new Image();
   fistImg.src = "../assets/fist.png";
-
   const heartImg = new Image();
   heartImg.src = "../assets/heart.png";
-
   playerImg.onload = () => {
     enemyImg.onload = () => {
       fistImg.onload = () => {
@@ -503,18 +478,14 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
       };
     };
   };
-
   function animate(currentTime) {
-    const deltaTime = (currentTime - lastFrameTime) / 1000; // Convert to seconds
+    const deltaTime = (currentTime - lastFrameTime) / 1000; 
     lastFrameTime = currentTime;
-
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     renderFullTeam();
-
-    const progress = easeInOutQuad(currentFrame / (duration / 1000)); // Use delta time for progress
+    const progress = easeInOutQuad(currentFrame / (duration / 1000)); 
     const playerX = playerStartX - (playerStartX - centerX) * progress;
     const enemyX = enemyStartX + (centerX + 60 - enemyStartX) * progress;
-
     ctx.drawImage(playerImg, playerX, playerY, 80, 80);
     ctx.drawImage(fistImg, playerX, playerY + 60, 40, 40);
     ctx.drawImage(heartImg, playerX + 40, playerY + 60, 40, 40);
@@ -522,13 +493,11 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
     ctx.font = "1rem Arial";
     ctx.fillText(`${playerAnimal.attack}`, playerX + 15, playerY + 85);
     ctx.fillText(`${playerAnimal.health}`, playerX + 55, playerY + 85);
-
     ctx.drawImage(enemyImg, enemyX, enemyY, 80, 80);
     ctx.drawImage(fistImg, enemyX, enemyY + 60, 40, 40);
     ctx.drawImage(heartImg, enemyX + 40, enemyY + 60, 40, 40);
     ctx.fillText(`${enemyAnimal.attack}`, enemyX + 15, enemyY + 85);
     ctx.fillText(`${enemyAnimal.health}`, enemyX + 55, enemyY + 85);
-
     if (progress > 0.8) {
       const bandageSize = 60;
       const bandageImg = new Image();
@@ -542,7 +511,6 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
       );
       ctx.drawImage(bandageImg, enemyX + 10, enemyY, bandageSize, bandageSize);
     }
-
     currentFrame += deltaTime;
     if (currentFrame <= duration / 1000) {
       requestAnimationFrame(animate);
@@ -562,34 +530,28 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
       );
     }
   }
-
   function animateReturn(playerStartX, playerY, enemyStartX, enemyY) {
     let returnFrame = 0;
     let lastReturnFrameTime = performance.now();
-    const returnDuration = duration; // Use the same duration for return animation
-
+    const returnDuration = duration; 
     function animateBack(currentTime) {
-      const deltaTime = (currentTime - lastReturnFrameTime) / 1000; // Convert to seconds
+      const deltaTime = (currentTime - lastReturnFrameTime) / 1000; 
       lastReturnFrameTime = currentTime;
-
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       renderFullTeam();
-      const progress = easeInOutQuad(returnFrame / (returnDuration / 1000)); // Use delta time for progress
+      const progress = easeInOutQuad(returnFrame / (returnDuration / 1000)); 
       const playerX = centerX + (playerStartX - centerX) * progress;
       const enemyX = centerX + 60 + (enemyStartX - centerX - 60) * progress;
-
       ctx.drawImage(playerImg, playerX, playerY, 80, 80);
       ctx.drawImage(fistImg, playerX, playerY + 60, 40, 40);
       ctx.drawImage(heartImg, playerX + 40, playerY + 60, 40, 40);
       ctx.fillText(`${playerAnimal.attack}`, playerX + 15, playerY + 85);
       ctx.fillText(`${playerAnimal.health}`, playerX + 55, playerY + 85);
-
       ctx.drawImage(enemyImg, enemyX, enemyY, 80, 80);
       ctx.drawImage(fistImg, enemyX, enemyY + 60, 40, 40);
       ctx.drawImage(heartImg, enemyX + 40, enemyY + 60, 40, 40);
       ctx.fillText(`${enemyAnimal.attack}`, enemyX + 15, enemyY + 85);
       ctx.fillText(`${enemyAnimal.health}`, enemyX + 55, enemyY + 85);
-
       returnFrame += deltaTime;
       if (returnFrame <= returnDuration / 1000) {
         requestAnimationFrame(animateBack);
@@ -785,7 +747,7 @@ function animateDeathFlyOff(animal, index, teamType, onComplete) {
   const img = new Image();
   img.src = animal.img;
   let currentFrame = 0;
-  const totalFrames = 10; // Further reduced total frames to make the animation faster
+  const totalFrames = 10; 
   let startX, startY;
   if (teamType === "player") {
     startX = 100 + (maxSlots - 1 - index) * 100;
@@ -800,7 +762,7 @@ function animateDeathFlyOff(animal, index, teamType, onComplete) {
   let lastFrameTime = performance.now();
 
   function animate(currentTime) {
-    const deltaTime = (currentTime - lastFrameTime) / 1000; // Convert to seconds
+    const deltaTime = (currentTime - lastFrameTime) / 1000; 
     lastFrameTime = currentTime;
 
     const previousX =
@@ -836,7 +798,7 @@ function animateDeathFlyOff(animal, index, teamType, onComplete) {
       progress * progress * (startY + 100);
     ctx.drawImage(img, curveX, curveY, 60, 60);
 
-    currentFrame += deltaTime * totalFrames * 2; // Increase the increment to make it faster
+    currentFrame += deltaTime * totalFrames * 2; 
     if (currentFrame < totalFrames) {
       requestAnimationFrame(animate);
     } else {
@@ -969,9 +931,9 @@ function shiftAnimalsInLineup(lineup) {
 function updateHeartsDisplay() {
   hearts.forEach((heart, index) => {
     if (index < lives) {
-      heart.src = "../assets/heart.png"; // Full heart
+      heart.src = "../assets/heart.png"; 
     } else {
-      heart.src = "../assets/broken heart.png"; // Broken heart
+      heart.src = "../assets/broken heart.png"; 
     }
   });
 }
