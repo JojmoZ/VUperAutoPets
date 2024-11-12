@@ -11,11 +11,19 @@ document.addEventListener("DOMContentLoaded", () => {
     "Ut enim ad minim veniam.",
   ];
   const mainContent = document.querySelector(".main-content");
-
-  const animals = JSON.parse(localStorage.getItem("ownedAnimals")) || [
-    { name: "VUnt", img: "../assets/Animals/VUnt.png" },
-    { name: "caKRbara", img: "../assets/Animals/caKRbara.png" },
-  ];
+  let storedAnimals;
+  try {
+    storedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
+    if (!Array.isArray(storedAnimals) || !storedAnimals.length) {
+      throw new Error("Invalid data");
+    }
+  } catch (e) {
+    storedAnimals = [
+      { name: "VUnt", img: "../assets/Animals/VUnt.webp" },
+      { name: "caKRbara", img: "../assets/Animals/caKRbara.webp" },
+    ];
+  }
+  const animals = storedAnimals;
 
   function updateLoading() {
     const elapsedTime = Date.now() - startTime;
@@ -35,12 +43,13 @@ document.addEventListener("DOMContentLoaded", () => {
     tipElement.textContent = tip;
 
     const animalElement = document.createElement("img");
+    console.log(animals)
     animalElement.src = animal.img;
     animalElement.alt = animal.name;
     animalElement.className = "animal";
 
     const topPosition = Math.random() * 80 + 10; // Adjusted to make the animal appear lower
-    const leftPosition = Math.random() * 100;
+    const leftPosition = Math.random() * 80;
     const position =
       leftPosition < 40 ? "left" : leftPosition > 60 ? "right" : "center";
 
