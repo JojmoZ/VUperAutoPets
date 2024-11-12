@@ -7,14 +7,14 @@ let foodElement = null;
 const restrictedZones = [
   { x: 0, y: 0, width: 50, height: 1080 },
   { x: 0, y: 0, width: 1920, height: 90 },
-  // { x: 1440, y: 0, width: 50, height: 709 },
-  // { x: 0, y: 0, width: 250, height: 150 },
-  // { x: 0, y: 270, width: 350, height: 30 },
-  // { x: 340, y: 270, width: 7, height: 120 },
-  // { x: 340, y: 430, width: 7, height: 120 },
-  // { x: 0, y: 570, width: 200, height: 80 },
-  // { x: 200, y: 570, width: 10, height: 80 },
-  // { x: 220, y: 550, width: 10, height: 80 },
+  { x: 1850, y: 0, width: 70, height: 1080 },
+  { x: 0, y: 0, width: 320, height: 230 },
+  { x: 0, y: 420, width: 445, height: 35 },
+  { x: 435, y: 420, width: 10, height: 175 },
+  { x: 435, y: 650, width: 10, height: 160 },
+  { x: 0, y: 880, width: 280, height: 90 },
+  { x: 270, y: 860, width: 330, height: 100 },
+  { x: 295, y: 830, width: 150, height: 80 },
   // { x: 230, y: 540, width: 10, height: 80 },
   // { x: 230, y: 540, width: 120, height: 80 },
   // { x: 210, y: 560, width: 10, height: 80 },
@@ -31,12 +31,18 @@ const restrictedZones = [
   // { x: 900, y: 250, width: 100, height: 100 },
   // { x: 300, y: 750, width: 160, height: 100 }
 ];
+
 function isInRestrictedZone(animalX, animalY, animalWidth, animalHeight) {
+  const barnElement = document.getElementById("animals");
+  const barnRect = barnElement.getBoundingClientRect();
+  const scaleX = barnRect.width / 1920; // Assuming 1920 is the original width
+  const scaleY = barnRect.height / 1080; // Assuming 1080 is the original height
+
   return restrictedZones.some((zone) => {
-    const zoneX = zone.x;
-    const zoneY = zone.y;
-    const zoneWidth = zone.width;
-    const zoneHeight = zone.height;
+    const zoneX = zone.x * scaleX;
+    const zoneY = zone.y * scaleY;
+    const zoneWidth = zone.width * scaleX;
+    const zoneHeight = zone.height * scaleY;
     const isOverlapping =
       animalX < zoneX + zoneWidth &&
       animalX + animalWidth > zoneX &&
@@ -46,6 +52,7 @@ function isInRestrictedZone(animalX, animalY, animalWidth, animalHeight) {
     return isOverlapping;
   });
 }
+
 const rows = Math.floor(window.innerHeight / gridSize);
 const cols = Math.floor(window.innerWidth / gridSize);
 const grid = Array.from({ length: rows }, () => Array(cols).fill(0));
@@ -62,10 +69,12 @@ restrictedZones.forEach((zone) => {
     }
   }
 });
+
 function getUserAnimals() {
   const storedAnimals = localStorage.getItem("ownedAnimals");
   return storedAnimals ? JSON.parse(storedAnimals) : [];
 }
+
 function createAnimal(animal) {
   const animalElement = document.createElement("img");
   animalElement.src = `../assets/${animal.name}.webp`;
@@ -85,6 +94,7 @@ function createAnimal(animal) {
   roamAnimal(animalElement);
   return animalElement;
 }
+
 function astar(start, end) {
   const openSet = [];
   const closedSet = [];
@@ -160,14 +170,17 @@ function astar(start, end) {
   }
   return null;
 }
+
 function heuristic(a, b) {
   return Math.abs(a.row - b.row) + Math.abs(a.col - b.col);
 }
+
 function isValidCell(row, col) {
   return (
     row >= 0 && row < rows && col >= 0 && col < cols && grid[row][col] !== 1
   );
 }
+
 function roamAnimal(animal) {
   if (animal.dataset.isMovingToFood === "true") return;
 
@@ -225,6 +238,7 @@ function roamAnimal(animal) {
   }
   roamAnimationId = requestAnimationFrame(animateRoaming);
 }
+
 function createFood(event) {
   if (foodElement) {
     foodElement.remove();
@@ -340,8 +354,57 @@ function updateRestrictedZones() {
   });
 }
 
-window.addEventListener("resize", updateRestrictedZones);
-updateRestrictedZones();
+function updateAnimalSizes() {
+  const barnElement = document.getElementById("animals");
+  const barnRect = barnElement.getBoundingClientRect();
+  const scaleX = barnRect.width / 1920; // Assuming 1920 is the original width
+  const scaleY = barnRect.height / 1080; // Assuming 1080 is the original height
+
+  const animals = document.querySelectorAll(".animal");
+  animals.forEach((animal) => {
+    const originalWidth = 50; // Original width in pixels
+    const originalHeight = 50; // Original height in pixels
+    animal.style.width = `${originalWidth * scaleX}px`;
+    animal.style.height = `${originalHeight * scaleY}px`;
+
+    const left = parseFloat(animal.style.left);
+    const top = parseFloat(animal.style.top);
+    animal.style.left = `${left * scaleX}px`;
+    animal.style.top = `${top * scaleY}px`;
+  });
+}
+
+function updateCoordinates() {
+  const barnElement = document.getElementById("animals");
+  const barnRect = barnElement.getBoundingClientRect();
+  const scaleX = barnRect.width / 1920; // Assuming 1920 is the original width
+  const scaleY = barnRect.height / 1080; // Assuming 1080 is the original height
+
+  const animals = document.querySelectorAll(".animal");
+  animals.forEach((animal) => {
+    const left = parseFloat(animal.style.left) / scaleX;
+    const top = parseFloat(animal.style.top) / scaleY;
+    animal.style.left = `${left}px`;
+    animal.style.top = `${top}px`;
+  });
+
+  const restrictedAreaElements = document.querySelectorAll(".restricted-area");
+  restrictedAreaElements.forEach((element, index) => {
+    const zone = restrictedZones[index];
+    element.style.left = `${zone.x * scaleX}px`;
+    element.style.top = `${zone.y * scaleY}px`;
+    element.style.width = `${zone.width * scaleX}px`;
+    element.style.height = `${zone.height * scaleY}px`;
+  });
+}
+
+window.addEventListener("resize", () => {
+  updateRestrictedZones();
+  updateAnimalSizes();
+  updateCoordinates();
+});
+updateAnimalSizes();
+updateCoordinates();
 
 const userAnimals = getUserAnimals();
 userAnimals.forEach((animal) => {
