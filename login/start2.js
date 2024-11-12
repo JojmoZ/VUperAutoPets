@@ -100,7 +100,7 @@ window.onload = function () {
   }
 
   function showRandomCaptcha() {
-    const useCaptcha1 = Math.random() > 0.9999999;
+    const useCaptcha1 = Math.random() > 0.5;
     const selectedModal = useCaptcha1 ? captchaModal1 : captchaModal2;
     selectedModal.classList.remove("hidden");
     selectedModal.classList.add("show");
@@ -313,7 +313,7 @@ window.onload = function () {
       // Step 2: After a short delay, make the turtle appear and "push" the card
       setTimeout(() => {
         turtle.classList.add("pushing");
-      }, 520);
+      }, 540);
 
       // Step 3: After the login card reaches the center, wait 500ms, then mirror the turtle
       setTimeout(() => {

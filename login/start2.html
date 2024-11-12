@@ -69,12 +69,13 @@
         <button class="close-btn" onclick="hideCaptcha()">✖</button>
         <div class="captcha-area">
             <canvas id="captchaCanvas" width="150" height="50"></canvas>
-            <div class="reload-btn2" onclick="generateCaptcha()">Refresh</div>
+            <button class="reload-btn2">
+                <img src="../assets/reload.png" alt="Reload" width="20" height="20">
+            </button>
         </div>
         <div class="input_field captch_input">
             <input type="text" id="captchaInput2" placeholder="Enter captcha" />
         </div>
-        <div class="message">Entered captcha is correct</div>
         <div class="input_field button disabled">
             <button id="submitCaptchaBtn2">Submit Captcha</button>
         </div>

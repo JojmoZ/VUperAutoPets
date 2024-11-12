@@ -69,7 +69,9 @@ img#turtle {
 /* Turtle's position when pushing the form */
 img#turtle.pushing {
   /* Adjust right position dynamically based on the width of #loginCard */
-  right: calc(50% - 22vw); /* Adjust -10vw as needed to position the turtle relative to the login card */
+  right: calc(
+    50% - 22vw
+  ); /* Adjust -10vw as needed to position the turtle relative to the login card */
   bottom: 13%;
   transition: right 2.35s ease-in-out, bottom 2.35s ease-in-out;
 }
@@ -546,20 +548,79 @@ body.modal-active {
   animation-fill-mode: forwards; /* Keeps the final state after animation ends */
 }
 .captcha-area {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
 #captchaCanvas {
-    border: 1px solid #ccc;
+  border: 1px solid #ccc;
 }
 
 .refresh-button {
-    cursor: pointer;
-    color: blue;
-    text-decoration: underline;
-    font-size: 16px;
+  cursor: pointer;
+  color: blue;
+  text-decoration: underline;
+  font-size: 16px;
+}
+
+/* ...existing code... */
+
+#captchaModal2 .container {
+  text-align: center;
+}
+
+#captchaModal2 .captcha-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+#captchaModal2 #captchaCanvas {
+  border: 1px solid #ccc;
+}
+
+#captchaModal2 .refresh-button {
+  cursor: pointer;
+  color: blue;
+  text-decoration: underline;
+  font-size: 16px;
+}
+
+#captchaModal2 .input_field {
+  margin-bottom: 15px;
+}
+
+#captchaModal2 .input_field input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  text-align: center;
+}
+
+#captchaModal2 .input_field button {
+  background-color: #06c59c;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+#captchaModal2 .input_field button:hover {
+  background-color: #04a587;
+}
+
+#captchaModal2 .message {
+  font-size: 14px;
+  color: green;
+  margin-top: 10px;
 }
