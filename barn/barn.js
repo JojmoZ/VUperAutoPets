@@ -4,6 +4,7 @@ const frameDuration = 1000 / 60;
 const gridSize = 10;
 let animationId;
 let foodElement = null;
+let scaleX, scaleY;
 const restrictedZones = [
   { x: 0, y: 0, width: 50, height: 1080 },
   { x: 0, y: 0, width: 1920, height: 90 },
@@ -31,27 +32,29 @@ const restrictedZones = [
   // { x: 900, y: 250, width: 100, height: 100 },
   // { x: 300, y: 750, width: 160, height: 100 }
 ];
-
-function isInRestrictedZone(animalX, animalY, animalWidth, animalHeight) {
+function updateScalingFactors() {
   const barnElement = document.getElementById("animals");
   const barnRect = barnElement.getBoundingClientRect();
-  const scaleX = barnRect.width / 1920; // Assuming 1920 is the original width
-  const scaleY = barnRect.height / 1080; // Assuming 1080 is the original height
+  scaleX = barnRect.width / 1920; // Scale based on original barn width
+  scaleY = barnRect.height / 1080; // Scale based on original barn height
+}
+function isInRestrictedZone(animalX, animalY, animalWidth, animalHeight) {
+  updateScalingFactors(); // Ensure scaling is updated before checking
 
   return restrictedZones.some((zone) => {
     const zoneX = zone.x * scaleX;
     const zoneY = zone.y * scaleY;
     const zoneWidth = zone.width * scaleX;
     const zoneHeight = zone.height * scaleY;
-    const isOverlapping =
+    return (
       animalX < zoneX + zoneWidth &&
       animalX + animalWidth > zoneX &&
       animalY < zoneY + zoneHeight &&
-      animalY + animalHeight > zoneY;
-
-    return isOverlapping;
+      animalY + animalHeight > zoneY
+    );
   });
 }
+
 
 const rows = Math.floor(window.innerHeight / gridSize);
 const cols = Math.floor(window.innerWidth / gridSize);
@@ -84,8 +87,8 @@ function createAnimal(animal) {
   animalElement.style.height = "3.125rem"; // Use relative unit
   let spawnX, spawnY;
   do {
-    spawnX = Math.random() * (window.innerWidth - 50);
-    spawnY = Math.random() * (window.innerHeight - 60);
+    spawnX = Math.random() * (animalContainer.clientWidth - 50);
+    spawnY = Math.random() * (animalContainer.clientHeight - 60);
   } while (isInRestrictedZone(spawnX, spawnY, 50, 50));
   animalElement.style.left = `${spawnX}px`;
   animalElement.style.top = `${spawnY}px`;
@@ -171,6 +174,7 @@ function astar(start, end) {
   return null;
 }
 
+
 function heuristic(a, b) {
   return Math.abs(a.row - b.row) + Math.abs(a.col - b.col);
 }
@@ -180,6 +184,7 @@ function isValidCell(row, col) {
     row >= 0 && row < rows && col >= 0 && col < cols && grid[row][col] !== 1
   );
 }
+
 
 function roamAnimal(animal) {
   if (animal.dataset.isMovingToFood === "true") return;
@@ -193,11 +198,11 @@ function roamAnimal(animal) {
   const startY = parseFloat(animal.style.top) + animal.offsetHeight / 2;
   const endX = Math.min(
     Math.max(startX + deltaX, animal.offsetWidth / 2),
-    window.innerWidth - animal.offsetWidth / 2
+    animalContainer.clientWidth - animal.offsetWidth / 2
   );
   const endY = Math.min(
     Math.max(startY + deltaY, animal.offsetHeight / 2),
-    window.innerHeight - animal.offsetHeight / 2
+    animalContainer.clientHeight - animal.offsetHeight / 2
   );
   if (
     isInRestrictedZone(
@@ -324,18 +329,20 @@ function followPath(animal, path, callback) {
   moveStep();
 }
 
+
 function drawRestrictedZones() {
   restrictedZones.forEach((zone) => {
     const zoneElement = document.createElement("div");
     zoneElement.className = "restricted-area";
     zoneElement.style.position = "absolute";
-    zoneElement.style.left = `${zone.x}px`;
-    zoneElement.style.top = `${zone.y}px`;
-    zoneElement.style.width = `${zone.width}px`;
-    zoneElement.style.height = `${zone.height}px`;
+    zoneElement.style.left = `${zone.x * scaleX}px`;
+    zoneElement.style.top = `${zone.y * scaleY}px`;
+    zoneElement.style.width = `${zone.width * scaleX}px`;
+    zoneElement.style.height = `${zone.height * scaleY}px`;
     animalContainer.appendChild(zoneElement);
   });
 }
+
 drawRestrictedZones();
 
 function updateRestrictedZones() {
@@ -399,15 +406,36 @@ function updateCoordinates() {
 }
 
 window.addEventListener("resize", () => {
-  updateRestrictedZones();
-  updateAnimalSizes();
-  updateCoordinates();
+  updateScalingFactors();
+  resetGrid();
+  drawRestrictedZones();
+  // updateAnimalSizes();
+  // updateCoordinates();
 });
-updateAnimalSizes();
-updateCoordinates();
+updateScalingFactors();
+resetGrid();
+drawRestrictedZones();
+// updateAnimalSizes();
+// updateCoordinates();
 
 const userAnimals = getUserAnimals();
 userAnimals.forEach((animal) => {
   const animalElement = createAnimal(animal);
 });
 animalContainer.addEventListener("dblclick", createFood);
+function resetGrid() {
+  updateScalingFactors();
+  grid.forEach((row) => row.fill(0));
+  restrictedZones.forEach((zone) => {
+    const startX = Math.floor((zone.x * scaleX) / gridSize);
+    const startY = Math.floor((zone.y * scaleY) / gridSize);
+    const endX = Math.floor(((zone.x + zone.width) * scaleX) / gridSize);
+    const endY = Math.floor(((zone.y + zone.height) * scaleY) / gridSize);
+
+    for (let i = startY; i <= endY; i++) {
+      for (let j = startX; j <= endX; j++) {
+        if (i >= 0 && i < rows && j >= 0 && j < cols) grid[i][j] = 1;
+      }
+    }
+  });
+}
