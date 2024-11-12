@@ -5,19 +5,19 @@ const gridSize = 10;
 let animationId;
 let foodElement = null;
 const restrictedZones = [
-  { x: 0, y: 0, width: 50, height: 910 },
-  { x: 0, y: 0, width: 1920, height: 80 },
-  { x: 1440, y: 0, width: 50, height: 709 },
-  { x: 0, y: 0, width: 250, height: 150 },
-  { x: 0, y: 270, width: 350, height: 30 },
-  { x: 340, y: 270, width: 7, height: 120 },
-  { x: 340, y: 430, width: 7, height: 120 },
-  { x: 0, y: 570, width: 200, height: 80 },
-  { x: 200, y: 570, width: 10, height: 80 },
-  { x: 220, y: 550, width: 10, height: 80 },
-  { x: 230, y: 540, width: 10, height: 80 },
-  { x: 230, y: 540, width: 120, height: 80 },
-  { x: 210, y: 560, width: 10, height: 80 },
+  { x: 0, y: 0, width: 50, height: 1080 },
+  { x: 0, y: 0, width: 1920, height: 90 },
+  // { x: 1440, y: 0, width: 50, height: 709 },
+  // { x: 0, y: 0, width: 250, height: 150 },
+  // { x: 0, y: 270, width: 350, height: 30 },
+  // { x: 340, y: 270, width: 7, height: 120 },
+  // { x: 340, y: 430, width: 7, height: 120 },
+  // { x: 0, y: 570, width: 200, height: 80 },
+  // { x: 200, y: 570, width: 10, height: 80 },
+  // { x: 220, y: 550, width: 10, height: 80 },
+  // { x: 230, y: 540, width: 10, height: 80 },
+  // { x: 230, y: 540, width: 120, height: 80 },
+  // { x: 210, y: 560, width: 10, height: 80 },
   // { x: 500, y: 500, width: 100, height: 150 },
   // { x: 500, y: 500, width: 100, height: 150 },
   // { x: 500, y: 500, width: 100, height: 150 },
@@ -55,7 +55,9 @@ restrictedZones.forEach((zone) => {
   const endX = Math.floor((zone.x + zone.width) / gridSize);
   const endY = Math.floor((zone.y + zone.height) / gridSize);
   for (let i = startY; i <= endY; i++) {
+    if (i >= rows) continue; // Ensure index is within bounds
     for (let j = startX; j <= endX; j++) {
+      if (j >= cols) continue; // Ensure index is within bounds
       grid[i][j] = 1;
     }
   }
