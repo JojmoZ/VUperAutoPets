@@ -5,7 +5,7 @@ const gridSize = 10;
 let animationId;
 let foodElement = null;
 const restrictedZones = [
-  { x: 0, y: 0, width: 40, height: 709 },
+  { x: 0, y: 0, width: 50, height: 910 },
   { x: 0, y: 0, width: 1920, height: 80 },
   { x: 1440, y: 0, width: 50, height: 709 },
   { x: 0, y: 0, width: 250, height: 150 },
@@ -321,6 +321,26 @@ function drawRestrictedZones() {
   });
 }
 drawRestrictedZones();
+
+function updateRestrictedZones() {
+  const barnElement = document.getElementById("animals");
+  const barnRect = barnElement.getBoundingClientRect();
+  const scaleX = barnRect.width / 1920; // Assuming 1920 is the original width
+  const scaleY = barnRect.height / 1080; // Assuming 1080 is the original height
+
+  const restrictedAreaElements = document.querySelectorAll(".restricted-area");
+  restrictedAreaElements.forEach((element, index) => {
+    const zone = restrictedZones[index];
+    element.style.left = `${zone.x * scaleX}px`;
+    element.style.top = `${zone.y * scaleY}px`;
+    element.style.width = `${zone.width * scaleX}px`;
+    element.style.height = `${zone.height * scaleY}px`;
+  });
+}
+
+window.addEventListener("resize", updateRestrictedZones);
+updateRestrictedZones();
+
 const userAnimals = getUserAnimals();
 userAnimals.forEach((animal) => {
   const animalElement = createAnimal(animal);
