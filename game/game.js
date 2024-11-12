@@ -15,155 +15,20 @@ let coins = parseInt(localStorage.getItem("gamecoins")) || 11;
 document.getElementById("coins").textContent = `Coins: ${coins}`;
 const maxShopAnimals = 3;
 const maxSlots = 5;
-let shopAnimals = [
-  {
-    name: "VUnt",
-    attack: 2,
-    health: 1,
-    cost: 2,
-    img: "../assets/Animals/VUnt.webp",
-  },
-  {
-    name: "fiCM",
-    attack: 2,
-    health: 3,
-    cost: 5,
-    img: "../assets/Animals/fiCM.webp",
-  },
-  {
-    name: "KAon",
-    attack: 3,
-    health: 4,
-    cost: 7,
-    img: "../assets/Animals/KAon.webp",
-  },
-  {
-    name: "DJig",
-    attack: 3,
-    health: 1,
-    cost: 3,
-    img: "../assets/Animals/DJig.webp",
-  },
-  {
-    name: "turGTle",
-    attack: 1,
-    health: 2,
-    cost: 4,
-    img: "../assets/Animals/turGTle.webp",
-  },
-  {
-    name: "eLOphant",
-    attack: 8,
-    health: 7,
-    cost: 5,
-    img: "../assets/Animals/eLOphant.webp",
-  },
-  {
-    name: "aCFolotl",
-    attack: 2,
-    health: 4,
-    cost: 2,
-    img: "../assets/Animals/aCFolotl.webp",
-  },
-  {
-    name: "caKRbara",
-    attack: 4,
-    health: 6,
-    cost: 3,
-    img: "../assets/Animals/caKRbara.webp",
-  },
-  {
-    name: "CWinchilla",
-    attack: 2,
-    health: 5,
-    cost: 3,
-    img: "../assets/Animals/CWinchilla.webp",
-  },
-  {
-    name: "eagSVle",
-    attack: 12,
-    health: 8,
-    cost: 10,
-    img: "../assets/Animals/eagSVle.webp",
-  },
-  {
-    name: "monKKey",
-    attack: 6,
-    health: 7,
-    cost: 8,
-    img: "../assets/Animals/monKKey.webp",
-  },
-  {
-    name: "MSeer",
-    attack: 6,
-    health: 8,
-    cost: 4,
-    img: "../assets/Animals/MSeer.webp",
-  },
-  {
-    name: "octoSFus",
-    attack: 10,
-    health: 10,
-    cost: 15,
-    img: "../assets/Animals/octoSFus.webp",
-  },
-  {
-    name: "owLF",
-    attack: 5,
-    health: 4,
-    cost: 7,
-    img: "../assets/Animals/owLF.webp",
-  },
-  {
-    name: "PamstIr",
-    attack: 3,
-    health: 5,
-    cost: 2,
-    img: "../assets/Animals/PamstIr.webp",
-  },
-  {
-    name: "VJanda",
-    attack: 7,
-    health: 10,
-    cost: 6,
-    img: "../assets/Animals/VJanda.webp",
-  },
-  {
-    name: "YenguiK",
-    attack: 4,
-    health: 6,
-    cost: 6,
-    img: "../assets/Animals/YenguiK.webp",
-  },
-  {
-    name: "PPat",
-    attack: 4,
-    health: 6,
-    cost: 4,
-    img: "../assets/Animals/PPat.webp",
-  },
-  {
-    name: "ZKug",
-    attack: 5,
-    health: 7,
-    cost: 5,
-    img: "../assets/Animals/ZKug.webp",
-  },
-  {
-    name: "tXYrannosaurus",
-    attack: 15,
-    health: 18,
-    cost: 20,
-    img: "../assets/Animals/tXYrannosaurus.webp",
-  },
-  {
-    name: "VrocodiLe",
-    attack: 11,
-    health: 15,
-    cost: 12,
-    img: "../assets/Animals/VrocodiLe.webp",
-  },
-];
+ let shopAnimals = [];
+
+ fetch("../assets/shopAnimals.json")
+   .then((response) => {
+     if (!response.ok) {
+       throw new Error(`HTTP error! status: ${response.status}`);
+     }
+     return response.json();
+   })
+   .then((data) => {
+     shopAnimals = data;
+     console.log("shopAnimals loaded:", shopAnimals);
+   })
+   .catch((error) => console.error("Error loading shopAnimals:", error));
 let lastFrameTime = performance.now();
 let middleHeart = document.getElementById("middleHeart");
 let lives = parseInt(localStorage.getItem("lives")) || 3;
