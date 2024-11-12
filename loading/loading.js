@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
     loadingFill.style.width = `${progress}%`;
 
     if (elapsedTime >= totalGameTime) {
-      // window.location.href = "/game/index.html";
+      window.location.href = "/game/index.html";
     }
   }
 
@@ -39,27 +39,31 @@ document.addEventListener("DOMContentLoaded", () => {
     animalElement.alt = animal.name;
     animalElement.className = "animal";
 
-    const topPosition = Math.random() * 80;
+    const topPosition = Math.random() * 80 + 10; // Adjusted to make the animal appear lower
     const leftPosition = Math.random() * 100;
     const position =
       leftPosition < 40 ? "left" : leftPosition > 60 ? "right" : "center";
 
     tipElement.style.position = "absolute";
     tipElement.style.top = `${topPosition}%`;
-
+    animalElement.style.position = "absolute";
+    animalElement.style.top = `${60}%`; // Adjusted to make the animal appear lower
     if (position === "left") {
       tipElement.style.left = `${leftPosition}%`;
       tipElement.style.right = "auto";
       tipElement.style.flexDirection = "row-reverse"; // Animal on the left
+      animalElement.style.left = "-3.125rem";
       animalElement.classList.add("mirror");
     } else if (position === "right") {
       tipElement.style.right = `${100 - leftPosition}%`;
       tipElement.style.left = "auto";
+      animalElement.style.right = "-3.125rem";
       tipElement.style.flexDirection = "row"; // Animal on the right
     } else {
       // Center position
       tipElement.style.left = "50%";
       tipElement.style.transform = "translateX(-50%)";
+      animalElement.style.right = "-3.125rem";
       tipElement.style.flexDirection = "row"; // Default to animal on the left in center
     }
 
