@@ -80,7 +80,7 @@ function getUserAnimals() {
 
 function createAnimal(animal) {
   const animalElement = document.createElement("img");
-  animalElement.src = `../assets/${animal.name}.webp`;
+  animalElement.src = `../assets/Animals/${animal.name}.webp`;
   animalElement.className = "animal";
   animalElement.style.position = "absolute";
   animalElement.style.width = "3.125rem"; // Use relative unit
