@@ -1,17 +1,16 @@
 function hideCaptcha() {
-  captchaModal1.classList.add("hide"); // Add hide class to trigger closing animation
-  captchaModal2.classList.add("hide"); // Add hide class to trigger closing animation
+  captchaModal1.classList.add("hide");
+  captchaModal2.classList.add("hide");
 
   document.body.classList.remove("modal-active");
   document.querySelector(".overlay").classList.add("hidden");
 
-  // Wait for the animation to complete before fully hiding the modal
   setTimeout(() => {
     captchaModal1.classList.add("hidden");
-    captchaModal1.classList.remove("show", "hide"); // Reset classes for next show
+    captchaModal1.classList.remove("show", "hide");
     captchaModal2.classList.add("hidden");
-    captchaModal2.classList.remove("show", "hide"); // Reset classes for next show
-  }, 500); 
+    captchaModal2.classList.remove("show", "hide");
+  }, 500);
 }
 
 window.onload = function () {
@@ -48,55 +47,50 @@ window.onload = function () {
   }
   let generatedCaptcha2 = "";
   function generateCaptcha2() {
-     const canvas = document.getElementById("captchaCanvas");
-     const ctx = canvas.getContext("2d");
-     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const canvas = document.getElementById("captchaCanvas");
+    const ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-     // Background color and distortion
-     ctx.fillStyle = "#f0f0f0";
-     ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#f0f0f0";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-     // Generate random captcha text
-     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-     generatedCaptcha2 = Array.from({ length: 5 })
-       .map(() => chars[Math.floor(Math.random() * chars.length)])
-       .join("");
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    generatedCaptcha2 = Array.from({ length: 5 })
+      .map(() => chars[Math.floor(Math.random() * chars.length)])
+      .join("");
 
-     // Draw each character with random rotation and position
-     ctx.font = "30px Arial";
-     ctx.fillStyle = "#000";
-     for (let i = 0; i < generatedCaptcha2.length; i++) {
-       ctx.save();
-       const x = 20 + i * 25;
-       const y = 35 + Math.random() * 10;
-       ctx.translate(x, y);
-       ctx.rotate((Math.random() - 0.5) * 0.3); // Random rotation
-       ctx.fillText(generatedCaptcha2[i], 0, 0);
-       ctx.restore();
-     }
+    ctx.font = "30px Arial";
+    ctx.fillStyle = "#000";
+    for (let i = 0; i < generatedCaptcha2.length; i++) {
+      ctx.save();
+      const x = 20 + i * 25;
+      const y = 35 + Math.random() * 10;
+      ctx.translate(x, y);
+      ctx.rotate((Math.random() - 0.5) * 0.3);
+      ctx.fillText(generatedCaptcha2[i], 0, 0);
+      ctx.restore();
+    }
 
-     // Add noise lines
-     for (let i = 0; i < 10; i++) {
-       ctx.strokeStyle = "#c0c0c0";
-       ctx.beginPath();
-       ctx.moveTo(Math.random() * canvas.width, Math.random() * canvas.height);
-       ctx.lineTo(Math.random() * canvas.width, Math.random() * canvas.height);
-       ctx.stroke();
-     }
+    for (let i = 0; i < 10; i++) {
+      ctx.strokeStyle = "#c0c0c0";
+      ctx.beginPath();
+      ctx.moveTo(Math.random() * canvas.width, Math.random() * canvas.height);
+      ctx.lineTo(Math.random() * canvas.width, Math.random() * canvas.height);
+      ctx.stroke();
+    }
 
-     // Add noise dots
-     for (let i = 0; i < 30; i++) {
-       ctx.fillStyle = "#c0c0c0";
-       ctx.beginPath();
-       ctx.arc(
-         Math.random() * canvas.width,
-         Math.random() * canvas.height,
-         1,
-         0,
-         2 * Math.PI
-       );
-       ctx.fill();
-     }
+    for (let i = 0; i < 30; i++) {
+      ctx.fillStyle = "#c0c0c0";
+      ctx.beginPath();
+      ctx.arc(
+        Math.random() * canvas.width,
+        Math.random() * canvas.height,
+        1,
+        0,
+        2 * Math.PI
+      );
+      ctx.fill();
+    }
   }
 
   function showRandomCaptcha() {
@@ -106,7 +100,6 @@ window.onload = function () {
     selectedModal.classList.add("show");
     document.body.classList.add("modal-active");
     document.querySelector(".overlay").classList.remove("hidden");
-    // Generate the appropriate CAPTCHA text
     if (useCaptcha1) {
       generateCaptcha1();
     } else {
@@ -127,20 +120,18 @@ window.onload = function () {
         return false;
       }
     } else if (selectedCaptchaModal === "captchaModal2") {
-        const inputCaptcha2 = document.getElementById("captchaInput2").value;
-        if (inputCaptcha2 === generatedCaptcha2) {
-          hideCaptcha();
-          return true;
-        } else {
-           modalErrorText.innerText = "Invalid Captcha";
-           showErrorModal();
-          return false;
-        }
+      const inputCaptcha2 = document.getElementById("captchaInput2").value;
+      if (inputCaptcha2 === generatedCaptcha2) {
+        hideCaptcha();
+        return true;
+      } else {
+        modalErrorText.innerText = "Invalid Captcha";
+        showErrorModal();
+        return false;
+      }
     }
     return false;
   }
-
-  // Replace the existing CAPTCHA trigger in the form submit events with:
 
   const logo = document.getElementById("logo");
   const loginCard = document.getElementById("loginCard");
@@ -307,28 +298,23 @@ window.onload = function () {
     const bodyHeight = document.body.offsetHeight;
 
     if (scrollY + windowHeight >= bodyHeight) {
-      // Step 1: Start moving the login card to the center
       loginCard.classList.add("centered");
 
-      // Step 2: After a short delay, make the turtle appear and "push" the card
       setTimeout(() => {
         turtle.classList.add("pushing");
       }, 540);
 
-      // Step 3: After the login card reaches the center, wait 500ms, then mirror the turtle
       setTimeout(() => {
         turtle.classList.remove("pushing");
-        turtle.style.transform = "scaleX(-1)"; // Mirror the turtle
-      }, 3000 + 500); // 500ms delay after pushing
+        turtle.style.transform = "scaleX(-1)";
+      }, 3000 + 500);
 
-      // Step 4: After another 500ms, make the turtle move off-screen with the jump effect
       setTimeout(() => {
         turtle.classList.add("offscreen");
-      }, 3000 + 500 + 500); // Additional 500ms delay after mirroring
+      }, 3000 + 500 + 500);
     } else {
-      // Reset positions if the user scrolls back up
       turtle.classList.remove("pushing", "offscreen");
-      turtle.style.transform = "scaleX(1)"; // Reset the mirror effect
+      turtle.style.transform = "scaleX(1)";
       loginCard.classList.remove("centered");
     }
   });

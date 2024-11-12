@@ -40,7 +40,6 @@ img#logo {
   height: 100vh;
 }
 
-/* Animation for turtle and loginCard */
 img#turtle.active,
 #loginCard.active {
   right: 10%;
@@ -55,45 +54,39 @@ img#turtle.active,
   transform: translateX(0);
 }
 img#turtle.active {
-  right: 0%; /* Adjust this value to position it close to the bottom right corner of the form */
+  right: 0%;
 }
-/* Initial position of turtle off-screen */
 img#turtle {
   position: absolute;
   bottom: 13%;
-  right: -20%; /* Start completely off-screen */
+  right: -20%;
   width: 10vw;
   transition: right 3s ease-in-out, bottom 3s ease-in-out;
 }
 
-/* Turtle's position when pushing the form */
 img#turtle.pushing {
-  /* Adjust right position dynamically based on the width of #loginCard */
   right: calc(
     50% - 22vw
-  ); /* Adjust -10vw as needed to position the turtle relative to the login card */
+  );
   bottom: 13%;
   transition: right 2.35s ease-in-out, bottom 2.35s ease-in-out;
 }
 
-/* Mirror the turtle and add jumpy animation for moving off-screen */
 img#turtle.offscreen {
-  transform: scaleX(-1); /* Mirror the turtle image */
-  right: -20%; /* Move back off-screen */
-  animation: jumpBack 0.5s ease-in-out infinite alternate; /* Jumpy effect */
+  transform: scaleX(-1);
+  right: -20%;
+  animation: jumpBack 0.5s ease-in-out infinite alternate;
 }
 
-/* Keyframes for jumpy backward animation */
 @keyframes jumpBack {
   0% {
     bottom: 13%;
   }
   100% {
-    bottom: 17%; /* Adjust this value to control the jump height */
+    bottom: 17%;
   }
 }
 
-/* Centered position of the login card after being "pushed" */
 #loginCard.centered {
   right: 50%;
   transform: translateX(50%);
@@ -391,8 +384,8 @@ input[type="password"] {
   position: relative;
   border-radius: 5px;
   overflow: hidden;
-  user-select: none; /* Prevents text selection */
-  pointer-events: none; /* Prevents any mouse interactions */
+  user-select: none;
+  pointer-events: none;
 }
 
 .captcha-img img {
@@ -400,8 +393,8 @@ input[type="password"] {
   height: 100%;
   object-fit: cover;
   opacity: 0.7;
-  user-select: none; /* Prevents text selection */
-  pointer-events: none; /* Prevents any mouse interactions */
+  user-select: none;
+  pointer-events: none;
 }
 
 .captcha {
@@ -414,8 +407,8 @@ input[type="password"] {
   color: #fff;
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
   letter-spacing: 6px;
-  user-select: none; /* Prevents text selection */
-  pointer-events: none; /* Prevents any mouse interactions */
+  user-select: none;
+  pointer-events: none;
 }
 
 .reload-btn {
@@ -473,22 +466,21 @@ input[type="password"] {
 body.modal-active {
   overflow: hidden;
 }
-/* Overlay to block interaction with background */
+
 .overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Slightly darken the background */
-  z-index: 999; /* Place it below the captcha modal but above other content */
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
 }
 
 .overlay.hidden {
   display: none;
 }
 
-/* Disable background interaction */
 .captcha-modal::backdrop {
   background: rgba(0, 0, 0, 0.5);
 }
@@ -507,7 +499,7 @@ body.modal-active {
 .close-btn:hover {
   color: #06c59c;
 }
-/* Animation for the captcha modal appearance */
+
 @keyframes slideDownFadeIn {
   0% {
     transform: translate(-50%, -40%);
@@ -519,17 +511,16 @@ body.modal-active {
   }
 }
 
-/* Apply the animation when the modal becomes visible */
 .captcha-modal {
-  opacity: 0; /* Start as hidden */
+  opacity: 0;
   animation-duration: 0.5s;
-  animation-fill-mode: forwards; /* Keep the final state of the animation */
+  animation-fill-mode: forwards;
 }
 
 .captcha-modal.show {
-  animation-name: slideDownFadeIn; /* Trigger the animation */
+  animation-name: slideDownFadeIn;
 }
-/* Animation for hiding the captcha modal */
+
 @keyframes slideUpFadeOut {
   0% {
     transform: translate(-50%, -50%);
@@ -541,11 +532,10 @@ body.modal-active {
   }
 }
 
-/* Apply the animation when hiding the modal */
 .captcha-modal.hide {
   animation-name: slideUpFadeOut;
   animation-duration: 0.5s;
-  animation-fill-mode: forwards; /* Keeps the final state after animation ends */
+  animation-fill-mode: forwards;
 }
 .captcha-area {
   display: flex;
@@ -565,8 +555,6 @@ body.modal-active {
   text-decoration: underline;
   font-size: 16px;
 }
-
-/* ...existing code... */
 
 #captchaModal2 .container {
   text-align: center;
