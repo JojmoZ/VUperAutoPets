@@ -218,7 +218,7 @@ img {
 }
 .trash-bin {
     position: absolute;
-    right: 40%;
+    right: 60%;
     width: 6.875rem;
     height: 6.25rem;
     cursor: pointer;
@@ -254,4 +254,16 @@ img {
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
-
+#freezeButton{
+  position: absolute;
+  right:40%;
+  background-image: url(../assets/Icecube.png);
+  width: 6.875rem;
+  height: 6.25rem;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}

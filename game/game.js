@@ -15,20 +15,20 @@ let coins = parseInt(localStorage.getItem("gamecoins")) || 11;
 document.getElementById("coins").textContent = `Coins: ${coins}`;
 const maxShopAnimals = 3;
 const maxSlots = 5;
- let shopAnimals = [];
+let shopAnimals = [];
 
- fetch("../assets/shopAnimals.json")
-   .then((response) => {
-     if (!response.ok) {
-       throw new Error(`HTTP error! status: ${response.status}`);
-     }
-     return response.json();
-   })
-   .then((data) => {
-     shopAnimals = data;
-     console.log("shopAnimals loaded:", shopAnimals);
-   })
-   .catch((error) => console.error("Error loading shopAnimals:", error));
+fetch("../assets/shopAnimals.json")
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.json();
+  })
+  .then((data) => {
+    shopAnimals = data;
+    console.log("shopAnimals loaded:", shopAnimals);
+  })
+  .catch((error) => console.error("Error loading shopAnimals:", error));
 let lastFrameTime = performance.now();
 let middleHeart = document.getElementById("middleHeart");
 let lives = parseInt(localStorage.getItem("lives")) || 3;
@@ -37,57 +37,56 @@ let hearts = [
   document.getElementById("heart2"),
   document.getElementById("heart3"),
 ];
-let originalBattleLineup = []; 
+let originalBattleLineup = [];
 function saveRandomAnimals() {
   localStorage.setItem("randomAnimals", JSON.stringify(randomAnimals));
 }
-function rollfirst(){
-  console.log("a")
-   const ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
-   if(ownedAnimals == null){
-     alert("GK PUNYA OWNED ANIMALS");
-     alert("redirecting");
-     setTimeout(() => {
-       window.location.href = "/home/homepage.html"; 
-     }, 3000); 
-   }else if(ownedAnimals.length ==0){
-     alert("GK PUNYA OWNED ANIMALS");
-     alert("redirecting");
-     setTimeout(() => {
-       window.location.href = "/home/homepage.html"; 
-     }, 3000); 
-   }else{
-     const shuffledAnimals = ownedAnimals
-       ? ownedAnimals.sort(() => Math.random() - 0.5)
-       : shopAnimals.sort(() => Math.random() - 0.5);
-     randomAnimals = shuffledAnimals.slice(0, maxShopAnimals);
+function rollfirst() {
+  console.log("a");
+  const ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
+  if (ownedAnimals == null) {
+    alert("GK PUNYA OWNED ANIMALS");
+    alert("redirecting");
+    setTimeout(() => {
+      window.location.href = "/home/homepage.html";
+    }, 3000);
+  } else if (ownedAnimals.length == 0) {
+    alert("GK PUNYA OWNED ANIMALS");
+    alert("redirecting");
+    setTimeout(() => {
+      window.location.href = "/home/homepage.html";
+    }, 3000);
+  } else {
+    const shuffledAnimals = ownedAnimals
+      ? ownedAnimals.sort(() => Math.random() - 0.5)
+      : shopAnimals.sort(() => Math.random() - 0.5);
+    randomAnimals = shuffledAnimals.slice(0, maxShopAnimals);
     renderRandomAnimals();
     saveRandomAnimals();
-   }
-  
+  }
 }
-  function showCurtains() {
-    curtainTop.style.visibility = "visible";
-    curtainBottom.style.visibility = "visible";
-  }
-  function hideCurtains() {
-    curtainTop.style.visibility = "hidden";
-    curtainBottom.style.visibility = "hidden";
-  }
- function closeCurtains() {
-   showCurtains(); 
-   curtainTop.style.height = "50vh"; 
-   curtainBottom.style.height = "50vh"; 
- }
- function openCurtains(onComplete) {
-   setTimeout(() => {
-     curtainTop.style.height = "0"; 
-     curtainBottom.style.height = "0"; 
-     setTimeout(() => {
-       if (onComplete) onComplete(); 
-     }, 500); 
-   }, 500); 
- }
+function showCurtains() {
+  curtainTop.style.visibility = "visible";
+  curtainBottom.style.visibility = "visible";
+}
+function hideCurtains() {
+  curtainTop.style.visibility = "hidden";
+  curtainBottom.style.visibility = "hidden";
+}
+function closeCurtains() {
+  showCurtains();
+  curtainTop.style.height = "50vh";
+  curtainBottom.style.height = "50vh";
+}
+function openCurtains(onComplete) {
+  setTimeout(() => {
+    curtainTop.style.height = "0";
+    curtainBottom.style.height = "0";
+    setTimeout(() => {
+      if (onComplete) onComplete();
+    }, 500);
+  }, 500);
+}
 function rollShopAnimals() {
   if (coins >= 1) {
     coins -= 1;
@@ -140,6 +139,7 @@ function saveBattleLineup() {
 function dragStart(event) {
   const index = event.target.closest(".animal").getAttribute("data-index");
   event.dataTransfer.setData("text/plain", index);
+  event.dataTransfer.effectAllowed = "move";
 }
 function handleDrop(event) {
   event.preventDefault();
@@ -147,18 +147,34 @@ function handleDrop(event) {
   const reversedSlotIndex = maxSlots - 1 - slotIndex;
   const animalIndex = event.dataTransfer.getData("text/plain");
   const selectedAnimal = randomAnimals[animalIndex];
-  if (!battleLineup[reversedSlotIndex] && coins >= selectedAnimal.cost) {
-    battleLineup[reversedSlotIndex] = selectedAnimal;
-    event.target.innerHTML = `<img src="${selectedAnimal.img}" alt="${selectedAnimal.name}" style="position: absolute; width: 5rem; height: 5rem; left: 0.625rem;">`;
-    coins -= selectedAnimal.cost;
-    updateCoinsDisplay();
-    randomAnimals.splice(animalIndex, 1);
-    renderRandomAnimals();
-    saveBattleLineup();
-    saveRandomAnimals();
+  const draggedFromSlot = battleLineup[animalIndex];
+
+  if (draggedFromSlot) {
+    if (battleLineup[reversedSlotIndex]) {
+      const temp = battleLineup[reversedSlotIndex];
+      battleLineup[reversedSlotIndex] = draggedFromSlot;
+      battleLineup[animalIndex] = temp;
+    } else {
+      // Move animal to the new slot if the target slot is empty
+      battleLineup[reversedSlotIndex] = draggedFromSlot;
+      battleLineup[animalIndex] = null;
+    }
     renderBattleSlots();
-  } else {
-    alert("Not enough coins or slot is already filled!");
+    saveBattleLineup();
+  } else if (!battleLineup[reversedSlotIndex] && coins >= selectedAnimal.cost) {
+    if (!battleLineup[reversedSlotIndex] && coins >= selectedAnimal.cost) {
+      battleLineup[reversedSlotIndex] = selectedAnimal;
+      event.target.innerHTML = `<img src="${selectedAnimal.img}" alt="${selectedAnimal.name}" style="position: absolute; width: 5rem; height: 5rem; left: 0.625rem;">`;
+      coins -= selectedAnimal.cost;
+      updateCoinsDisplay();
+      randomAnimals.splice(animalIndex, 1);
+      renderRandomAnimals();
+      saveBattleLineup();
+      saveRandomAnimals();
+      renderBattleSlots();
+    } else {
+      alert("Not enough coins or slot is already filled!");
+    }
   }
 }
 function handleDragOver(event) {
@@ -241,11 +257,7 @@ function renderTeams() {
             (maxSlots - 1 - index) * 100 +
             60 -
             healthTextWidth / 2;
-          ctx.fillText(
-            healthText,
-            healthX,
-            commonY + 85
-          );
+          ctx.fillText(healthText, healthX, commonY + 85);
         };
       };
     }
@@ -268,9 +280,9 @@ function renderTeams() {
           );
           ctx.fillStyle = "white";
           ctx.font = "1rem Arial";
-            let attackText = `${animal.attack}`;
-            let attackTextWidth = ctx.measureText(attackText).width;
-            let attackX = enemyOffsetX + index * 100 + 20 - attackTextWidth / 2;
+          let attackText = `${animal.attack}`;
+          let attackTextWidth = ctx.measureText(attackText).width;
+          let attackX = enemyOffsetX + index * 100 + 20 - attackTextWidth / 2;
           ctx.fillText(attackText, attackX, commonY + 85);
         };
         const heartImg = new Image();
@@ -285,14 +297,10 @@ function renderTeams() {
           );
           ctx.fillStyle = "white";
           ctx.font = "1rem Arial";
-           let healthText = `${animal.health}`;
-           let healthTextWidth = ctx.measureText(healthText).width;
-           let healthX = enemyOffsetX + index * 100 + 60 - healthTextWidth / 2;
-          ctx.fillText(
-            healthText,
-            healthX,
-            commonY + 85
-          );
+          let healthText = `${animal.health}`;
+          let healthTextWidth = ctx.measureText(healthText).width;
+          let healthX = enemyOffsetX + index * 100 + 60 - healthTextWidth / 2;
+          ctx.fillText(healthText, healthX, commonY + 85);
         };
       };
     }
@@ -305,13 +313,13 @@ document.querySelectorAll(".battle-slot").forEach((slot) => {
 document.getElementById("refreshButton").addEventListener("click", function () {
   rollShopAnimals();
 });
-let playing =false;
+let playing = false;
 document
   .getElementById("startBattleButton")
   .addEventListener("click", function () {
-    if(!playing){
+    if (!playing) {
       showCurtains();
-      playing=true;
+      playing = true;
       closeCurtains();
       setTimeout(() => {
         backupLineup();
@@ -326,7 +334,6 @@ document
           });
         });
       }, 1000);
-
     }
   });
 function animateAnimalsIntoPosition(onComplete) {
@@ -433,7 +440,6 @@ function animateAnimalsIntoPosition(onComplete) {
   requestAnimationFrame(animate);
 }
 
-
 function showNonBattleElements() {
   document.getElementById("battleSlotsContainer").classList.remove("hidden");
   document.getElementById("controls").classList.remove("hidden");
@@ -465,8 +471,8 @@ function adjustCanvasSize() {
 
 document.addEventListener("DOMContentLoaded", function () {
   hideCurtains();
-  adjustCanvasSize(); 
-  window.addEventListener("resize", adjustCanvasSize); 
+  adjustCanvasSize();
+  window.addEventListener("resize", adjustCanvasSize);
   updateHeartsDisplay();
   if (localStorage.getItem("randomAnimals")) {
     randomAnimals = JSON.parse(localStorage.getItem("randomAnimals"));
@@ -559,9 +565,9 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
     let attackText = `${playerAnimal.attack}`;
     let attackTextWidth = ctx.measureText(attackText).width;
     let attackX = playerX + 20 - attackTextWidth / 2;
-     let healthText = `${playerAnimal.health}`;
-     let healthTextWidth = ctx.measureText(healthText).width;
-     let healthX = playerX + 60 - healthTextWidth / 2;
+    let healthText = `${playerAnimal.health}`;
+    let healthTextWidth = ctx.measureText(healthText).width;
+    let healthX = playerX + 60 - healthTextWidth / 2;
     ctx.fillText(attackText, attackX, playerY + 85);
     ctx.fillText(healthText, healthX, playerY + 85);
 
@@ -633,14 +639,14 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
       ctx.drawImage(heartImg, playerX + 40, playerY + 60, 40, 40);
       ctx.fillStyle = "white";
       ctx.font = "1rem Arial";
-     let attackText = `${playerAnimal.attack}`;
-     let attackTextWidth = ctx.measureText(attackText).width;
-     let attackX = playerX + 20 - attackTextWidth / 2;
-     let healthText = `${playerAnimal.health}`;
-     let healthTextWidth = ctx.measureText(healthText).width;
-     let healthX = playerX + 60 - healthTextWidth / 2;
-     ctx.fillText(attackText, attackX, playerY + 85);
-     ctx.fillText(healthText, healthX, playerY + 85);
+      let attackText = `${playerAnimal.attack}`;
+      let attackTextWidth = ctx.measureText(attackText).width;
+      let attackX = playerX + 20 - attackTextWidth / 2;
+      let healthText = `${playerAnimal.health}`;
+      let healthTextWidth = ctx.measureText(healthText).width;
+      let healthX = playerX + 60 - healthTextWidth / 2;
+      ctx.fillText(attackText, attackX, playerY + 85);
+      ctx.fillText(healthText, healthX, playerY + 85);
 
       ctx.drawImage(enemyImg, enemyX, enemyY, 80, 80);
       ctx.drawImage(fistImg, enemyX, enemyY + 60, 40, 40);
@@ -667,18 +673,18 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
   }
 }
 function backupLineup() {
-  originalBattleLineup = [...battleLineup]; 
+  originalBattleLineup = [...battleLineup];
 }
 function shiftAnimalsToFront() {
   const shiftedLineup = battleLineup.filter((animal) => animal !== null);
   while (shiftedLineup.length < maxSlots) {
-    shiftedLineup.push(null); 
+    shiftedLineup.push(null);
   }
-  battleLineup = [...shiftedLineup]; 
+  battleLineup = [...shiftedLineup];
 }
 function restoreOriginalLineup() {
-  battleLineup = [...originalBattleLineup]; 
-  renderBattleSlots(); 
+  battleLineup = [...originalBattleLineup];
+  renderBattleSlots();
 }
 function showDamage(
   playerX,
@@ -691,23 +697,23 @@ function showDamage(
   enemyHealth,
   onComplete
 ) {
-  let alpha = 1.0; 
-  const fadeDuration = 50; 
-  const displayDuration = 50; 
-  const maxFontSize = 2.5; 
+  let alpha = 1.0;
+  const fadeDuration = 50;
+  const displayDuration = 50;
+  const maxFontSize = 2.5;
   const minFontSize = 0.625;
   const commonY = 210;
-  const playerDamageOffsetX = -25; 
+  const playerDamageOffsetX = -25;
   const playerDamageOffsetY = -1;
-  const enemyDamageOffsetX = 35; 
-  const enemyDamageOffsetY = -4; 
+  const enemyDamageOffsetX = 35;
+  const enemyDamageOffsetY = -4;
   let currentFrame = 0;
-  const totalFrames = 30; 
-    const fistImg = new Image();
-    fistImg.src = "../assets/fist.png";
+  const totalFrames = 30;
+  const fistImg = new Image();
+  fistImg.src = "../assets/fist.png";
 
-    const heartImg = new Image();
-    heartImg.src = "../assets/heart.png";
+  const heartImg = new Image();
+  heartImg.src = "../assets/heart.png";
   function drawExpandingDamage() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     renderFullTeam();
@@ -768,7 +774,7 @@ function showDamage(
   }
 
   function drawShrinkingDamage() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height); 
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     renderFullTeam();
     ctx.drawImage(playerImg, playerX, commonY, 80, 80);
     ctx.drawImage(fistImg, playerX, commonY + 60, 40, 40);
@@ -776,26 +782,26 @@ function showDamage(
     ctx.drawImage(enemyImg, enemyX, commonY, 80, 80);
     ctx.drawImage(fistImg, enemyX, commonY + 60, 40, 40);
     ctx.drawImage(heartImg, enemyX + 40, commonY + 60, 40, 40);
-     let attackText = `${playerDamage}`;
-     let attackTextWidth = ctx.measureText(attackText).width;
-     let attackX = playerX + 20 - attackTextWidth / 2;
-     let healthText = `${playerHealth}`;
-     let healthTextWidth = ctx.measureText(healthText).width;
-     let healthX = playerX + 60 - healthTextWidth / 2;
-     ctx.fillText(attackText, attackX, commonY + 85);
-     ctx.fillText(healthText, healthX, commonY + 85);
-     let attackTextEn = `${enemyDamage}`;
-     let attackTextWidthEn = ctx.measureText(attackTextEn).width;
-     let attackXEn = enemyX + 20 - attackTextWidthEn / 2;
-     let healthTextEn = `${enemyHealth}`;
-     let healthTextWidthEn = ctx.measureText(healthTextEn).width;
-     let healthXEn = enemyX + 60 - healthTextWidthEn / 2;
-     ctx.fillText(attackTextEn, attackXEn, commonY + 85);
-     ctx.fillText(healthTextEn, healthXEn, commonY + 85);
+    let attackText = `${playerDamage}`;
+    let attackTextWidth = ctx.measureText(attackText).width;
+    let attackX = playerX + 20 - attackTextWidth / 2;
+    let healthText = `${playerHealth}`;
+    let healthTextWidth = ctx.measureText(healthText).width;
+    let healthX = playerX + 60 - healthTextWidth / 2;
+    ctx.fillText(attackText, attackX, commonY + 85);
+    ctx.fillText(healthText, healthX, commonY + 85);
+    let attackTextEn = `${enemyDamage}`;
+    let attackTextWidthEn = ctx.measureText(attackTextEn).width;
+    let attackXEn = enemyX + 20 - attackTextWidthEn / 2;
+    let healthTextEn = `${enemyHealth}`;
+    let healthTextWidthEn = ctx.measureText(healthTextEn).width;
+    let healthXEn = enemyX + 60 - healthTextWidthEn / 2;
+    ctx.fillText(attackTextEn, attackXEn, commonY + 85);
+    ctx.fillText(healthTextEn, healthXEn, commonY + 85);
     ctx.save();
     const progress = currentFrame / totalFrames;
-    const fontSize = maxFontSize - progress * (maxFontSize - minFontSize); 
-    alpha = 1 - progress; 
+    const fontSize = maxFontSize - progress * (maxFontSize - minFontSize);
+    alpha = 1 - progress;
     ctx.font = `${fontSize}rem Arial`;
     ctx.fillStyle = "red";
     ctx.globalAlpha = alpha;
@@ -812,10 +818,10 @@ function showDamage(
     ctx.restore();
     if (currentFrame < totalFrames) {
       currentFrame++;
-      requestAnimationFrame(drawShrinkingDamage); 
+      requestAnimationFrame(drawShrinkingDamage);
     } else {
-      ctx.globalAlpha = 1.0; 
-      onComplete(); 
+      ctx.globalAlpha = 1.0;
+      onComplete();
     }
   }
   drawExpandingDamage();
@@ -868,15 +874,14 @@ function renderFullTeam() {
       ctx.drawImage(heartImg, xPos + 40, commonY + 60, iconSize, iconSize);
       ctx.fillStyle = "white";
       ctx.font = "1rem Arial";
-       let attackText = `${animal.attack}`;
-       let attackTextWidth = ctx.measureText(attackText).width;
-       let attackX = xPos + 20 - attackTextWidth / 2;
-       let healthText = `${animal.health}`;
-       let healthTextWidth = ctx.measureText(healthText).width;
-       let healthX = xPos + 60 - healthTextWidth / 2;
-       ctx.fillText(attackText, attackX, commonY + 85);
-       ctx.fillText(healthText, healthX, commonY + 85);
-
+      let attackText = `${animal.attack}`;
+      let attackTextWidth = ctx.measureText(attackText).width;
+      let attackX = xPos + 20 - attackTextWidth / 2;
+      let healthText = `${animal.health}`;
+      let healthTextWidth = ctx.measureText(healthText).width;
+      let healthX = xPos + 60 - healthTextWidth / 2;
+      ctx.fillText(attackText, attackX, commonY + 85);
+      ctx.fillText(healthText, healthX, commonY + 85);
     }
   });
 }
@@ -1037,7 +1042,7 @@ async function simulateBattle() {
         animateHeadbutt(playerAnimal, enemyAnimal, () => {
           enemyAnimal.health -= playerAnimal.attack;
           playerAnimal.health -= enemyAnimal.attack;
-          
+
           handleBothDeaths(playerAnimal, enemyAnimal, () => {
             if (
               !battleLineup.some((animal) => animal) ||
@@ -1087,19 +1092,19 @@ function loseLife() {
     middleHeart.classList.remove("hidden");
 
     setTimeout(() => {
-      middleHeart.src = "../assets/semibroken.png"; 
-    }, 500); 
+      middleHeart.src = "../assets/semibroken.png";
+    }, 500);
     setTimeout(() => {
-      middleHeart.src = "../assets/broken heart.png"; 
-      middleHeart.classList.add("hidden"); 
+      middleHeart.src = "../assets/broken heart.png";
+      middleHeart.classList.add("hidden");
       hearts[lives - 1].src = "../assets/broken heart.png";
-      lives--; 
-      localStorage.setItem("lives", lives); 
+      lives--;
+      localStorage.setItem("lives", lives);
       if (lives <= 0) {
-        showDefeatScreen(); 
+        showDefeatScreen();
       } else {
         showNonBattleElements();
-        location.reload()
+        location.reload();
       }
     }, 1500);
   }
@@ -1112,9 +1117,9 @@ function resetGame() {
   updateCoinsDisplay();
   if (lives <= 0) {
     lives = 3;
-    localStorage.setItem("lives", lives); 
+    localStorage.setItem("lives", lives);
     hearts.forEach((heart) => {
-      heart.src = "../assets/heart.png"; 
+      heart.src = "../assets/heart.png";
     });
   }
   renderBattleSlots();
@@ -1129,25 +1134,22 @@ function checkGameOver(playerSurvivors, enemySurvivors) {
     alert("You won this battle! Continue to the next.");
     showNonBattleElements();
     location.reload();
-    
   } else if (playerSurvivors < enemySurvivors) {
-    loseLife(); 
-    
+    loseLife();
   } else {
     console.log("It's a draw!");
     alert("It's a draw! Continue to the next battle.");
-   showNonBattleElements();
-   location.reload();
+    showNonBattleElements();
+    location.reload();
   }
-  
 }
 function showDefeatScreen() {
   const defeatScreen = document.getElementById("defeatScreen");
-  defeatScreen.classList.remove("hidden"); 
+  defeatScreen.classList.remove("hidden");
   setTimeout(() => {
-     resetGame();
-    window.location.href = "/home/homepage.html"; 
-  }, 3000); 
+    resetGame();
+    window.location.href = "/home/homepage.html";
+  }, 3000);
 }
 const trashBin = document.getElementById("trashBin");
 function showTrashBin() {
@@ -1160,7 +1162,7 @@ function handleTrashDrop(event) {
   event.preventDefault();
   const slotIndex = event.dataTransfer.getData("text/plain");
   battleLineup[slotIndex] = null; // Remove the animal from the lineup
-   renderBattleSlots();
+  renderBattleSlots();
   saveBattleLineup();
 }
 trashBin.addEventListener("dragover", (event) => {
