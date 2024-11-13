@@ -343,11 +343,17 @@ function renderTeams() {
   });
 }
 document.querySelectorAll(".battle-slot").forEach((slot) => {
-  slot.addEventListener("drop", handleDrop);
-  slot.addEventListener("dragover", handleDragOver);
+  slot.addEventListener("drop", (event) => {
+    const animalIndex = parseInt(slot.getAttribute("data-slot"), 10);
+    const animal = battleLineup[animalIndex];
+    handleItemDrop(event, animal);
+  });
+  slot.addEventListener("dragover", (event) => event.preventDefault());
 });
+
 document.getElementById("refreshButton").addEventListener("click", function () {
   rollShopAnimals();
+  loadRandomItem();
 });
 let playing = false;
 document
@@ -1244,3 +1250,60 @@ freezeButton.addEventListener("drop", (event) => {
     renderRandomAnimals(); // Re-render the shop animals with updated overlays
   }
 });
+let items = [];
+let currentItem = null;
+
+// Fetch items from JSON
+fetch("../assets/items.json")
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.json();
+  })
+  .then((data) => {
+    items = data;
+    loadRandomItem();
+  })
+  .catch((error) => console.error("Error loading items:", error));
+
+// Function to load a random item
+function loadRandomItem() {
+  currentItem = items[Math.floor(Math.random() * items.length)];
+  renderItem();
+}
+
+function renderItem() {
+  const itemSlot = document.getElementById("itemSlot");
+  itemSlot.innerHTML = ""; // Clear previous item
+  const itemImg = document.createElement("img");
+  itemImg.src = currentItem.img;
+  itemImg.alt = currentItem.name;
+  itemImg.setAttribute("draggable", true);
+  itemImg.addEventListener("dragstart", handleItemDragStart);
+  itemSlot.appendChild(itemImg);
+}
+
+function handleItemDragStart(event) {
+  event.dataTransfer.setData("itemName", currentItem.name);
+  event.dataTransfer.setData("itemEffect", currentItem.effect);
+}
+function handleItemDrop(event, animal) {
+  event.preventDefault();
+  const itemName = event.dataTransfer.getData("itemName");
+  const itemEffect = event.dataTransfer.getData("itemEffect");
+
+  if (itemName && itemEffect && animal) {
+    applyItemEffect(animal, itemEffect);
+    loadRandomItem(); // Load a new item after use
+  }
+}
+
+function applyItemEffect(animal, effect) {
+  if (effect.includes("Add")) {
+    const [amount, attribute] = effect.match(/\d+|\bhealth\b|\battack\b/gi);
+    if (attribute === "health") animal.health += parseInt(amount);
+    else if (attribute === "attack") animal.attack += parseInt(amount);
+  }
+  renderBattleSlots(); // Refresh animal stats display
+}
