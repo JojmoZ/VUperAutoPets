@@ -443,6 +443,7 @@ function showNonBattleElements() {
   document.getElementById("controls").classList.remove("hidden");
   document.getElementById("refreshButton").classList.remove("hidden");
   document.getElementById("startBattleButton").classList.remove("hidden");
+  document.getElementById("freezeButton").classList.remove("hidden");
   document.getElementById("backArrow").classList.remove("hidden");
   hideCanvas();
 }
@@ -452,6 +453,7 @@ function hideNonBattleElements() {
   document.getElementById("controls").classList.add("hidden");
   document.getElementById("refreshButton").classList.add("hidden");
   document.getElementById("startBattleButton").classList.add("hidden");
+  document.getElementById("freezeButton").classList.add("hidden");
   document.getElementById("backArrow").classList.add("hidden");
 }
 function showCanvas() {
