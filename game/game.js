@@ -136,6 +136,10 @@ function renderRandomAnimals() {
 
     animalImage.addEventListener("dragend", hideBins);
 
+    const animalPopup = document.createElement("div");
+    animalPopup.classList.add("animal-popup");
+    animalPopup.textContent = `${animal.name} - Cost: ${animal.cost}`;
+
     if (animal.frozen) {
       const iceOverlay = document.createElement("div");
       iceOverlay.classList.add("ice-overlay");
@@ -152,6 +156,7 @@ function renderRandomAnimals() {
     statContainer.appendChild(health);
 
     animalDiv.appendChild(animalImage);
+    animalDiv.appendChild(animalPopup);
     animalDiv.appendChild(statContainer);
     randomAnimalsContainer.appendChild(animalDiv);
   });
@@ -219,6 +224,10 @@ function renderBattleSlots() {
         event.dataTransfer.setData("source", "battle"); // New data to identify source
         showTrashBin();
       });
+      const animalPopup = document.createElement("div");
+      animalPopup.classList.add("animal-popup");
+      animalPopup.textContent = `${animal.name} - Cost: ${animal.cost}`;
+      slot.append(animalPopup)
       imgElement.addEventListener("dragend", hideBins); // Using hideBins to hide both trash and freeze buttons
     } else {
       slot.innerHTML = "";
