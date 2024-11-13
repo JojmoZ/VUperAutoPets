@@ -92,11 +92,21 @@ function rollShopAnimals() {
     coins -= 1;
     updateCoinsDisplay();
 
+    // Filter out frozen animals
+    const frozenAnimals = randomAnimals.filter(
+      (animal) => animal && animal.frozen
+    );
+    const numFrozenAnimals = frozenAnimals.length;
+
+    // Generate new animals for the non-frozen slots
     const ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
-    const shuffledAnimals = ownedAnimals
-      ? ownedAnimals.sort(() => Math.random() - 0.5)
-      : shopAnimals.sort(() => Math.random() - 0.5);
-    randomAnimals = shuffledAnimals.slice(0, maxShopAnimals);
+    const availableAnimals = ownedAnimals ? ownedAnimals : shopAnimals;
+    const newRandomAnimals = availableAnimals
+      .sort(() => Math.random() - 0.5)
+      .slice(0, maxShopAnimals - numFrozenAnimals);
+
+    // Combine frozen and new animals
+    randomAnimals = [...frozenAnimals, ...newRandomAnimals];
 
     renderRandomAnimals();
     saveRandomAnimals();
@@ -104,6 +114,7 @@ function rollShopAnimals() {
     alert("Not enough coins to refresh!");
   }
 }
+
 function renderRandomAnimals() {
   const randomAnimalsContainer = document.getElementById("random-animals");
   randomAnimalsContainer.innerHTML = "";
