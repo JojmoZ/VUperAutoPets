@@ -1,0 +1,20 @@
+[
+    {
+        "name": "Apple",
+        "cost": 1,
+        "img": "../assets/Items/Apple.webp",
+        "effect": "Add 2 health"
+    },
+    {
+        "name": "Honey",
+        "cost": 2,
+        "img": "../assets/Items/Honey.webp",
+        "effect": "Add 3 attack"
+    },
+    {
+        "name": "Strawberry",
+        "cost": 3,
+        "img": "../assets/Items/Strawberry.webp",
+        "effect": "Add 1 health and 1 attack"
+    }
+]
