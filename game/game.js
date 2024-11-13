@@ -232,6 +232,8 @@ function renderTeams() {
             iconSize,
             iconSize
           );
+          ctx.fillStyle = "white";
+          ctx.font = "1rem Arial";
           let healthText = `${animal.health}`;
           let healthTextWidth = ctx.measureText(healthText).width;
           let healthX =
@@ -281,6 +283,8 @@ function renderTeams() {
             iconSize,
             iconSize
           );
+          ctx.fillStyle = "white";
+          ctx.font = "1rem Arial";
            let healthText = `${animal.health}`;
            let healthTextWidth = ctx.measureText(healthText).width;
            let healthX = enemyOffsetX + index * 100 + 60 - healthTextWidth / 2;
@@ -564,6 +568,8 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
     ctx.drawImage(enemyImg, enemyX, enemyY, 80, 80);
     ctx.drawImage(fistImg, enemyX, enemyY + 60, 40, 40);
     ctx.drawImage(heartImg, enemyX + 40, enemyY + 60, 40, 40);
+    ctx.fillStyle = "white";
+    ctx.font = "1rem Arial";
     let attackTextEn = `${enemyAnimal.attack}`;
     let attackTextWidthEn = ctx.measureText(attackTextEn).width;
     let attackXEn = enemyX + 20 - attackTextWidthEn / 2;
@@ -625,6 +631,8 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
       ctx.drawImage(playerImg, playerX, playerY, 80, 80);
       ctx.drawImage(fistImg, playerX, playerY + 60, 40, 40);
       ctx.drawImage(heartImg, playerX + 40, playerY + 60, 40, 40);
+      ctx.fillStyle = "white";
+      ctx.font = "1rem Arial";
      let attackText = `${playerAnimal.attack}`;
      let attackTextWidth = ctx.measureText(attackText).width;
      let attackX = playerX + 20 - attackTextWidth / 2;
@@ -637,6 +645,8 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
       ctx.drawImage(enemyImg, enemyX, enemyY, 80, 80);
       ctx.drawImage(fistImg, enemyX, enemyY + 60, 40, 40);
       ctx.drawImage(heartImg, enemyX + 40, enemyY + 60, 40, 40);
+      ctx.fillStyle = "white";
+      ctx.font = "1rem Arial";
       let attackTextEn = `${enemyAnimal.attack}`;
       let attackTextWidthEn = ctx.measureText(attackTextEn).width;
       let attackXEn = enemyX + 20 - attackTextWidthEn / 2;
@@ -707,6 +717,8 @@ function showDamage(
     ctx.drawImage(enemyImg, enemyX, commonY, 80, 80);
     ctx.drawImage(fistImg, enemyX, commonY + 60, 40, 40);
     ctx.drawImage(heartImg, enemyX + 40, commonY + 60, 40, 40);
+    ctx.fillStyle = "white";
+    ctx.font = "1rem Arial";
     let attackText = `${playerDamage}`;
     let attackTextWidth = ctx.measureText(attackText).width;
     let attackX = playerX + 20 - attackTextWidth / 2;
@@ -715,6 +727,8 @@ function showDamage(
     let healthX = playerX + 60 - healthTextWidth / 2;
     ctx.fillText(attackText, attackX, commonY + 85);
     ctx.fillText(healthText, healthX, commonY + 85);
+    ctx.fillStyle = "white";
+    ctx.font = "1rem Arial";
     let attackTextEn = `${enemyDamage}`;
     let attackTextWidthEn = ctx.measureText(attackTextEn).width;
     let attackXEn = enemyX + 20 - attackTextWidthEn / 2;
