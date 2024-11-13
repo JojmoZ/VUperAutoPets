@@ -34,6 +34,11 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
+    // Clear previous results before starting new animation
+    slot1.innerHTML = "";
+    slot2.innerHTML = "";
+    slot3.innerHTML = "";
+
     const selectedAnimal1 = getRandomAnimal();
     const selectedAnimal2 = getRandomAnimal();
     const selectedAnimal3 = getRandomAnimal();
