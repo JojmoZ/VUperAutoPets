@@ -215,25 +215,50 @@ function renderBattleSlots() {
     slot.setAttribute("data-slot", index);
     const animal = battleLineup[maxSlots - 1 - index];
     if (animal) {
-      slot.innerHTML = `<img src="${animal.img}" alt="${animal.name}" style="width: 5rem; height: 5rem;" draggable="true">`;
+      // Clear slot and create a wrapper for the animal and stats
+      slot.innerHTML = "";
 
-      // Attach drag events to the image
-      const imgElement = slot.querySelector("img");
-      imgElement.addEventListener("dragstart", (event) => {
-        event.dataTransfer.setData("text/plain", maxSlots - 1 - index); // Existing data
-        event.dataTransfer.setData("source", "battle"); // New data to identify source
+      const wrapper = document.createElement("div");
+      wrapper.classList.add("animal-wrapper"); // Add a wrapper to control layout
+
+      // Animal Image
+      const animalImg = document.createElement("img");
+      animalImg.src = animal.img;
+      animalImg.alt = animal.name;
+      animalImg.style.width = "5rem";
+      animalImg.style.height = "5rem";
+      animalImg.draggable = true;
+
+      // Attach drag events
+      animalImg.addEventListener("dragstart", (event) => {
+        event.dataTransfer.setData("text/plain", maxSlots - 1 - index);
+        event.dataTransfer.setData("source", "battle");
         showTrashBin();
       });
-      const animalPopup = document.createElement("div");
-      animalPopup.classList.add("animal-popup");
-      animalPopup.textContent = `${animal.name} - Cost: ${animal.cost}`;
-      slot.append(animalPopup)
-      imgElement.addEventListener("dragend", hideBins); // Using hideBins to hide both trash and freeze buttons
+      animalImg.addEventListener("dragend", hideBins);
+
+      // Stat Container
+      const statContainer = document.createElement("div");
+      statContainer.classList.add("stat-container");
+
+      const attack = document.createElement("p");
+      attack.textContent = animal.attack;
+      const health = document.createElement("p");
+      health.textContent = animal.health;
+
+      statContainer.appendChild(attack);
+      statContainer.appendChild(health);
+
+      // Append image and stats to wrapper, then wrapper to slot
+      wrapper.appendChild(animalImg);
+      wrapper.appendChild(statContainer);
+      slot.appendChild(wrapper);
     } else {
       slot.innerHTML = "";
     }
   });
 }
+
 
 function renderTeams() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
