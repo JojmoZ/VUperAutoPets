@@ -211,6 +211,8 @@ function roamAnimal(animal) {
     Math.max(startY + deltaY, animal.offsetHeight / 2),
     animalContainer.clientHeight - animal.offsetHeight / 2
   );
+
+  // Check if the new position is within a restricted zone
   if (
     isInRestrictedZone(
       endX - animal.offsetWidth / 2,
@@ -219,6 +221,7 @@ function roamAnimal(animal) {
       animal.offsetHeight
     )
   ) {
+    // Try a new direction if restricted
     setTimeout(() => roamAnimal(animal), 100);
     return;
   }
@@ -226,30 +229,39 @@ function roamAnimal(animal) {
   const duration = walkDuration / 1000;
   const startTime = performance.now();
   let roamAnimationId;
+
   function animateRoaming(currentTime) {
     if (animal.dataset.isMovingToFood === "true") {
       cancelAnimationFrame(roamAnimationId);
       return;
     }
+
     const elapsedTime = (currentTime - startTime) / 1000;
     const progress = Math.min(elapsedTime / duration, 1);
 
-    animal.style.left = `${
-      startX + (endX - startX) * progress - animal.offsetWidth / 2
-    }px`;
-    animal.style.top = `${
-      startY + (endY - startY) * progress - animal.offsetHeight / 2
-    }px`;
+    const nextX = startX + (endX - startX) * progress - animal.offsetWidth / 2;
+    const nextY = startY + (endY - startY) * progress - animal.offsetHeight / 2;
+
+    // Check at each step if moving towards restricted zone
+    if (
+      isInRestrictedZone(nextX, nextY, animal.offsetWidth, animal.offsetHeight)
+    ) {
+      setTimeout(() => roamAnimal(animal), 100); // Retry with a new path
+      return;
+    }
+
+    animal.style.left = `${nextX}px`;
+    animal.style.top = `${nextY}px`;
+
     if (progress < 1) {
       roamAnimationId = requestAnimationFrame(animateRoaming);
     } else {
-      setTimeout(() => {
-        roamAnimal(animal);
-      }, Math.random() * 2000);
+      setTimeout(() => roamAnimal(animal), Math.random() * 2000);
     }
   }
   roamAnimationId = requestAnimationFrame(animateRoaming);
 }
+
 
 function createFood(event) {
   if (foodElement) {
