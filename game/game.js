@@ -118,7 +118,6 @@ function renderRandomAnimals() {
     animalImage.alt = animal.name;
     animalImage.setAttribute("draggable", true);
     animalImage.addEventListener("dragstart", dragStart);
-    animalImage.addEventListener("dragstart", showTrashBin);
     animalImage.addEventListener("dragend", hideTrashBin);
 
     const statContainer = document.createElement("div");
@@ -157,6 +156,7 @@ function handleDrop(event) {
     renderRandomAnimals();
     saveBattleLineup();
     saveRandomAnimals();
+    renderBattleSlots();
   } else {
     alert("Not enough coins or slot is already filled!");
   }
