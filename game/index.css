@@ -237,16 +237,17 @@ img {
   width: 100%;
   height: 6rem; /* Adjust height if needed */
   display: flex;
-  justify-content: space-around; /* Distribute buttons evenly */
+  flex-direction: row-reverse;
+  /* justify-content: space-around; Distribute buttons evenly */
   align-items: center;
   padding: 1rem 0;
 }
 
 .trash-bin {
-  position: absolute;
-  left: 10%; /* Adjust position to align where you want */
-  width: 3rem;
-  height: 3rem;
+  position: absolute; 
+  right: 40%; /* Adjust position to align where you want */
+   width: 6.875rem; /* 110px to rem */
+  height: 6.25rem; /* 100px to rem */
   cursor: pointer;
   transition: opacity 0.3s ease;
 }
@@ -256,17 +257,21 @@ img {
 }
 #refreshButton {
   position: absolute;
-  left: 40%; /* Adjust as needed */
-  padding: 0.625rem 1.25rem;
-  font-size: 1rem;
-  background-color: #ffffff;
-  border-radius: 5px;
+  background-image: url(../assets/dice.svg);
+  width: 6.875rem; /* 110px to rem */
+  height: 6.25rem; /* 100px to rem */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  right:20%;
+  border: none;
   transition: background-color 0.3s ease;
 }
 
 #startBattleButton {
   position: absolute;
-  right: 10%; /* Adjust as needed */
   background-image: url(../assets/sword.svg);
   width: 6.875rem; /* 110px to rem */
   height: 6.25rem; /* 100px to rem */

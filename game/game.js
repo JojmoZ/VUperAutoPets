@@ -1060,25 +1060,17 @@ function showDefeatScreen() {
   }, 3000); 
 }
 const trashBin = document.getElementById("trashBin");
-
-// Show trash bin on drag start for battle lineup animals
 function showTrashBin() {
   trashBin.classList.remove("hidden");
 }
-
-// Hide trash bin on drag end
 function hideTrashBin() {
   trashBin.classList.add("hidden");
 }
-
-// Remove the animal from battleLineup if dropped on the trash bin
 function handleTrashDrop(event) {
   event.preventDefault();
   const slotIndex = event.dataTransfer.getData("text/plain");
   battleLineup[slotIndex] = null; // Remove the animal from the lineup
-
-  // Re-render the lineup to reflect the removal
-  renderBattleSlots();
+   renderBattleSlots();
   saveBattleLineup();
 }
 trashBin.addEventListener("dragover", (event) => {
