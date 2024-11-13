@@ -43,7 +43,7 @@ body {
 .battle-slots {
     display: flex;
     justify-content: center;
-    margin: 34vh 0 0 0; /* 330px to vh */
+    margin: 29vh 0 0 0; /* 330px to vh */
 }
 
 .battle-slot {
@@ -61,7 +61,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 12vh; /* 110px to vh */
+    margin-top: 10vh; /* 110px to vh */
 }
 
 .random-animals {
