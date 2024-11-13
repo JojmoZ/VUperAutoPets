@@ -144,30 +144,35 @@ function handleDrop(event) {
   event.preventDefault();
   const slotIndex = parseInt(event.currentTarget.getAttribute("data-slot"), 10); // Use event.currentTarget
   const reversedSlotIndex = maxSlots - 1 - slotIndex;
-  const animalIndex = parseInt(event.dataTransfer.getData("text/plain"), 10);
-  const selectedAnimal = randomAnimals[animalIndex];
-  const draggedFromSlot = battleLineup[animalIndex];
-   if (draggedFromSlot) {
-     const temp = battleLineup[reversedSlotIndex];
-     battleLineup[reversedSlotIndex] = draggedFromSlot;
-     battleLineup[animalIndex] = temp;
-     renderBattleSlots();
-     saveBattleLineup();
-   } else if (
-     !battleLineup[reversedSlotIndex] &&
-     coins >= selectedAnimal.cost
-   ) {
-     battleLineup[reversedSlotIndex] = selectedAnimal;
-     coins -= selectedAnimal.cost;
-     updateCoinsDisplay();
-     randomAnimals.splice(animalIndex, 1);
-     renderRandomAnimals();
-     saveBattleLineup();
-     saveRandomAnimals();
-     renderBattleSlots();
-   } else {
-     alert("Not enough coins or slot is already filled!");
-   }
+  const data = event.dataTransfer.getData("text/plain");
+  const draggedElement = document.querySelector(`[data-index="${data}"]`);
+
+  if (draggedElement) {
+    const animalIndex = parseInt(data, 10);
+    const selectedAnimal = randomAnimals[animalIndex];
+    if (!battleLineup[reversedSlotIndex] && coins >= selectedAnimal.cost) {
+      battleLineup[reversedSlotIndex] = selectedAnimal;
+      coins -= selectedAnimal.cost;
+      updateCoinsDisplay();
+      randomAnimals.splice(animalIndex, 1);
+      renderRandomAnimals();
+      saveBattleLineup();
+      saveRandomAnimals();
+      renderBattleSlots();
+    } else {
+      alert("Not enough coins or slot is already filled!");
+    }
+  } else {
+    const animalIndex = parseInt(data, 10);
+    const draggedFromSlot = battleLineup[animalIndex];
+    if (draggedFromSlot) {
+      const temp = battleLineup[reversedSlotIndex];
+      battleLineup[reversedSlotIndex] = draggedFromSlot;
+      battleLineup[animalIndex] = temp;
+      renderBattleSlots();
+      saveBattleLineup();
+    }
+  }
 }
 function handleDragOver(event) {
   event.preventDefault();
