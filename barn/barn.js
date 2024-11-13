@@ -264,6 +264,15 @@ function roamAnimal(animal) {
 
 
 function createFood(event) {
+  const foodX = event.clientX - 10;
+  const foodY = event.clientY - 10;
+  const foodWidth = 20; // Assuming food width is 20px
+  const foodHeight = 20; // Assuming food height is 20px
+
+  if (isInRestrictedZone(foodX, foodY, foodWidth, foodHeight)) {
+    return;
+  }
+
   if (foodElement) {
     foodElement.remove();
   }
@@ -274,8 +283,8 @@ function createFood(event) {
   foodElement.style.height = "1.25rem"; // Use relative unit
   foodElement.style.backgroundColor = "yellow";
   foodElement.style.borderRadius = "50%";
-  foodElement.style.left = `${event.clientX - 10}px`;
-  foodElement.style.top = `${event.clientY - 10}px`;
+  foodElement.style.left = `${foodX}px`;
+  foodElement.style.top = `${foodY}px`;
   animalContainer.appendChild(foodElement);
   const foodRow = Math.floor(event.clientY / gridSize);
   const foodCol = Math.floor(event.clientX / gridSize);
