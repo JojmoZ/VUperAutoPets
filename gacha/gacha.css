@@ -1,0 +1,86 @@
+html,
+body {
+    margin: 0;
+    height: 100%;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background-size: cover;
+    /* background-image: url(../assets/gacha-background.webp); */
+}
+
+.gacha-wrapper {
+    display: flex;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+}
+
+.gacha-container {
+    text-align: center;
+    background-color: blue;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
+}
+
+.slot-machine {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.slot-column {
+    width: 100px;
+    height: 100px;
+    margin: 0 10px;
+    border: 2px solid #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+}
+
+.slot-column img {
+    width: 80px;
+    height: 80px;
+}
+
+.lever-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.lever {
+    width: 20px;
+    height: 100px;
+    background-color: red;
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.5s ease;
+}
+
+.lever::before {
+    content: '';
+    width: 40px;
+    height: 40px;
+    background-color: red;
+    border-radius: 50%;
+    position: absolute;
+    top: -30px;
+    left: -10px;
+    transition: top 0.5s ease;
+}
+
+.lever[style*="translateY(100px)"]::before {
+    top: 70px;
+}
+
+#gachaResult {
+    margin-top: 1rem;
+}
+
+#gachaResult img {
+    width: 100px;
+    height: 100px;
+}

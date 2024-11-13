@@ -159,5 +159,11 @@
      "health": 7,
      "cost": 11,
      "img": "../assets/Animals/Liberian_Husky.webp"
+   },{
+     "name": "LabbiK",
+     "attack": 7,
+     "health": 5,
+     "cost": 8,
+     "img": "../assets/Animals/LabbiK.webp"
    }
 ]

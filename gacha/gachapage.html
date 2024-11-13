@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VUper Auto Pets</title>
-    <link rel="stylesheet" href="shop.css">
+    <title>VUper Gacha Machine</title>
+    <link rel="stylesheet" href="gacha.css">
     <link rel="stylesheet" href="../navbar.css">
     <link rel="icon" type="image/png" href="../assets/LogoVUPER.jpg">
 </head>
@@ -26,29 +26,23 @@
         </div>
     </div>
 
-    <div class="shop-wrapper">
-        <div class="shop-container" id="shopContainer">
-            <!-- Cards will be dynamically generated here -->
+    <div class="gacha-wrapper">
+        <div class="gacha-container">
+            <div class="slot-machine">
+                <div class="slot-column" id="slot1"></div>
+                <div class="slot-column" id="slot2"></div>
+                <div class="slot-column" id="slot3"></div>
+            </div>
+            <div class="lever-container">
+                <div class="lever" id="lever"></div>
+            </div>
+            <div id="gachaResult" class="gacha-result"></div>
         </div>
     </div>
 
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-img">
-                <img id="modal-animal-image" src="" alt="Animal">
-            </div>
-            <div class="modal-text">
-                <h2>Are you sure you want to buy this?</h2>
-                <button id="confirm-buy">Yes</button>
-                <button id="cancel-buy">No</button>
-            </div>
-        </div>
-    </div>
-
-    <audio id="notification-sound" src="../coins-135571.mp3"></audio>
+    <!-- <audio id="gacha-sound" src="../gacha-sound.mp3"></audio> -->
 </body>
-<script src="shop.js"></script>
+<script src="gacha.js"></script>
 <script src="../navbar.js"></script>
-<script src="chata.js"></script>
 
 </html>
