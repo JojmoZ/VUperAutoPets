@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
     loadingFill.style.width = `${progress}%`;
 
     if (elapsedTime >= totalGameTime) {
-      // window.location.href = "/game/index.html";
+      window.location.href = "/game/index.html";
     }
   }
 
@@ -51,49 +51,49 @@ document.addEventListener("DOMContentLoaded", () => {
     animalElement.className = "animal";
 
     // Define maximum number of attempts to find a non-overlapping position
-    const maxAttempts = 15;
+    const maxAttempts = 20; // Increase attempts
     let attempts = 0;
-   let topPosition, leftPosition, position, tipBox;
+    let topPosition, leftPosition, position, tipBox;
 
     do {
       // Randomize positions within constrained bounds
-      topPosition = Math.random() * 60 + 10; // Constrain between 10% and 70% vertically
-      leftPosition = Math.random() * 70 + 20; // Constrain between 10% and 90% horizontally
-       if (leftPosition < 20) {
-         position = "right"; // "R" section, animal on right side of tip
-       } else if (leftPosition < 40) {
-         position = "left"; // "L" section, animal on left side of tip
-       } else if (leftPosition < 60) {
-         position = "right"; // "R" section, animal on right side of tip
-       } else if (leftPosition < 80) {
-         position = "right"; // "R" section, animal on right side of tip
-       } else {
-         position = "left"; // "L" section, animal on left side of tip
-       }
+      topPosition = Math.random() * 70 + 10; // Adjusted constraints for more room
+      leftPosition = Math.random() * 80 + 10;
+
+      if (leftPosition < 30) {
+        position = "left";
+      } else if (leftPosition > 70) {
+        position = "right";
+      } else {
+        position = "center";
+      }
+
       // Temporarily set position to calculate bounding box
       tipElement.style.position = "absolute";
       tipElement.style.top = `${topPosition}%`;
       tipElement.style.left = `${leftPosition}%`;
       tipElement.style.right = "auto";
       tipElement.style.transform = "none";
+      // tipElement.style.border = "2px solid red"; // Red border for debugging
+
       animalElement.style.position = "absolute";
-       animalElement.style.top =`${60}%`; // Adjusted to make the animal 
+      animalElement.style.top = "60%";
       if (position === "left") {
-        tipElement.style.left = `${leftPosition}%`;
-      tipElement.style.right = "auto";
-      tipElement.style.flexDirection = "row-reverse"; // Animal on the left
-      animalElement.style.left = "-3.125rem";
-      animalElement.classList.add("mirror");
+         tipElement.style.left = `${leftPosition}%`;
+         tipElement.style.right = "auto";
+         tipElement.style.flexDirection = "row-reverse";
+         animalElement.style.left = "-3.125rem";
+         animalElement.classList.add("mirror");
       } else if (position === "right") {
-        tipElement.style.right = `${100 - leftPosition}%`;
-      tipElement.style.left = "auto";
-      animalElement.style.right = "-3.125rem";
-      tipElement.style.flexDirection = "row"; // Animal on the right
+       tipElement.style.right = `${100 - leftPosition}%`;
+       tipElement.style.left = "auto";
+       animalElement.style.right = "-3.125rem";
+       tipElement.style.flexDirection = "row";
       } else {
         tipElement.style.left = "50%";
         tipElement.style.transform = "translateX(-50%)";
         animalElement.style.right = "-3.125rem";
-        tipElement.style.flexDirection = "row"; // Default to animal on the
+        tipElement.style.flexDirection = "row";
       }
 
       // Temporarily add to the DOM to get the bounding box
@@ -101,46 +101,67 @@ document.addEventListener("DOMContentLoaded", () => {
       tipBox = tipElement.getBoundingClientRect();
       mainContent.removeChild(tipElement);
 
+      // // Debug box for padding
+      // const debugPaddingBox = document.createElement("div");
+      // debugPaddingBox.style.position = "absolute";
+      // debugPaddingBox.style.border = "1px dashed red"; // Dashed red border for padding area
+      // debugPaddingBox.style.top = `${tipBox.top - padding}px`;
+      // debugPaddingBox.style.left = `${tipBox.left - padding}px`;
+      // debugPaddingBox.style.width = `${tipBox.width + 2 * padding}px`;
+      // debugPaddingBox.style.height = `${tipBox.height + 2 * padding}px`;
+      // debugPaddingBox.style.pointerEvents = "none"; // Make sure it doesn’t interfere with anything
+      // debugPaddingBox.className = "debug-padding-box";
+      // mainContent.appendChild(debugPaddingBox);
+
       // Check for overlap with existing tips
       const overlap = activeTips.some((activeTip) =>
         isOverlappingWithPadding(activeTip, tipBox, padding)
       );
 
       if (!overlap) {
-        // If no overlap, break the loop and place the tip
+        // Break if no overlap is found
         break;
       }
 
       attempts++;
+      //  mainContent.removeChild(debugPaddingBox);
+      console.log(`Attempt ${attempts}: Overlap detected, retrying...`);
     } while (attempts < maxAttempts);
 
-    // Add the animal image to the tip and finalize the position
-    tipElement.appendChild(animalElement);
-    mainContent.appendChild(tipElement);
+    if (attempts < maxAttempts) {
+      // Add the animal image to the tip and finalize the position
+      tipElement.appendChild(animalElement);
+      mainContent.appendChild(tipElement);
+      const currentTipBox = tipElement.getBoundingClientRect();
+      activeTips.push(currentTipBox);
 
-    // Store the bounding box of the new tip
-    activeTips.push(tipElement.getBoundingClientRect());
-
-    // Animate tip appearance
-    setTimeout(() => {
-      tipElement.classList.add("tip-animate-in");
-    }, 100);
-
-    // Animate tip disappearance
-    setTimeout(() => {
-      tipElement.classList.remove("tip-animate-in");
-      tipElement.classList.add("tip-animate-out");
+      // Animate tip appearance
       setTimeout(() => {
-        mainContent.removeChild(tipElement);
+        tipElement.classList.add("tip-animate-in");
+      }, 100);
 
-        // Remove the tip's bounding box from the activeTips array
-        const index = activeTips.indexOf(tipElement.getBoundingClientRect());
+      // Animate tip disappearance
+      setTimeout(() => {
+        tipElement.classList.remove("tip-animate-in");
+        tipElement.classList.add("tip-animate-out");
+        setTimeout(() => {
+          mainContent.removeChild(tipElement);
+
+          // Remove the tip's bounding box from the activeTips array
+        const index = activeTips.findIndex(
+          (activeTip) => activeTip === currentTipBox
+        );
         if (index > -1) activeTips.splice(index, 1);
-      }, 500);
-    }, 5000);
+        }, 500);
+      }, 5000);
+    } else {
+      console.warn(
+        "Max attempts reached; unable to place tip without overlap."
+      );
+    }
   }
 
-  // Helper function to check if two rectangles overlap
+  // Helper function to check if two rectangles overlap with padding
   function isOverlappingWithPadding(rect1, rect2, padding) {
     return !(
       rect1.right + padding < rect2.left - padding ||
