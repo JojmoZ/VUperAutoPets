@@ -155,7 +155,6 @@ function handleDrop(event) {
       battleLineup[reversedSlotIndex] = draggedFromSlot;
       battleLineup[animalIndex] = temp;
     } else {
-      // Move animal to the new slot if the target slot is empty
       battleLineup[reversedSlotIndex] = draggedFromSlot;
       battleLineup[animalIndex] = null;
     }
