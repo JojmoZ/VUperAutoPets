@@ -238,7 +238,6 @@ img {
   height: 6rem; /* Adjust height if needed */
   display: flex;
   flex-direction: row-reverse;
-  /* justify-content: space-around; Distribute buttons evenly */
   align-items: center;
   padding: 1rem 0;
 }
