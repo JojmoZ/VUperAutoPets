@@ -175,7 +175,7 @@ function handleDrop(event) {
   const reversedSlotIndex = maxSlots - 1 - slotIndex;
   const data = event.dataTransfer.getData("text/plain");
   const source = event.dataTransfer.getData("source"); // Get the source identifier
-
+  console.log("a")
   if (source === "shop") {
     // Handle dragging from the shop
     const animalIndex = parseInt(data, 10);
@@ -202,6 +202,14 @@ function handleDrop(event) {
       battleLineup[animalIndex] = temp;
       renderBattleSlots();
       saveBattleLineup();
+    }
+  }else if (source === "item") {
+    const itemName = event.dataTransfer.getData("itemName");
+    const itemEffect = event.dataTransfer.getData("itemEffect");
+    const targetAnimal = battleLineup[reversedSlotIndex]; // The animal in the drop slot
+    if (targetAnimal) {
+      handleItemDrop(event, targetAnimal);
+      loadRandomItem(); // Load a new item after use
     }
   }
 }
@@ -368,12 +376,8 @@ function renderTeams() {
   });
 }
 document.querySelectorAll(".battle-slot").forEach((slot) => {
-  slot.addEventListener("drop", (event) => {
-    const animalIndex = parseInt(slot.getAttribute("data-slot"), 10);
-    const animal = battleLineup[animalIndex];
-    handleItemDrop(event, animal);
-  });
-  slot.addEventListener("dragover", (event) => event.preventDefault());
+  slot.addEventListener("drop", handleDrop);
+  slot.addEventListener("dragover", handleDragOver);
 });
 
 document.getElementById("refreshButton").addEventListener("click", function () {
@@ -555,7 +559,28 @@ document.addEventListener("DOMContentLoaded", function () {
     renderTeams();
     renderBattleSlots();
   }
-
+ if (localStorage.getItem("currentItem")) {
+   currentItem = JSON.parse(localStorage.getItem("currentItem"));
+   renderItem();
+ } else {
+   fetch("../assets/items.json")
+     .then((response) => {
+       if (!response.ok) {
+         throw new Error(`HTTP error! Status: ${response.status}`);
+       }
+       return response.json();
+     })
+     .then((data) => {
+       items = data;
+       if (items.length === 0) {
+         console.error("No items found in the JSON data.");
+       } else {
+         console.log("Items loaded successfully:", items);
+         loadRandomItem();
+       }
+     })
+     .catch((error) => console.error("Error loading items:", error));
+ }
   updateCoinsDisplay();
 });
 function updateCoinsDisplay() {
@@ -1263,56 +1288,81 @@ document.querySelectorAll(".battle-slot img").forEach((img) => {
 freezeButton.addEventListener("dragover", (event) => {
   event.preventDefault();
 });
-freezeButton.addEventListener("drop", (event) => {                                                                                                                                                                                
+freezeButton.addEventListener("drop", (event) => {
   event.preventDefault();
+  const source = event.dataTransfer.getData("source");
   const index = event.dataTransfer.getData("text");
-  const animal = randomAnimals[index];
 
-  if (animal) {
-    // Toggle freeze status
-    animal.frozen = !animal.frozen;
-    saveRandomAnimals(); // Save the frozen state to local storage
-    renderRandomAnimals(); // Re-render the shop animals with updated overlays
+  if (source === "shop") {
+    // Handle freezing an animal from the shop
+    const animal = randomAnimals[index];
+    if (animal) {
+      animal.frozen = !animal.frozen;
+      saveRandomAnimals();
+      renderRandomAnimals();
+    }
+  } else if (source === "item") {
+    // Handle freezing the current item
+    currentItem.frozen = !currentItem.frozen;
+    saveCurrentItem();
+    renderItem();
   }
 });
 let items = [];
 let currentItem = null;
 
-// Fetch items from JSON
-fetch("../assets/items.json")
-  .then((response) => {
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    return response.json();
-  })
-  .then((data) => {
-    items = data;
-    loadRandomItem();
-  })
-  .catch((error) => console.error("Error loading items:", error));
+
 
 // Function to load a random item
 function loadRandomItem() {
-  currentItem = items[Math.floor(Math.random() * items.length)];
-  renderItem();
+  if (items.length > 0) {
+    currentItem = items[Math.floor(Math.random() * items.length)];
+    renderItem();
+  } else {
+    console.error("No items available to load.");
+  }
 }
 
 function renderItem() {
   const itemSlot = document.getElementById("itemSlot");
   itemSlot.innerHTML = ""; // Clear previous item
+
+  // Ensure currentItem has an img property before attempting to render it
+  if (!currentItem || !currentItem.img) {
+    console.error("Current item has no image to display.");
+    return;
+  }
+
+  const itemWrapper = document.createElement("div");
+  itemWrapper.classList.add("item-wrapper");
+
   const itemImg = document.createElement("img");
+  console.log(currentItem.img);
   itemImg.src = currentItem.img;
   itemImg.alt = currentItem.name;
   itemImg.setAttribute("draggable", true);
   itemImg.addEventListener("dragstart", handleItemDragStart);
-  itemSlot.appendChild(itemImg);
+
+  if (currentItem.frozen) {
+    const iceOverlay = document.createElement("div");
+    iceOverlay.classList.add("ice-overlay");
+    itemWrapper.appendChild(iceOverlay);
+  }
+
+  itemWrapper.appendChild(itemImg);
+  itemSlot.appendChild(itemWrapper);
 }
+
 
 function handleItemDragStart(event) {
   event.dataTransfer.setData("itemName", currentItem.name);
   event.dataTransfer.setData("itemEffect", currentItem.effect);
+  event.dataTransfer.setData("source", "item"); // Add source identifier for item
 }
+function saveCurrentItem() {
+  localStorage.setItem("currentItem", JSON.stringify(currentItem));
+}
+
 function handleItemDrop(event, animal) {
   event.preventDefault();
   const itemName = event.dataTransfer.getData("itemName");
