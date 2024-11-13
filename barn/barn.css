@@ -35,6 +35,8 @@ canvas {
 }
 
 .animal {
+  user-select: none;
+  cursor: pointer;
   width: 3.125rem; /* Use relative unit */
   height: 3.125rem; /* Use relative unit */
 }
