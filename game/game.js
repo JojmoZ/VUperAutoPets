@@ -139,42 +139,35 @@ function saveBattleLineup() {
 function dragStart(event) {
   const index = event.target.closest(".animal").getAttribute("data-index");
   event.dataTransfer.setData("text/plain", index);
-  event.dataTransfer.effectAllowed = "move";
 }
 function handleDrop(event) {
   event.preventDefault();
-  const slotIndex = event.target.getAttribute("data-slot");
+  const slotIndex = parseInt(event.currentTarget.getAttribute("data-slot"), 10); // Use event.currentTarget
   const reversedSlotIndex = maxSlots - 1 - slotIndex;
-  const animalIndex = event.dataTransfer.getData("text/plain");
+  const animalIndex = parseInt(event.dataTransfer.getData("text/plain"), 10);
   const selectedAnimal = randomAnimals[animalIndex];
   const draggedFromSlot = battleLineup[animalIndex];
-
-  if (draggedFromSlot) {
-    if (battleLineup[reversedSlotIndex]) {
-      const temp = battleLineup[reversedSlotIndex];
-      battleLineup[reversedSlotIndex] = draggedFromSlot;
-      battleLineup[animalIndex] = temp;
-    } else {
-      battleLineup[reversedSlotIndex] = draggedFromSlot;
-      battleLineup[animalIndex] = null;
-    }
-    renderBattleSlots();
-    saveBattleLineup();
-  } else if (!battleLineup[reversedSlotIndex] && coins >= selectedAnimal.cost) {
-    if (!battleLineup[reversedSlotIndex] && coins >= selectedAnimal.cost) {
-      battleLineup[reversedSlotIndex] = selectedAnimal;
-      event.target.innerHTML = `<img src="${selectedAnimal.img}" alt="${selectedAnimal.name}" style="position: absolute; width: 5rem; height: 5rem; left: 0.625rem;">`;
-      coins -= selectedAnimal.cost;
-      updateCoinsDisplay();
-      randomAnimals.splice(animalIndex, 1);
-      renderRandomAnimals();
-      saveBattleLineup();
-      saveRandomAnimals();
-      renderBattleSlots();
-    } else {
-      alert("Not enough coins or slot is already filled!");
-    }
-  }
+   if (draggedFromSlot) {
+     const temp = battleLineup[reversedSlotIndex];
+     battleLineup[reversedSlotIndex] = draggedFromSlot;
+     battleLineup[animalIndex] = temp;
+     renderBattleSlots();
+     saveBattleLineup();
+   } else if (
+     !battleLineup[reversedSlotIndex] &&
+     coins >= selectedAnimal.cost
+   ) {
+     battleLineup[reversedSlotIndex] = selectedAnimal;
+     coins -= selectedAnimal.cost;
+     updateCoinsDisplay();
+     randomAnimals.splice(animalIndex, 1);
+     renderRandomAnimals();
+     saveBattleLineup();
+     saveRandomAnimals();
+     renderBattleSlots();
+   } else {
+     alert("Not enough coins or slot is already filled!");
+   }
 }
 function handleDragOver(event) {
   event.preventDefault();
@@ -182,6 +175,7 @@ function handleDragOver(event) {
 function renderBattleSlots() {
   const battleSlots = document.querySelectorAll(".battle-slot");
   battleSlots.forEach((slot, index) => {
+    slot.setAttribute("data-slot", index);
     const animal = battleLineup[maxSlots - 1 - index];
     if (animal) {
       slot.innerHTML = `<img src="${animal.img}" alt="${animal.name}" style="width: 5rem; height: 5rem;" draggable="true">`;
