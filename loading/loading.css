@@ -4,6 +4,21 @@
   box-sizing: border-box;
 }
 
+body {
+  /* Hide scrollbar for all browsers */
+  overflow: hidden;
+}
+
+/* Hide scrollbar for Webkit browsers (Chrome, Safari) */
+body::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for Firefox */
+body {
+  scrollbar-width: none;
+}
+
 .parallax-container {
   position: relative;
   height: 100vh;

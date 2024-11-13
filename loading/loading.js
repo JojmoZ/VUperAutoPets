@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const layers = document.querySelectorAll(".parallax-layer");
   const loadingFill = document.getElementById("loading-fill");
-  const totalGameTime = 15 * 1000;
+  const totalGameTime = 20 * 1000;
   const startTime = Date.now();
   const tips = [
     "Lorem ipsum dolor sit amet.",
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
     loadingFill.style.width = `${progress}%`;
 
     if (elapsedTime >= totalGameTime) {
-      window.location.href = "/game/index.html";
+      // window.location.href = "/game/index.html";
     }
   }
 
@@ -43,15 +43,24 @@ document.addEventListener("DOMContentLoaded", () => {
     tipElement.textContent = tip;
 
     const animalElement = document.createElement("img");
-    console.log(animals)
     animalElement.src = animal.img;
     animalElement.alt = animal.name;
     animalElement.className = "animal";
 
-    const topPosition = Math.random() * 80 + 10; // Adjusted to make the animal appear lower
-    const leftPosition = Math.random() * 80;
-    const position =
-      leftPosition < 40 ? "left" : leftPosition > 60 ? "right" : "center";
+    const topPosition = Math.random() * 60 + 10; // Adjusted to make the animal appear lower
+    const leftPosition = Math.random() * 100;
+    let position;
+      if (leftPosition < 20) {
+        position = "right"; // "R" section, animal on right side of tip
+      } else if (leftPosition < 40) {
+        position = "left"; // "L" section, animal on left side of tip
+      } else if (leftPosition < 60) {
+        position = "right"; // "R" section, animal on right side of tip
+      } else if (leftPosition < 80) {
+        position = "right"; // "R" section, animal on right side of tip
+      } else {
+        position = "left"; // "L" section, animal on left side of tip
+      }
 
     tipElement.style.position = "absolute";
     tipElement.style.top = `${topPosition}%`;
@@ -94,6 +103,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 5000);
   }
 
+  function lockScroll() {
+    document.body.style.overflow = 'hidden';
+  }
+
+  function unlockScroll() {
+    document.body.style.overflow = 'auto';
+  }
+
+  // Lock scroll initially
+  lockScroll();
+
   setInterval(updateLoading, 100);
   setInterval(showRandomTip, 3000);
 
@@ -121,6 +141,9 @@ document.addEventListener("DOMContentLoaded", () => {
         window.scrollTo(0, start + distance * progress);
         if (progress < 1) {
           requestAnimationFrame(scrollStep);
+        } else {
+          // Unlock scroll once the page has scrolled to the bottom
+          unlockScroll();
         }
       }
 
