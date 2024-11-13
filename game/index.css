@@ -15,6 +15,7 @@ body {
 }
 .animal {
     width: 6.25rem;
+    position:relative;
     height: 7.5rem;
     background-image: url(../assets/stone.png);
     background-repeat: no-repeat;
@@ -254,16 +255,27 @@ img {
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
-#freezeButton{
+#freezeButton {
   position: absolute;
-  right:40%;
-  background-image: url(../assets/Icecube.png);
+  right: 40%;
   width: 6.875rem;
   height: 6.25rem;
-  background-size: cover;
-  background-repeat: no-repeat;
   background-color: transparent;
-  border: none;
   cursor: pointer;
   transition: background-color 0.3s ease;
+}
+.freeze-bin.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+.ice-overlay {
+  position: absolute;
+  width: 6.25rem;
+  height: 7.5rem;
+  background-image: url('../assets/Icecube.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  top: -10px;
+  left: 0;
+  opacity: 0.7;
 }

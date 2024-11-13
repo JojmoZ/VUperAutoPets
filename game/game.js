@@ -107,6 +107,7 @@ function rollShopAnimals() {
 function renderRandomAnimals() {
   const randomAnimalsContainer = document.getElementById("random-animals");
   randomAnimalsContainer.innerHTML = "";
+
   randomAnimals.forEach((animal, index) => {
     const animalDiv = document.createElement("div");
     animalDiv.classList.add("animal");
@@ -116,8 +117,19 @@ function renderRandomAnimals() {
     animalImage.src = animal.img;
     animalImage.alt = animal.name;
     animalImage.setAttribute("draggable", true);
-    animalImage.addEventListener("dragstart", dragStart);
-    animalImage.addEventListener("dragend", hideTrashBin);
+   animalImage.addEventListener("dragstart", (event) => {
+     event.dataTransfer.setData("text/plain", index); // Existing data
+     event.dataTransfer.setData("source", "shop"); // New data to identify source
+     showFreezeBin();
+   });
+
+    animalImage.addEventListener("dragend", hideBins);
+
+    if (animal.frozen) {
+      const iceOverlay = document.createElement("div");
+      iceOverlay.classList.add("ice-overlay");
+      animalDiv.appendChild(iceOverlay);
+    }
 
     const statContainer = document.createElement("div");
     statContainer.classList.add("stat-container");
@@ -127,6 +139,7 @@ function renderRandomAnimals() {
     health.textContent = `${animal.health}`;
     statContainer.appendChild(attack);
     statContainer.appendChild(health);
+
     animalDiv.appendChild(animalImage);
     animalDiv.appendChild(statContainer);
     randomAnimalsContainer.appendChild(animalDiv);
@@ -142,12 +155,13 @@ function dragStart(event) {
 }
 function handleDrop(event) {
   event.preventDefault();
-  const slotIndex = parseInt(event.currentTarget.getAttribute("data-slot"), 10); // Use event.currentTarget
+  const slotIndex = parseInt(event.currentTarget.getAttribute("data-slot"), 10);
   const reversedSlotIndex = maxSlots - 1 - slotIndex;
   const data = event.dataTransfer.getData("text/plain");
-  const draggedElement = document.querySelector(`[data-index="${data}"]`);
+  const source = event.dataTransfer.getData("source"); // Get the source identifier
 
-  if (draggedElement) {
+  if (source === "shop") {
+    // Handle dragging from the shop
     const animalIndex = parseInt(data, 10);
     const selectedAnimal = randomAnimals[animalIndex];
     if (!battleLineup[reversedSlotIndex] && coins >= selectedAnimal.cost) {
@@ -162,7 +176,8 @@ function handleDrop(event) {
     } else {
       alert("Not enough coins or slot is already filled!");
     }
-  } else {
+  } else if (source === "battle") {
+    // Handle dragging from the battle lineup
     const animalIndex = parseInt(data, 10);
     const draggedFromSlot = battleLineup[animalIndex];
     if (draggedFromSlot) {
@@ -174,6 +189,7 @@ function handleDrop(event) {
     }
   }
 }
+
 function handleDragOver(event) {
   event.preventDefault();
 }
@@ -188,15 +204,17 @@ function renderBattleSlots() {
       // Attach drag events to the image
       const imgElement = slot.querySelector("img");
       imgElement.addEventListener("dragstart", (event) => {
-        event.dataTransfer.setData("text/plain", maxSlots - 1 - index); // Store slot index
+        event.dataTransfer.setData("text/plain", maxSlots - 1 - index); // Existing data
+        event.dataTransfer.setData("source", "battle"); // New data to identify source
         showTrashBin();
       });
-      imgElement.addEventListener("dragend", hideTrashBin);
+      imgElement.addEventListener("dragend", hideBins); // Using hideBins to hide both trash and freeze buttons
     } else {
       slot.innerHTML = "";
     }
   });
 }
+
 function renderTeams() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   const teamOffsetX = 100;
@@ -1152,11 +1170,16 @@ function showDefeatScreen() {
   }, 3000);
 }
 const trashBin = document.getElementById("trashBin");
+const freezeButton = document.getElementById("freezeButton");
+function showFreezeBin() {
+  freezeButton.classList.remove("hidden");
+}
 function showTrashBin() {
   trashBin.classList.remove("hidden");
 }
-function hideTrashBin() {
+function hideBins() {
   trashBin.classList.add("hidden");
+  freezeButton.classList.add("hidden");
 }
 function handleTrashDrop(event) {
   event.preventDefault();
@@ -1168,4 +1191,36 @@ function handleTrashDrop(event) {
 trashBin.addEventListener("dragover", (event) => {
   event.preventDefault();
 });
-trashBin.addEventListener("drop", handleTrashDrop);
+trashBin.addEventListener("drop", (event) => {
+  event.preventDefault();
+  const slotIndex = event.dataTransfer.getData("text");
+  battleLineup[slotIndex] = null; // Remove the animal from the lineup
+  renderBattleSlots();
+  saveBattleLineup();
+});
+// Event listener for drag start on battle lineup animals to show the trash bin
+document.querySelectorAll(".battle-slot img").forEach((img) => {
+  img.addEventListener("dragstart", (event) => {
+    showTrashBin();
+    event.dataTransfer.setData(
+      "text/plain",
+      event.target.closest(".battle-slot").getAttribute("data-slot")
+    );
+  });
+  img.addEventListener("dragend", hideBins);
+});
+freezeButton.addEventListener("dragover", (event) => {
+  event.preventDefault();
+});
+freezeButton.addEventListener("drop", (event) => {                                                                                                                                                                                
+  event.preventDefault();
+  const index = event.dataTransfer.getData("text");
+  const animal = randomAnimals[index];
+
+  if (animal) {
+    // Toggle freeze status
+    animal.frozen = !animal.frozen;
+    saveRandomAnimals(); // Save the frozen state to local storage
+    renderRandomAnimals(); // Re-render the shop animals with updated overlays
+  }
+});
