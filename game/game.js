@@ -213,11 +213,14 @@ function renderTeams() {
           );
           ctx.fillStyle = "white";
           ctx.font = "1rem Arial";
-          ctx.fillText(
-            `${animal.attack}`,
-            teamOffsetX + (maxSlots - 1 - index) * 100 + 15,
-            commonY + 85
-          );
+          let attackText = `${animal.attack}`;
+          let attackTextWidth = ctx.measureText(attackText).width;
+          let attackX =
+            teamOffsetX +
+            (maxSlots - 1 - index) * 100 +
+            20 -
+            attackTextWidth / 2;
+          ctx.fillText(attackText, attackX, commonY + 85);
         };
         const heartImg = new Image();
         heartImg.src = "../assets/heart.png";
@@ -229,9 +232,16 @@ function renderTeams() {
             iconSize,
             iconSize
           );
+          let healthText = `${animal.health}`;
+          let healthTextWidth = ctx.measureText(healthText).width;
+          let healthX =
+            teamOffsetX +
+            (maxSlots - 1 - index) * 100 +
+            60 -
+            healthTextWidth / 2;
           ctx.fillText(
-            `${animal.health}`,
-            teamOffsetX + (maxSlots - 1 - index) * 100 + 55,
+            healthText,
+            healthX,
             commonY + 85
           );
         };
@@ -256,11 +266,10 @@ function renderTeams() {
           );
           ctx.fillStyle = "white";
           ctx.font = "1rem Arial";
-          ctx.fillText(
-            `${animal.attack}`,
-            enemyOffsetX + index * 100 + 15,
-            commonY + 85
-          );
+            let attackText = `${animal.attack}`;
+            let attackTextWidth = ctx.measureText(attackText).width;
+            let attackX = enemyOffsetX + index * 100 + 20 - attackTextWidth / 2;
+          ctx.fillText(attackText, attackX, commonY + 85);
         };
         const heartImg = new Image();
         heartImg.src = "../assets/heart.png";
@@ -272,9 +281,12 @@ function renderTeams() {
             iconSize,
             iconSize
           );
+           let healthText = `${animal.health}`;
+           let healthTextWidth = ctx.measureText(healthText).width;
+           let healthX = enemyOffsetX + index * 100 + 60 - healthTextWidth / 2;
           ctx.fillText(
-            `${animal.health}`,
-            enemyOffsetX + index * 100 + 55,
+            healthText,
+            healthX,
             commonY + 85
           );
         };
@@ -418,10 +430,20 @@ function animateAnimalsIntoPosition(onComplete) {
 }
 
 
+function showNonBattleElements() {
+  document.getElementById("battleSlotsContainer").classList.remove("hidden");
+  document.getElementById("controls").classList.remove("hidden");
+  document.getElementById("refreshButton").classList.remove("hidden");
+  document.getElementById("startBattleButton").classList.remove("hidden");
+  document.getElementById("backArrow").classList.remove("hidden");
+  hideCanvas();
+}
 
 function hideNonBattleElements() {
   document.getElementById("battleSlotsContainer").classList.add("hidden");
   document.getElementById("controls").classList.add("hidden");
+  document.getElementById("refreshButton").classList.add("hidden");
+  document.getElementById("startBattleButton").classList.add("hidden");
   document.getElementById("backArrow").classList.add("hidden");
 }
 function showCanvas() {
@@ -429,12 +451,6 @@ function showCanvas() {
 }
 function hideCanvas() {
   document.getElementById("battleCanvas").classList.add("hidden");
-}
-function showNonBattleElements() {
-  document.getElementById("battleSlotsContainer").classList.remove("hidden");
-  document.getElementById("controls").classList.remove("hidden");
-  document.getElementById("backArrow").classList.remove("hidden");
-  hideCanvas();
 }
 function adjustCanvasSize() {
   const canvas = document.getElementById("battleCanvas");
@@ -536,14 +552,26 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
     ctx.drawImage(heartImg, playerX + 40, playerY + 60, 40, 40);
     ctx.fillStyle = "white";
     ctx.font = "1rem Arial";
-    ctx.fillText(`${playerAnimal.attack}`, playerX + 15, playerY + 85);
-    ctx.fillText(`${playerAnimal.health}`, playerX + 55, playerY + 85);
+    let attackText = `${playerAnimal.attack}`;
+    let attackTextWidth = ctx.measureText(attackText).width;
+    let attackX = playerX + 20 - attackTextWidth / 2;
+     let healthText = `${playerAnimal.health}`;
+     let healthTextWidth = ctx.measureText(healthText).width;
+     let healthX = playerX + 60 - healthTextWidth / 2;
+    ctx.fillText(attackText, attackX, playerY + 85);
+    ctx.fillText(healthText, healthX, playerY + 85);
 
     ctx.drawImage(enemyImg, enemyX, enemyY, 80, 80);
     ctx.drawImage(fistImg, enemyX, enemyY + 60, 40, 40);
     ctx.drawImage(heartImg, enemyX + 40, enemyY + 60, 40, 40);
-    ctx.fillText(`${enemyAnimal.attack}`, enemyX + 15, enemyY + 85);
-    ctx.fillText(`${enemyAnimal.health}`, enemyX + 55, enemyY + 85);
+    let attackTextEn = `${enemyAnimal.attack}`;
+    let attackTextWidthEn = ctx.measureText(attackTextEn).width;
+    let attackXEn = enemyX + 20 - attackTextWidthEn / 2;
+    let healthTextEn = `${enemyAnimal.health}`;
+    let healthTextWidthEn = ctx.measureText(healthTextEn).width;
+    let healthXEn = enemyX + 60 - healthTextWidthEn / 2;
+    ctx.fillText(attackTextEn, attackXEn, enemyY + 85);
+    ctx.fillText(healthTextEn, healthXEn, enemyY + 85);
 
     if (progress > 0.8) {
       const bandageSize = 60;
@@ -597,14 +625,26 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
       ctx.drawImage(playerImg, playerX, playerY, 80, 80);
       ctx.drawImage(fistImg, playerX, playerY + 60, 40, 40);
       ctx.drawImage(heartImg, playerX + 40, playerY + 60, 40, 40);
-      ctx.fillText(`${playerAnimal.attack}`, playerX + 15, playerY + 85);
-      ctx.fillText(`${playerAnimal.health}`, playerX + 55, playerY + 85);
+     let attackText = `${playerAnimal.attack}`;
+     let attackTextWidth = ctx.measureText(attackText).width;
+     let attackX = playerX + 20 - attackTextWidth / 2;
+     let healthText = `${playerAnimal.health}`;
+     let healthTextWidth = ctx.measureText(healthText).width;
+     let healthX = playerX + 60 - healthTextWidth / 2;
+     ctx.fillText(attackText, attackX, playerY + 85);
+     ctx.fillText(healthText, healthX, playerY + 85);
 
       ctx.drawImage(enemyImg, enemyX, enemyY, 80, 80);
       ctx.drawImage(fistImg, enemyX, enemyY + 60, 40, 40);
       ctx.drawImage(heartImg, enemyX + 40, enemyY + 60, 40, 40);
-      ctx.fillText(`${enemyAnimal.attack}`, enemyX + 15, enemyY + 85);
-      ctx.fillText(`${enemyAnimal.health}`, enemyX + 55, enemyY + 85);
+      let attackTextEn = `${enemyAnimal.attack}`;
+      let attackTextWidthEn = ctx.measureText(attackTextEn).width;
+      let attackXEn = enemyX + 20 - attackTextWidthEn / 2;
+      let healthTextEn = `${enemyAnimal.health}`;
+      let healthTextWidthEn = ctx.measureText(healthTextEn).width;
+      let healthXEn = enemyX + 60 - healthTextWidthEn / 2;
+      ctx.fillText(attackTextEn, attackXEn, enemyY + 85);
+      ctx.fillText(healthTextEn, healthXEn, enemyY + 85);
 
       returnFrame += deltaTime;
       if (returnFrame <= returnDuration / 1000) {
@@ -667,10 +707,22 @@ function showDamage(
     ctx.drawImage(enemyImg, enemyX, commonY, 80, 80);
     ctx.drawImage(fistImg, enemyX, commonY + 60, 40, 40);
     ctx.drawImage(heartImg, enemyX + 40, commonY + 60, 40, 40);
-    ctx.fillText(`${playerDamage}`, playerX + 15, commonY + 85);
-    ctx.fillText(`${playerHealth}`, playerX + 55, commonY + 85);
-    ctx.fillText(`${enemyDamage}`, enemyX + 15, commonY + 85);
-    ctx.fillText(`${enemyHealth}`, enemyX + 55, commonY + 85);
+    let attackText = `${playerDamage}`;
+    let attackTextWidth = ctx.measureText(attackText).width;
+    let attackX = playerX + 20 - attackTextWidth / 2;
+    let healthText = `${playerHealth}`;
+    let healthTextWidth = ctx.measureText(healthText).width;
+    let healthX = playerX + 60 - healthTextWidth / 2;
+    ctx.fillText(attackText, attackX, commonY + 85);
+    ctx.fillText(healthText, healthX, commonY + 85);
+    let attackTextEn = `${enemyDamage}`;
+    let attackTextWidthEn = ctx.measureText(attackTextEn).width;
+    let attackXEn = enemyX + 20 - attackTextWidthEn / 2;
+    let healthTextEn = `${enemyHealth}`;
+    let healthTextWidthEn = ctx.measureText(healthTextEn).width;
+    let healthXEn = enemyX + 60 - healthTextWidthEn / 2;
+    ctx.fillText(attackTextEn, attackXEn, commonY + 85);
+    ctx.fillText(healthTextEn, healthXEn, commonY + 85);
 
     ctx.save();
     const progress = currentFrame / totalFrames;
@@ -710,10 +762,22 @@ function showDamage(
     ctx.drawImage(enemyImg, enemyX, commonY, 80, 80);
     ctx.drawImage(fistImg, enemyX, commonY + 60, 40, 40);
     ctx.drawImage(heartImg, enemyX + 40, commonY + 60, 40, 40);
-    ctx.fillText(`${playerDamage}`, playerX + 15, commonY + 85);
-    ctx.fillText(`${playerHealth}`, playerX + 55, commonY + 85);
-    ctx.fillText(`${enemyDamage}`, enemyX + 15, commonY + 85);
-    ctx.fillText(`${enemyHealth}`, enemyX + 55, commonY + 85);
+     let attackText = `${playerDamage}`;
+     let attackTextWidth = ctx.measureText(attackText).width;
+     let attackX = playerX + 20 - attackTextWidth / 2;
+     let healthText = `${playerHealth}`;
+     let healthTextWidth = ctx.measureText(healthText).width;
+     let healthX = playerX + 60 - healthTextWidth / 2;
+     ctx.fillText(attackText, attackX, commonY + 85);
+     ctx.fillText(healthText, healthX, commonY + 85);
+     let attackTextEn = `${enemyDamage}`;
+     let attackTextWidthEn = ctx.measureText(attackTextEn).width;
+     let attackXEn = enemyX + 20 - attackTextWidthEn / 2;
+     let healthTextEn = `${enemyHealth}`;
+     let healthTextWidthEn = ctx.measureText(healthTextEn).width;
+     let healthXEn = enemyX + 60 - healthTextWidthEn / 2;
+     ctx.fillText(attackTextEn, attackXEn, commonY + 85);
+     ctx.fillText(healthTextEn, healthXEn, commonY + 85);
     ctx.save();
     const progress = currentFrame / totalFrames;
     const fontSize = maxFontSize - progress * (maxFontSize - minFontSize); 
@@ -766,8 +830,14 @@ function renderFullTeam() {
       ctx.drawImage(heartImg, xPos + 40, commonY + 60, iconSize, iconSize);
       ctx.fillStyle = "white";
       ctx.font = "1rem Arial";
-      ctx.fillText(`${animal.attack}`, xPos + 15, commonY + 85);
-      ctx.fillText(`${animal.health}`, xPos + 55, commonY + 85);
+      let attackText = `${animal.attack}`;
+      let attackTextWidth = ctx.measureText(attackText).width;
+      let attackX = xPos + 20 - attackTextWidth / 2;
+      let healthText = `${animal.health}`;
+      let healthTextWidth = ctx.measureText(healthText).width;
+      let healthX = xPos + 60 - healthTextWidth / 2;
+      ctx.fillText(attackText, attackX, commonY + 85);
+      ctx.fillText(healthText, healthX, commonY + 85);
     }
   });
   enemyLineup.forEach((animal, index) => {
@@ -784,8 +854,15 @@ function renderFullTeam() {
       ctx.drawImage(heartImg, xPos + 40, commonY + 60, iconSize, iconSize);
       ctx.fillStyle = "white";
       ctx.font = "1rem Arial";
-      ctx.fillText(`${animal.attack}`, xPos + 15, commonY + 85);
-      ctx.fillText(`${animal.health}`, xPos + 55, commonY + 85);
+       let attackText = `${animal.attack}`;
+       let attackTextWidth = ctx.measureText(attackText).width;
+       let attackX = xPos + 20 - attackTextWidth / 2;
+       let healthText = `${animal.health}`;
+       let healthTextWidth = ctx.measureText(healthText).width;
+       let healthX = xPos + 60 - healthTextWidth / 2;
+       ctx.fillText(attackText, attackX, commonY + 85);
+       ctx.fillText(healthText, healthX, commonY + 85);
+
     }
   });
 }
@@ -904,12 +981,11 @@ function handleBothDeaths(playerAnimal, enemyAnimal, onComplete) {
     }, 500);
   });
 }
-function simulateBattle() {
+async function simulateBattle() {
   console.clear();
   let turnCount = 1;
   const maxTurns = 10;
   renderTeams();
-
   function pauseBeforeFirstTurn() {
     setTimeout(playTurn, 1500);
   }
