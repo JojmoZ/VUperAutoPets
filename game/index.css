@@ -60,6 +60,7 @@ body {
 .selection-area {
   margin-top: 10vh;
   display: flex;
+  height:8.75rem;
   justify-content: space-between;
   align-items: center;
   width: 100%;
@@ -280,8 +281,8 @@ img {
 }
 .ice-overlay {
   position: absolute;
-  width: 6.25rem;
-  height: 7.5rem;
+  width: 6rem;
+  height: 6rem;
   background-image: url("../assets/Icecube.png");
   background-size: cover;
   background-repeat: no-repeat;
