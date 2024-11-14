@@ -1247,14 +1247,17 @@ function checkGameOver(playerSurvivors, enemySurvivors) {
   if (playerSurvivors > enemySurvivors) {
     console.log("User wins!");
     alert("You won this battle! Continue to the next.");
+    rollShopAnimals();
     showNonBattleElements();
     location.reload();
   } else if (playerSurvivors < enemySurvivors) {
     loseLife();
+    rollShopAnimals();
   } else {
     console.log("It's a draw!");
     alert("It's a draw! Continue to the next battle.");
     showNonBattleElements();
+    rollShopAnimals();
     location.reload();
   }
 }
@@ -1334,6 +1337,11 @@ let currentItem = null;
 
 // Function to load a random item
 function loadRandomItem() {
+  if (currentItem && currentItem.frozen) {
+    console.log("Current item is frozen, keeping the same item.");
+    return; // Do nothing if the current item is frozen
+  }
+
   if (items.length > 0) {
     currentItem = items[Math.floor(Math.random() * items.length)];
     renderItem();
@@ -1341,6 +1349,7 @@ function loadRandomItem() {
     console.error("No items available to load.");
   }
 }
+
 
 function renderItem() {
   const itemSlot = document.getElementById("itemSlot");
