@@ -45,17 +45,7 @@ body {
 .battle-slots {
     display: flex;
     justify-content: center;
-    margin-top: -15vh; /* Adjusted margin for better responsiveness */
-}
-@media (max-width: 1200px) {
-    .battle-slots {
-        margin-top: -8vh; /* Adjust for smaller screens */
-    }
-}
-@media (max-width: 800px) {
-    .battle-slots {
-        margin-top: -6vh; /* Adjust for even smaller screens */
-    }
+    margin-bottom: 2vh; /* Adjusted margin for better responsiveness */
 }
 .battle-slot {
     width: 6.25rem;
@@ -68,6 +58,7 @@ body {
     position: relative;
 }
 .selection-area {
+    margin-top: 10vh;
     display: flex;
     justify-content: space-between;
     align-items: center;
