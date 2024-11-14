@@ -360,6 +360,7 @@ img {
   white-space: nowrap;
   pointer-events: none;
   opacity: 0;
+  z-index: 91919191919;
   transition: opacity 0.3s ease;
 }
 /* ...existing code... */
