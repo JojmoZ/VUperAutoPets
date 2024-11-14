@@ -316,6 +316,7 @@ img {
   justify-content: center;
 }
 .item-slot {
+  margin-right:2rem;
   width: 6.25rem;
   height: 6.25rem;
   background-image: url(../assets/stone.png);
