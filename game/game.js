@@ -1336,23 +1336,52 @@ let items = [];
 let currentItem1 = null;
 let currentItem2 = null;
 
-function loadRandomItems() {
+function loadRandomItems(slotToReroll = null) {
   const savedItems = JSON.parse(localStorage.getItem("currentItems")) || [];
 
-  // Load saved items if they exist
-  currentItem1 = savedItems[0] ? { ...savedItems[0] } : null;
-  currentItem2 = savedItems[1] ? { ...savedItems[1] } : null;
+  // Load saved items if available; otherwise, keep existing items for unspecified slots
+  currentItem1 = savedItems[0] ? { ...savedItems[0] } : currentItem1;
+  currentItem2 = savedItems[1] ? { ...savedItems[1] } : currentItem2;
 
-  // Load a random item if the slot is empty or not frozen
-  if ((!currentItem1 || !currentItem1.frozen) && items.length > 0) {
+  // Only reroll the specified slot
+  if (
+    slotToReroll === "itemSlot" &&
+    !currentItem1?.frozen &&
+    items.length > 0
+  ) {
     currentItem1 = { ...items[Math.floor(Math.random() * items.length)] };
-  }
-  if ((!currentItem2 || !currentItem2.frozen) && items.length > 0) {
+  } else if (
+    slotToReroll === "itemSlot2" &&
+    !currentItem2?.frozen &&
+    items.length > 0
+  ) {
     currentItem2 = { ...items[Math.floor(Math.random() * items.length)] };
   }
 
-  renderItem(); // Update the display with loaded items
+  renderItem(); // Update the UI with the loaded items
+  saveCurrentItems(); // Save the current state of items
 }
+
+
+function handleItemDrop(event, animal) {
+  event.preventDefault();
+  const itemName = event.dataTransfer.getData("itemName");
+  const itemEffect = event.dataTransfer.getData("itemEffect");
+  const slotId = event.dataTransfer.getData("slotId");
+
+  if (itemName && itemEffect && animal) {
+    // Apply the item's effect to the animal
+    applyItemEffect(animal, itemEffect);
+
+    // Clear the used item slot
+    if (slotId === "itemSlot") currentItem1 = null;
+    else if (slotId === "itemSlot2") currentItem2 = null;
+
+    // Load a new item only in the used slot
+    loadRandomItems(slotId);
+  }
+}
+
 
 
 
@@ -1412,29 +1441,41 @@ function handleItemDragStart(event) {
 }
 
 function saveCurrentItems() {
-  const itemsToSave = [];
-
-  if (currentItem1) {
-    itemsToSave.push(currentItem1);
-  }
-  if (currentItem2) {
-    itemsToSave.push(currentItem2);
-  }
-
-  localStorage.setItem("currentItems", JSON.stringify(itemsToSave));
+  localStorage.setItem(
+    "currentItems",
+    JSON.stringify([currentItem1, currentItem2])
+  );
 }
+
 
 function handleItemDrop(event, animal) {
   event.preventDefault();
   const itemName = event.dataTransfer.getData("itemName");
   const itemEffect = event.dataTransfer.getData("itemEffect");
+  const slotId = event.dataTransfer.getData("slotId");
 
   if (itemName && itemEffect && animal) {
-    if (itemName === currentItem1.name) currentItem1 = null;
-    if (itemName === currentItem2.name) currentItem2 = null;
-    loadRandomItems(); // Load a new item after use
+    // Apply the item's effect to the animal
+    applyItemEffect(animal, itemEffect);
+
+    // Clear the used item slot
+    if (slotId === "itemSlot") currentItem1 = null;
+    else if (slotId === "itemSlot2") currentItem2 = null;
+
+    // Load a new item only in the used slot
+    loadRandomItems(slotId);
   }
 }
+// Function to apply item effects on the animal
+function applyItemEffect(animal, effect) {
+  if (effect.includes("Add")) {
+    const [amount, attribute] = effect.match(/\d+|\bhealth\b|\battack\b/gi);
+    if (attribute === "health") animal.health += parseInt(amount);
+    else if (attribute === "attack") animal.attack += parseInt(amount);
+  }
+  renderBattleSlots(); // Refresh animal stats display
+}
+
 
 function applyItemEffect(animal, effect) {
   if (effect.includes("Add")) {
