@@ -290,6 +290,7 @@ img {
   top: -10px;
   left: 0;
   opacity: 0.7;
+  pointer-events: none; 
 }
 .animal-popup {
   position: absolute;
@@ -318,6 +319,7 @@ img {
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 2rem;
   margin-right: 35vh;
 }
 .item-slot {

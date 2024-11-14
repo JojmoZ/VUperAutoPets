@@ -211,7 +211,7 @@ function handleDrop(event) {
     const targetAnimal = battleLineup[reversedSlotIndex]; // The animal in the drop slot
     if (targetAnimal) {
       handleItemDrop(event, targetAnimal);
-      loadRandomItem(); // Load a new item after use
+      loadRandomItems(); // Load a new item after use
     }
   }
 }
@@ -403,7 +403,7 @@ document.querySelectorAll(".battle-slot").forEach((slot) => {
 
 document.getElementById("refreshButton").addEventListener("click", function () {
   rollShopAnimals();
-  loadRandomItem();
+  loadRandomItems();
 });
 let playing = false;
 document
@@ -580,28 +580,24 @@ document.addEventListener("DOMContentLoaded", function () {
     renderTeams();
     renderBattleSlots();
   }
-  if (localStorage.getItem("currentItem")) {
-    currentItem = JSON.parse(localStorage.getItem("currentItem"));
-    renderItem();
-  } else {
-    fetch("../assets/items.json")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        items = data;
-        if (items.length === 0) {
-          console.error("No items found in the JSON data.");
-        } else {
-          console.log("Items loaded successfully:", items);
-          loadRandomItem();
-        }
-      })
-      .catch((error) => console.error("Error loading items:", error));
-  }
+  fetch("../assets/items.json")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      items = data;
+      console.log(items);
+      if (items.length === 0) {
+        console.error("No items found in the JSON data.");
+      } else {
+        console.log("Items loaded successfully:", items);
+        loadRandomItems();
+      }
+    })
+    .catch((error) => console.error("Error loading items:", error));
   updateCoinsDisplay();
 });
 function updateCoinsDisplay() {
@@ -1316,7 +1312,7 @@ freezeButton.addEventListener("drop", (event) => {
   event.preventDefault();
   const source = event.dataTransfer.getData("source");
   const index = event.dataTransfer.getData("text");
-
+const slotId = event.dataTransfer.getData("slotId");
   if (source === "shop") {
     // Handle freezing an animal from the shop
     const animal = randomAnimals[index];
@@ -1326,75 +1322,106 @@ freezeButton.addEventListener("drop", (event) => {
       renderRandomAnimals();
     }
   } else if (source === "item") {
-    // Handle freezing the current item
-    currentItem.frozen = !currentItem.frozen;
-    saveCurrentItem();
-    renderItem();
+    // Toggle the frozen state for each item slot based on the slotId
+    if (slotId === "itemSlot" && currentItem1) {
+      currentItem1.frozen = !currentItem1.frozen;
+    } else if (slotId === "itemSlot2" && currentItem2) {
+      currentItem2.frozen = !currentItem2.frozen;
+    }
+    saveCurrentItems(); // Save the updated frozen states
+    renderItem(); // Re-render the items to show the frozen overlay
   }
 });
 let items = [];
-let currentItem = null;
+let currentItem1 = null;
+let currentItem2 = null;
 
-// Function to load a random item
-function loadRandomItem() {
-  if (currentItem && currentItem.frozen) {
-    console.log("Current item is frozen, keeping the same item.");
-    return; // Do nothing if the current item is frozen
+function loadRandomItems() {
+  const savedItems = JSON.parse(localStorage.getItem("currentItems")) || [];
+
+  // Load saved items if they exist
+  currentItem1 = savedItems[0] ? { ...savedItems[0] } : null;
+  currentItem2 = savedItems[1] ? { ...savedItems[1] } : null;
+
+  // Load a random item if the slot is empty or not frozen
+  if ((!currentItem1 || !currentItem1.frozen) && items.length > 0) {
+    currentItem1 = { ...items[Math.floor(Math.random() * items.length)] };
+  }
+  if ((!currentItem2 || !currentItem2.frozen) && items.length > 0) {
+    currentItem2 = { ...items[Math.floor(Math.random() * items.length)] };
   }
 
-  if (items.length > 0) {
-    currentItem = items[Math.floor(Math.random() * items.length)];
-    renderItem();
-  } else {
-    console.error("No items available to load.");
-  }
+  renderItem(); // Update the display with loaded items
 }
+
 
 
 function renderItem() {
-  const itemSlot = document.getElementById("itemSlot");
-  itemSlot.innerHTML = ""; // Clear previous item
+  const itemSlot1 = document.getElementById("itemSlot");
+  const itemSlot2 = document.getElementById("itemSlot2");
+  itemSlot1.innerHTML = "";
+  itemSlot2.innerHTML = "";
 
-  // Ensure currentItem has an img property before attempting to render it
-  if (!currentItem || !currentItem.img) {
-    console.error("Current item has no image to display.");
-    return;
+  function renderItem(item, slot) {
+    if (!item || !item.img) return;
+
+    const itemWrapper = document.createElement("div");
+    itemWrapper.classList.add("item-wrapper");
+
+    const itemImg = document.createElement("img");
+    itemImg.src = item.img;
+    itemImg.alt = item.name;
+    itemImg.setAttribute("draggable", true);
+    itemImg.addEventListener("dragstart", handleItemDragStart);
+
+    if (item.frozen) {
+      const iceOverlay = document.createElement("div");
+      iceOverlay.classList.add("ice-overlay");
+      itemWrapper.appendChild(iceOverlay);
+    }
+
+    itemWrapper.appendChild(itemImg);
+    slot.appendChild(itemWrapper);
+
+    itemImg.addEventListener("mouseover", (event) => {
+      showHoverInfo(`${item.name} - Effect: ${item.effect}`, event);
+    });
+    itemImg.addEventListener("mousemove", (event) => {
+      showHoverInfo(`${item.name} - Effect: ${item.effect}`, event);
+    });
+    itemImg.addEventListener("mouseout", hideHoverInfo);
   }
 
-  const itemWrapper = document.createElement("div");
-  itemWrapper.classList.add("item-wrapper");
-
-  const itemImg = document.createElement("img");
-  itemImg.src = currentItem.img;
-  itemImg.alt = currentItem.name;
-  itemImg.setAttribute("draggable", true);
-  itemImg.addEventListener("dragstart", handleItemDragStart);
-
-  if (currentItem.frozen) {
-    const iceOverlay = document.createElement("div");
-    iceOverlay.classList.add("ice-overlay");
-    itemWrapper.appendChild(iceOverlay);
-  }
-
-  itemWrapper.appendChild(itemImg);
-  itemSlot.appendChild(itemWrapper);
-  itemImg.addEventListener("mouseover", (event) => {
-    showHoverInfo(`${currentItem.name} - Effect: ${currentItem.effect}`, event);
-  });
-  itemImg.addEventListener("mousemove", (event) => {
-    showHoverInfo(`${currentItem.name} - Effect: ${currentItem.effect}`, event);
-  });
-  itemImg.addEventListener("mouseout", hideHoverInfo);
+  renderItem(currentItem1, itemSlot1);
+  renderItem(currentItem2, itemSlot2);
 }
 
 function handleItemDragStart(event) {
-  event.dataTransfer.setData("itemName", currentItem.name);
-  event.dataTransfer.setData("itemEffect", currentItem.effect);
-   showFreezeBin();
-  event.dataTransfer.setData("source", "item"); // Add source identifier for item
+  const slotId = event.target.closest(".item-slot").id;
+  showFreezeBin();
+  if (slotId === "itemSlot") {
+    event.dataTransfer.setData("itemName", currentItem1.name);
+    event.dataTransfer.setData("itemEffect", currentItem1.effect);
+    event.dataTransfer.setData("slotId", "itemSlot"); // Include slot ID for freeze functionality
+  } else if (slotId === "itemSlot2") {
+    event.dataTransfer.setData("itemName", currentItem2.name);
+    event.dataTransfer.setData("itemEffect", currentItem2.effect);
+    event.dataTransfer.setData("slotId", "itemSlot2"); // Include slot ID for freeze functionality
+  }
+  event.dataTransfer.setData("source", "item");
 }
-function saveCurrentItem() {
-  localStorage.setItem("currentItem", JSON.stringify(currentItem));
+
+function saveCurrentItems() {
+  const itemsToSave = [];
+
+  if (currentItem1) {
+    itemsToSave.push(currentItem1);
+  }
+  if (currentItem2) {
+    itemsToSave.push(currentItem2);
+  }
+
+  localStorage.setItem("currentItems", JSON.stringify(itemsToSave));
 }
 
 function handleItemDrop(event, animal) {
@@ -1403,8 +1430,9 @@ function handleItemDrop(event, animal) {
   const itemEffect = event.dataTransfer.getData("itemEffect");
 
   if (itemName && itemEffect && animal) {
-    applyItemEffect(animal, itemEffect);
-    loadRandomItem(); // Load a new item after use
+    if (itemName === currentItem1.name) currentItem1 = null;
+    if (itemName === currentItem2.name) currentItem2 = null;
+    loadRandomItems(); // Load a new item after use
   }
 }
 
