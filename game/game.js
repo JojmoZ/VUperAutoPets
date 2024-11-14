@@ -1339,11 +1339,10 @@ let currentItem2 = null;
 function loadRandomItems(slotToReroll = null) {
   const savedItems = JSON.parse(localStorage.getItem("currentItems")) || [];
 
-  // Load saved items if available; otherwise, keep existing items for unspecified slots
   currentItem1 = savedItems[0] ? { ...savedItems[0] } : currentItem1;
   currentItem2 = savedItems[1] ? { ...savedItems[1] } : currentItem2;
 
-  // Only reroll the specified slot
+  // Only reroll the specified slot if it's not frozen
   if (
     slotToReroll === "itemSlot" &&
     !currentItem1?.frozen &&
@@ -1358,8 +1357,9 @@ function loadRandomItems(slotToReroll = null) {
     currentItem2 = { ...items[Math.floor(Math.random() * items.length)] };
   }
 
-  renderItem(); // Update the UI with the loaded items
-  saveCurrentItems(); // Save the current state of items
+  // Save the updated items and render them
+  saveCurrentItems();
+  renderItem();
 }
 
 
@@ -1371,7 +1371,7 @@ function handleItemDrop(event, animal) {
 
   if (itemName && itemEffect && animal) {
     // Apply the item's effect to the animal
-    applyItemEffect(animal, itemEffect);
+    applyItemEffect(animal, itemName);
 
     // Clear the used item slot
     if (slotId === "itemSlot") currentItem1 = null;
@@ -1448,40 +1448,19 @@ function saveCurrentItems() {
 }
 
 
-function handleItemDrop(event, animal) {
-  event.preventDefault();
-  const itemName = event.dataTransfer.getData("itemName");
-  const itemEffect = event.dataTransfer.getData("itemEffect");
-  const slotId = event.dataTransfer.getData("slotId");
 
-  if (itemName && itemEffect && animal) {
-    // Apply the item's effect to the animal
-    applyItemEffect(animal, itemEffect);
-
-    // Clear the used item slot
-    if (slotId === "itemSlot") currentItem1 = null;
-    else if (slotId === "itemSlot2") currentItem2 = null;
-
-    // Load a new item only in the used slot
-    loadRandomItems(slotId);
-  }
-}
 // Function to apply item effects on the animal
-function applyItemEffect(animal, effect) {
-  if (effect.includes("Add")) {
-    const [amount, attribute] = effect.match(/\d+|\bhealth\b|\battack\b/gi);
-    if (attribute === "health") animal.health += parseInt(amount);
-    else if (attribute === "attack") animal.attack += parseInt(amount);
+function applyItemEffect(animal, itemName) {
+  if (itemName === "Apple") {
+    animal.health += 2;
+  } else if (itemName === "Honey") {
+    animal.attack += 3;
+  } else if (itemName === "Strawberry") {
+    console.log("makan strawberry");
+    animal.health += 1;
+    animal.attack += 1;
   }
-  renderBattleSlots(); // Refresh animal stats display
+
+  renderBattleSlots(); // Refresh the animal stats display
 }
 
-
-function applyItemEffect(animal, effect) {
-  if (effect.includes("Add")) {
-    const [amount, attribute] = effect.match(/\d+|\bhealth\b|\battack\b/gi);
-    if (attribute === "health") animal.health += parseInt(amount);
-    else if (attribute === "attack") animal.attack += parseInt(amount);
-  }
-  renderBattleSlots(); // Refresh animal stats display
-}
