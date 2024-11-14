@@ -2,19 +2,19 @@
     {
         "name": "Apple",
         "cost": 1,
-        "img": "../assets/Items/Apple.webp",
+        "img": "../assets/items/Apple.webp",
         "effect": "Add 2 health"
     },
     {
         "name": "Honey",
         "cost": 2,
-        "img": "../assets/Items/Honey.webp",
+        "img": "../assets/items/Honey.webp",
         "effect": "Add 3 attack"
     },
     {
         "name": "Strawberry",
         "cost": 3,
-        "img": "../assets/Items/Strawberry.webp",
+        "img": "../assets/items/Strawberry.webp",
         "effect": "Add 1 health and 1 attack"
     }
 ]
