@@ -3,13 +3,44 @@ document.addEventListener("DOMContentLoaded", () => {
   const loadingFill = document.getElementById("loading-fill");
   const totalGameTime = 20 * 1000;
   const startTime = Date.now();
-  const tips = [
-    "Lorem ipsum dolor sit amet.",
-    "Consectetur adipiscing elit.",
-    "Sed do eiusmod tempor incididunt.",
-    "Ut labore et dolore magna aliqua.",
-    "Ut enim ad minim veniam.",
-  ];
+const tips = [
+  "Kalau melawan tantangan yang tinggi, jangan menyerah!",
+  "Nenek gua sakit sakitan masih bisa diamond push up",
+  "KR rugi 7 juta masih lanjut hidup",
+  "Kalo tersedak, spam mewing",
+  "Kenapa lu masih idup? buat nyerah gitu aja?",
+  "Skibidi adalah kunci kesuksesan, Ilang emas kunci kejatuhan",
+  "Kenapa sangat serius",
+  "Aku melihat banyak sekali ampas",
+  "Lu pada ninja-ninja mending berdiri",
+  "I see lots of prey",
+  "Kelarin bp guys!",
+  "Rataa ya guys",
+  "Solid Solid Solid!",
+  "Hati hati besok ilang",
+  "Nikmatkan Waktu Bersama selama masi ada",
+  "Selesai gk case KK?",
+  "Selesai gk case Krusty bAke?",
+  "Selesai gk case GiThub?",
+  "Selesai gk case SV?",
+  "Selesai gk case VL?",
+  "Selesai gk case CM?",
+  "Diam dan Di cut, milik dia yang tak bisa berdiri",
+  "Satu dua semut-semut, hati hati kena cut",
+  "Panda aja bisa handstand, masa klian gk bs selesaiin bp?",
+  "Tenang malam masih panjang",
+  "Subco kalian anggap badut?",
+  "Subco WD emang badut",
+  "Subco DB emang badut",
+  "Subco Java emang badut",
+  "Subco C emang badut",
+  "Jangan Sampe ketuan COPAS",
+  "Jangan Budayakan Menyontek ya guys",
+  "Jangan Sampe kalo ditanya gk ngerti!",
+  "Subco ComVis emang badut",
+  "Sudah Siap Network???",
+];
+
   const mainContent = document.querySelector(".main-content");
   let storedAnimals;
   try {
