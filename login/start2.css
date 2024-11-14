@@ -65,7 +65,7 @@ img#turtle {
 }
 
 img#turtle.pushing {
-  right: calc(50% - 26%);
+  right: calc(50% - 13vw - 12.5em);
   bottom: 13%;
   transition: right 2.35s ease-in-out, bottom 2.35s ease-in-out;
 }
