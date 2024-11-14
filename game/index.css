@@ -67,6 +67,7 @@ body {
 .random-animals {
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 button {
   padding: 0.625rem 1.25rem;
@@ -314,6 +315,7 @@ img {
 .item-container {
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 .item-slot {
   margin-right:2rem;
@@ -322,7 +324,7 @@ img {
   background-image: url(../assets/stone.png);
   background-size: contain;
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: bottom;
   position: relative;
   cursor: pointer;
   top: 20px; /* Moves the stone down, adjust as needed */
