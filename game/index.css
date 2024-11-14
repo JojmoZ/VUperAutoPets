@@ -45,7 +45,17 @@ body {
 .battle-slots {
     display: flex;
     justify-content: center;
-    margin: -15vh 0 0 0; /* Adjusted margin to move higher */
+    margin-top: -15vh; /* Adjusted margin for better responsiveness */
+}
+@media (max-width: 1200px) {
+    .battle-slots {
+        margin-top: -8vh; /* Adjust for smaller screens */
+    }
+}
+@media (max-width: 800px) {
+    .battle-slots {
+        margin-top: -6vh; /* Adjust for even smaller screens */
+    }
 }
 .battle-slot {
     width: 6.25rem;
