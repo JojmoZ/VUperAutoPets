@@ -1381,6 +1381,7 @@ function renderItem() {
 function handleItemDragStart(event) {
   event.dataTransfer.setData("itemName", currentItem.name);
   event.dataTransfer.setData("itemEffect", currentItem.effect);
+   showFreezeBin();
   event.dataTransfer.setData("source", "item"); // Add source identifier for item
 }
 function saveCurrentItem() {

@@ -285,6 +285,7 @@ img {
   height: 6rem;
   background-image: url("../assets/Icecube.png");
   background-size: cover;
+  z-index: 9999;
   background-repeat: no-repeat;
   top: -10px;
   left: 0;
@@ -338,7 +339,7 @@ img {
   pointer-events: all;
   cursor: grab;
   position: relative;
-  transform: translateY(-40px); /* Move up by 10px, adjust as needed */
+  transform: translateY(-20px); /* Move up by 10px, adjust as needed */
 }
 
 .animal-wrapper {
