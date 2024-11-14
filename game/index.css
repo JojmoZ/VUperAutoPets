@@ -316,9 +316,10 @@ img {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-right: 35vh;
 }
 .item-slot {
-  margin-right:2rem;
+  margin-right: 2rem;
   width: 6.25rem;
   height: 6.25rem;
   background-image: url(../assets/stone.png);
@@ -345,3 +346,18 @@ img {
   align-items: center;
   position: relative;
 }
+
+/* ...existing code... */
+.hover-info {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+/* ...existing code... */
