@@ -1356,7 +1356,6 @@ function renderItem() {
   itemWrapper.classList.add("item-wrapper");
 
   const itemImg = document.createElement("img");
-  console.log(currentItem.img);
   itemImg.src = currentItem.img;
   itemImg.alt = currentItem.name;
   itemImg.setAttribute("draggable", true);
