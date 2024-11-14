@@ -45,7 +45,7 @@ body {
 .battle-slots {
     display: flex;
     justify-content: center;
-    margin: -7vh 0 0 0; /* Adjusted margin to move higher */
+    margin: -15vh 0 0 0; /* Adjusted margin to move higher */
 }
 .battle-slot {
     width: 6.25rem;
@@ -62,12 +62,10 @@ body {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    margin-top: 5vh; /* Adjusted margin to move lower */
 }
 .random-animals {
     display: flex;
     justify-content: center;
-    margin-top: 5vh; /* Adjusted margin to move lower */
 }
 button {
     padding: 0.625rem 1.25rem;
@@ -313,7 +311,6 @@ img {
 .item-container {
     display: flex;
     justify-content: center;
-    margin-top: 8vh; /* Adjusted margin to move lower */
 }
 .item-slot {
     width: 6.25rem;
