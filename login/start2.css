@@ -65,7 +65,7 @@ img#turtle {
 }
 
 img#turtle.pushing {
-  right: calc(50% - 10vw - 13vw); /* Adjust the right position relative to the login container */
+  right: calc(50% - 13vw - 13vw); /* Adjust the right position relative to the login container */
   bottom: 13%;
   transition: right 2.35s ease-in-out, bottom 2.35s ease-in-out;
 }
