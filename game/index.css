@@ -176,6 +176,7 @@ img {
 #curtainTop,
 #curtainBottom {
   position: absolute;
+  z-index: 99991919919191;
   width: 120%;
   left: -100px;
   background-color: black;
