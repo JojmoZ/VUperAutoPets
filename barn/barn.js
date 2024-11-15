@@ -62,7 +62,6 @@ function isInRestrictedZone(animalX, animalY, animalWidth, animalHeight) {
   });
 }
 
-
 const rows = Math.floor(window.innerHeight / gridSize);
 const cols = Math.floor(window.innerWidth / gridSize);
 const grid = Array.from({ length: rows }, () => Array(cols).fill(0));
@@ -181,7 +180,6 @@ function astar(start, end) {
   return null;
 }
 
-
 function heuristic(a, b) {
   return Math.abs(a.row - b.row) + Math.abs(a.col - b.col);
 }
@@ -191,7 +189,6 @@ function isValidCell(row, col) {
     row >= 0 && row < rows && col >= 0 && col < cols && grid[row][col] !== 1
   );
 }
-
 
 function roamAnimal(animal) {
   if (animal.dataset.isMovingToFood === "true") return;
@@ -262,8 +259,10 @@ function roamAnimal(animal) {
   roamAnimationId = requestAnimationFrame(animateRoaming);
 }
 
-
 function createFood(event) {
+  if (foodElement) {
+    return; // If food already exists, do not create a new one
+  }
   const foodX = event.clientX - 10;
   const foodY = event.clientY - 10;
   const foodWidth = 20; // Assuming food width is 20px
@@ -273,9 +272,6 @@ function createFood(event) {
     return;
   }
 
-  if (foodElement) {
-    foodElement.remove();
-  }
   foodElement = document.createElement("div");
   foodElement.className = "food";
   foodElement.style.position = "absolute";
@@ -317,6 +313,7 @@ function createFood(event) {
       if (path) {
         followPath(closestAnimal, path, () => {
           foodElement.remove();
+          foodElement = null; // Reset foodElement after being eaten
           closestAnimal.dataset.isMovingToFood = "false";
           roamAnimal(closestAnimal);
         });
@@ -357,11 +354,10 @@ function followPath(animal, path, callback) {
   moveStep();
 }
 
-
 function drawRestrictedZones() {
   // Clear previously drawn restricted areas
   const existingZones = document.querySelectorAll(".restricted-area");
-  existingZones.forEach(zone => zone.remove());
+  existingZones.forEach((zone) => zone.remove());
 
   restrictedZones.forEach((zone) => {
     const zoneElement = document.createElement("div");
