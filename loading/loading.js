@@ -19,7 +19,7 @@ const tips = [
   "Solid Solid Solid!",
   "Hati hati besok ilang",
   "Nikmatkan Waktu Bersama selama masi ada",
-  "Selesai gk case KK?",
+  "Selesai gk case KKrime.Net",
   "Selesai gk case Krusty bAke?",
   "Selesai gk case GiThub?",
   "Selesai gk case SV?",
@@ -33,12 +33,14 @@ const tips = [
   "Subco WD emang badut",
   "Subco DB emang badut",
   "Subco Java emang badut",
-  "Subco C emang badut",
+  "Subco C pernah katain trainer badut",
   "Jangan Sampe ketuan COPAS",
   "Jangan Budayakan Menyontek ya guys",
   "Jangan Sampe kalo ditanya gk ngerti!",
   "Subco ComVis emang badut",
   "Sudah Siap Network???",
+  "Subco Network babi",
+  "一二三四五六七， 你的朋友在哪里？"
 ];
 
   const mainContent = document.querySelector(".main-content");
@@ -62,7 +64,7 @@ const tips = [
     loadingFill.style.width = `${progress}%`;
 
     if (elapsedTime >= totalGameTime) {
-      window.location.href = "/game/index.html";
+      // window.location.href = "/game/index.html";
     }
   }
 
