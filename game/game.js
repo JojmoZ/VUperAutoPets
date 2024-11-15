@@ -308,40 +308,34 @@ function renderTeams() {
           80,
           80
         );
-          ctx.drawImage(
-            fistImg,
-            teamOffsetX + (maxSlots - 1 - index) * 100,
-            commonY + 60,
-            iconSize,
-            iconSize
-          );
-          ctx.fillStyle = "white";
-          ctx.font = "1rem Arial";
-          let attackText = `${animal.attack}`;
-          let attackTextWidth = ctx.measureText(attackText).width;
-          let attackX =
-            teamOffsetX +
-            (maxSlots - 1 - index) * 100 +
-            20 -
-            attackTextWidth / 2;
-          ctx.fillText(attackText, attackX, commonY + 85);
-          ctx.drawImage(
-            heartImg,
-            teamOffsetX + (maxSlots - 1 - index) * 100 + 40,
-            commonY + 60,
-            iconSize,
-            iconSize
-          );
-          ctx.fillStyle = "white";
-          ctx.font = "1rem Arial";
-          let healthText = `${animal.health}`;
-          let healthTextWidth = ctx.measureText(healthText).width;
-          let healthX =
-            teamOffsetX +
-            (maxSlots - 1 - index) * 100 +
-            60 -
-            healthTextWidth / 2;
-          ctx.fillText(healthText, healthX, commonY + 85);
+        ctx.drawImage(
+          fistImg,
+          teamOffsetX + (maxSlots - 1 - index) * 100,
+          commonY + 60,
+          iconSize,
+          iconSize
+        );
+        ctx.fillStyle = "white";
+        ctx.font = "1rem Arial";
+        let attackText = `${animal.attack}`;
+        let attackTextWidth = ctx.measureText(attackText).width;
+        let attackX =
+          teamOffsetX + (maxSlots - 1 - index) * 100 + 20 - attackTextWidth / 2;
+        ctx.fillText(attackText, attackX, commonY + 85);
+        ctx.drawImage(
+          heartImg,
+          teamOffsetX + (maxSlots - 1 - index) * 100 + 40,
+          commonY + 60,
+          iconSize,
+          iconSize
+        );
+        ctx.fillStyle = "white";
+        ctx.font = "1rem Arial";
+        let healthText = `${animal.health}`;
+        let healthTextWidth = ctx.measureText(healthText).width;
+        let healthX =
+          teamOffsetX + (maxSlots - 1 - index) * 100 + 60 - healthTextWidth / 2;
+        ctx.fillText(healthText, healthX, commonY + 85);
       };
     }
   });
@@ -351,32 +345,32 @@ function renderTeams() {
       img.src = animal.img;
       img.onload = () => {
         ctx.drawImage(img, enemyOffsetX + index * 100, commonY, 80, 80);
-          ctx.drawImage(
-            fistImg,
-            enemyOffsetX + index * 100,
-            commonY + 60,
-            iconSize,
-            iconSize
-          );
-          ctx.fillStyle = "white";
-          ctx.font = "1rem Arial";
-          let attackText = `${animal.attack}`;
-          let attackTextWidth = ctx.measureText(attackText).width;
-          let attackX = enemyOffsetX + index * 100 + 20 - attackTextWidth / 2;
-          ctx.fillText(attackText, attackX, commonY + 85);
-          ctx.drawImage(
-            heartImg,
-            enemyOffsetX + index * 100 + 40,
-            commonY + 60,
-            iconSize,
-            iconSize
-          );
-          ctx.fillStyle = "white";
-          ctx.font = "1rem Arial";
-          let healthText = `${animal.health}`;
-          let healthTextWidth = ctx.measureText(healthText).width;
-          let healthX = enemyOffsetX + index * 100 + 60 - healthTextWidth / 2;
-          ctx.fillText(healthText, healthX, commonY + 85);
+        ctx.drawImage(
+          fistImg,
+          enemyOffsetX + index * 100,
+          commonY + 60,
+          iconSize,
+          iconSize
+        );
+        ctx.fillStyle = "white";
+        ctx.font = "1rem Arial";
+        let attackText = `${animal.attack}`;
+        let attackTextWidth = ctx.measureText(attackText).width;
+        let attackX = enemyOffsetX + index * 100 + 20 - attackTextWidth / 2;
+        ctx.fillText(attackText, attackX, commonY + 85);
+        ctx.drawImage(
+          heartImg,
+          enemyOffsetX + index * 100 + 40,
+          commonY + 60,
+          iconSize,
+          iconSize
+        );
+        ctx.fillStyle = "white";
+        ctx.font = "1rem Arial";
+        let healthText = `${animal.health}`;
+        let healthTextWidth = ctx.measureText(healthText).width;
+        let healthX = enemyOffsetX + index * 100 + 60 - healthTextWidth / 2;
+        ctx.fillText(healthText, healthX, commonY + 85);
       };
     }
   });
@@ -390,27 +384,41 @@ document.getElementById("refreshButton").addEventListener("click", function () {
   rollShopAnimals();
   loadRandomItems();
 });
+function checkbattlelineup() {
+  const battleLineup = JSON.parse(localStorage.getItem("battleLineup"));
+  battleLineup.forEach((animal) => {
+    if (animal != null) {
+      canPlay = true;
+    }
+  });
+}
 let playing = false;
+let canPlay = false;
 document
   .getElementById("startBattleButton")
   .addEventListener("click", function () {
     if (!playing) {
-      showCurtains();
-      playing = true;
-      closeCurtains();
-      setTimeout(() => {
-        backupLineup();
-        shiftAnimalsToFront();
-        generateEnemyTeam();
-        hideNonBattleElements();
-        hideCanvas();
-        openCurtains(() => {
-          showCanvas();
-          animateAnimalsIntoPosition(() => {
-            simulateBattle();
+      checkbattlelineup();
+      if (canPlay) {
+        showCurtains();
+        playing = true;
+        closeCurtains();
+        setTimeout(() => {
+          backupLineup();
+          shiftAnimalsToFront();
+          generateEnemyTeam();
+          hideNonBattleElements();
+          hideCanvas();
+          openCurtains(() => {
+            showCanvas();
+            animateAnimalsIntoPosition(() => {
+              simulateBattle();
+            });
           });
-        });
-      }, 1000);
+        }, 1000);
+      }else{
+        alert("no animal in battle lineup");
+      }
     }
   });
 function animateAnimalsIntoPosition(onComplete) {
@@ -636,8 +644,8 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
   playerImg.onload = () => {
     console.log("load1");
     enemyImg.onload = () => {
-      console.log("load2")
-          requestAnimationFrame(animate);
+      console.log("load2");
+      requestAnimationFrame(animate);
     };
   };
 
@@ -1220,7 +1228,7 @@ function resetGame() {
 function checkGameOver(playerSurvivors, enemySurvivors) {
   if (playerSurvivors > enemySurvivors) {
     console.log("User wins!");
-    alert("You won this battle! Continue to the next.");
+    alert("You won this battle! Continue to the next."); 
     rollShopAnimals();
     showNonBattleElements();
     location.reload();
@@ -1311,7 +1319,7 @@ freezeButton.addEventListener("drop", (event) => {
   }
 });
 let items = [];
-let currentItem1= null;
+let currentItem1 = null;
 let currentItem2 = null;
 
 function loadRandomItems() {
@@ -1319,18 +1327,16 @@ function loadRandomItems() {
   currentItem1 = savedItems[0] ? { ...savedItems[0] } : currentItem1;
   currentItem2 = savedItems[1] ? { ...savedItems[1] } : currentItem2;
 
-  if( !currentItem1?.frozen && items.length > 0){
+  if (!currentItem1?.frozen && items.length > 0) {
     currentItem1 = { ...items[Math.floor(Math.random() * items.length)] };
   }
   if (!currentItem2?.frozen && items.length > 0) {
     currentItem2 = { ...items[Math.floor(Math.random() * items.length)] };
   }
 
-
   saveCurrentItems();
   renderItem();
 }
-
 
 function handleItemDrop(event, animal) {
   event.preventDefault();
