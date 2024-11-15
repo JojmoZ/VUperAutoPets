@@ -2,6 +2,8 @@ const canvas = document.getElementById("battleCanvas");
 const curtainTop = document.getElementById("curtainTop");
 const curtainBottom = document.getElementById("curtainBottom");
 let ctx = canvas.getContext("2d");
+const heartImg = new Image();
+const fistImg = new Image();
 let enemyLineup = [null, null, null, null, null];
 let battleLineup = JSON.parse(localStorage.getItem("battleLineup")) || [
   null,
@@ -307,9 +309,6 @@ function renderTeams() {
           80,
           80
         );
-        const fistImg = new Image();
-        fistImg.src = "../assets/fist.png";
-        fistImg.onload = () => {
           ctx.drawImage(
             fistImg,
             teamOffsetX + (maxSlots - 1 - index) * 100,
@@ -327,10 +326,6 @@ function renderTeams() {
             20 -
             attackTextWidth / 2;
           ctx.fillText(attackText, attackX, commonY + 85);
-        };
-        const heartImg = new Image();
-        heartImg.src = "../assets/heart.png";
-        heartImg.onload = () => {
           ctx.drawImage(
             heartImg,
             teamOffsetX + (maxSlots - 1 - index) * 100 + 40,
@@ -348,7 +343,6 @@ function renderTeams() {
             60 -
             healthTextWidth / 2;
           ctx.fillText(healthText, healthX, commonY + 85);
-        };
       };
     }
   });
@@ -358,9 +352,6 @@ function renderTeams() {
       img.src = animal.img;
       img.onload = () => {
         ctx.drawImage(img, enemyOffsetX + index * 100, commonY, 80, 80);
-        const fistImg = new Image();
-        fistImg.src = "../assets/fist.png";
-        fistImg.onload = () => {
           ctx.drawImage(
             fistImg,
             enemyOffsetX + index * 100,
@@ -374,10 +365,6 @@ function renderTeams() {
           let attackTextWidth = ctx.measureText(attackText).width;
           let attackX = enemyOffsetX + index * 100 + 20 - attackTextWidth / 2;
           ctx.fillText(attackText, attackX, commonY + 85);
-        };
-        const heartImg = new Image();
-        heartImg.src = "../assets/heart.png";
-        heartImg.onload = () => {
           ctx.drawImage(
             heartImg,
             enemyOffsetX + index * 100 + 40,
@@ -391,7 +378,6 @@ function renderTeams() {
           let healthTextWidth = ctx.measureText(healthText).width;
           let healthX = enemyOffsetX + index * 100 + 60 - healthTextWidth / 2;
           ctx.fillText(healthText, healthX, commonY + 85);
-        };
       };
     }
   });
@@ -562,8 +548,12 @@ function adjustCanvasSize() {
   canvas.height = window.innerHeight * 0.5; // Adjust height based on vh
   ctx = canvas.getContext("2d");
 }
-
+function loadassets() {
+  fistImg.src = "../assets/fist.png";
+  heartImg.src = "../assets/heart.png";
+}
 document.addEventListener("DOMContentLoaded", function () {
+  loadassets();
   hideCurtains();
   adjustCanvasSize();
   window.addEventListener("resize", adjustCanvasSize);
@@ -605,18 +595,21 @@ function updateCoinsDisplay() {
   document.getElementById("coins").textContent = `Coins: ${coins}`;
 }
 function generateEnemyTeam() {
-  const totalTeamCost = calculateTeamCost(battleLineup);
-  enemyLineup = [];
+  enemyLineup = [
+    shopAnimals.find((animal) =>  animal.name === "t-reXY"),
+  ];
+  // const totalTeamCost = calculateTeamCost(battleLineup);
+  // enemyLineup = [];
 
-  while (enemyLineup.length < maxSlots && totalTeamCost > 0) {
-    const randomAnimal =
-      shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
-    const clonedAnimal = { ...randomAnimal };
+  // while (enemyLineup.length < maxSlots && totalTeamCost > 0) {
+  //   const randomAnimal =
+  //     shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
+  //   const clonedAnimal = { ...randomAnimal };
 
-    if (totalTeamCost >= randomAnimal.cost) {
-      enemyLineup.push(clonedAnimal);
-    }
-  }
+  //   if (totalTeamCost >= randomAnimal.cost) {
+  //     enemyLineup.push(clonedAnimal);
+  //   }
+  // }
 }
 
 function calculateTeamCost(team) {
@@ -641,23 +634,16 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
   const enemyImg = new Image();
   enemyImg.src = enemyAnimal.img;
 
-  const fistImg = new Image();
-  fistImg.src = "../assets/fist.png";
-
-  const heartImg = new Image();
-  heartImg.src = "../assets/heart.png";
-
   playerImg.onload = () => {
+    console.log("load1");
     enemyImg.onload = () => {
-      fistImg.onload = () => {
-        heartImg.onload = () => {
+      console.log("load2")
           requestAnimationFrame(animate);
-        };
-      };
     };
   };
 
   function animate(currentTime) {
+    console.log("e");
     const deltaTime = (currentTime - lastFrameTime) / 1000; // Convert to seconds
     lastFrameTime = currentTime;
 
@@ -691,7 +677,7 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
     let attackTextWidthEn = ctx.measureText(attackTextEn).width;
     let attackXEn = enemyX + 20 - attackTextWidthEn / 2;
     let healthTextEn = `${enemyAnimal.health}`;
-    let healthTextWidthEn = ctx.measureText(healthText).width;
+    let healthTextWidthEn = ctx.measureText(healthTextEn).width;
     let healthXEn = enemyX + 60 - healthTextWidthEn / 2;
     ctx.fillText(attackTextEn, attackXEn, enemyY + 85);
     ctx.fillText(healthTextEn, healthXEn, enemyY + 85);
@@ -768,7 +754,7 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
       let attackTextWidthEn = ctx.measureText(attackTextEn).width;
       let attackXEn = enemyX + 20 - attackTextWidthEn / 2;
       let healthTextEn = `${enemyAnimal.health}`;
-      let healthTextWidthEn = ctx.measureText(healthText).width;
+      let healthTextWidthEn = ctx.measureText(healthTextEn).width;
       let healthXEn = enemyX + 60 - healthTextWidthEn / 2;
       ctx.fillText(attackTextEn, attackXEn, enemyY + 85);
       ctx.fillText(healthTextEn, healthXEn, enemyY + 85);
@@ -820,11 +806,6 @@ function showDamage(
   const enemyDamageOffsetY = -4;
   let currentFrame = 0;
   const totalFrames = 30;
-  const fistImg = new Image();
-  fistImg.src = "../assets/fist.png";
-
-  const heartImg = new Image();
-  heartImg.src = "../assets/heart.png";
   function drawExpandingDamage() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     renderFullTeam();
@@ -850,7 +831,7 @@ function showDamage(
     let attackTextWidthEn = ctx.measureText(attackTextEn).width;
     let attackXEn = enemyX + 20 - attackTextWidthEn / 2;
     let healthTextEn = `${enemyHealth}`;
-    let healthTextWidthEn = ctx.measureText(healthText).width;
+    let healthTextWidthEn = ctx.measureText(healthTextEn).width;
     let healthXEn = enemyX + 60 - healthTextWidthEn / 2;
     ctx.fillText(attackTextEn, attackXEn, commonY + 85);
     ctx.fillText(healthTextEn, healthXEn, commonY + 85);
@@ -905,7 +886,7 @@ function showDamage(
     let attackTextWidthEn = ctx.measureText(attackTextEn).width;
     let attackXEn = enemyX + 20 - attackTextWidthEn / 2;
     let healthTextEn = `${enemyHealth}`;
-    let healthTextWidthEn = ctx.measureText(healthText).width;
+    let healthTextWidthEn = ctx.measureText(healthTextEn).width;
     let healthXEn = enemyX + 60 - healthTextWidthEn / 2;
     ctx.fillText(attackTextEn, attackXEn, commonY + 85);
     ctx.fillText(healthTextEn, healthXEn, commonY + 85);
@@ -943,10 +924,6 @@ function renderFullTeam() {
   const enemyOffsetX = canvas.width - 550;
   const imgSize = 80;
   const iconSize = 40;
-  const fistImg = new Image();
-  fistImg.src = "../assets/fist.png";
-  const heartImg = new Image();
-  heartImg.src = "../assets/heart.png";
   battleLineup.forEach((animal, index) => {
     if (animal && index !== 0) {
       const xPos = teamOffsetX + (maxSlots - 1 - index) * 100;
@@ -1145,15 +1122,17 @@ async function simulateBattle() {
     const playerAnimal = battleLineup[playerAnimalIndex];
 
     if (playerAnimal) {
+      console.log("a");
       const enemyAnimalIndex = enemyLineup.findIndex(
         (animal) => animal !== null
       );
       const enemyAnimal = enemyLineup[enemyAnimalIndex];
       if (enemyAnimal) {
+        console.log("b");
         animateHeadbutt(playerAnimal, enemyAnimal, () => {
           enemyAnimal.health -= playerAnimal.attack;
           playerAnimal.health -= enemyAnimal.attack;
-
+          console.log("d");
           handleBothDeaths(playerAnimal, enemyAnimal, () => {
             if (
               !battleLineup.some((animal) => animal) ||
@@ -1312,7 +1291,7 @@ freezeButton.addEventListener("drop", (event) => {
   event.preventDefault();
   const source = event.dataTransfer.getData("source");
   const index = event.dataTransfer.getData("text");
-const slotId = event.dataTransfer.getData("slotId");
+  const slotId = event.dataTransfer.getData("slotId");
   if (source === "shop") {
     // Handle freezing an animal from the shop
     const animal = randomAnimals[index];
@@ -1362,7 +1341,6 @@ function loadRandomItems(slotToReroll = null) {
   renderItem();
 }
 
-
 function handleItemDrop(event, animal) {
   event.preventDefault();
   const itemName = event.dataTransfer.getData("itemName");
@@ -1381,9 +1359,6 @@ function handleItemDrop(event, animal) {
     loadRandomItems(slotId);
   }
 }
-
-
-
 
 function renderItem() {
   const itemSlot1 = document.getElementById("itemSlot");
@@ -1447,8 +1422,6 @@ function saveCurrentItems() {
   );
 }
 
-
-
 // Function to apply item effects on the animal
 function applyItemEffect(animal, itemName) {
   if (itemName === "Apple") {
@@ -1463,4 +1436,3 @@ function applyItemEffect(animal, itemName) {
 
   renderBattleSlots(); // Refresh the animal stats display
 }
-
