@@ -162,9 +162,23 @@ window.onload = function () {
   socialMediaObserver.observe(socialMediaSection);
   const gotoplay = document.getElementById("play-button");
   gotoplay.addEventListener("click", function (e) {
-    window.location = "/loading/loading.html";
+  checkboughtanimals()
+    if(canPlay){
+      window.location = "/loading/loading.html";
+    }else{
+      alert(1)
+    }
   });
-
+let canPlay = false;
+function checkboughtanimals(){
+  const boughtanimals = localStorage.getItem("ownedAnimals");
+  console.log(boughtanimals.length)
+  if (boughtanimals.length ==2){
+    canPlay = false;
+  }else{
+    canPlay = true;
+  }
+}
   const audio = document.getElementById("audio");
   const visualization = document.getElementById("visualization");
   const context = new (window.AudioContext || window.webkitAudioContext)();
