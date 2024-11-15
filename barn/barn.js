@@ -99,6 +99,9 @@ function createAnimal(animal) {
   animalElement.style.left = `${spawnX}px`;
   animalElement.style.top = `${spawnY}px`;
   animalElement.dataset.isMovingToFood = "false";
+  animalElement.addEventListener("dragstart", (event) =>
+    event.preventDefault()
+  );
   animalContainer.appendChild(animalElement);
   roamAnimal(animalElement);
   return animalElement;

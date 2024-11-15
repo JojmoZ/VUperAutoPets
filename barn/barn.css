@@ -39,7 +39,9 @@ canvas {
   cursor: pointer;
   width: 3.125rem; /* Use relative unit */
   height: 3.125rem; /* Use relative unit */
+  user-drag: none; /* Prevent dragging */
 }
+
 .restricted-area {
   background-color: rgba(255, 0, 0, 0.3);
   border: 2px solid red;
