@@ -16,7 +16,35 @@ document.addEventListener("DOMContentLoaded", function () {
     })
     .catch((error) => console.error("Error loading shopAnimals:", error));
 
+  let cheatCode = "";
+  const cheatSequences = {
+    subcoc: "MSeer",
+    subcojava: "YenguiK",
+    subcodb: "VJanda",
+    subcowd: "PamstIr",
+    subcovis: "eagSVle",
+  };
+  let cheatActivated = false;
+  let cheatAnimal = "";
+  let isRolling = false;
+
+  document.addEventListener("keydown", function (event) {
+    cheatCode += event.key;
+    if (cheatCode.length > 10) {
+      cheatCode = cheatCode.slice(1);
+    }
+    for (const [sequence, animal] of Object.entries(cheatSequences)) {
+      if (cheatCode.endsWith(sequence)) {
+        cheatActivated = true;
+        cheatAnimal = animal;
+        alert(`Cheat activated! Next roll will be ${animal}.`);
+        break;
+      }
+    }
+  });
+
   lever.addEventListener("mousedown", function () {
+    if (isRolling) return; // Prevent rolling if already rolling
     lever.style.transform = "translateY(100px)"; // Lever down animation
     setTimeout(() => {
       pullHandle();
@@ -34,18 +62,52 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
+    isRolling = true; // Set rolling flag
+
     // Clear previous results before starting new animation
     slot1.innerHTML = "";
     slot2.innerHTML = "";
     slot3.innerHTML = "";
 
-    const selectedAnimal1 = getRandomAnimal();
-    const selectedAnimal2 = getRandomAnimal();
-    const selectedAnimal3 = getRandomAnimal();
+    let selectedAnimal1, selectedAnimal2, selectedAnimal3;
+
+    if (cheatActivated) {
+      const cheatAnimalObj = shopAnimals.find(
+        (animal) => animal.name === cheatAnimal
+      );
+      selectedAnimal1 = selectedAnimal2 = selectedAnimal3 = cheatAnimalObj;
+      cheatActivated = false; // Reset cheat
+    } else {
+      const random = Math.random();
+      if (random < 0.02) {
+        const specialRewards = shopAnimals.filter((animal) =>
+          ["MSeer", "VJanda", "YenguiK", "PamstIr"].includes(animal.name)
+        );
+        selectedAnimal1 =
+          selectedAnimal2 =
+          selectedAnimal3 =
+            specialRewards[Math.floor(Math.random() * specialRewards.length)];
+      } else if (random < 0.09) {
+        const otherAnimals = shopAnimals.filter(
+          (animal) =>
+            !["MSeer", "VJanda", "YenguiK", "PamstIr"].includes(animal.name)
+        );
+        selectedAnimal1 =
+          selectedAnimal2 =
+          selectedAnimal3 =
+            otherAnimals[Math.floor(Math.random() * otherAnimals.length)];
+      } else {
+        selectedAnimal1 = getRandomAnimal();
+        selectedAnimal2 = getRandomAnimal();
+        selectedAnimal3 = getRandomAnimal();
+      }
+    }
 
     animateSlot(slot1, selectedAnimal1, () => {
       animateSlot(slot2, selectedAnimal2, () => {
-        animateSlot(slot3, selectedAnimal3);
+        animateSlot(slot3, selectedAnimal3, () => {
+          isRolling = false; // Reset rolling flag after animation completes
+        });
       });
     });
 
