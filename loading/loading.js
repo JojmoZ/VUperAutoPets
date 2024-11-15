@@ -39,7 +39,6 @@ const tips = [
   "Jangan Sampe kalo ditanya gk ngerti!",
   "Subco ComVis emang badut",
   "Sudah Siap Network???",
-  "Subco Network babi",
   "一二三四五六七， 你的朋友在哪里？"
 ];
 
@@ -64,7 +63,7 @@ const tips = [
     loadingFill.style.width = `${progress}%`;
 
     if (elapsedTime >= totalGameTime) {
-      // window.location.href = "/game/index.html";
+      window.location.href = "/game/index.html";
     }
   }
 
