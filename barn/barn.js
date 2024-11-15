@@ -91,6 +91,10 @@ function createAnimal(animal) {
   animalElement.style.position = "absolute";
   animalElement.style.width = "3.125rem"; // Use relative unit
   animalElement.style.height = "3.125rem"; // Use relative unit
+  animalElement.dataset.name = animal.name;
+  animalElement.dataset.attack = animal.attack;
+  animalElement.dataset.health = animal.health;
+  animalElement.dataset.cost = animal.cost;
   let spawnX, spawnY;
   do {
     spawnX = Math.random() * (animalContainer.clientWidth - 50);
@@ -482,3 +486,64 @@ function resetGrid() {
     }
   });
 }
+
+let followAnimal = null;
+
+function showStatWindow(animal) {
+  const statWindow = document.getElementById("statWindow");
+  const animalName = document.getElementById("animalName");
+  const animalAttack = document.getElementById("animalAttack");
+  const animalHealth = document.getElementById("animalHealth");
+  const animalCost = document.getElementById("animalCost");
+
+  animalName.textContent = `Name: ${animal.dataset.name}`;
+  animalAttack.textContent = `Attack: ${animal.dataset.attack}`;
+  animalHealth.textContent = `Health: ${animal.dataset.health}`;
+  animalCost.textContent = `Cost: ${animal.dataset.cost}`;
+
+  statWindow.style.display = "block";
+}
+
+function hideStatWindow() {
+  const statWindow = document.getElementById("statWindow");
+  statWindow.style.display = "none";
+}
+
+function zoomToAnimal(animal) {
+  followAnimal = animal;
+  updateCameraPosition();
+}
+
+function updateCameraPosition() {
+  if (!followAnimal) return;
+
+  const animalRect = followAnimal.getBoundingClientRect();
+  const containerRect = animalContainer.getBoundingClientRect();
+  const zoomX =
+    animalRect.left -
+    containerRect.left -
+    containerRect.width / 2 +
+    animalRect.width / 2;
+  const zoomY =
+    animalRect.top -
+    containerRect.top -
+    containerRect.height / 2 +
+    animalRect.height / 2;
+
+  animalContainer.style.transform = `translate(${-zoomX}px, ${-zoomY}px) scale(2)`;
+  animalContainer.style.transition = "transform 0.1s ease";
+
+  requestAnimationFrame(updateCameraPosition);
+}
+
+animalContainer.addEventListener("click", (event) => {
+  if (event.target.classList.contains("animal")) {
+    const animal = event.target;
+    zoomToAnimal(animal);
+    showStatWindow(animal);
+  } else {
+    followAnimal = null;
+    animalContainer.style.transform = "translate(0, 0) scale(1)";
+    hideStatWindow();
+  }
+});
