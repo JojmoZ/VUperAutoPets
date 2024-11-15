@@ -23,8 +23,8 @@ const tips = [
   "Selesai gk case Krusty bAke?",
   "Selesai gk case GiThub?",
   "Selesai gk case SV?",
-  "Selesai gk case VL?",
-  "Selesai gk case CM?",
+  "Selesai gk case ViLtert?",
+  "Selesai gk case NieR:CaroluM?",
   "Diam dan Di cut, milik dia yang tak bisa berdiri",
   "Satu dua semut-semut, hati hati kena cut",
   "Panda aja bisa handstand, masa klian gk bs selesaiin bp?",
@@ -39,7 +39,8 @@ const tips = [
   "Jangan Sampe kalo ditanya gk ngerti!",
   "Subco ComVis emang badut",
   "Sudah Siap Network???",
-  "一二三四五六七， 你的朋友在哪里？"
+  "一二三四五六七， 你的朋友在哪里？",
+  "Kayaknya perlu extend deh..."
 ];
 
   const mainContent = document.querySelector(".main-content");

@@ -213,7 +213,6 @@ function handleDrop(event) {
     const targetAnimal = battleLineup[reversedSlotIndex]; // The animal in the drop slot
     if (targetAnimal) {
       handleItemDrop(event, targetAnimal);
-      loadRandomItems(); // Load a new item after use
     }
   }
 }
@@ -595,21 +594,21 @@ function updateCoinsDisplay() {
   document.getElementById("coins").textContent = `Coins: ${coins}`;
 }
 function generateEnemyTeam() {
-  enemyLineup = [
-    shopAnimals.find((animal) =>  animal.name === "t-reXY"),
-  ];
-  // const totalTeamCost = calculateTeamCost(battleLineup);
-  // enemyLineup = [];
+  // enemyLineup = [
+  //   shopAnimals.find((animal) =>  animal.name === "t-reXY"),
+  // ];
+  const totalTeamCost = calculateTeamCost(battleLineup);
+  enemyLineup = [];
 
-  // while (enemyLineup.length < maxSlots && totalTeamCost > 0) {
-  //   const randomAnimal =
-  //     shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
-  //   const clonedAnimal = { ...randomAnimal };
+  while (enemyLineup.length < maxSlots && totalTeamCost > 0) {
+    const randomAnimal =
+      shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
+    const clonedAnimal = { ...randomAnimal };
 
-  //   if (totalTeamCost >= randomAnimal.cost) {
-  //     enemyLineup.push(clonedAnimal);
-  //   }
-  // }
+    if (totalTeamCost >= randomAnimal.cost) {
+      enemyLineup.push(clonedAnimal);
+    }
+  }
 }
 
 function calculateTeamCost(team) {
@@ -1312,34 +1311,26 @@ freezeButton.addEventListener("drop", (event) => {
   }
 });
 let items = [];
-let currentItem1 = null;
+let currentItem1= null;
 let currentItem2 = null;
 
-function loadRandomItems(slotToReroll = null) {
+function loadRandomItems() {
   const savedItems = JSON.parse(localStorage.getItem("currentItems")) || [];
-
   currentItem1 = savedItems[0] ? { ...savedItems[0] } : currentItem1;
   currentItem2 = savedItems[1] ? { ...savedItems[1] } : currentItem2;
 
-  // Only reroll the specified slot if it's not frozen
-  if (
-    slotToReroll === "itemSlot" &&
-    !currentItem1?.frozen &&
-    items.length > 0
-  ) {
+  if( !currentItem1?.frozen && items.length > 0){
     currentItem1 = { ...items[Math.floor(Math.random() * items.length)] };
-  } else if (
-    slotToReroll === "itemSlot2" &&
-    !currentItem2?.frozen &&
-    items.length > 0
-  ) {
+  }
+  if (!currentItem2?.frozen && items.length > 0) {
     currentItem2 = { ...items[Math.floor(Math.random() * items.length)] };
   }
 
-  // Save the updated items and render them
+
   saveCurrentItems();
   renderItem();
 }
+
 
 function handleItemDrop(event, animal) {
   event.preventDefault();
@@ -1348,15 +1339,11 @@ function handleItemDrop(event, animal) {
   const slotId = event.dataTransfer.getData("slotId");
 
   if (itemName && itemEffect && animal) {
-    // Apply the item's effect to the animal
     applyItemEffect(animal, itemName);
-
-    // Clear the used item slot
     if (slotId === "itemSlot") currentItem1 = null;
     else if (slotId === "itemSlot2") currentItem2 = null;
-
-    // Load a new item only in the used slot
-    loadRandomItems(slotId);
+    saveCurrentItems();
+    renderItem();
   }
 }
 
