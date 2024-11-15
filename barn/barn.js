@@ -291,8 +291,12 @@ function createFood(event) {
   let closestAnimal = null;
   let minDistance = Infinity;
   animals.forEach((animal) => {
-    const animalRow = Math.floor(parseFloat(animal.style.top) / gridSize);
-    const animalCol = Math.floor(parseFloat(animal.style.left) / gridSize);
+    const animalRow = Math.floor(
+      (parseFloat(animal.style.top) + animal.offsetHeight / 2) / gridSize
+    );
+    const animalCol = Math.floor(
+      (parseFloat(animal.style.left) + animal.offsetWidth / 2) / gridSize
+    );
 
     const distance =
       Math.abs(animalRow - foodRow) + Math.abs(animalCol - foodCol);
@@ -307,8 +311,16 @@ function createFood(event) {
     cancelAnimationFrame(closestAnimal.roamAnimationId);
     setTimeout(() => {
       const start = {
-        row: Math.floor(parseFloat(closestAnimal.style.top) / gridSize),
-        col: Math.floor(parseFloat(closestAnimal.style.left) / gridSize),
+        row: Math.floor(
+          (parseFloat(closestAnimal.style.top) +
+            closestAnimal.offsetHeight / 2) /
+            gridSize
+        ),
+        col: Math.floor(
+          (parseFloat(closestAnimal.style.left) +
+            closestAnimal.offsetWidth / 2) /
+            gridSize
+        ),
       };
       const end = { row: foodRow, col: foodCol };
 
@@ -334,8 +346,8 @@ function followPath(animal, path, callback) {
       return;
     }
     const node = path[index];
-    const nextX = node.col * gridSize;
-    const nextY = node.row * gridSize;
+    const nextX = node.col * gridSize + gridSize / 2;
+    const nextY = node.row * gridSize + gridSize / 2;
     const currentX = parseFloat(animal.style.left) + animal.offsetWidth / 2;
     const currentY = parseFloat(animal.style.top) + animal.offsetHeight / 2;
     const deltaX = nextX - currentX;
