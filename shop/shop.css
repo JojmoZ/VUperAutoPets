@@ -6,22 +6,22 @@ body {
   background-size: cover;
   background-image: url(../assets/].webp);
 }
-.shop-wrapper{
-    display:flex;
-    height: 100vh;
-    align-items: center;
+.shop-wrapper {
+  display: flex;
+  height: 100vh;
+  align-items: center;
 }
 .shop-container {
   display: grid;
   grid-auto-flow: column; /* Items flow by columns */
-  grid-template-columns: repeat(auto-fit,15rem);
+  grid-template-columns: repeat(auto-fit, 15rem);
   grid-template-rows: repeat(2, 12rem); /* Two rows */
   gap: 10rem; /* Gap between items */
   overflow-x: auto; /* Enable horizontal scrolling */
   padding: 2%; /* Padding */
   box-sizing: border-box; /* Include padding in size */
   white-space: nowrap;
--webkit-overflow-scrolling: touch; /* For smooth scrolling on touch devices */
+  -webkit-overflow-scrolling: touch; /* For smooth scrolling on touch devices */
   scrollbar-width: none; /* Hide scrollbar for Firefox */
   -ms-overflow-style: none; /* Hide scrollbar for Internet Explorer and Edge */
 }
@@ -72,14 +72,14 @@ body {
   height: 4rem;
 }
 
-.card h3, .card p {
+.card h3,
+.card p {
   margin: 0;
   padding: 0.5rem 0; /* Ensure uniform padding */
   text-overflow: ellipsis; /* Handle long text */
   white-space: nowrap; /* Prevent text wrapping */
   overflow: hidden; /* Hide overflow */
 }
-
 
 .card:hover {
   transform: scale(1.05);

@@ -86,6 +86,9 @@ document.addEventListener("DOMContentLoaded", function () {
     })
     .catch((error) => console.error("Error loading shopAnimals:", error));
 
+  const specialAnimals = ["VJanda", "MSeer", "eagSVle", "PamstIr", "YenguiK"];
+
+
   function generateCards(animals) {
     const shopContainer = document.getElementById("shopContainer");
     animals.forEach((animal) => {
@@ -118,13 +121,14 @@ document.addEventListener("DOMContentLoaded", function () {
       ) {
         const soldOutOverlay = document.createElement("div");
         soldOutOverlay.classList.add("sold-out-overlay");
-        soldOutOverlay.textContent = "Sold Out";
+        soldOutOverlay.textContent = "Owned";
         card.appendChild(soldOutOverlay);
         card.classList.add("sold-out");
       }
 
       card.addEventListener("click", function () {
         const animalName = this.querySelector("h3").textContent;
+       
         const animalImage = this.querySelector("img").src;
         let ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
         if (ownedAnimals.some((animal) => animal.name === animalName)) {
@@ -138,6 +142,14 @@ document.addEventListener("DOMContentLoaded", function () {
           this.querySelector("p").textContent.match(/\d+/)[0]
         );
         modal.classList.add("show");
+         if (specialAnimals.includes(animalName)) {
+          const h3 = document.getElementById("textext")
+          h3.innerHTML =
+            "you cannot buy this animal, you can only get this animal through gacha";
+          confirmButton.style.display = "none"
+          h3.style.textAlign = "center"
+          cancelButton.innerHTML = "Close"
+         }
         modal.style.display = "flex";
       });
 
@@ -163,7 +175,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (animalCard) {
       const soldOutOverlay = document.createElement("div");
       soldOutOverlay.classList.add("sold-out-overlay");
-      soldOutOverlay.textContent = "Sold Out";
+      soldOutOverlay.textContent = "Owned";
       animalCard.appendChild(soldOutOverlay);
       animalCard.classList.add("sold-out");
     }
