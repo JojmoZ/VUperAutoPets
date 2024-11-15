@@ -107,11 +107,27 @@ document.addEventListener("DOMContentLoaded", function () {
       animateSlot(slot2, selectedAnimal2, () => {
         animateSlot(slot3, selectedAnimal3, () => {
           isRolling = false; // Reset rolling flag after animation completes
+          setTimeout(() => {
+            checkThreeOfAKind(selectedAnimal1, selectedAnimal2, selectedAnimal3);
+          }, 100); // Delay to ensure slot3 result is displayed
         });
       });
     });
 
     localStorage.setItem("coins", (coins - 5).toString()); // Deduct coins
+  }
+
+  function checkThreeOfAKind(animal1, animal2, animal3) {
+    if (animal1.name === animal2.name && animal2.name === animal3.name) {
+      alert(`Congratulations! You got three ${animal1.name}s!`);
+      addToOwnedAnimals(animal1);
+    }
+  }
+
+  function addToOwnedAnimals(animal) {
+    let ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals")) || [];
+    ownedAnimals.push(animal);
+    localStorage.setItem("ownedAnimals", JSON.stringify(ownedAnimals));
   }
 
   function getRandomAnimal() {
