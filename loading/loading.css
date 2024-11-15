@@ -134,9 +134,11 @@ body {
   font-size: 1.5rem;
   z-index: 20;
   transition: opacity 0.5s ease;
+  user-select: none;
   opacity: 0;
 }
 .tip-animate-in {
+  user-select: none;
   opacity: 1;
   transition: opacity 0.5s ease;
 }
@@ -148,6 +150,7 @@ body {
 
 .animal {
   width:3.125rem;
+  user-select: none;
   height:3.125rem;
   margin-left: 0.625rem;
 }
