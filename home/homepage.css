@@ -1,5 +1,5 @@
 :root {
-  --primary:50 70% 47%; /* Adjust this color as needed */
+  --primary: 50 70% 47%; /* Adjust this color as needed */
 }
 @property --angle {
   syntax: "<angle>";
@@ -131,7 +131,6 @@ text {
   transform: translateX(-5%) skew(-10deg);
 }
 
-
 .game-desc {
   color: black;
   text-align: left;
@@ -141,7 +140,7 @@ text {
   opacity: 1;
   display: flex;
   align-items: center;
-  gap:2rem;
+  gap: 2rem;
   justify-content: center;
   padding: 2rem 1rem;
 }
@@ -589,12 +588,13 @@ section {
 .ost-section {
   display: flex;
   flex-direction: column;
-  z-index:2;
+  z-index: 2;
   justify-content: center;
   align-items: center;
   padding: 2rem 1rem;
   background-image: url(../assets/Desert.webp);
   color: white;
+  text-align: center;
 }
 
 .visualizer-container {
@@ -633,7 +633,6 @@ section {
   transform: scale(1.1);
 }
 
-
 .play-ost-button:hover {
   /* background-color: #febd01; */
   transform: translateY(-5px);
@@ -663,7 +662,7 @@ section {
 
 .trailer {
   justify-content: center;
-  background-image: url(../assets/childroom.png); 
+  background-image: url(../assets/childroom.png);
   background-repeat: no-repeat;
   background-size: cover;
   display: flex;
@@ -704,22 +703,22 @@ section {
   }
 }
 
-#maps > .image{
+#maps > .image {
   width: 40vmin;
   height: 56vmin;
   object-fit: cover;
   object-position: center;
 }
-#maps{
-   display: flex;
+#maps {
+  display: flex;
   gap: 4vmin;
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(0%, -50%); 
-  user-select: none; 
+  transform: translate(0%, -50%);
+  user-select: none;
 }
-.map-section{
+.map-section {
   background-color: #141414;
 }
 .btn {
@@ -764,7 +763,6 @@ section {
 .btn > span > img {
   width: 20px; /* Icon size */
   height: 20px; /* Icon size */
-  margin-right: 10px; /* Space between the icon and text */
   position: relative;
   transition: transform 0.25s ease;
 }
