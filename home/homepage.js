@@ -8,25 +8,6 @@ window.onload = function () {
     window.location.href = "/login/start.html";
   }
    const fadeInElements = document.querySelectorAll(".fade-in-element");
-      const ostCard = document.querySelector(".ost-card");
-      const cardContent = document.querySelector(".card-content");
-
-      const aaa = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              ostCard.classList.add("visible");
-              cardContent.classList.add("visible");
-            } else {
-              ostCard.classList.remove("visible");
-              cardContent.classList.remove("visible");
-            }
-          });
-        },
-        { threshold: 0.5 } 
-      );
-
-      aaa.observe(ostCard);
   const elementObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -169,6 +150,7 @@ window.onload = function () {
       alert(1)
     }
   });
+
 let canPlay = false;
 function checkboughtanimals(){
   const boughtanimals = localStorage.getItem("ownedAnimals");
@@ -182,11 +164,7 @@ function checkboughtanimals(){
   const audio = document.getElementById("audio");
   const visualization = document.getElementById("visualization");
   const context = new (window.AudioContext || window.webkitAudioContext)();
-
-    if (context.state === "suspended") {
-      context.resume();
-    }
-    audio.play();
+let isPlaying = false;
 
   const analyser = context.createAnalyser();
   const source = context.createMediaElementSource(audio);
@@ -229,25 +207,34 @@ function checkboughtanimals(){
     requestAnimationFrame(renderFrame);
   }
 
-  renderFrame();
+  const playOSTButton = document.getElementById("ost-play-button");
+  const buttonIcon = document.getElementById("button-icon");
+playOSTButton.addEventListener("mousemove", (e) => {
+  const rect = playOSTButton.getBoundingClientRect();
 
-  
-  const ostSection = document.querySelector(".ost-section");
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          audio.play(); 
-        } else {
-          audio.pause(); 
-        }
-      });
-    },
-    { threshold: 0.5 } 
-  );
+  playOSTButton.style.setProperty("--mouseX", `${x}px`);
+  playOSTButton.style.setProperty("--mouseY", `${y}px`);
+});
 
-  observer.observe(ostSection);
+
+     playOSTButton.addEventListener("click", function () {
+       if (!isPlaying) {
+         if (context.state === "suspended") {
+           context.resume();
+         }
+         audio.play();
+         buttonIcon.src = "../assets/pause.png"; // Change to pause icon
+         isPlaying = true;
+         renderFrame();
+       } else {
+         audio.pause();
+         buttonIcon.src = "../assets/playmusic.png"; // Change back to play icon
+         isPlaying = false;
+       }
+     });
 };
 
 track = document.getElementById("maps");

@@ -1,3 +1,11 @@
+:root {
+  --primary:50 70% 47%; /* Adjust this color as needed */
+}
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
 html,
 body {
   margin: 0;
@@ -581,6 +589,7 @@ section {
 .ost-section {
   display: flex;
   flex-direction: column;
+  z-index:2;
   justify-content: center;
   align-items: center;
   padding: 2rem 1rem;
@@ -598,85 +607,37 @@ section {
   width: 100%;
 }
 
-.ost-card {
-  width: 100%;
-  max-width: 600px;
-  padding: 30px;
-  border-radius: 25px;
-  background: linear-gradient(145deg, #febd01, #ff6600);
-  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  overflow: hidden;
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
-  margin: 1rem 0;
-}
-
-.ost-card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: url("../assets/Desert.webp");
-  opacity: 0.05;
-  z-index: 0;
-  pointer-events: none;
-}
-
 .ost-card:hover {
   transform: translateY(-10px);
   box-shadow: 0px 15px 35px rgba(0, 0, 0, 0.4);
 }
-
-.card-content {
-  position: relative;
-  z-index: 1;
-  text-align: center;
-}
-
-.card-content h2 {
-  font-size: 2.5em;
-  margin-bottom: 20px;
-  background: -webkit-linear-gradient(#febd01, #ff6600);
-  -webkit-background-clip: text;
-  background-clip: border-box;
-  -webkit-text-fill-color: transparent;
-  transition: color 0.3s ease;
-}
-
-.card-content p {
-  font-size: 1.2rem;
-  line-height: 1.5;
-  color: white;
-  margin-bottom: 20px;
-  background-color: rgba(0, 0, 0, 0.3);
-  padding: 10px 20px;
-  border-radius: 10px;
-  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
-}
-
 .play-ost-button {
-  padding: 15px 30px;
-  background-color: #ff6600;
-  color: white;
-  font-size: 1.5em;
-  font-weight: bold;
-  border-radius: 10px;
   border: none;
+  background: none;
+  padding: 0;
   cursor: pointer;
-  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
-  transition: background-color 0.3s ease, transform 0.3s ease,
-    box-shadow 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px; /* Adjust as needed */
+  height: 60px; /* Adjust as needed */
 }
+
+.play-ost-button img {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.3s ease;
+}
+
+.play-ost-button:hover img {
+  transform: scale(1.1);
+}
+
 
 .play-ost-button:hover {
-  background-color: #febd01;
+  /* background-color: #febd01; */
   transform: translateY(-5px);
-  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.3);
+  /* box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.3); */
 }
 
 .ost-card {
@@ -760,4 +721,111 @@ section {
 }
 .map-section{
   background-color: #333;
+}
+.btn {
+  all: unset;
+  font-size: 24px; /* Adjust for text size */
+  background: hsl(0, 0%, 0%);
+  color: white;
+  text-transform: uppercase;
+  position: relative;
+  border-radius: 50px; /* Rounded corners for the rectangle */
+  cursor: pointer;
+  padding: 14px 52px; /* Padding for rectangular shape */
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  z-index: auto; /* Ensure it's on top */
+  overflow: visible;
+  width: auto; /* Adjust width dynamically based on content */
+  height: auto; /* Adjust height dynamically based on content */
+}
+
+.btn {
+  overflow: visible; /* Ensure pseudo-elements are not clipped */
+  position: relative; /* Required for pseudo-elements */
+}
+
+/* Handle the span wrapper for the image */
+.btn > span {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 11; /* Above pseudo-elements */
+  transition: color 0.25s ease;
+  gap: 10px; /* Adjust gap between content inside the span */
+}
+
+.btn:hover > span {
+  color: hsl(var(--primary) / 1); /* Change color on hover */
+}
+
+.btn > span > img {
+  width: 20px; /* Icon size */
+  height: 20px; /* Icon size */
+  margin-right: 10px; /* Space between the icon and text */
+  position: relative;
+  transition: transform 0.25s ease;
+}
+
+.btn:hover > span > img {
+  transform: scale(1.2); /* Slight zoom on hover */
+}
+
+/* Pseudo-elements for glowing effect */
+.btn::before,
+.btn::after {
+  content: "";
+  position: absolute;
+  inset: -2px; /* Extend beyond the button for a glowing border */
+  background-color: inherit;
+  border-radius: inherit;
+  background-image: conic-gradient(
+    from var(--angle) at 50% 50%,
+    transparent 0%,
+    transparent 33%,
+    hsl(var(--primary)) 50%,
+    transparent 66%,
+    transparent 100%
+  );
+  animation: rotate 2s infinite linear; /* Rotate effect */
+  z-index: -1; /* Push below the main button */
+}
+
+.btn::before {
+  filter: blur(15px); /* Add a soft glow */
+}
+
+/* Inner radial gradient on hover */
+.inner {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    100px circle at var(--mouseX) var(--mouseY),
+    hsl(var(--primary) / 0.3),
+    transparent 50%
+  );
+  border-radius: inherit;
+  z-index: 2; /* Ensure it's above pseudo-elements but below content */
+  opacity: 0; /* Initially hidden */
+  transition: opacity 0.3s ease;
+}
+.jumbotron,
+.ost-section,
+.visualizer-container {
+  overflow: visible;
+}
+.btn:hover .inner {
+  opacity: 1; /* Show the inner radial gradient */
+}
+
+/* Rotating border effect */
+@keyframes rotate {
+  0% {
+    --angle: 0deg;
+  }
+  100% {
+    --angle: 360deg;
+  }
 }
