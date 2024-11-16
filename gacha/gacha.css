@@ -41,6 +41,7 @@ body {
 .slot-column {
     width: 100px;
     height: 100px;
+    user-select: none;
     overflow: hidden;
     position: relative;
     border: 2px solid #000;

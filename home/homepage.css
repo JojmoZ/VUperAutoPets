@@ -68,6 +68,7 @@ text {
   border: 0;
   cursor: pointer;
   position: relative;
+  border-radius: 1rem;
   display: inline-flex;
   justify-content: center;
   align-items: center;
