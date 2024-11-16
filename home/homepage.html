@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,6 +9,7 @@
   <link rel="stylesheet" href="homepage.css" />
   <link rel="icon" type="image/png" href="../assets/LogoVUPER.jpg">
 </head>
+
 <body>
   <div class="navbar">
     <div class="navbar-left">
@@ -39,7 +41,7 @@
           </text>
         </svg>
       </div>
-      <p id="useruser" class="fade-bottom">Welcome</p>
+      <p id="useruser" class="fade-bottom"> <span id="typewriter"></span><span id="cursor">|</span></p>
       <button class="play-button" id="play-button">
         <div>
           <span></span>
@@ -49,17 +51,17 @@
 
     </div>
   </section>
-<section class="trailer">
-  <div class="title-wrapper">
-    <h2 class="section-title">Trailer</h2>
-  </div>
-  <div class="trailer-container fade-in-element">
-    <video autoplay muted loop id="trailer-video">
-      <source src="../assets/Super Auto Pets - Gameplay Trailer.mp4" type="video/mp4">
-    </video>
-  </div>
-  <!-- <button id="pause-button" class="pause-button fade-in-element">Pause</button> -->
-</section>
+  <section class="trailer">
+    <div class="title-wrapper">
+      <h2 class="section-title">Trailer</h2>
+    </div>
+    <div class="trailer-container fade-in-element">
+      <video autoplay muted loop id="trailer-video">
+        <source src="../assets/Super Auto Pets - Gameplay Trailer.mp4" type="video/mp4">
+      </video>
+    </div>
+    <!-- <button id="pause-button" class="pause-button fade-in-element">Pause</button> -->
+  </section>
   <section class="game-desc">
     <div class="title-wrapper">
 
@@ -106,13 +108,13 @@
     <div class="visualizer-container">
       <audio src="../assets/Super Auto Pets  - Menu Theme.mp3" id="audio" loop></audio>
       <canvas id="visualization" width="400" height="300"></canvas>
-  <button id="ost-play-button" class="btn">
-    <div class="inner"></div>
-    <span>
+      <button id="ost-play-button" class="btn">
+        <div class="inner"></div>
+        <span>
 
-      <img id="button-icon" src="../assets/playmusic.png" alt="Play Music" />
-    </span>
-  </button>
+          <img id="button-icon" src="../assets/playmusic.png" alt="Play Music" />
+        </span>
+      </button>
 
 
 
@@ -121,7 +123,7 @@
   <section class="map-section">
     <!-- <h2 class="section-title">Featured Maps</h2> -->
     <div id="maps" data-mouse-down-at="0" data-prev-percentage="0">
-      <img class="image" src="../assets/cornfield.png" alt="" draggable="false" >
+      <img class="image" src="../assets/cornfield.png" alt="" draggable="false">
       <img class="image" src="../assets/wizard school.png" alt="" draggable="false">
       <img class="image" src="../assets/wildrown.png" alt="" draggable="false">
       <img class="image" src="../assets/urbancity.png" alt="" draggable="false">

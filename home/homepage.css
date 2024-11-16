@@ -2,8 +2,8 @@
   --primary: 50 70% 47%; /* Adjust this color as needed */
 }
 @font-face {
-  font-family: 'VUper';
-  src: url('../assets/LapsusPro-Bold.otf') format('opentype'); 
+  font-family: "VUper";
+  src: url("../assets/LapsusPro-Bold.otf") format("opentype");
 }
 @property --angle {
   syntax: "<angle>";
@@ -460,7 +460,7 @@ text {
     opacity: 1;
   }
   100% {
-    transform: translateY(0%);
+    transform: translateY(0);
     opacity: 1;
   }
 }
@@ -509,13 +509,14 @@ text {
   right: 0;
   bottom: 0;
   border-radius: 20px;
-  background: linear-gradient(145deg, #febd01, #ff6600);
+  background: linear-gradient(145deg, #292743, #292743); /* Updated gradient */
   z-index: -1;
   opacity: 0.2;
   transition: opacity 0.3s ease;
 }
 
 .fancy-card:hover::before {
+  background: linear-gradient(145deg, #292743, #292743); /* Updated gradient */
   opacity: 0.4;
 }
 
@@ -530,7 +531,7 @@ text {
   font-size: 2rem;
   margin-bottom: 50px;
   color: #333;
-  font-family: 'VUper';
+  font-family: "VUper";
   opacity: 0;
   transition: opacity 1s ease, transform 1s ease;
   display: inline-block;
@@ -830,5 +831,32 @@ section {
   }
   100% {
     --angle: 360deg;
+  }
+}
+
+#typewriter {
+  color: black; /* Changed to black */
+}
+
+.username {
+  color: hsl(50 70% 47%); /* Set the username color to yellow */
+}
+
+#cursor {
+  color: hsl(
+    30,
+    70%,
+    30%
+  ); 
+  font-weight: bold;
+  animation: blink 1s linear infinite;
+}
+
+@keyframes blink {
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
   }
 }
