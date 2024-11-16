@@ -297,12 +297,21 @@ if (spawnSide === "left") {
 // Set the destination position
 const walkDirection = spawnSide === "left" ? "right" : "left";
 
-// Animate DJig's walk across the screen
+// Animate DJig's walk across the screen with up and down motion
 setTimeout(() => {
-  djig.style.transition = "transform 10s linear";
+  djig.style.transition = "transform 10s linear, bottom 1s ease-in-out";
   djig.style.transform = `translateX(${walkDirection === "right" ? "calc(100vw + 100px)" : "calc(-100vw - 100px)"}) ${
     spawnSide === "left" ? "scaleX(-1)" : ""
   }`;
+
+  // Add vertical oscillation
+  let direction = 5;
+  const oscillate = () => {
+    djig.style.bottom = `${parseInt(djig.style.bottom || 0) + direction * 30}px`;
+    direction *= -1;
+    setTimeout(oscillate, 500);
+  };
+  oscillate();
 
   // Remove DJig after it finishes walking
   djig.addEventListener("transitionend", () => {

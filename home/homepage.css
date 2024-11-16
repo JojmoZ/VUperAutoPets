@@ -878,7 +878,7 @@ section {
   bottom: 10%;
   height: 100px; /* Adjust size as needed */
   z-index: 10;
-  transition: transform 10s linear;
+  transition: transform 10s linear, bottom 1s ease-in-out; /* Changed top to bottom */
 }
 
 .djig.mirrored {
