@@ -1,3 +1,10 @@
+@font-face {
+  font-family: 'VUper';
+  src: url('../assets/LapsusPro-Bold.otf') format('opentype'); 
+}
+*{
+  font-family: 'VUper';
+}
 body::-webkit-scrollbar {
   display: none;
 }
