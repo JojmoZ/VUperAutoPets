@@ -127,28 +127,28 @@ h1::after {
 }
 
 h1:hover::before {
-  color: #bb0000;
+  color: #E6D3E6;
   transform: translate(12px, -12px);
   -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: black;
 }
 
 h1:hover::after {
-  color: #77efff;
+  color: #EEE7E6;
   transform: translate(24px, -24px);
   -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: black;
 }
 
 h1.hover::before {
-  color: #bb0000;
+  color: #E6D3E6;
   transform: translate(12px, -12px);
   -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: black;
 }
 
 h1.hover::after {
-  color: #77efff;
+  color: #EEE7E6;
   transform: translate(24px, -24px);
   -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: black;
