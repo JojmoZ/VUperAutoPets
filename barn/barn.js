@@ -405,7 +405,6 @@ function followPath(animal, path, callback) {
   }
   moveStep();
 }
-
 function drawRestrictedZones() {
   // Clear previously drawn restricted areas
   const existingZones = document.querySelectorAll(".restricted-area");
