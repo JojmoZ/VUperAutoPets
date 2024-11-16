@@ -279,47 +279,89 @@ playOSTButton.addEventListener("mousemove", (e) => {
        }
      });
 const jumbotron = document.querySelector(".jumbotron");
-const djig = document.createElement("img");
-djig.src = "../assets/Animals/DJig.webp"; // Replace with the correct path to DJig image
-djig.classList.add("djig");
-jumbotron.appendChild(djig);
+const trailer = document.querySelector(".trailer");
+const gamedesc = document.querySelector(".game-desc");
+const gamemaker = document.querySelector(".game-maker");
+const ostsec = document.querySelector(".ost-section");
+let djigsrc= "../assets/Animals/DJig.webp"; 
+let liber= "../assets/Animals/Liberian_Husky.webp"; 
+let owlf= "../assets/Animals/owLF.webp"; 
+let ppat= "../assets/Animals/PPat.webp"; 
+let labbik= "../assets/Animals/LabbiK.webp"; 
+// walkPerSection(jumbotron, djigsrc);
+// walkPerSection(trailer, liber);
+// walkPerSection(gamedesc, owlf);
+// walkPerSection(gamemaker, ppat);
+// walkPerSection(ostsec, labbik);
+function walkPerSection(section, animal) {
+  const animalImg = document.createElement("img");
+  animalImg.src = animal;
+  animalImg.classList.add("animalWalk");
+  section.appendChild(animalImg);
+  const spawnSide = Math.random() < 0.5 ? "left" : "right";
+  animalImg.style[spawnSide] = "-100px";
+  if (spawnSide === "left") {
+    animalImg.style.transform = "scaleX(-1)"; // Mirror horizontally
+  }
+  
+  const walkDirection = spawnSide === "left" ? "right" : "left";
+  
+  // Animate DJig's walk across the screen with up and down motion
+  setTimeout(() => {
+    animalImg.style.transition = "transform 10s linear, bottom 1s ease-in-out";
+    animalImg.style.transform = `translateX(${
+      walkDirection === "right" ? "calc(100vw + 100px)" : "calc(-100vw - 100px)"
+    }) ${spawnSide === "left" ? "scaleX(-1)" : ""}`;
+  
+    // Add vertical oscillation
+    let direction = 4;
+    const oscillate = () => {
+      animalImg.style.bottom = `${
+        parseInt(animalImg.style.bottom || 0) + direction * 35
+      }px`;
+      direction *= -1;
+      setTimeout(oscillate, 500);
+    };
+    oscillate();
+  
+    // Remove DJig after it finishes walking
+    animalImg.addEventListener("transitionend", () => {
+      animalImg.remove();
+    });
+  }, 1000);
+     }
 
-// Determine the side to spawn on and set its position
-const spawnSide = Math.random() < 0.5 ? "left" : "right";
-djig.style[spawnSide] = "-100px"; // Start off-screen
-console.log(spawnSide);
 
 // Apply mirroring only if spawned on the left
-if (spawnSide === "left") {
-  djig.style.transform = "scaleX(-1)"; // Mirror horizontally
-}
 
 // Set the destination position
-const walkDirection = spawnSide === "left" ? "right" : "left";
 
-// Animate DJig's walk across the screen with up and down motion
-setTimeout(() => {
-  djig.style.transition = "transform 10s linear, bottom 1s ease-in-out";
-  djig.style.transform = `translateX(${walkDirection === "right" ? "calc(100vw + 100px)" : "calc(-100vw - 100px)"}) ${
-    spawnSide === "left" ? "scaleX(-1)" : ""
-  }`;
+const sections = [
+  { element: document.querySelector(".jumbotron"), animal: djigsrc },
+  { element: document.querySelector(".trailer"), animal: liber },
+  { element: document.querySelector(".game-desc"), animal: owlf },
+  { element: document.querySelector(".game-maker"), animal: ppat },
+  { element: document.querySelector(".ost-section"), animal: labbik },
+];
 
-  // Add vertical oscillation
-  let direction = 5;
-  const oscillate = () => {
-    djig.style.bottom = `${parseInt(djig.style.bottom || 0) + direction * 30}px`;
-    direction *= -1;
-    setTimeout(oscillate, 500);
-  };
-  oscillate();
+const sectionObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const section = sections.find((sec) => sec.element === entry.target);
+        if (section) {
+          walkPerSection(section.element, section.animal);
+          sectionObserver.unobserve(entry.target); // Stop observing once triggered
+        }
+      }
+    });
+  },
+  { threshold: 0.5 }
+);
 
-  // Remove DJig after it finishes walking
-  djig.addEventListener("transitionend", () => {
-    djig.remove();
-  });
-}, 1000);
-}
-
+sections.forEach((section) => {
+  sectionObserver.observe(section.element);
+});
 
 track = document.getElementById("maps");
 const handleOnDown = (e) => {
@@ -375,3 +417,4 @@ window.ontouchend = (e) => handleOnUp(e.touches[0]);
 window.onmousemove = (e) => handleOnMove(e);
 
 window.ontouchmove = (e) => handleOnMove(e.touches[0]);
+}
