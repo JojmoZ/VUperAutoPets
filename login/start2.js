@@ -259,6 +259,36 @@ window.onload = function () {
       setTimeout(() => successModal.remove(), 500);
     }, 5000);
   }
+    const toggleButtons = document.querySelectorAll(".toggle-password");
+
+    toggleButtons.forEach((button) => {
+      const targetInput = document.getElementById(button.dataset.target);
+
+      // Hide the button initially
+      button.style.visibility = "hidden";
+
+      // Add an event listener to show the button when text is entered
+      targetInput.addEventListener("input", () => {
+        if (targetInput.value) {
+          button.style.visibility = "visible";
+        } else {
+          button.style.visibility = "hidden";
+        }
+      });
+
+      // Add the click event listener for toggling password visibility
+      button.addEventListener("click", () => {
+        const img = button.querySelector("img");
+
+        if (targetInput.type === "password") {
+          targetInput.type = "text";
+          img.src = "../assets/hide.png"; // Change to hide icon
+        } else {
+          targetInput.type = "password";
+          img.src = "../assets/eye.png"; // Change back to eye icon
+        }
+      });
+    });
   loginForm.addEventListener("submit", function (e) {
     e.preventDefault();
     const username = document.getElementById("loginUsername").value;

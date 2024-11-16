@@ -23,20 +23,45 @@
                 <div class="content">
                     <form id="registrationForm" style="display: none;">
                         <p class="title">Register Your Account</p>
-                        <input type="text" id="registerUsername" placeholder="Enter your username">
-                        <input type="password" id="registerPassword" placeholder="Enter your password">
-                        <input type="password" id="confirmPassword" placeholder="Confirm your password">
+                        <div class="input-group">
+                            <input class="input" type="text" id="registerUsername" name="username" required autocomplete="off">
+                            <label class="label" for="registerUsername">Username</label>
+                        </div>
+                        <div class="input-group">
+                            <input class="input" type="password" id="registerPassword" name="password" required autocomplete="off">
+                            <label class="label" for="registerPassword">Password</label>
+                            <button type="button" class="toggle-password" data-target="registerPassword">
+                                <img src="../assets/eye.png" alt="Toggle Visibility">
+                            </button>
+                        </div>
+                        <div class="input-group">
+                            <input class="input" type="password" id="confirmPassword" name="confirmPassword" required autocomplete="off">
+                            <label class="label" for="confirmPassword">Confirm Password</label>
+                            <button type="button" class="toggle-password" data-target="confirmPassword">
+                                <img src="../assets/eye.png" alt="Toggle Visibility">
+                            </button>
+                        </div>
                         <p id="registerError" class="error"></p>
                         <input type="submit" value="Register">
                     </form>
-
+                    
                     <form id="loginForm" style="display: none;">
                         <p class="title">Login to Your Account</p>
-                        <input type="text" id="loginUsername" placeholder="Enter your username">
-                        <input type="password" id="loginPassword" placeholder="Enter your password">
+                        <div class="input-group">
+                            <input class="input" type="text" id="loginUsername" name="username" required autocomplete="off">
+                            <label class="label" for="loginUsername">Username</label>
+                        </div>
+                        <div class="input-group">
+                            <input class="input" type="password" id="loginPassword" name="password" required autocomplete="off">
+                            <label class="label" for="loginPassword">Password</label>
+                            <button type="button" class="toggle-password" data-target="loginPassword">
+                                <img src="../assets/eye.png" alt="Toggle Visibility">
+                            </button>
+                        </div>
                         <p id="loginError" class="error"></p>
                         <input type="submit" value="Login">
                     </form>
+
                 </div>
             </div>
         </div>
