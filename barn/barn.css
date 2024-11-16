@@ -1,3 +1,7 @@
+@font-face {
+  font-family: 'VUper';
+  src: url('../assets/LapsusPro-Bold.otf') format('opentype'); 
+}
 html,
 body {
   margin: 0;
