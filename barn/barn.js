@@ -10,9 +10,12 @@ const restrictedZones = [
   { x: 0, y: 0, width: 1920, height: 90 },
   { x: 1850, y: 0, width: 70, height: 1080 },
   { x: 1410, y: 60, width: 245, height: 70 },
-  { x: 1635, y: 140, width: 14, height: 140 },
-  { x: 1620, y: (140+140), width: 70, height: 100 },
+  { x: 1635, y: 150, width: 14, height: 140 },
+  { x: 1610, y: (140+140), width: (1920-1610), height: 100 },
+  { x: 1169, y: (140+140), width: 250, height: 100 },
   { x: 1635, y: (140+90), width: (1920-1635), height: 50 },
+  { x: 1169, y: (140+90), width: 245, height: 50 },
+  { x: (1169+225), y: 150, width: 16, height: 100 },
   { x: 0, y: 0, width: 320, height: 230 },
   { x: 390, y: 0, width: 420, height: 230 },
   { x: 915, y: 0, width: 245, height: 320 },
@@ -306,6 +309,7 @@ function createFood(event) {
   foodElement.style.width = "1.25rem"; // Use relative unit
   foodElement.style.height = "1.25rem"; // Use relative unit
   foodElement.style.backgroundColor = "yellow";
+  // foodElement.style.backgroundImage = '../assets/Pizza.webp'
   foodElement.style.borderRadius = "50%";
   foodElement.style.left = `${foodX}px`;
   foodElement.style.top = `${foodY}px`;
