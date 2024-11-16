@@ -13,9 +13,14 @@ const restrictedZones = [
   { x: 1635, y: 150, width: 14, height: 140 },
   { x: 1610, y: (140+140), width: (1920-1610), height: 100 },
   { x: 1169, y: (140+140), width: 250, height: 100 },
-  { x: 969, y: (140+140), width: 120, height: 100 },
-  { x: 400, y: 140, width: 250, height: 100 },
-  { x: 890, y: 220, width: 250, height: 100 },
+  { x: 969, y: (140+140), width: 120, height: 100 }, 
+  { x: 949, y: 260, width: 120, height: 100 }, 
+  { x: 929, y: 240, width: 120, height: 100 }, 
+  { x: 400, y: 140, width: 120, height: 100 }, //this one 
+  { x: 420, y: 160, width: 120, height: 100 }, //this one 
+  { x: 440, y: 180, width: 120, height: 100 }, //this one 
+  { x: 460, y: 200, width: 120, height: 100 }, //this one 
+  { x: 890, y: 220, width: 100, height: 100 },
   { x: 1635, y: (140+90), width: (1920-1635), height: 50 },
   { x: 1169, y: (140+90), width: 245, height: 50 },
   { x: (1169+225), y: 150, width: 16, height: 100 },
