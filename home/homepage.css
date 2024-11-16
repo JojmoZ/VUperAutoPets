@@ -839,7 +839,7 @@ section {
 }
 
 .username {
-  color: hsl(50 70% 47%); /* Set the username color to yellow */
+  color: hsl(50 70% 47%); 
 }
 
 #cursor {
