@@ -191,15 +191,18 @@ let isPlaying = false;
       
       const barHeight =
         (Math.pow(dataArray[i], 3) / 210 ** 2) * barHeightFactor;
-      const color = `rgb(253, ${250 * (i / bufferLength)}, 50)`;
+      const color = `rgba(203, ${50 + (dataArray[i] / 255) * 205}, 36, 0.8)`; // Even more orange shade
 
-      const barYPosition = canvasHeight / 1.6; 
+      const barYPosition = canvasHeight / 1.6;
 
       canvasCtx.fillStyle = color;
       canvasCtx.fillRect(x, barYPosition - barHeight, barWidth, barHeight);
 
-      canvasCtx.fillStyle = `rgba(103, ${250 * (i / bufferLength)}, 50, 0.5)`; 
+      canvasCtx.fillStyle = `rgba(203, ${
+        50 + (dataArray[i] / 255) * 205
+      }, 36, 0.5)`; // Updated reflection color
       canvasCtx.fillRect(x, barYPosition, barWidth, barHeight);
+
 
       x += barWidth + 1; 
     }
@@ -238,23 +241,28 @@ playOSTButton.addEventListener("mousemove", (e) => {
 };
 
 track = document.getElementById("maps");
-const handleOnDown = (e) => (track.dataset.mouseDownAt = e.clientX);
+const handleOnDown = (e) => {
+  track.dataset.mouseDownAt = e.clientX;
+};
 
 const handleOnUp = () => {
   track.dataset.mouseDownAt = "0";
-  track.dataset.prevPercentage = track.dataset.percentage;
+  track.dataset.prevPercentage = track.dataset.percentage || "0";
 };
 
 const handleOnMove = (e) => {
   if (track.dataset.mouseDownAt === "0") return;
 
-  const mouseDelta = parseFloat(track.dataset.mouseDownAt) - e.clientX,
-    maxDelta = window.innerWidth / 2;
+  const mouseDownAt = parseFloat(track.dataset.mouseDownAt);
+  const prevPercentage = parseFloat(track.dataset.prevPercentage);
+  if (isNaN(mouseDownAt) || isNaN(prevPercentage)) return;
 
-  const percentage = (mouseDelta / maxDelta) * -100,
-    nextPercentageUnconstrained =
-      parseFloat(track.dataset.prevPercentage) + percentage,
-    nextPercentage = Math.max(Math.min(nextPercentageUnconstrained, 0), -100);
+  const mouseDelta = mouseDownAt - e.clientX;
+  const maxDelta = window.innerWidth / 2;
+
+  const percentage = (mouseDelta / maxDelta) * -100;
+  const nextPercentageUnconstrained = prevPercentage + percentage;
+  const nextPercentage = Math.max(Math.min(nextPercentageUnconstrained, 0), -100);
 
   track.dataset.percentage = nextPercentage;
 
