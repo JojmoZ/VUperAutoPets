@@ -708,3 +708,6 @@ section {
   transform: translate(0%, -50%); 
   user-select: none; 
 }
+.map-section{
+  background-color: #333;
+}
