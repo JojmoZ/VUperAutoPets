@@ -624,8 +624,8 @@ section {
 }
 
 .play-ost-button img {
-  width: 100%;
-  height: 100%;
+  width: 40px; /* Increased size */
+  height: 40px; /* Increased size */
   transition: transform 0.3s ease;
 }
 
@@ -723,14 +723,14 @@ section {
 }
 .btn {
   all: unset;
-  font-size: 24px; /* Adjust for text size */
+  font-size: 28px; /* Increased font size */
   background: hsl(0, 0%, 0%);
   color: white;
   text-transform: uppercase;
   position: relative;
   border-radius: 50px; /* Rounded corners for the rectangle */
   cursor: pointer;
-  padding: 14px 52px; /* Padding for rectangular shape */
+  padding: 18px 60px; /* Increased padding */
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -761,8 +761,8 @@ section {
 }
 
 .btn > span > img {
-  width: 20px; /* Icon size */
-  height: 20px; /* Icon size */
+  width: 1.75rem; /* Icon size */
+  height: 1.75rem; /* Icon size */
   position: relative;
   transition: transform 0.25s ease;
 }
