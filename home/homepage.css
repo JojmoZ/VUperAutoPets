@@ -355,6 +355,17 @@ text {
   will-change: opacity, transform;
 }
 
+.fade-in-element {
+  opacity: 0;
+  transform: translateY(20px); /* Initial state for fade-in effect */
+  transition: opacity 1s ease, transform 1s ease; /* Ensure smooth transition */
+}
+
+.fade-in-element.visible {
+  opacity: 1;
+  transform: translateY(0); /* Final state for fade-in effect */
+}
+
 .visible {
   opacity: 1 !important;
   transform: translateY(0) !important;
