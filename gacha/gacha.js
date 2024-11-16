@@ -119,10 +119,120 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function checkThreeOfAKind(animal1, animal2, animal3) {
     if (animal1.name === animal2.name && animal2.name === animal3.name) {
-      alert(`Congratulations! You got three ${animal1.name}s!`);
+      // alert(`Congratulations! You got three ${animal1.name}s!`);
       addToOwnedAnimals(animal1);
+      showFireworks(); // Show fireworks on win
     }
   }
+
+function showFireworks() {
+  const fireworksContainer = document.getElementById("fireworks-container");
+  fireworksContainer.style.display = "block";
+
+  for (let i = 0; i < 10; i++) {
+    // Create firework from bottom-left
+    const fireworkLeft = document.createElement("div");
+    fireworkLeft.classList.add("firework");
+    fireworkLeft.style.backgroundColor = getRandomRGBColor();
+    fireworkLeft.style.boxShadow = `0 0 15px 5px ${getRandomRGBColor()}`;
+    fireworksContainer.appendChild(fireworkLeft);
+
+    // Animate from the bottom-left
+    animateFirework(fireworkLeft, true);
+
+    // Create firework from bottom-right
+    const fireworkRight = document.createElement("div");
+    fireworkRight.classList.add("firework");
+    fireworkRight.style.backgroundColor = getRandomRGBColor();
+    fireworkRight.style.boxShadow = `0 0 15px 5px ${getRandomRGBColor()}`;
+    fireworksContainer.appendChild(fireworkRight);
+
+    // Animate from the bottom-right
+    animateFirework(fireworkRight, false);
+  }
+
+  setTimeout(() => {
+    fireworksContainer.style.display = "none";
+    while (fireworksContainer.firstChild) {
+      fireworksContainer.removeChild(fireworksContainer.firstChild);
+    }
+  }, 5000); // Show fireworks for 5 seconds
+}
+
+
+
+function animateFirework(firework, isLeft) {
+  const animationDuration = 1.5 + Math.random() * 0.5; // Duration between 1.5s and 2s
+  const apexHeight = 600; // Firework height in pixels
+
+  // Set initial position explicitly
+  firework.style.position = "absolute";
+  firework.style.bottom = "0px"; // Start at the bottom
+  firework.style.left = isLeft
+    ? `${Math.random() * 20}vw` // Random position within 20vw on the left
+    : `${80 + Math.random() * 20}vw`; // Random position within 20vw on the right
+
+  // Animate to the apex
+  setTimeout(() => {
+    firework.style.transition = `all ${animationDuration}s ease-out`;
+    firework.style.bottom = `${apexHeight}px`; // Move upward
+  }, 50); // Allow time for the DOM to render the initial position
+
+  // Trigger explosion at the apex
+  setTimeout(() => {
+    const fireworkRect = firework.getBoundingClientRect();
+    createExplosion(fireworkRect.left, fireworkRect.top);
+
+    // Remove the firework element
+    if (firework.parentNode) {
+      firework.parentNode.removeChild(firework);
+    }
+  }, animationDuration * 1000); // Trigger after animation ends
+}
+
+
+function createExplosion(apexLeft, apexTop) {
+  const fireworksContainer = document.getElementById("fireworks-container");
+
+  for (let i = 0; i < 15; i++) {
+    const particle = document.createElement("div");
+    particle.classList.add("firework-particle");
+
+    // Position particle at the apex
+    particle.style.left = `${apexLeft}px`;
+    particle.style.top = `${apexTop}px`;
+
+    // Randomly calculate explosion direction and distance
+    const randomX = Math.random() * 100 - 50; // Random value between -50 and 50
+    const randomY = Math.random() * 100 - 50; // Random value between -50 and 50
+
+    // Use inline styles to set random transform for the explosion
+    particle.style.setProperty("--particle-x", `${randomX}px`);
+    particle.style.setProperty("--particle-y", `${randomY}px`);
+
+    // Assign random colors
+    particle.style.backgroundColor = getRandomRGBColor();
+    particle.style.boxShadow = `0 0 10px 5px ${getRandomRGBColor()}`;
+
+    // Append particle to container
+    fireworksContainer.appendChild(particle);
+
+    // Remove particle after animation ends
+    particle.addEventListener("animationend", () => {
+      if (particle.parentNode) particle.parentNode.removeChild(particle);
+    });
+  }
+}
+
+
+function getRandomRGBColor() {
+  const r = Math.floor(Math.random() * 256);
+  const g = Math.floor(Math.random() * 256);
+  const b = Math.floor(Math.random() * 256);
+  return `rgb(${r}, ${g}, ${b})`;
+}
+
+
 
   function addToOwnedAnimals(animal) {
     let ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals")) || [];
