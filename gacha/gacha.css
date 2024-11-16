@@ -139,6 +139,20 @@ h1:hover::after {
   -webkit-text-stroke-color: black;
 }
 
+h1.hover::before {
+  color: #bb0000;
+  transform: translate(12px, -12px);
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
+}
+
+h1.hover::after {
+  color: #77efff;
+  transform: translate(24px, -24px);
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
+}
+
 .fireworks-container {
   display: none;
   position: fixed;

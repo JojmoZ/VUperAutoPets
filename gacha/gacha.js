@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const slot1 = document.getElementById("slot1");
   const slot2 = document.getElementById("slot2");
   const slot3 = document.getElementById("slot3");
-
+  const h1Element = document.querySelector("h1[data-text='Try Your Luck!']");
   let shopAnimals = [];
 
   // Load shop animals from JSON
@@ -127,6 +127,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function showFireworks() {
   const fireworksContainer = document.getElementById("fireworks-container");
+  const originalText = h1Element.innerText;
+  h1Element.innerText = "YOU WIN!";
+  h1Element.setAttribute("data-text", "YOU WIN!");
   fireworksContainer.style.display = "block";
 
   // Function to launch a single round of fireworks
@@ -162,13 +165,21 @@ function showFireworks() {
     launchFireworksRound();
   }, 2000); // Delay of 4 seconds between rounds
 
-  // Reset the fireworks container after all rounds are done
+  // Trigger h1 hover effect once after 500 milliseconds
+  setTimeout(() => {
+    h1Element.classList.add("hover");
+  }, 500);
+
+  // Reset the fireworks container and stop hover effect after all rounds are done
   setTimeout(() => {
     fireworksContainer.style.display = "none";
     while (fireworksContainer.firstChild) {
       fireworksContainer.removeChild(fireworksContainer.firstChild);
     }
-  }, 7000); // Adjust this to cover both rounds and their animations
+    h1Element.classList.remove("hover"); // Ensure hover effect is removed
+    h1Element.innerText = originalText; // Reset text to original
+    h1Element.setAttribute("data-text", originalText); // Reset data-text attribute to original
+  }, 5000); // Adjust this to cover both rounds and their animations
 }
 
 
@@ -259,8 +270,13 @@ function getRandomRGBColor() {
 
   function addToOwnedAnimals(animal) {
     let ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals")) || [];
-    ownedAnimals.push(animal);
-    localStorage.setItem("ownedAnimals", JSON.stringify(ownedAnimals));
+    const alreadyOwned = ownedAnimals.some((ownedAnimal) => ownedAnimal.name === animal.name);
+
+    if (!alreadyOwned) {
+      ownedAnimals.push(animal);
+      localStorage.setItem("ownedAnimals", JSON.stringify(ownedAnimals));
+    } else {
+    }
   }
 
   function getRandomAnimal() {
