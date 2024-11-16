@@ -58,7 +58,7 @@ window.onload = function () {
         }
       });
     },
-    { threshold: 0.3 } 
+    { threshold: 0.5 } 
   );
 
   fadeInElements.forEach((element) => {
