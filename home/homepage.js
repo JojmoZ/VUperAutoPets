@@ -24,6 +24,7 @@ window.onload = function () {
         const currWord = words[currWordIndex];
         let isTag = false;
 
+        // Typewriter effect to display the current word
         for (let i = 0; i < currWord.length; i++) {
           if (currWord[i] === '<') isTag = true;
           if (currWord[i] === '>') isTag = false;
@@ -33,6 +34,15 @@ window.onload = function () {
         }
 
         await sleep(3000); // Increased interval between greetings
+
+        // Typewriter effect to delete the current word
+        for (let i = currWord.length; i >= 0; i--) {
+          if (currWord[i] === '>') isTag = true;
+          if (currWord[i] === '<') isTag = false;
+
+          el.innerHTML = currWord.substring(0, i);
+          if (!isTag) await sleep(sleepTime);
+        }
 
         let nextWordIndex;
         do {
