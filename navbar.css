@@ -31,15 +31,58 @@ body::-webkit-scrollbar {
   margin: auto;
 }
 
+.nav-item {
+  position: relative;
+  display: inline-block;
+  margin: 0 10px;
+  overflow: hidden;
+  border-radius: 10px; /* Rounded edges for the box */
+}
+
+.nav-item .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: white;
+  transform: scaleY(0); /* Collapse vertically */
+  transform-origin: center; /* Start expansion from the center */
+  transition: transform 0.3s ease-in-out;
+  z-index: -1;
+}
+
+.nav-item:hover .overlay {
+  transform: scaleY(1); /* Expands the overlay vertically on hover */
+}
+
 .navbar-left a {
+  display: block;
+  padding: 10px 20px;
+  font-size: 1.2em;
+  font-weight: bold;
   color: white;
   text-decoration: none;
-  font-size: 1.2em;
-  transition: color 0.3s;
+  transition: color 0.3s ease-in-out;
+  position: relative;
 }
+
+.navbar-left a.active {
+  color: hsl(50, 70%, 47%); /* Orange text for active page */
+}
+
 .navbar-left a:hover {
-  color: #febd01;
+  color: hsl(50, 70%, 47%); /* Orange text when hovered */
 }
+
+.navbar-left a.active:hover {
+  color: white; /* Text turns white when hovering over the active page */
+}
+
+.navbar-left a.active:hover ~ .overlay {
+  background: hsl(50, 70%, 47%); /* Orange overlay for active page */
+}
+
 .navbar-right {
   display: flex;
   align-items: center;
