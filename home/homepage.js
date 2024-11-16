@@ -278,7 +278,39 @@ playOSTButton.addEventListener("mousemove", (e) => {
          isPlaying = false;
        }
      });
-};
+const jumbotron = document.querySelector(".jumbotron");
+const djig = document.createElement("img");
+djig.src = "../assets/Animals/DJig.webp"; // Replace with the correct path to DJig image
+djig.classList.add("djig");
+jumbotron.appendChild(djig);
+
+// Determine the side to spawn on and set its position
+const spawnSide = Math.random() < 0.5 ? "left" : "right";
+djig.style[spawnSide] = "-100px"; // Start off-screen
+console.log(spawnSide);
+
+// Apply mirroring only if spawned on the left
+if (spawnSide === "left") {
+  djig.style.transform = "scaleX(-1)"; // Mirror horizontally
+}
+
+// Set the destination position
+const walkDirection = spawnSide === "left" ? "right" : "left";
+
+// Animate DJig's walk across the screen
+setTimeout(() => {
+  djig.style.transition = "transform 10s linear";
+  djig.style.transform = `translateX(${walkDirection === "right" ? "calc(100vw + 100px)" : "calc(-100vw - 100px)"}) ${
+    spawnSide === "left" ? "scaleX(-1)" : ""
+  }`;
+
+  // Remove DJig after it finishes walking
+  djig.addEventListener("transitionend", () => {
+    djig.remove();
+  });
+}, 1000);
+}
+
 
 track = document.getElementById("maps");
 const handleOnDown = (e) => {

@@ -872,3 +872,23 @@ section {
     opacity: 0;
   }
 }
+
+.djig {
+  position: absolute;
+  bottom: 10%;
+  height: 100px; /* Adjust size as needed */
+  z-index: 10;
+  transition: transform 10s linear;
+}
+
+.djig.mirrored {
+  transform: scaleX(-1); /* Mirror the image horizontally */
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
