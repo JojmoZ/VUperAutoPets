@@ -129,41 +129,61 @@ function showFireworks() {
   const fireworksContainer = document.getElementById("fireworks-container");
   fireworksContainer.style.display = "block";
 
-  for (let i = 0; i < 10; i++) {
-    // Create firework from bottom-left
-    const fireworkLeft = document.createElement("div");
-    fireworkLeft.classList.add("firework");
-    fireworkLeft.style.backgroundColor = getRandomRGBColor();
-    fireworkLeft.style.boxShadow = `0 0 15px 5px ${getRandomRGBColor()}`;
-    fireworksContainer.appendChild(fireworkLeft);
+  // Function to launch a single round of fireworks
+  function launchFireworksRound() {
+    for (let i = 0; i < 10; i++) {
+      // Create firework from bottom-left
+      const fireworkLeft = document.createElement("div");
+      fireworkLeft.classList.add("firework");
+      fireworkLeft.style.backgroundColor = getRandomRGBColor();
+      fireworkLeft.style.boxShadow = `0 0 15px 5px ${getRandomRGBColor()}`;
+      fireworksContainer.appendChild(fireworkLeft);
 
-    // Animate from the bottom-left
-    animateFirework(fireworkLeft, true);
+      // Animate from the bottom-left
+      animateFirework(fireworkLeft, true);
 
-    // Create firework from bottom-right
-    const fireworkRight = document.createElement("div");
-    fireworkRight.classList.add("firework");
-    fireworkRight.style.backgroundColor = getRandomRGBColor();
-    fireworkRight.style.boxShadow = `0 0 15px 5px ${getRandomRGBColor()}`;
-    fireworksContainer.appendChild(fireworkRight);
+      // Create firework from bottom-right
+      const fireworkRight = document.createElement("div");
+      fireworkRight.classList.add("firework");
+      fireworkRight.style.backgroundColor = getRandomRGBColor();
+      fireworkRight.style.boxShadow = `0 0 15px 5px ${getRandomRGBColor()}`;
+      fireworksContainer.appendChild(fireworkRight);
 
-    // Animate from the bottom-right
-    animateFirework(fireworkRight, false);
+      // Animate from the bottom-right
+      animateFirework(fireworkRight, false);
+    }
   }
 
+  // Launch the first round of fireworks
+  launchFireworksRound();
+
+  // Launch the second round after a delay
+  setTimeout(() => {
+    launchFireworksRound();
+  }, 2000); // Delay of 4 seconds between rounds
+
+  // Reset the fireworks container after all rounds are done
   setTimeout(() => {
     fireworksContainer.style.display = "none";
     while (fireworksContainer.firstChild) {
       fireworksContainer.removeChild(fireworksContainer.firstChild);
     }
-  }, 5000); // Show fireworks for 5 seconds
+  }, 7000); // Adjust this to cover both rounds and their animations
 }
-
 
 
 function animateFirework(firework, isLeft) {
   const animationDuration = 1.5 + Math.random() * 0.5; // Duration between 1.5s and 2s
-  const apexHeight = 600; // Firework height in pixels
+  const randomHeight = 400 + Math.random() * 300; // Random height between 400px and 700px
+  const screenWidth = window.innerWidth;
+
+  // Define the center region as a random range (e.g., middle 40% of the screen)
+  const centerStart = screenWidth * 0.3; // 30% from the left
+  const centerEnd = screenWidth * 0.7; // 70% from the left
+  const targetLeft = Math.random() * (centerEnd - centerStart) + centerStart;
+
+  // Add randomness to the diagonal tilt (e.g., how much it leans towards the center)
+  const tiltOffset = (Math.random() - 0.5) * 100; // Random offset between -50 and 50 pixels
 
   // Set initial position explicitly
   firework.style.position = "absolute";
@@ -172,10 +192,11 @@ function animateFirework(firework, isLeft) {
     ? `${Math.random() * 20}vw` // Random position within 20vw on the left
     : `${80 + Math.random() * 20}vw`; // Random position within 20vw on the right
 
-  // Animate to the apex
+  // Animate to the apex diagonally with added randomness
   setTimeout(() => {
     firework.style.transition = `all ${animationDuration}s ease-out`;
-    firework.style.bottom = `${apexHeight}px`; // Move upward
+    firework.style.bottom = `${randomHeight}px`; // Random climb height
+    firework.style.left = `${targetLeft + tiltOffset}px`; // Randomly adjust the tilt
   }, 50); // Allow time for the DOM to render the initial position
 
   // Trigger explosion at the apex
@@ -189,6 +210,8 @@ function animateFirework(firework, isLeft) {
     }
   }, animationDuration * 1000); // Trigger after animation ends
 }
+
+
 
 
 function createExplosion(apexLeft, apexTop) {
