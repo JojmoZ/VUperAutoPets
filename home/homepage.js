@@ -288,12 +288,10 @@ let liber= "../assets/Animals/Liberian_Husky.webp";
 let owlf= "../assets/Animals/owLF.webp"; 
 let ppat= "../assets/Animals/PPat.webp"; 
 let labbik= "../assets/Animals/LabbiK.webp"; 
-// walkPerSection(jumbotron, djigsrc);
-// walkPerSection(trailer, liber);
-// walkPerSection(gamedesc, owlf);
-// walkPerSection(gamemaker, ppat);
-// walkPerSection(ostsec, labbik);
+
 function walkPerSection(section, animal) {
+  if (section.querySelector(".animalWalk")) return; // Ensure only one animal at a time
+
   const animalImg = document.createElement("img");
   animalImg.src = animal;
   animalImg.classList.add("animalWalk");
@@ -303,17 +301,15 @@ function walkPerSection(section, animal) {
   if (spawnSide === "left") {
     animalImg.style.transform = "scaleX(-1)"; // Mirror horizontally
   }
-  
+
   const walkDirection = spawnSide === "left" ? "right" : "left";
-  
-  // Animate DJig's walk across the screen with up and down motion
+
   setTimeout(() => {
     animalImg.style.transition = "transform 10s linear, bottom 1s ease-in-out";
     animalImg.style.transform = `translateX(${
       walkDirection === "right" ? "calc(100vw + 100px)" : "calc(-100vw - 100px)"
     }) ${spawnSide === "left" ? "scaleX(-1)" : ""}`;
-  
-    // Add vertical oscillation
+
     let direction = 4;
     const oscillate = () => {
       animalImg.style.bottom = `${
@@ -323,18 +319,12 @@ function walkPerSection(section, animal) {
       setTimeout(oscillate, 500);
     };
     oscillate();
-  
-    // Remove DJig after it finishes walking
+
     animalImg.addEventListener("transitionend", () => {
       animalImg.remove();
     });
   }, 1000);
-     }
-
-
-// Apply mirroring only if spawned on the left
-
-// Set the destination position
+}
 
 const sections = [
   { element: document.querySelector(".jumbotron"), animal: djigsrc },
@@ -352,6 +342,13 @@ const sectionObserver = new IntersectionObserver(
         if (section) {
           walkPerSection(section.element, section.animal);
           sectionObserver.unobserve(entry.target); // Stop observing once triggered
+
+          // Set up interval for 20% chance of spawning the animal every second
+          setInterval(() => {
+            if (Math.random() < 0.2) {
+              walkPerSection(section.element, section.animal);
+            }
+          }, 1000);
         }
       }
     });
