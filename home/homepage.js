@@ -9,7 +9,7 @@ window.onload = function () {
       `Bienvenido, <span class="username">${username} </span>!`,
       `Bienvenue, <span class="username">${username} </span>!`,
       `Willkommen, <span class="username">${username} </span>!`,
-      `Benvenuto, <span class="username">${username} </span>!`
+      `Benvenuto, <span class="username">${username} </span>!`,
     ];
 
     const sleepTime = 100;
@@ -25,18 +25,18 @@ window.onload = function () {
         let isTag = false;
 
         for (let i = 0; i < currWord.length; i++) {
-          if (currWord[i] === '<') isTag = true;
-          if (currWord[i] === '>') isTag = false;
+          if (currWord[i] === "<") isTag = true;
+          if (currWord[i] === ">") isTag = false;
 
           el.innerHTML = currWord.substring(0, i + 1);
           if (!isTag) await sleep(sleepTime);
         }
 
-        await sleep(3000); 
+        await sleep(3000);
 
         for (let i = currWord.length; i >= 0; i--) {
-          if (currWord[i] === '>') isTag = true;
-          if (currWord[i] === '<') isTag = false;
+          if (currWord[i] === ">") isTag = true;
+          if (currWord[i] === "<") isTag = false;
 
           el.innerHTML = currWord.substring(0, i);
           if (!isTag) await sleep(sleepTime);
@@ -55,39 +55,45 @@ window.onload = function () {
   } else {
     window.location.href = "/login/start.html";
   }
-   const fadeInElements = document.querySelectorAll(".fade-in-element");
+  const fadeInElements = document.querySelectorAll(".fade-in-element");
   const elementObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting && !entry.target.classList.contains("visible")) {
+        if (
+          entry.isIntersecting &&
+          !entry.target.classList.contains("visible")
+        ) {
           entry.target.classList.add("visible");
-        } else if (!entry.isIntersecting && entry.target.classList.contains("visible")) {
+        } else if (
+          !entry.isIntersecting &&
+          entry.target.classList.contains("visible")
+        ) {
           entry.target.classList.remove("visible");
         }
       });
     },
-    { threshold: 0.5 } 
+    { threshold: 0.5 }
   );
 
   fadeInElements.forEach((element) => {
     elementObserver.observe(element);
   });
-   const sectionTitles = document.querySelectorAll(".section-title");
-   const titleObserver = new IntersectionObserver(
-     (entries) => {
-       entries.forEach((entry) => {
-         if (entry.isIntersecting) {
-           entry.target.classList.add("visible"); 
-         } else {
-           entry.target.classList.remove("visible"); 
-         }
-       });
-     },
-     { threshold: 0.5 } 
-   );
-   sectionTitles.forEach((title) => {
-     titleObserver.observe(title);
-   });
+  const sectionTitles = document.querySelectorAll(".section-title");
+  const titleObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+        } else {
+          entry.target.classList.remove("visible");
+        }
+      });
+    },
+    { threshold: 0.5 }
+  );
+  sectionTitles.forEach((title) => {
+    titleObserver.observe(title);
+  });
   const carouselSection = document.querySelector(".game-maker");
   const carouselImages = [
     "../assets/LogoVUPER.jpg",
@@ -145,7 +151,7 @@ window.onload = function () {
   indicators.forEach((indicator) => {
     indicator.addEventListener("click", function () {
       currentIndex = parseInt(this.dataset.index);
-      stopCarousel(); 
+      stopCarousel();
       updateCarousel();
       startCarousel();
     });
@@ -159,7 +165,7 @@ window.onload = function () {
           startCarousel();
         } else {
           console.log("Carousel is not visible, stopping the carousel timer");
-          stopCarousel(); 
+          stopCarousel();
         }
       });
     },
@@ -190,29 +196,33 @@ window.onload = function () {
   );
   socialMediaObserver.observe(socialMediaSection);
   const gotoplay = document.getElementById("play-button");
+  gotoplay.classList.add("hidden");
+  setTimeout(() => {
+    gotoplay.classList.remove("hidden");
+  }, 2000);
   gotoplay.addEventListener("click", function (e) {
-  checkboughtanimals()
-    if(canPlay){
+    checkboughtanimals();
+    if (canPlay) {
       window.location = "/loading/loading.html";
-    }else{
-      alert(1)
+    } else {
+      ShowModal("You need to have at least 1 animal to play the game!");
     }
   });
 
-let canPlay = false;
-function checkboughtanimals(){
-  const boughtanimals = localStorage.getItem("ownedAnimals");
-  console.log(boughtanimals.length)
-  if (boughtanimals.length ==2){
-    canPlay = false;
-  }else{
-    canPlay = true;
+  let canPlay = false;
+  function checkboughtanimals() {
+    const boughtanimals = localStorage.getItem("ownedAnimals");
+    console.log(boughtanimals.length);
+    if (boughtanimals.length == 2) {
+      canPlay = false;
+    } else {
+      canPlay = true;
+    }
   }
-}
   const audio = document.getElementById("audio");
   const visualization = document.getElementById("visualization");
   const context = new (window.AudioContext || window.webkitAudioContext)();
-let isPlaying = false;
+  let isPlaying = false;
 
   const analyser = context.createAnalyser();
   const source = context.createMediaElementSource(audio);
@@ -227,7 +237,7 @@ let isPlaying = false;
   const canvasHeight = visualization.height;
   const canvasWidth = visualization.width;
   const barWidth = (canvasWidth / bufferLength) * 2.5;
-  const barHeightFactor = 0.4; 
+  const barHeightFactor = 0.4;
   function renderFrame() {
     canvasCtx.clearRect(0, 0, canvasWidth, canvasHeight);
 
@@ -236,10 +246,9 @@ let isPlaying = false;
     let x = 0;
 
     for (let i = 0; i < bufferLength; i++) {
-      
       const barHeight =
         (Math.pow(dataArray[i], 3) / 210 ** 2) * barHeightFactor;
-      const color = `rgba(203, ${50 + (dataArray[i] / 255) * 205}, 36, 0.8)`; 
+      const color = `rgba(203, ${50 + (dataArray[i] / 255) * 205}, 36, 0.8)`;
 
       const barYPosition = canvasHeight / 1.6;
 
@@ -248,11 +257,10 @@ let isPlaying = false;
 
       canvasCtx.fillStyle = `rgba(203, ${
         50 + (dataArray[i] / 255) * 205
-      }, 36, 0.5)`; 
+      }, 36, 0.5)`;
       canvasCtx.fillRect(x, barYPosition, barWidth, barHeight);
 
-
-      x += barWidth + 1; 
+      x += barWidth + 1;
     }
 
     requestAnimationFrame(renderFrame);
@@ -260,159 +268,163 @@ let isPlaying = false;
 
   const playOSTButton = document.getElementById("ost-play-button");
   const buttonIcon = document.getElementById("button-icon");
-playOSTButton.addEventListener("mousemove", (e) => {
-  const rect = playOSTButton.getBoundingClientRect();
+  playOSTButton.addEventListener("mousemove", (e) => {
+    const rect = playOSTButton.getBoundingClientRect();
 
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
 
-  playOSTButton.style.setProperty("--mouseX", `${x}px`);
-  playOSTButton.style.setProperty("--mouseY", `${y}px`);
-});
+    playOSTButton.style.setProperty("--mouseX", `${x}px`);
+    playOSTButton.style.setProperty("--mouseY", `${y}px`);
+  });
 
+  playOSTButton.addEventListener("click", function () {
+    if (!isPlaying) {
+      if (context.state === "suspended") {
+        context.resume();
+      }
+      audio.play();
+      buttonIcon.src = "../assets/pause.png";
+      isPlaying = true;
+      renderFrame();
+    } else {
+      audio.pause();
+      buttonIcon.src = "../assets/playmusic.png";
+      isPlaying = false;
+    }
+  });
+  const jumbotron = document.querySelector(".jumbotron");
+  const trailer = document.querySelector(".trailer");
+  const gamedesc = document.querySelector(".game-desc");
+  const gamemaker = document.querySelector(".game-maker");
+  const ostsec = document.querySelector(".ost-section");
+  let djigsrc = "../assets/Animals/DJig.webp";
+  let liber = "../assets/Animals/Liberian_Husky.webp";
+  let owlf = "../assets/Animals/owLF.webp";
+  let ppat = "../assets/Animals/PPat.webp";
+  let labbik = "../assets/Animals/LabbiK.webp";
 
-     playOSTButton.addEventListener("click", function () {
-       if (!isPlaying) {
-         if (context.state === "suspended") {
-           context.resume();
-         }
-         audio.play();
-         buttonIcon.src = "../assets/pause.png"; 
-         isPlaying = true;
-         renderFrame();
-       } else {
-         audio.pause();
-         buttonIcon.src = "../assets/playmusic.png"; 
-         isPlaying = false;
-       }
-     });
-const jumbotron = document.querySelector(".jumbotron");
-const trailer = document.querySelector(".trailer");
-const gamedesc = document.querySelector(".game-desc");
-const gamemaker = document.querySelector(".game-maker");
-const ostsec = document.querySelector(".ost-section");
-let djigsrc= "../assets/Animals/DJig.webp"; 
-let liber= "../assets/Animals/Liberian_Husky.webp"; 
-let owlf= "../assets/Animals/owLF.webp"; 
-let ppat= "../assets/Animals/PPat.webp"; 
-let labbik= "../assets/Animals/LabbiK.webp"; 
+  function walkPerSection(section, animal) {
+    if (section.querySelector(".animalWalk")) return;
 
-function walkPerSection(section, animal) {
-  if (section.querySelector(".animalWalk")) return; 
+    const animalImg = document.createElement("img");
+    animalImg.src = animal;
+    animalImg.classList.add("animalWalk");
+    section.appendChild(animalImg);
+    const spawnSide = Math.random() < 0.5 ? "left" : "right";
+    animalImg.style[spawnSide] = "-100px";
+    if (spawnSide === "left") {
+      animalImg.style.transform = "scaleX(-1)";
+    }
 
-  const animalImg = document.createElement("img");
-  animalImg.src = animal;
-  animalImg.classList.add("animalWalk");
-  section.appendChild(animalImg);
-  const spawnSide = Math.random() < 0.5 ? "left" : "right";
-  animalImg.style[spawnSide] = "-100px";
-  if (spawnSide === "left") {
-    animalImg.style.transform = "scaleX(-1)"; 
+    const walkDirection = spawnSide === "left" ? "right" : "left";
+
+    setTimeout(() => {
+      animalImg.style.transition =
+        "transform 10s linear, bottom 1s ease-in-out";
+      animalImg.style.transform = `translateX(${
+        walkDirection === "right"
+          ? "calc(100vw + 100px)"
+          : "calc(-100vw - 100px)"
+      }) ${spawnSide === "left" ? "scaleX(-1)" : ""}`;
+
+      let direction = 4;
+      const oscillate = () => {
+        animalImg.style.bottom = `${
+          parseInt(animalImg.style.bottom || 0) + direction * 35
+        }px`;
+        direction *= -1;
+        setTimeout(oscillate, 500);
+      };
+      oscillate();
+
+      animalImg.addEventListener("transitionend", () => {
+        animalImg.remove();
+      });
+    }, 1000);
   }
 
-  const walkDirection = spawnSide === "left" ? "right" : "left";
+  const sections = [
+    { element: document.querySelector(".jumbotron"), animal: djigsrc },
+    { element: document.querySelector(".trailer"), animal: liber },
+    { element: document.querySelector(".game-desc"), animal: owlf },
+    { element: document.querySelector(".game-maker"), animal: ppat },
+    { element: document.querySelector(".ost-section"), animal: labbik },
+  ];
 
-  setTimeout(() => {
-    animalImg.style.transition = "transform 10s linear, bottom 1s ease-in-out";
-    animalImg.style.transform = `translateX(${
-      walkDirection === "right" ? "calc(100vw + 100px)" : "calc(-100vw - 100px)"
-    }) ${spawnSide === "left" ? "scaleX(-1)" : ""}`;
-
-    let direction = 4;
-    const oscillate = () => {
-      animalImg.style.bottom = `${
-        parseInt(animalImg.style.bottom || 0) + direction * 35
-      }px`;
-      direction *= -1;
-      setTimeout(oscillate, 500);
-    };
-    oscillate();
-
-    animalImg.addEventListener("transitionend", () => {
-      animalImg.remove();
-    });
-  }, 1000);
-}
-
-const sections = [
-  { element: document.querySelector(".jumbotron"), animal: djigsrc },
-  { element: document.querySelector(".trailer"), animal: liber },
-  { element: document.querySelector(".game-desc"), animal: owlf },
-  { element: document.querySelector(".game-maker"), animal: ppat },
-  { element: document.querySelector(".ost-section"), animal: labbik },
-];
-
-const sectionObserver = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        const section = sections.find((sec) => sec.element === entry.target);
-        if (section) {
-          walkPerSection(section.element, section.animal);
-          sectionObserver.unobserve(entry.target); 
-          setInterval(() => {
-            if (Math.random() < 0.2) {
-              walkPerSection(section.element, section.animal);
-            }
-          }, 1000);
+  const sectionObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const section = sections.find((sec) => sec.element === entry.target);
+          if (section) {
+            walkPerSection(section.element, section.animal);
+            sectionObserver.unobserve(entry.target);
+            setInterval(() => {
+              if (Math.random() < 0.2) {
+                walkPerSection(section.element, section.animal);
+              }
+            }, 1000);
+          }
         }
-      }
-    });
-  },
-  { threshold: 0.5 }
-);
-
-sections.forEach((section) => {
-  sectionObserver.observe(section.element);
-});
-
-track = document.getElementById("maps");
-const handleOnDown = (e) => {
-  track.dataset.mouseDownAt = e.clientX;
-};
-
-const handleOnUp = () => {
-  track.dataset.mouseDownAt = "0";
-  track.dataset.prevPercentage = track.dataset.percentage || "0";
-};
-
-const handleOnMove = (e) => {
-  if (track.dataset.mouseDownAt === "0") return;
-
-  const mouseDownAt = parseFloat(track.dataset.mouseDownAt);
-  const prevPercentage = parseFloat(track.dataset.prevPercentage);
-  if (isNaN(mouseDownAt) || isNaN(prevPercentage)) return;
-
-  const mouseDelta = mouseDownAt - e.clientX;
-  const maxDelta = window.innerWidth / 2;
-
-  const percentage = (mouseDelta / maxDelta) * -100;
-  const nextPercentageUnconstrained = prevPercentage + percentage;
-  const nextPercentage = Math.max(Math.min(nextPercentageUnconstrained, 0), -100);
-
-  track.dataset.percentage = nextPercentage;
-
-  track.animate(
-    {
-      transform: `translate(${nextPercentage}%, -50%)`,
+      });
     },
-    { duration: 1200, fill: "forwards" }
+    { threshold: 0.5 }
   );
 
-  for (const image of track.getElementsByClassName("image")) {
-    image.animate(
+  sections.forEach((section) => {
+    sectionObserver.observe(section.element);
+  });
+
+  track = document.getElementById("maps");
+  const handleOnDown = (e) => {
+    track.dataset.mouseDownAt = e.clientX;
+  };
+
+  const handleOnUp = () => {
+    track.dataset.mouseDownAt = "0";
+    track.dataset.prevPercentage = track.dataset.percentage || "0";
+  };
+
+  const handleOnMove = (e) => {
+    if (track.dataset.mouseDownAt === "0") return;
+
+    const mouseDownAt = parseFloat(track.dataset.mouseDownAt);
+    const prevPercentage = parseFloat(track.dataset.prevPercentage);
+    if (isNaN(mouseDownAt) || isNaN(prevPercentage)) return;
+
+    const mouseDelta = mouseDownAt - e.clientX;
+    const maxDelta = window.innerWidth / 2;
+
+    const percentage = (mouseDelta / maxDelta) * -100;
+    const nextPercentageUnconstrained = prevPercentage + percentage;
+    const nextPercentage = Math.max(
+      Math.min(nextPercentageUnconstrained, 0),
+      -100
+    );
+
+    track.dataset.percentage = nextPercentage;
+
+    track.animate(
       {
-        objectPosition: `${100 + nextPercentage}% center`,
+        transform: `translate(${nextPercentage}%, -50%)`,
       },
       { duration: 1200, fill: "forwards" }
     );
-  }
-};
-window.onmousedown = (e) => handleOnDown(e);
-window.ontouchstart = (e) => handleOnDown(e.touches[0]);
-window.onmouseup = (e) => handleOnUp(e);
-window.ontouchend = (e) => handleOnUp(e.touches[0]);
-window.onmousemove = (e) => handleOnMove(e);
-window.ontouchmove = (e) => handleOnMove(e.touches[0]);
 
-}
+    for (const image of track.getElementsByClassName("image")) {
+      image.animate(
+        {
+          objectPosition: `${100 + nextPercentage}% center`,
+        },
+        { duration: 1200, fill: "forwards" }
+      );
+    }
+  };
+  window.onmousedown = (e) => handleOnDown(e);
+  window.ontouchstart = (e) => handleOnDown(e.touches[0]);
+  window.onmouseup = (e) => handleOnUp(e);
+  window.ontouchend = (e) => handleOnUp(e.touches[0]);
+  window.onmousemove = (e) => handleOnMove(e);
+  window.ontouchmove = (e) => handleOnMove(e.touches[0]);
+};

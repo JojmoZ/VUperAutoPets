@@ -1,5 +1,5 @@
 :root {
-  --primary: 50 70% 47%; 
+  --primary: 50 70% 47%;
 }
 @font-face {
   font-family: "VUper";
@@ -60,7 +60,7 @@ text {
 
 .jumbotron p {
   font-weight: bold;
-  font-size: 2rem; 
+  font-size: 2rem;
   color: black;
 }
 
@@ -74,8 +74,14 @@ text {
   align-items: center;
   overflow: hidden;
   padding: 0;
-  width: 200px; 
-  height: 60px; 
+  width: 200px;
+  height: 60px;
+  transition: opacity 1s ease;
+}
+
+.play-button.hidden {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .play-button div {
@@ -118,7 +124,7 @@ text {
   bottom: 0;
 }
 .play-button:hover a {
-  color: black; 
+  color: black;
 }
 .play-button span {
   position: absolute;
@@ -357,8 +363,8 @@ text {
 
 .fade-in-element {
   opacity: 0;
-  transform: translateY(20px); 
-  transition: opacity 1s ease, transform 1s ease; 
+  transform: translateY(20px);
+  transition: opacity 1s ease, transform 1s ease;
 }
 
 .fade-in-element.visible {
@@ -528,7 +534,7 @@ text {
 }
 
 .fancy-card:hover::before {
-  background: linear-gradient(145deg, #292743, #292743); 
+  background: linear-gradient(145deg, #292743, #292743);
   opacity: 0.4;
 }
 
@@ -637,8 +643,8 @@ section {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 60px; 
-  height: 60px; 
+  width: 60px;
+  height: 60px;
 }
 
 .play-ost-button img {
@@ -698,11 +704,10 @@ section {
 
 #maps > .image,
 body > .image {
-  transition: all 0.5s ease; 
-  transform: scale(1); 
-  z-index: 0;  
+  transition: all 0.5s ease;
+  transform: scale(1);
+  z-index: 0;
 }
-
 
 #maps {
   display: flex;
@@ -715,26 +720,26 @@ body > .image {
 }
 .btn {
   all: unset;
-  font-size: 28px; 
+  font-size: 28px;
   background: hsl(0, 0%, 0%);
   color: white;
   text-transform: uppercase;
   position: relative;
-  border-radius: 50px; 
+  border-radius: 50px;
   cursor: pointer;
-  padding: 18px 60px; 
+  padding: 18px 60px;
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  z-index: auto; 
+  z-index: auto;
   overflow: visible;
-  width: auto; 
-  height: auto; 
+  width: auto;
+  height: auto;
 }
 
 .btn {
-  overflow: visible; 
-  position: relative; 
+  overflow: visible;
+  position: relative;
 }
 
 .btn > span {
@@ -742,31 +747,31 @@ body > .image {
   justify-content: center;
   align-items: center;
   position: relative;
-  z-index: 11; 
+  z-index: 11;
   transition: color 0.25s ease;
-  gap: 10px; 
+  gap: 10px;
 }
 
 .btn:hover > span {
-  color: hsl(var(--primary) / 1); 
+  color: hsl(var(--primary) / 1);
 }
 
 .btn > span > img {
-  width: 1.75rem; 
-  height: 1.75rem; 
+  width: 1.75rem;
+  height: 1.75rem;
   position: relative;
   transition: transform 0.25s ease;
 }
 
 .btn:hover > span > img {
-  transform: scale(1.2); 
+  transform: scale(1.2);
 }
 
 .btn::before,
 .btn::after {
   content: "";
   position: absolute;
-  inset: -2px; 
+  inset: -2px;
   background-color: inherit;
   border-radius: inherit;
   background-image: conic-gradient(
@@ -777,8 +782,8 @@ body > .image {
     transparent 66%,
     transparent 100%
   );
-  animation: rotate 2s infinite linear; 
-  z-index: -1; 
+  animation: rotate 2s infinite linear;
+  z-index: -1;
 }
 
 .btn::before {
@@ -794,8 +799,8 @@ body > .image {
     transparent 50%
   );
   border-radius: inherit;
-  z-index: 2; 
-  opacity: 0; 
+  z-index: 2;
+  opacity: 0;
   transition: opacity 0.3s ease;
 }
 .jumbotron,
@@ -804,7 +809,7 @@ body > .image {
   overflow: visible;
 }
 .btn:hover .inner {
-  opacity: 1; 
+  opacity: 1;
 }
 
 @keyframes rotate {
@@ -817,7 +822,7 @@ body > .image {
 }
 
 #typewriter {
-  color: black; 
+  color: black;
 }
 
 .username {
@@ -842,13 +847,13 @@ body > .image {
 .animalWalk {
   position: absolute;
   bottom: 10%;
-  height: 100px; 
+  height: 100px;
   z-index: 10;
-  transition: transform 10s linear, bottom 1s ease-in-out; 
+  transition: transform 10s linear, bottom 1s ease-in-out;
 }
 
 .animalWalk.mirrored {
-  transform: scaleX(-1); 
+  transform: scaleX(-1);
 }
 @keyframes fadeIn {
   from {
