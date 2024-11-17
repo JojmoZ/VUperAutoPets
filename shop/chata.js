@@ -1,25 +1,29 @@
-let userInput = "";
-const targetSequenceCoins = "NGULI";
+let cheatCode = "";
+const cheatSequences = {
+  nguli: "500000 Coins",
+};
+let cheatActivated = false;
+let cheatReward = "";
 
-function checkSequence() {
-  if (userInput === targetSequenceCoins) {
-    updateCoinsDisplay();
-    userInput = "";
-  
-  } else if (
-    userInput.length > targetSequenceCoins.length
-  ) {
-    userInput = "";
-  }
-}
 document.addEventListener("keydown", function (event) {
-  userInput += event.key.toUpperCase();
-  checkSequence();
+  cheatCode += event.key.toLowerCase();
+  if (cheatCode.length > 10) {
+    cheatCode = cheatCode.slice(1);
+  }
+  for (const [sequence, reward] of Object.entries(cheatSequences)) {
+    if (cheatCode.endsWith(sequence)) {
+      cheatActivated = true;
+      cheatReward = reward;
+      updateCoinsDisplay();
+      break;
+    }
+  }
 });
+
 function updateCoinsDisplay() {
-    console.log("aaa")
+  console.log("aaa");
   let coins = Number(localStorage.getItem("coins"));
-  coins+=500000;
+  coins += 500000;
   coinsDisplay.textContent = `Coins: ${coins}`;
   localStorage.setItem("coins", coins);
 }
