@@ -10,23 +10,23 @@ const restrictedZones = [
   { x: 0, y: 0, width: 1920, height: 90 },
   { x: 1850, y: 0, width: 70, height: 1080 },
   { x: 1410, y: 60, width: 245, height: 70 },
-  { x: 1635, y: 150, width: 14, height: 140 },
-  { x: 1610, y: (140+140), width: (1920-1610), height: 100 },
-  { x: 1169, y: (140+140), width: 250, height: 100 },
-  { x: 969, y: (140+140), width: 120, height: 100 }, 
-  { x: 949, y: 260, width: 120, height: 100 }, 
-  { x: 929, y: 240, width: 120, height: 100 }, 
-  { x: 400, y: 140, width: 120, height: 100 }, //this one 
-  { x: 420, y: 160, width: 120, height: 100 }, //this one 
-  { x: 440, y: 180, width: 120, height: 100 }, //this one 
-  { x: 460, y: 200, width: 120, height: 100 }, //this one 
+  { x: 1635, y: 160, width: 14, height: 140 },
+  { x: 1610, y: 140 + 140, width: 1920 - 1610, height: 100 },
+  { x: 1169, y: 140 + 140, width: 250, height: 100 },
+  { x: 969, y: 140 + 140, width: 120, height: 100 },
+  { x: 949, y: 260, width: 120, height: 100 },
+  { x: 929, y: 240, width: 120, height: 100 },
+  { x: 400, y: 140, width: 120, height: 100 }, //this one
+  { x: 420, y: 160, width: 120, height: 100 }, //this one
+  { x: 440, y: 180, width: 120, height: 100 }, //this one
+  { x: 460, y: 200, width: 120, height: 100 }, //this one
   { x: 890, y: 220, width: 100, height: 100 },
-  { x: 1635, y: (140+90), width: (1920-1635), height: 50 },
-  { x: 1169, y: (140+90), width: 245, height: 50 },
-  { x: (1169+225), y: 150, width: 16, height: 100 },
+  { x: 1635, y: 140 + 90, width: 1920 - 1635, height: 50 },
+  { x: 1169, y: 140 + 90, width: 245, height: 50 },
+  { x: 1169 + 225, y: 160, width: 16, height: 100 },
   { x: 0, y: 0, width: 320, height: 230 },
-  { x: 390, y: 0, width: 420, height: 230 },
-  { x: 915, y: 0, width: 245, height: 320 },
+  { x: 390, y: 0, width: 440, height: 230 },
+  { x: 915 - 25, y: 0, width: 245 + 25, height: 320 },
   { x: 500, y: 200, width: 330, height: 120 },
   { x: 0, y: 420, width: 445, height: 35 },
   { x: 435, y: 420, width: 15, height: 175 },
@@ -40,7 +40,7 @@ const restrictedZones = [
   { x: 690, y: 835, width: 90, height: 120 },
   { x: 780, y: 835, width: 100, height: 100 },
   { x: 820, y: 935, width: 15, height: 150 },
-  { x: 1350, y: 915, width: (1920-1350), height: 160 },
+  { x: 1350, y: 915, width: 1920 - 1350, height: 160 },
   { x: 800, y: 815, width: 200, height: 60 },
   { x: 890, y: 780, width: 180, height: 70 },
   { x: 970, y: 750, width: 100, height: 70 },
@@ -229,6 +229,67 @@ function isValidCell(row, col) {
   );
 }
 
+function moveOutOfRestrictedZone(animal) {
+  const directions = [
+    [0, 1],
+    [1, 0],
+    [0, -1],
+    [-1, 0],
+    [-1, 1],
+    [-1, -1],
+    [1, 1],
+    [1, -1],
+  ];
+
+  let bestDirection = null;
+  let maxDistance = 0;
+
+  directions.forEach((dir) => {
+    const deltaX = dir[0] * gridSize;
+    const deltaY = dir[1] * gridSize;
+    const newX = parseFloat(animal.style.left) + deltaX;
+    const newY = parseFloat(animal.style.top) + deltaY;
+
+    if (
+      !isInRestrictedZone(newX, newY, animal.offsetWidth, animal.offsetHeight)
+    ) {
+      const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+      if (distance > maxDistance) {
+        maxDistance = distance;
+        bestDirection = { deltaX, deltaY };
+      }
+    }
+  });
+
+  if (!bestDirection) {
+    console.warn(
+      "Animal is stuck in restricted zone and cannot find a way out."
+    );
+    return; // Prevent infinite loops.
+  }
+
+  const duration = 500; // Duration in milliseconds
+  const startX = parseFloat(animal.style.left);
+  const startY = parseFloat(animal.style.top);
+  const endX = startX + bestDirection.deltaX;
+  const endY = startY + bestDirection.deltaY;
+  const startTime = performance.now();
+
+  function animateUnstuck(currentTime) {
+    const elapsedTime = currentTime - startTime;
+    const progress = Math.min(elapsedTime / duration, 1);
+
+    animal.style.left = `${startX + (endX - startX) * progress}px`;
+    animal.style.top = `${startY + (endY - startY) * progress}px`;
+
+    if (progress < 1) {
+      requestAnimationFrame(animateUnstuck);
+    }
+  }
+  requestAnimationFrame(animateUnstuck);
+}
+
+
 function roamAnimal(animal) {
   if (animal.dataset.isMovingToFood === "true") return;
 
@@ -248,16 +309,8 @@ function roamAnimal(animal) {
     animalContainer.clientHeight - animal.offsetHeight / 2
   );
 
-  // Check if the new position is within a restricted zone
-  if (
-    isInRestrictedZone(
-      endX - animal.offsetWidth / 2,
-      endY - animal.offsetHeight / 2,
-      animal.offsetWidth,
-      animal.offsetHeight
-    )
-  ) {
-    // Try a new direction if restricted
+  if (isInRestrictedZone(endX - animal.offsetWidth / 2, endY - animal.offsetHeight / 2, animal.offsetWidth, animal.offsetHeight)) {
+    moveOutOfRestrictedZone(animal);
     setTimeout(() => roamAnimal(animal), 100);
     return;
   }
@@ -278,11 +331,9 @@ function roamAnimal(animal) {
     const nextX = startX + (endX - startX) * progress - animal.offsetWidth / 2;
     const nextY = startY + (endY - startY) * progress - animal.offsetHeight / 2;
 
-    // Check at each step if moving towards restricted zone
-    if (
-      isInRestrictedZone(nextX, nextY, animal.offsetWidth, animal.offsetHeight)
-    ) {
-      setTimeout(() => roamAnimal(animal), 100); // Retry with a new path
+    if (isInRestrictedZone(nextX, nextY, animal.offsetWidth, animal.offsetHeight)) {
+      moveOutOfRestrictedZone(animal);
+      setTimeout(() => roamAnimal(animal), 100);
       return;
     }
 
