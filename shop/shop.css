@@ -48,6 +48,22 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background: linear-gradient(135deg, var(--animal-color, #ffffff) 0%, #ffffff 100%);
+  background-size: 300% 300%; /* Makes the gradient larger than the element */
+  background-position: 50% 50%; /* Centers the gradient initially */
+}
+
+@keyframes rainbow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.gradient-hover:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.3);
+  animation: rainbow 3s ease infinite;
+  background-size: 400% 400%; /* Makes the gradient larger and more vibrant */
 }
 
 .sold-out-overlay {
@@ -96,14 +112,6 @@ body {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
-}
-
-.card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.3); /* Larger shadow on hover */
-  background: linear-gradient(135deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);
-  background-size: 400% 400%;
-  animation: rainbow 3s ease infinite;
 }
 
 .modal {

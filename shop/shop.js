@@ -124,7 +124,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const card = document.createElement("div");
       card.classList.add("card");
       card.setAttribute("data-animal", animal.name);
-      card.setAttribute("data-color", animal.color); // Add this line
+      card.setAttribute("data-color", animal.color);
 
       const img = document.createElement("img");
       img.src = animal.img;
@@ -136,8 +136,12 @@ document.addEventListener("DOMContentLoaded", function () {
       card.appendChild(img);
       card.appendChild(name);
 
+      // Set a custom property for the background color
       const color = animal.color;
-      card.style.background = `linear-gradient(135deg, ${color} 0%, #ffffff 100%)`;
+      card.style.setProperty('--animal-color', color);
+
+      // Add a class to enable the gradient animation on hover
+      card.classList.add("gradient-hover");
 
       // Check if the animal is already owned and mark as sold out
       let ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
