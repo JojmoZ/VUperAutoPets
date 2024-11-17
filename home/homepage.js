@@ -351,9 +351,7 @@ const sectionObserver = new IntersectionObserver(
         const section = sections.find((sec) => sec.element === entry.target);
         if (section) {
           walkPerSection(section.element, section.animal);
-          sectionObserver.unobserve(entry.target); // Stop observing once triggered
-
-          // Set up interval for 20% chance of spawning the animal every second
+          sectionObserver.unobserve(entry.target); 
           setInterval(() => {
             if (Math.random() < 0.2) {
               walkPerSection(section.element, section.animal);
@@ -412,35 +410,25 @@ const handleOnMove = (e) => {
     );
   }
 };
-
 window.onmousedown = (e) => handleOnDown(e);
-
 window.ontouchstart = (e) => handleOnDown(e.touches[0]);
-
 window.onmouseup = (e) => handleOnUp(e);
-
 window.ontouchend = (e) => handleOnUp(e.touches[0]);
-
 window.onmousemove = (e) => handleOnMove(e);
-
 window.ontouchmove = (e) => handleOnMove(e.touches[0]);
  const images = document.querySelectorAll("#maps .image");
-const mapSection = document.querySelector(".map-section");
-const mapsContainer = document.getElementById("maps");
 images.forEach((image) => {
   image.addEventListener("click", () => {
     if (image.classList.contains("fullscreen")) {
-      // Exit fullscreen
       image.style.transition =
-        "transform 0.5s ease, top 0.5s ease, left 0.5s ease, width 0.5s ease, height 0.5s ease"; // Add transitions
-      image.classList.remove("fullscreen"); // Remove the fullscreen class
-      document.body.style.overflow = "auto"; // Enable scrolling
+        "transform 0.5s ease, top 0.5s ease, left 0.5s ease, width 0.5s ease, height 0.5s ease"; 
+      image.classList.remove("fullscreen"); 
+      document.body.style.overflow = "auto"; 
     } else {
-      // Enter fullscreen
       image.style.transition =
-        "transform 0.5s ease, top 0.5s ease, left 0.5s ease, width 0.5s ease, height 0.5s ease"; // Add transitions
-      image.classList.add("fullscreen"); // Add the fullscreen class
-      document.body.style.overflow = "hidden"; // Disable scrolling
+        "transform 0.5s ease, top 0.5s ease, left 0.5s ease, width 0.5s ease, height 0.5s ease"; 
+      image.classList.add("fullscreen"); 
+      document.body.style.overflow = "hidden";
     }
   });
 });
