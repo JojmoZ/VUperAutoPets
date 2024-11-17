@@ -123,7 +123,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const animalImage = this.querySelector("img").src;
         let ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
         if (ownedAnimals.some((animal) => animal.name === animalName)) {
-          alert("You already own this animal!");
+          ShowModal("You already own this animal!");
           return;
         }
 
@@ -241,11 +241,6 @@ document.addEventListener("DOMContentLoaded", function () {
     return colorMap[color] || "#000000";
   }
 
-  function showModal() {
-    modal.style.display = "flex";
-    modal.classList.add("show");
-  }
-
   function updateCoinsDisplay() {
     const coins = localStorage.getItem("coins");
     coinsDisplay.textContent = `Coins: ${coins}`;
@@ -317,7 +312,7 @@ document.addEventListener("DOMContentLoaded", function () {
       playSound();
       markSoldOut(animalName);
     } else {
-      alert("You don't have enough coins to buy this animal!");
+      ShowModal("You don't have enough coins to buy this animal!");
     }
 
     modal.classList.remove("show");

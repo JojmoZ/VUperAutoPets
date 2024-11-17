@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function pullHandle() {
     const coins = parseInt(localStorage.getItem("coins"), 10);
     if (coins < 5) {
-      alert("You need at least 5 coins to play the Gacha!");
+      ShowModal("You need at least 5 coins to play the Gacha!");
       return;
     }
 
