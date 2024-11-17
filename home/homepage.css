@@ -734,17 +734,30 @@ section {
   transition: transform 0.5s ease, z-index 0.5s ease;
 }
 
+/* Animation for transitioning to fullscreen */
+/* Default styling for images */
+#maps > .image,
+body > .image {
+  transition: all 0.5s ease; /* Add smooth transition */
+  transform: scale(1); /* Initial scale */
+  z-index: 0; /* Ensure it's below fullscreen elements */
+}
+
+/* When the image is fullscreen */
 #maps > .image.fullscreen,
 body > .image.fullscreen {
-  position: fixed; /* Ensures it covers the whole viewport */
-  top: 0; /* Align to the top of the viewport */
-  left: 0; /* Align to the left of the viewport */
-  width: 100vw; /* Full width of the viewport */
-  height: 100vh; /* Full height of the viewport */
-  z-index: 10; /* Place it above all other content */
+  position: fixed; /* Position fixed for fullscreen */
+  top: 0;
+  left: 0;
+  width: 100vw; /* Full width */
+  height: 100vh; /* Full height */
+  transform: scale(1); /* Reset scale to fit the screen */
+  z-index: 10; /* Bring to front */
+  background-color: rgba(0, 0, 0, 0.8); /* Optional overlay background */
   cursor: zoom-out;
-  background-color: rgba(0, 0, 0, 0.8); /* Optional: Adds a dark overlay */
+  transition: all 0.5s ease; /* Smooth transition */
 }
+
 
 #maps {
   display: flex;

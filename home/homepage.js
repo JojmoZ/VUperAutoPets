@@ -427,39 +427,70 @@ window.ontouchmove = (e) => handleOnMove(e.touches[0]);
  const images = document.querySelectorAll("#maps .image");
 const mapSection = document.querySelector(".map-section");
 const mapsContainer = document.getElementById("maps");
- images.forEach((image, index) => {
-   image.dataset.originalIndex = index; // Store the original index
-   image.addEventListener("click", () => {
-     if (image.classList.contains("fullscreen")) {
-       image.classList.remove("fullscreen");
-       document.body.style.overflow = "auto"; // Re-enable scrolling
-       mapSection.style.overflow = ""; // Re-enable section scrolling
+images.forEach((image) => {
+  image.addEventListener("click", () => {
+    if (image.classList.contains("fullscreen")) {
+      // Exit fullscreen
+      image.style.transition =
+        "transform 0.5s ease, top 0.5s ease, left 0.5s ease, width 0.5s ease, height 0.5s ease"; // Add transitions
+      image.classList.remove("fullscreen"); // Remove the fullscreen class
+      document.body.style.overflow = "auto"; // Enable scrolling
+    } else {
+      // Enter fullscreen
+      image.style.transition =
+        "transform 0.5s ease, top 0.5s ease, left 0.5s ease, width 0.5s ease, height 0.5s ease"; // Add transitions
+      image.classList.add("fullscreen"); // Add the fullscreen class
+      document.body.style.overflow = "hidden"; // Disable scrolling
+    }
+  });
+});
+//  images.forEach((image, index) => {
+//    image.dataset.originalIndex = index; // Store the original index
+//    image.addEventListener("click", () => {
+//      if (image.classList.contains("fullscreen")) {
+//        // Exit fullscreen
+//        image.classList.remove("fullscreen");
+//        document.body.style.overflow = "auto"; // Re-enable scrolling
+//        mapSection.style.overflow = ""; // Re-enable section scrolling
 
-       // Insert the image back to its original position
-       const originalIndex = parseInt(image.dataset.originalIndex);
-       if (originalIndex === 0) {
-         mapsContainer.insertBefore(image, mapsContainer.firstChild);
-       } else {
-         mapsContainer.insertBefore(image, mapsContainer.children[originalIndex]);
-       }
-     } else {
-       const fullscreenImage = document.querySelector(
-         "#maps .image.fullscreen"
-       );
-       if (fullscreenImage) {
-         fullscreenImage.classList.remove("fullscreen");
-         const originalIndex = parseInt(fullscreenImage.dataset.originalIndex);
-         if (originalIndex === 0) {
-           mapsContainer.insertBefore(fullscreenImage, mapsContainer.firstChild);
-         } else {
-           mapsContainer.insertBefore(fullscreenImage, mapsContainer.children[originalIndex]);
-         }
-       }
-       image.classList.add("fullscreen");
-       document.body.style.overflow = "hidden";
-       mapSection.style.overflow = "hidden";
-       document.body.appendChild(image); // Move image to body for fullscreen
-     }
-   });
- });
+//        // Insert the image back to its original position
+//        const originalIndex = parseInt(image.dataset.originalIndex);
+//        if (originalIndex === 0) {
+//          mapsContainer.insertBefore(image, mapsContainer.firstChild);
+//        } else {
+//          mapsContainer.insertBefore(
+//            image,
+//            mapsContainer.children[originalIndex]
+//          );
+//        }
+//      } else {
+//        // Enter fullscreen
+//        const fullscreenImage = document.querySelector(
+//          "#maps .image.fullscreen"
+//        );
+//        if (fullscreenImage) {
+//          fullscreenImage.classList.remove("fullscreen");
+//          const originalIndex = parseInt(fullscreenImage.dataset.originalIndex);
+//          if (originalIndex === 0) {
+//            mapsContainer.insertBefore(
+//              fullscreenImage,
+//              mapsContainer.firstChild
+//            );
+//          } else {
+//            mapsContainer.insertBefore(
+//              fullscreenImage,
+//              mapsContainer.children[originalIndex]
+//            );
+//          }
+//        }
+
+//        // Set up transition for the image
+//        image.classList.add("fullscreen");
+//        document.body.style.overflow = "hidden";
+//        mapSection.style.overflow = "hidden";
+//        document.body.appendChild(image); // Move image to body for fullscreen
+//      }
+//    });
+//  });
+
 }
