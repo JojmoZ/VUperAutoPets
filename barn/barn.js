@@ -557,11 +557,8 @@ document.addEventListener("DOMContentLoaded", () => {
   animalContainer.addEventListener("click", (event) => {
     if (event.target.classList.contains("animal")) {
       const animal = event.target;
-      zoomToAnimal(animal);
       showStatWindow(animal);
     } else {
-      followAnimal = null;
-      animalContainer.style.transform = "translate(0, 0) scale(1)";
       hideStatWindow();
     }
   });
@@ -584,8 +581,6 @@ function resetGrid() {
   });
 }
 
-let followAnimal = null;
-
 function showStatWindow(animal) {
   const statWindow = document.getElementById("statWindow");
   const animalName = document.getElementById("animalName");
@@ -604,31 +599,4 @@ function showStatWindow(animal) {
 function hideStatWindow() {
   const statWindow = document.getElementById("statWindow");
   statWindow.style.display = "none";
-}
-
-function zoomToAnimal(animal) {
-  followAnimal = animal;
-  updateCameraPosition();
-}
-
-function updateCameraPosition() {
-  if (!followAnimal) return;
-
-  const animalRect = followAnimal.getBoundingClientRect();
-  const containerRect = animalContainer.getBoundingClientRect();
-  const zoomX =
-    animalRect.left -
-    containerRect.left -
-    containerRect.width / 2 +
-    animalRect.width / 2;
-  const zoomY =
-    animalRect.top -
-    containerRect.top -
-    containerRect.height / 2 +
-    animalRect.height / 2;
-
-  animalContainer.style.transform = `translate(${-zoomX}px, ${-zoomY}px) scale(2)`;
-  animalContainer.style.transition = "transform 0.1s ease";
-
-  requestAnimationFrame(updateCameraPosition);
 }
