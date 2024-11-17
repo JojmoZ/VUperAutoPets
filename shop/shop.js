@@ -110,7 +110,7 @@ document.addEventListener("DOMContentLoaded", function () {
       // Set a custom property for the background color
       const color = animal.color;
       card.style.setProperty('--animal-color', color);
-
+      
       // Add a class to enable the gradient animation on hover
       card.classList.add("gradient-hover");
 
@@ -155,6 +155,16 @@ document.addEventListener("DOMContentLoaded", function () {
         "modal-animal-stats"
       ).textContent = `Attack: ${animal.attack}, Health: ${animal.health}`;
 
+      // Set the modal background color to the animal color and a near color
+      const modalContent = document.querySelector(".modal-content");
+      const nearColor = getNearColor(animal.color);
+      modalContent.style.background = `linear-gradient(135deg, ${animal.color} 0%, ${nearColor} 100%)`;
+
+      // Set the border color of the image container to a darker shade of the animal color
+      const imageContainer = document.querySelector(".image-container");
+      const darkerColor = getDarkerColor(animal.color);
+      imageContainer.style.setProperty('--animal-border-color', darkerColor);
+
       // Special animal logic
       if (specialAnimals.includes(animalName)) {
         h3.innerHTML =
@@ -172,6 +182,81 @@ document.addEventListener("DOMContentLoaded", function () {
       shopContainer.appendChild(card);
     });
   }
+
+  function getNearColor(color) {
+    // Function to get a near color for the gradient
+    const colorMap = {
+      "#ff0000": "#ff7f7f", // Red to light red
+      "#00ff00": "#7fff7f", // Green to light green
+      "#0000ff": "#7f7fff", // Blue to light blue
+      "#ffff00": "#ffbf00", // Yellow to orange
+      "#ff00ff": "#ff7fff", // Magenta to light magenta
+      "#00ffff": "#7fffff", // Cyan to light cyan
+      "#636363": "#8c8c8c", // Dark gray to light gray
+      "#0594DB": "#5bb8e6", // Blue to light blue
+      "#AB7B62": "#d1a48b", // Brown to light brown
+      "#FF938F": "#ffb3b0", // Light red to lighter red
+      "#6C8C09": "#8fbf0c", // Green to light green
+      "#B4BCBF": "#d1d8da", // Light gray to lighter gray
+      "#FF819E": "#ffb3c1", // Pink to light pink
+      "#F09D61": "#f4b98d", // Orange to light orange
+      "#8F999E": "#b3c1c6", // Gray to light gray
+      "#A3735E": "#c49a85", // Brown to light brown
+      "#D6A16F": "#e6c1a0", // Light brown to lighter brown
+      "#EB8760": "#f1a48b", // Orange to light orange
+      "#CF4F4B": "#e67f7c", // Red to light red
+      "#99593D": "#b37a5e", // Brown to light brown
+      "#D9A46F": "#e6c1a0", // Light brown to lighter brown
+      "#707070": "#8c8c8c", // Dark gray to light gray
+      "#676880": "#8c8ca0", // Dark blue to light blue
+      "#868A91": "#a3a7af", // Gray to light gray
+      "#FADDA9": "#fce6c1", // Light yellow to lighter yellow
+      "#A4C400": "#c1e600", // Green to light green
+      "#8EA848": "#b3d16c", // Green to light green
+      "#FFDE59": "#ffe680", // Yellow to light yellow
+      "#766D78": "#a39aa3", // Gray to light gray
+      "#B4D7E3": "#d1eaf1", // Light blue to lighter blue
+    };
+    return colorMap[color] || "#ffffff"; // Default to white if no mapping found
+  }
+
+  function getDarkerColor(color) {
+    // Function to get a darker shade of the color
+    const colorMap = {
+      "#ff0000": "#b30000", // Red to dark red
+      "#00ff00": "#009900", // Green to dark green
+      "#0000ff": "#000099", // Blue to dark blue
+      "#ffff00": "#b3b300", // Yellow to dark yellow
+      "#ff00ff": "#b300b3", // Magenta to dark magenta
+      "#00ffff": "#009999", // Cyan to dark cyan
+      "#636363": "#3f3f3f", // Dark gray to darker gray
+      "#0594DB": "#036ba1", // Blue to dark blue
+      "#AB7B62": "#7a5644", // Brown to dark brown
+      "#FF938F": "#b36663", // Light red to dark red
+      "#6C8C09": "#4a5e06", // Green to dark green
+      "#B4BCBF": "#7a8284", // Light gray to dark gray
+      "#FF819E": "#b35a6e", // Pink to dark pink
+      "#F09D61": "#a36d44", // Orange to dark orange
+      "#8F999E": "#5f666a", // Gray to dark gray
+      "#A3735E": "#704f42", // Brown to dark brown
+      "#D6A16F": "#946b4b", // Light brown to dark brown
+      "#EB8760": "#a35d42", // Orange to dark orange
+      "#CF4F4B": "#8f3533", // Red to dark red
+      "#99593D": "#663d2a", // Brown to dark brown
+      "#D9A46F": "#946b4b", // Light brown to dark brown
+      "#707070": "#4d4d4d", // Dark gray to darker gray
+      "#676880": "#46465a", // Dark blue to darker blue
+      "#868A91": "#5c5f64", // Gray to dark gray
+      "#FADDA9": "#b39b73", // Light yellow to dark yellow
+      "#A4C400": "#6e8a00", // Green to dark green
+      "#8EA848": "#5f7230", // Green to dark green
+      "#FFDE59": "#b3a040", // Yellow to dark yellow
+      "#766D78": "#4f4950", // Gray to dark gray
+      "#B4D7E3": "#7a9ba1", // Light blue to dark blue
+    };
+    return colorMap[color] || "#000000"; // Default to black if no mapping found
+  }
+
 function showModal() {
   modal.style.display = "flex";
   modal.classList.add("show");

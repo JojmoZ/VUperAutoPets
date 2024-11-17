@@ -144,7 +144,11 @@ body {
 }
 
 .modal-content {
-  background: #ffffff;
+  background: linear-gradient(
+    135deg,
+    var(--animal-color, #ffffff) 0%,
+    rgba(0, 0, 0, 0.7) 100%
+  ); /* Darker gradient for the modal */
   border-radius: 1.5rem;
   width: 60%;
   max-width: 40rem;
@@ -174,7 +178,7 @@ body {
   width: 8rem; /* Adjust as needed */
   height: 8rem; /* Make the container square */
   border-radius: 50%; /* Circular border */
-  border: 8px solid #28a745; /* Green border */
+  border: 8px solid var(--animal-border-color, #28a745); /* Darker border color */
   background-color: white; /* Background inside the circle */
   padding: 0.5rem; /* Space between the border and the content */
   margin: auto; /* Center the container */
@@ -225,6 +229,20 @@ body {
 
 #confirm-buy:hover {
   background-color: #218838;
+}
+
+#confirm-buy, #cancel-buy {
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Add smooth transition */
+}
+
+#confirm-buy:hover {
+  background-color: #218838;
+  transform: scale(1.05); /* Slight zoom effect on hover */
+}
+
+#cancel-buy:hover {
+  background-color: #c82333;
+  transform: scale(1.05); /* Slight zoom effect on hover */
 }
 
 @keyframes fadeIn {
