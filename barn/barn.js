@@ -365,10 +365,10 @@ function createFood(event) {
   foodElement = document.createElement("div");
   foodElement.className = "food";
   foodElement.style.position = "absolute";
-  foodElement.style.width = "1.25rem"; // Use relative unit
-  foodElement.style.height = "1.25rem"; // Use relative unit
-  foodElement.style.backgroundColor = "yellow";
-  // foodElement.style.backgroundImage = '../assets/Pizza.webp'
+  foodElement.style.width = "1.75rem"; // Use relative unit
+  foodElement.style.height = "1.75rem"; // Use relative unit
+  foodElement.style.backgroundImage = "url('../assets/Pizza.webp')";
+  foodElement.style.backgroundSize = "cover";
   foodElement.style.borderRadius = "50%";
   foodElement.style.left = `${foodX}px`;
   foodElement.style.top = `${foodY}px`;
