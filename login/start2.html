@@ -21,7 +21,7 @@
                     <span id="registerTab">Register</span> | <span id="loginTab">Login</span>
                 </div>
                 <div class="content">
-                    <form id="registrationForm" style="display: none;">
+                    <form id="registrationForm" style="display: none;" novalidate>
                         <p class="title">Register Your Account</p>
                         <div class="input-group">
                             <input class="input" type="text" id="registerUsername" name="username" required autocomplete="off">
@@ -51,7 +51,7 @@
 
                     </form>
                     
-                    <form id="loginForm" style="display: none;">
+                    <form id="loginForm" style="display: none;" novalidate>
                         <p class="title">Login to Your Account</p>
                         <div class="input-group">
                             <input class="input" type="text" id="loginUsername" name="username" required autocomplete="off">
@@ -82,7 +82,7 @@
 
 <div class="captcha-modal hidden" id="captchaModal1">
     <div class="captcha-wrapper">
-        <header class="captcha-header">Captcha</header>
+        <header class="captcha-header">Generated Captcha</header>
         <button class="close-btn" onclick="hideCaptcha()">✖</button>
         <div class="captcha-area">
             <div class="captcha-img">
@@ -94,7 +94,8 @@
             </button>
         </div>
         <div class="input-area">
-            <input type="text" id="captchaInput1" placeholder="Enter captcha" maxlength="6" spellcheck="false" required>
+            <input class="input" type="text" id="captchaInput1" autocomplete="off" required />
+            <label class="label" for="captchaInput1">Enter Captcha</label>
             <button class="check-btn">Check</button>
         </div>
     </div>
@@ -103,7 +104,7 @@
 
 <div class="captcha-modal hidden" id="captchaModal2">
     <div class="container">
-        <header>Captcha Generator</header>
+        <header>Generated Captcha</header>
         <button class="close-btn" onclick="hideCaptcha()">✖</button>
         <div class="captcha-area">
             <canvas id="captchaCanvas" width="150" height="50"></canvas>
@@ -111,11 +112,13 @@
                 <img src="../assets/reload.png" alt="Reload" width="20" height="20">
             </button>
         </div>
-        <div class="input_field captch_input">
-            <input type="text" id="captchaInput2" placeholder="Enter captcha" />
+        <!-- <div class="input_field captch_input"> -->
+        <div class="input-group">
+            <input class="input" type="text" id="captchaInput2" autocomplete="off" required />
+            <label class="label" for="captchaInput2">Enter Captcha</label>
         </div>
         <div class="input_field button disabled">
-            <button id="submitCaptchaBtn2">Submit Captcha</button>
+            <button id="submitCaptchaBtn2">Check</button>
         </div>
     </div>
 </div>
