@@ -1,110 +1,109 @@
 @font-face {
-  font-family: 'VUper';
-  src: url('../assets/LapsusPro-Bold.otf') format('opentype'); 
+  font-family: "VUper";
+  src: url("../assets/LapsusPro-Bold.otf") format("opentype");
 }
 
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&display=swap");
 
 html,
 body {
-    margin: 0;
-    height: 100%;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    background-size: cover;
-    background-image: url(../assets/heaven.png);
+  margin: 0;
+  height: 100%;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-size: cover;
+  background-image: url(../assets/heaven.png);
 }
 
 .gacha-wrapper {
-    display: flex;
-    height: 100vh;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
+  display: flex;
+  height: 100vh;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .gacha-container {
-    text-align: center;
-    background-color: rgba(255, 255, 255, 0.1);
-    padding: 2rem;
-    border-radius: 1rem;
-    display: flex;
-    align-items: center;
-    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(10px); 
-    border-top: 1px solid rgba(255, 255, 255, 0.5);
-    border-left: 1px solid rgba(255, 255, 255, 0.5);
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 2rem;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+  border-left: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 .slot-machine {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .slot-column {
-    width: 100px;
-    height: 100px;
-    user-select: none;
-    overflow: hidden;
-    position: relative;
-    border: 2px solid #000;
-    margin: 0 10px;
+  width: 100px;
+  height: 100px;
+  user-select: none;
+  overflow: hidden;
+  position: relative;
+  border: 2px solid #000;
+  margin: 0 10px;
 }
 
 .slot-item {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    transition: transform 0.3s ease-in;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.3s ease-in;
 }
 
-
 .slot-column img {
-    width: 80px;
-    height: 80px;
+  width: 80px;
+  height: 80px;
 }
 
 .lever-container {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 1rem;
-    position: relative;
-    top:-30%;
-    left:-105%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+  position: relative;
+  top: -30%;
+  left: -105%;
 }
 
 .lever {
-    width: 20px;
-    height: 100px;
-    background-color: red;
-    cursor: pointer;
-    position: relative;
-    transition: transform 0.5s ease;
+  width: 20px;
+  height: 100px;
+  background-color: red;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.5s ease;
 }
 
 .lever::before {
-    content: '';
-    width: 40px;
-    height: 40px;
-    background-color: red;
-    border-radius: 50%;
-    position: absolute;
-    top: -30px;
-    left: -10px;
-    transition: top 0.5s ease;
+  content: "";
+  width: 40px;
+  height: 40px;
+  background-color: red;
+  border-radius: 50%;
+  position: absolute;
+  top: -30px;
+  left: -10px;
+  transition: top 0.5s ease;
 }
 
 .lever[style*="translateY(100px)"]::before {
-    top: 70px;
+  top: 70px;
 }
 
 #gachaResult {
-    margin-top: 1rem;
+  margin-top: 1rem;
 }
 
 #gachaResult img {
-    width: 100px;
-    height: 100px;
+  width: 100px;
+  height: 100px;
 }
 
 h1 {
@@ -130,28 +129,28 @@ h1::after {
 }
 
 h1:hover::before {
-  color: #E6D3E6;
+  color: #e6d3e6;
   transform: translate(12px, -12px);
   -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: black;
 }
 
 h1:hover::after {
-  color: #EEE7E6;
+  color: #eee7e6;
   transform: translate(24px, -24px);
   -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: black;
 }
 
 h1.hover::before {
-  color: #E6D3E6;
+  color: #e6d3e6;
   transform: translate(12px, -12px);
   -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: black;
 }
 
 h1.hover::after {
-  color: #EEE7E6;
+  color: #eee7e6;
   transform: translate(24px, -24px);
   -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: black;
