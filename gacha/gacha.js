@@ -28,6 +28,14 @@ document.addEventListener("DOMContentLoaded", function () {
   let cheatAnimal = "";
   let isRolling = false;
 
+  const coinsDisplay = document.getElementById("coinsDisplay");
+
+  function updateCoinsDisplay() {
+    const coins = localStorage.getItem("coins");
+    coinsDisplay.textContent = `Coins: ${coins}`;
+  }
+  updateCoinsDisplay();
+
   document.addEventListener("keydown", function (event) {
     cheatCode += event.key;
     if (cheatCode.length > 10) {
@@ -115,6 +123,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     localStorage.setItem("coins", (coins - 5).toString()); // Deduct coins
+    updateCoinsDisplay(); // Update coins display
   }
 
   function checkThreeOfAKind(animal1, animal2, animal3) {

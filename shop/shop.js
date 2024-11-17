@@ -13,8 +13,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const coinsDisplay = document.createElement("div");
   coinsDisplay.id = "coinsDisplay";
   coinsDisplay.style.position = "fixed";
-  coinsDisplay.style.top = "25px";
-  coinsDisplay.style.right = "150px";
+  coinsDisplay.style.top = "1.75rem";
+  coinsDisplay.style.right = "9.375rem";
   coinsDisplay.style.color = "white";
   coinsDisplay.style.fontSize = "20px";
   coinsDisplay.style.zIndex = "9999";
