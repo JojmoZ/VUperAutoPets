@@ -703,19 +703,6 @@ body > .image {
   z-index: 0;  
 }
 
-#maps > .image.fullscreen,
-body > .image.fullscreen {
-  position: fixed; 
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  transform: scale(1); 
-  z-index: 10; 
-  background-color: rgba(0, 0, 0, 0.8); 
-  cursor: zoom-out;
-  transition: all 0.5s ease; 
-}
 
 #maps {
   display: flex;
@@ -866,6 +853,9 @@ body > .image.fullscreen {
 @keyframes fadeIn {
   from {
     opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
   to {
     opacity: 1;

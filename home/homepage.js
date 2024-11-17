@@ -416,21 +416,5 @@ window.onmouseup = (e) => handleOnUp(e);
 window.ontouchend = (e) => handleOnUp(e.touches[0]);
 window.onmousemove = (e) => handleOnMove(e);
 window.ontouchmove = (e) => handleOnMove(e.touches[0]);
- const images = document.querySelectorAll("#maps .image");
-images.forEach((image) => {
-  image.addEventListener("click", () => {
-    if (image.classList.contains("fullscreen")) {
-      image.style.transition =
-        "transform 0.5s ease, top 0.5s ease, left 0.5s ease, width 0.5s ease, height 0.5s ease"; 
-      image.classList.remove("fullscreen"); 
-      document.body.style.overflow = "auto"; 
-    } else {
-      image.style.transition =
-        "transform 0.5s ease, top 0.5s ease, left 0.5s ease, width 0.5s ease, height 0.5s ease"; 
-      image.classList.add("fullscreen"); 
-      document.body.style.overflow = "hidden";
-    }
-  });
-});
 
 }
