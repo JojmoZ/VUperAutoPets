@@ -548,11 +548,25 @@ drawRestrictedZones();
 // updateAnimalSizes();
 // updateCoordinates();
 
-const userAnimals = getUserAnimals();
-userAnimals.forEach((animal) => {
-  const animalElement = createAnimal(animal);
+document.addEventListener("DOMContentLoaded", () => {
+  const userAnimals = getUserAnimals();
+  userAnimals.forEach((animal) => {
+    const animalElement = createAnimal(animal);
+  });
+  animalContainer.addEventListener("dblclick", createFood);
+  animalContainer.addEventListener("click", (event) => {
+    if (event.target.classList.contains("animal")) {
+      const animal = event.target;
+      zoomToAnimal(animal);
+      showStatWindow(animal);
+    } else {
+      followAnimal = null;
+      animalContainer.style.transform = "translate(0, 0) scale(1)";
+      hideStatWindow();
+    }
+  });
 });
-animalContainer.addEventListener("dblclick", createFood);
+
 function resetGrid() {
   updateScalingFactors();
   grid.forEach((row) => row.fill(0));
@@ -618,15 +632,3 @@ function updateCameraPosition() {
 
   requestAnimationFrame(updateCameraPosition);
 }
-
-animalContainer.addEventListener("click", (event) => {
-  if (event.target.classList.contains("animal")) {
-    const animal = event.target;
-    zoomToAnimal(animal);
-    showStatWindow(animal);
-  } else {
-    followAnimal = null;
-    animalContainer.style.transform = "translate(0, 0) scale(1)";
-    hideStatWindow();
-  }
-});
