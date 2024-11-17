@@ -127,6 +127,7 @@ function createAnimal(animal) {
   animalElement.dataset.attack = animal.attack;
   animalElement.dataset.health = animal.health;
   animalElement.dataset.cost = animal.cost;
+  animalElement.dataset.color = animal.color; // Set the color attribute
   let spawnX, spawnY;
   do {
     spawnX = Math.random() * (animalContainer.clientWidth - 50);
@@ -262,9 +263,6 @@ function moveOutOfRestrictedZone(animal) {
   });
 
   if (!bestDirection) {
-    console.warn(
-      "Animal is stuck in restricted zone and cannot find a way out."
-    );
     return; // Prevent infinite loops.
   }
 
@@ -581,22 +579,59 @@ function resetGrid() {
   });
 }
 
+let currentAnimal = null;
+
 function showStatWindow(animal) {
   const statWindow = document.getElementById("statWindow");
   const animalName = document.getElementById("animalName");
   const animalAttack = document.getElementById("animalAttack");
   const animalHealth = document.getElementById("animalHealth");
   const animalCost = document.getElementById("animalCost");
+  const hrElement = statWindow.querySelector("hr");
 
-  animalName.textContent = `Name: ${animal.dataset.name}`;
-  animalAttack.textContent = `Attack: ${animal.dataset.attack}`;
-  animalHealth.textContent = `Health: ${animal.dataset.health}`;
-  animalCost.textContent = `Cost: ${animal.dataset.cost}`;
+  if (currentAnimal === animal) {
+    return; // Do nothing if the same animal is clicked again
+  }
 
-  statWindow.style.display = "block";
+  currentAnimal = animal;
+
+  const animalColor = animal.dataset.color || "#ffffff"; // Default to white if no color is specified
+  statWindow.style.setProperty('--animal-color', animalColor); // Set the custom property for the gradient
+
+  if (statWindow.classList.contains("show")) {
+    statWindow.classList.remove("show");
+    setTimeout(() => {
+      animalName.textContent = animal.dataset.name;
+      animalAttack.textContent = animal.dataset.attack;
+      animalHealth.textContent = animal.dataset.health;
+      animalCost.textContent = animal.dataset.cost;
+      hrElement.style.width = "0"; // Reset hr width
+      statWindow.classList.add("show");
+      setTimeout(() => {
+        hrElement.style.width = "100%"; // Animate hr width
+      }, 10); // Slight delay to trigger transition
+    }, 300); // Match transition duration
+  } else {
+    animalName.textContent = animal.dataset.name;
+    animalAttack.textContent = animal.dataset.attack;
+    animalHealth.textContent = animal.dataset.health;
+    animalCost.textContent = animal.dataset.cost;
+    hrElement.style.width = "0"; // Reset hr width
+    statWindow.style.display = "block"; // Ensure it is displayed
+    setTimeout(() => {
+      statWindow.classList.add("show");
+      setTimeout(() => {
+        hrElement.style.width = "100%"; // Animate hr width
+      }, 10); // Slight delay to trigger transition
+    }, 10); // Slight delay to trigger transition
+  }
 }
 
 function hideStatWindow() {
   const statWindow = document.getElementById("statWindow");
-  statWindow.style.display = "none";
+  statWindow.classList.remove("show");
+  setTimeout(() => {
+    statWindow.style.display = "none"; // Hide after transition
+    currentAnimal = null; // Reset current animal
+  }, 300); // Match transition duration
 }

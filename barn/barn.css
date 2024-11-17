@@ -52,14 +52,60 @@ canvas {
 }
 
 .stat-window {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 200px;
-  padding: 10px;
-  background-color: rgba(255, 255, 255, 0.9);
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  display: none; /* Hidden by default */
-  margin-top: 4rem;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 200px;
+    padding: 0 10px; /* Adjust padding to 0 initially */
+    background: linear-gradient(135deg, var(--animal-color, #ffffff) 0%, #ffffff 100%);
+    background-size: 300% 300%; /* Makes the gradient larger than the element */
+    background-position: 50% 50%; /* Centers the gradient initially */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: block;
+    margin-top: 4rem;
+    transition: max-height 0.3s ease-out, padding 0.3s ease-out, background-position 1s ease-out;
+    max-height: 0;
+    overflow: hidden;
+}
+
+.stat-window.show {
+    max-height: 200px; /* Adjust based on content */
+    padding: 10px; /* Add padding when shown */
+    background-position: 100% 50%; /* Animate gradient position */
+}
+
+.stat-window p {
+    margin: 0;
+    padding: 0.5rem 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.stat-window hr {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 0.5rem 0;
+    width: 0;
+    transition: width 1s ease-out; /* Increase duration to 1s */
+    transform-origin: left; /* Set transform origin to left */
+}
+
+.stat-window.show hr {
+    width: 100%;
+    transform-origin: right; /* Set transform origin to right when closing */
+}
+
+#animalName {
+    text-align: center;
+    font-weight: bold;
+    font-family: "VUper", sans-serif;
+    font-size: 1.2rem; /* Adjust size if necessary */
+    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: center;
+}
+
+.center-text {
+    text-align: center;
 }

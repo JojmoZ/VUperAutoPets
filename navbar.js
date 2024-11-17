@@ -33,6 +33,8 @@
       localStorage.removeItem("lives")
       localStorage.removeItem("gamecoins");
       localStorage.removeItem("ownedAnimals");
+      localStorage.removeItem("shopAnimals");
+      localStorage.removeItem("currentItems");
       window.location.href = "/login/start2.html";
     });
     const currentPage = window.location.pathname;
