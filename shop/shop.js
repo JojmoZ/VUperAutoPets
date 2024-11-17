@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
+  const specialAnimals = ["VJanda", "MSeer", "eagSVle", "PamstIr", "YenguiK"];
   if (!localStorage.getItem("coins")) {
     localStorage.setItem("coins", "15");
     localStorage.setItem("ownedAnimals", JSON.stringify([]));
@@ -86,37 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
     })
     .catch((error) => console.error("Error loading shopAnimals:", error));
 
-  const specialAnimals = ["VJanda", "MSeer", "eagSVle", "PamstIr", "YenguiK"];
-
-  function getPrimaryColor(imageUrl) {
-    return new Promise((resolve) => {
-      const img = new Image();
-      img.crossOrigin = "Anonymous";
-      img.src = imageUrl;
-      img.onload = () => {
-        const canvas = document.createElement("canvas");
-        const context = canvas.getContext("2d");
-        canvas.width = img.width;
-        canvas.height = img.height;
-        context.drawImage(img, 0, 0, img.width, img.height);
-        const data = context.getImageData(0, 0, img.width, img.height).data;
-        const colorCounts = {};
-        let maxCount = 0;
-        let primaryColor = [0, 0, 0];
-
-        for (let i = 0; i < data.length; i += 4) {
-          const color = `${data[i]},${data[i + 1]},${data[i + 2]}`;
-          colorCounts[color] = (colorCounts[color] || 0) + 1;
-          if (colorCounts[color] > maxCount) {
-            maxCount = colorCounts[color];
-            primaryColor = [data[i], data[i + 1], data[i + 2]];
-          }
-        }
-        resolve(`rgb(${primaryColor[0]}, ${primaryColor[1]}, ${primaryColor[2]})`);
-      };
-    });
-  }
-
+  
   function generateCards(animals) {
     const shopContainer = document.getElementById("shopContainer");
 
@@ -155,38 +126,56 @@ document.addEventListener("DOMContentLoaded", function () {
         card.classList.add("sold-out");
       }
 
-      card.addEventListener("click", function () {
-        const animalName = this.querySelector("h3").textContent;
-        const animalImage = this.querySelector("img").src;
-        let ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
-        if (ownedAnimals.some((animal) => animal.name === animalName)) {
-          alert("You already own this animal!");
-          return;
-        }
-        modalImage.src = animalImage;
-        modal.setAttribute("data-animal", animalName);
-        modal.setAttribute(
-          "data-price",
-          animal.cost
-        );
-        document.getElementById("modal-animal-price").textContent = `Price: ${animal.cost} Coins`;
-        document.getElementById("modal-animal-stats").textContent = `Attack: ${animal.attack}, Health: ${animal.health}`;
-        modal.classList.add("show");
-        if (specialAnimals.includes(animalName)) {
-          const h3 = document.getElementById("textext")
-          h3.innerHTML =
-            "you cannot buy this animal, you can only get this animal through gacha";
-          confirmButton.style.display = "none"
-          h3.style.textAlign = "center"
-          cancelButton.innerHTML = "Close"
-        }
-        modal.style.display = "flex";
-      });
+    card.addEventListener("click", function () {
+      const animalName = this.querySelector("h3").textContent;
+      console.log(animalName);
+      const animalImage = this.querySelector("img").src;
+      let ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
+      if (ownedAnimals.some((animal) => animal.name === animalName)) {
+        alert("You already own this animal!");
+        return;
+      }
+
+      // Reset the modal to its default state
+      const h3 = document.getElementById("textext");
+      h3.innerHTML = "Are you sure you want to buy this?";
+      confirmButton.style.display = "inline-block"; // Ensure the confirm button is visible
+      h3.style.textAlign = "center"; // Reset text alignment
+      cancelButton.innerHTML = "Close"; // Reset cancel button text
+
+      modalImage.src = animalImage;
+      modal.setAttribute("data-animal", animalName);
+
+      const animal = shopAnimals.find((a) => a.name === animalName); // Get animal details
+      modal.setAttribute("data-price", animal.cost);
+      document.getElementById(
+        "modal-animal-price"
+      ).textContent = `Price: ${animal.cost} Coins`;
+      document.getElementById(
+        "modal-animal-stats"
+      ).textContent = `Attack: ${animal.attack}, Health: ${animal.health}`;
+
+      // Special animal logic
+      if (specialAnimals.includes(animalName)) {
+        h3.innerHTML =
+          "you cannot buy this animal, you can only get this animal through gacha";
+        confirmButton.style.display = "none"; // Hide the confirm button
+        h3.style.textAlign = "center";
+        cancelButton.innerHTML = "Close";
+      }
+
+      modal.style.display = "flex";
+      modal.classList.add("show");
+    });
+
 
       shopContainer.appendChild(card);
     });
   }
-
+function showModal() {
+  modal.style.display = "flex";
+  modal.classList.add("show");
+}
   function updateCoinsDisplay() {
     const coins = localStorage.getItem("coins");
     coinsDisplay.textContent = `Coins: ${coins}`;
@@ -218,11 +207,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
   cancelButton.addEventListener("click", function () {
     modal.classList.remove("show");
+    modal.classList.add("hide");
+
     setTimeout(() => {
       modal.style.display = "none";
+      modal.classList.remove("hide");
     }, 500);
   });
-
+  confirmButton.addEventListener("click", function () {
+    modal.classList.remove("show");
+    modal.classList.add("hide");
+    setTimeout(() => {
+      modal.style.display = "none";
+      modal.classList.remove("hide");
+    }, 500);
+  });
   confirmButton.addEventListener("click", function () {
     const animalName = modal.getAttribute("data-animal");
     const price = parseInt(modal.getAttribute("data-price"), 10);
