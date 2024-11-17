@@ -646,8 +646,8 @@ body.modal-active {
 .toggle-password {
     position: absolute;
     top: 50%;
-    right: 1rem; /* Adjusts distance from the right edge */
-    transform: translateY(-90%); /* Centers the icon vertically */
+    right: 1rem; 
+    transform: translateY(-90%); 
     background: none;
     border: none;
     cursor: pointer;
@@ -693,7 +693,7 @@ body.modal-active {
 .btn::after {
   content: "";
   position: absolute;
-  background: #cbac24; /* Updated color */
+  background: #cbac24; 
   width: 100%;
   height: 102%;
   pointer-events: none;

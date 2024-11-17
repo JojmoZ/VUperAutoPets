@@ -68,8 +68,6 @@ const tips = [
       window.location.href = "/game/index.html";
     }
   }
-
-  // Array to store the bounding boxes of currently displayed tips
   const activeTips = [];
   const padding =20;
   function showRandomTip() {
@@ -84,14 +82,12 @@ const tips = [
     animalElement.alt = animal.name;
     animalElement.className = "animal";
 
-    // Define maximum number of attempts to find a non-overlapping position
-    const maxAttempts = 20; // Increase attempts
+    const maxAttempts = 20; 
     let attempts = 0;
     let topPosition, leftPosition, position, tipBox;
 
     do {
-      // Randomize positions within constrained bounds
-      topPosition = Math.random() * 70 + 10; // Adjusted constraints for more room
+      topPosition = Math.random() * 70 + 10; 
       leftPosition = Math.random() * 80 + 10;
 
       if (leftPosition < 30) {
@@ -102,13 +98,12 @@ const tips = [
         position = "center";
       }
 
-      // Temporarily set position to calculate bounding box
       tipElement.style.position = "absolute";
       tipElement.style.top = `${topPosition}%`;
       tipElement.style.left = `${leftPosition}%`;
       tipElement.style.right = "auto";
       tipElement.style.transform = "none";
-      // tipElement.style.border = "2px solid red"; // Red border for debugging
+      // tipElement.style.border = "2px solid red";
 
       animalElement.style.position = "absolute";
       animalElement.style.top = "60%";
@@ -130,12 +125,10 @@ const tips = [
         tipElement.style.flexDirection = "row";
       }
 
-      // Temporarily add to the DOM to get the bounding box
       mainContent.appendChild(tipElement);
       tipBox = tipElement.getBoundingClientRect();
       mainContent.removeChild(tipElement);
 
-      // // Debug box for padding
       // const debugPaddingBox = document.createElement("div");
       // debugPaddingBox.style.position = "absolute";
       // debugPaddingBox.style.border = "1px dashed red"; // Dashed red border for padding area
@@ -147,13 +140,11 @@ const tips = [
       // debugPaddingBox.className = "debug-padding-box";
       // mainContent.appendChild(debugPaddingBox);
 
-      // Check for overlap with existing tips
       const overlap = activeTips.some((activeTip) =>
         isOverlappingWithPadding(activeTip, tipBox, padding)
       );
 
       if (!overlap) {
-        // Break if no overlap is found
         break;
       }
 
@@ -163,25 +154,20 @@ const tips = [
     } while (attempts < maxAttempts);
 
     if (attempts < maxAttempts) {
-      // Add the animal image to the tip and finalize the position
       tipElement.appendChild(animalElement);
       mainContent.appendChild(tipElement);
       const currentTipBox = tipElement.getBoundingClientRect();
       activeTips.push(currentTipBox);
 
-      // Animate tip appearance
       setTimeout(() => {
         tipElement.classList.add("tip-animate-in");
       }, 100);
 
-      // Animate tip disappearance
       setTimeout(() => {
         tipElement.classList.remove("tip-animate-in");
         tipElement.classList.add("tip-animate-out");
         setTimeout(() => {
           mainContent.removeChild(tipElement);
-
-          // Remove the tip's bounding box from the activeTips array
         const index = activeTips.findIndex(
           (activeTip) => activeTip === currentTipBox
         );
@@ -194,8 +180,6 @@ const tips = [
       );
     }
   }
-
-  // Helper function to check if two rectangles overlap with padding
   function isOverlappingWithPadding(rect1, rect2, padding) {
     return !(
       rect1.right + padding < rect2.left - padding ||
@@ -212,8 +196,6 @@ const tips = [
   function unlockScroll() {
     document.body.style.overflow = "auto";
   }
-
-  // Lock scroll initially
   lockScroll();
 
   setInterval(updateLoading, 100);
@@ -228,11 +210,9 @@ const tips = [
       layer.style.transform = `translate3d(0px, ${movement}px, 0px)`;
     });
   });
-
-  // Ensure all assets are loaded before scrolling
   window.addEventListener("load", () => {
     setTimeout(() => {
-      const scrollDuration = 5000; // Increased duration of the scroll in milliseconds
+      const scrollDuration = 5000;
       const start = window.pageYOffset;
       const end = mainContent.offsetTop;
       const distance = end - start;
@@ -244,12 +224,11 @@ const tips = [
         if (progress < 1) {
           requestAnimationFrame(scrollStep);
         } else {
-          // Unlock scroll once the page has scrolled to the bottom
           unlockScroll();
         }
       }
 
       requestAnimationFrame(scrollStep);
-    }, 3000); // Delay to ensure all assets are loaded
+    }, 3000); 
   });
 });

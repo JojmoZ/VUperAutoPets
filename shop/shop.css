@@ -17,20 +17,20 @@ body {
 }
 .shop-container {
   display: grid;
-  grid-auto-flow: column; /* Items flow by columns */
+  grid-auto-flow: column;
   grid-template-columns: repeat(auto-fit, 15rem);
-  grid-template-rows: repeat(2, 12rem); /* Two rows */
-  gap: 10rem; /* Gap between items */
-  overflow-x: auto; /* Enable horizontal scrolling */
-  padding: 2%; /* Padding */
-  box-sizing: border-box; /* Include padding in size */
+  grid-template-rows: repeat(2, 12rem);
+  gap: 10rem;
+  overflow-x: auto;
+  padding: 2%;
+  box-sizing: border-box;
   white-space: nowrap;
-  -webkit-overflow-scrolling: touch; /* For smooth scrolling on touch devices */
-  scrollbar-width: none; /* Hide scrollbar for Firefox */
-  -ms-overflow-style: none; /* Hide scrollbar for Internet Explorer and Edge */
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 .shop-container::-webkit-scrollbar {
-  display: none; /* Hide scrollbar for Webkit browsers */
+  display: none;
 }
 .card {
   user-select: none;
@@ -53,10 +53,9 @@ body {
     var(--animal-color, #ffffff) 0%,
     #ffffff 100%
   );
-  background-size: 300% 300%; /* Makes the gradient larger than the element */
-  background-position: 50% 50%; /* Centers the gradient initially */
+  background-size: 300% 300%;
+  background-position: 50% 50%;
 }
-
 @keyframes rainbow {
   0% {
     background-position: 0% 50%;
@@ -68,14 +67,12 @@ body {
     background-position: 0% 50%;
   }
 }
-
 .gradient-hover:hover {
   transform: scale(1.05);
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.3);
   animation: rainbow 3s ease infinite;
-  background-size: 400% 400%; /* Makes the gradient larger and more vibrant */
+  background-size: 400% 400%;
 }
-
 .sold-out-overlay {
   position: absolute;
   top: 0;
@@ -92,32 +89,27 @@ body {
   pointer-events: none;
   border-radius: 1rem;
 }
-
 .card {
   position: relative;
 }
-
 .card.sold-out {
   pointer-events: none;
-  background-color: #d3d3d3; /* Gray background for sold out */
+  background-color: #d3d3d3;
 }
-
 .card img {
   width: 4rem;
   height: 4rem;
   margin-bottom: 0.5rem;
 }
-
 .card h3,
 .card p {
   margin: 0;
-  padding: 0.5rem 0; /* Ensure uniform padding */
-  text-overflow: ellipsis; /* Handle long text */
-  white-space: nowrap; /* Prevent text wrapping */
-  overflow: hidden; /* Hide overflow */
-  color: #333; /* Darker text color */
+  padding: 0.5rem 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  color: #333;
 }
-
 @keyframes rainbow {
   0% {
     background-position: 0% 50%;
@@ -129,7 +121,6 @@ body {
     background-position: 0% 50%;
   }
 }
-
 .modal {
   display: none;
   position: fixed;
@@ -142,13 +133,12 @@ body {
   align-items: center;
   z-index: 1001;
 }
-
 .modal-content {
   background: linear-gradient(
     135deg,
     var(--animal-color, #ffffff) 0%,
     rgba(0, 0, 0, 0.7) 100%
-  ); /* Darker gradient for the modal */
+  );
   border-radius: 1.5rem;
   width: 60%;
   max-width: 40rem;
@@ -156,46 +146,41 @@ body {
   text-align: center;
   animation: fadeIn 0.5s ease-out;
 }
-
 .modal.show .modal-content {
   animation: fadeIn 0.5s ease-out forwards;
 }
-
 .modal.hide .modal-content {
   animation: fadeOut 0.5s ease-out forwards;
 }
 .modal-img {
-  display: flex; /* Use flexbox for centering */
-  justify-content: center; /* Horizontally center the image */
-  align-items: center; /* Vertically center the image */
-  width: 100%; /* Full width of the modal */
-  height: auto; /* Adjusts automatically based on the content */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: auto;
 }
 .image-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 8rem; /* Adjust as needed */
-  height: 8rem; /* Make the container square */
-  border-radius: 50%; /* Circular border */
-  border: 8px solid var(--animal-border-color, #28a745); /* Darker border color */
-  background-color: white; /* Background inside the circle */
-  padding: 0.5rem; /* Space between the border and the content */
-  margin: auto; /* Center the container */
-  transition: transform 0.3s ease-in-out; /* Add smooth transition */
+  width: 8rem;
+  height: 8rem;
+  border-radius: 50%;
+  border: 8px solid var(--animal-border-color, #28a745);
+  background-color: white;
+  padding: 0.5rem;
+  margin: auto;
+  transition: transform 0.3s ease-in-out;
 }
-
 .modal-content img {
-  width: 6rem; /* Adjust size as needed */
-  height: 6rem; /* Adjust size as needed */
-  display: block; /* Ensure the image respects centering rules */
-  margin: auto; /* Centers the image inside its parent container */
+  width: 6rem;
+  height: 6rem;
+  display: block;
+  margin: auto;
 }
-
 .image-container:hover {
-  transform: scale(1.1); /* Slight zoom effect on hover */
+  transform: scale(1.1);
 }
-
 .modal-text h2 {
   font-size: 1.8rem;
   color: #444;
@@ -212,39 +197,31 @@ body {
   border-radius: 0.5rem;
   cursor: pointer;
 }
-
 #confirm-buy {
   background-color: #28a745;
   color: #fff;
 }
-
 #cancel-buy {
   background-color: #dc3545;
   color: #fff;
 }
-
 #cancel-buy:hover {
   background-color: #c82333;
 }
-
 #confirm-buy:hover {
   background-color: #218838;
 }
-
 #confirm-buy, #cancel-buy {
-  transition: background-color 0.3s ease, transform 0.3s ease; /* Add smooth transition */
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
-
 #confirm-buy:hover {
   background-color: #218838;
-  transform: scale(1.05); /* Slight zoom effect on hover */
+  transform: scale(1.05);
 }
-
 #cancel-buy:hover {
   background-color: #c82333;
-  transform: scale(1.05); /* Slight zoom effect on hover */
+  transform: scale(1.05);
 }
-
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -255,7 +232,6 @@ body {
     transform: translateY(0);
   }
 }
-
 @keyframes fadeOut {
   from {
     opacity: 1;

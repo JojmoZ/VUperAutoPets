@@ -52,15 +52,15 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   lever.addEventListener("mousedown", function () {
-    if (isRolling) return; // Prevent rolling if already rolling
-    lever.style.transform = "translateY(100px)"; // Lever down animation
+    if (isRolling) return; 
+    lever.style.transform = "translateY(100px)"; 
     setTimeout(() => {
       pullHandle();
     }, 500);
   });
 
   document.addEventListener("mouseup", function () {
-    lever.style.transform = "translateY(0)"; // Reset lever after pull
+    lever.style.transform = "translateY(0)"; 
   });
 
   function pullHandle() {
@@ -70,9 +70,9 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    isRolling = true; // Set rolling flag
+    isRolling = true; 
 
-    // Clear previous results before starting new animation
+  
     slot1.innerHTML = "";
     slot2.innerHTML = "";
     slot3.innerHTML = "";
@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
         (animal) => animal.name === cheatAnimal
       );
       selectedAnimal1 = selectedAnimal2 = selectedAnimal3 = cheatAnimalObj;
-      cheatActivated = false; // Reset cheat
+      cheatActivated = false; 
     } else {
       const random = Math.random();
       if (random < 0.02) {
@@ -114,23 +114,23 @@ document.addEventListener("DOMContentLoaded", function () {
     animateSlot(slot1, selectedAnimal1, () => {
       animateSlot(slot2, selectedAnimal2, () => {
         animateSlot(slot3, selectedAnimal3, () => {
-          isRolling = false; // Reset rolling flag after animation completes
+          isRolling = false;
           setTimeout(() => {
             checkThreeOfAKind(selectedAnimal1, selectedAnimal2, selectedAnimal3);
-          }, 100); // Delay to ensure slot3 result is displayed
+          }, 100); 
         });
       });
     });
 
-    localStorage.setItem("coins", (coins - 5).toString()); // Deduct coins
-    updateCoinsDisplay(); // Update coins display
+    localStorage.setItem("coins", (coins - 5).toString()); 
+    updateCoinsDisplay(); 
   }
 
   function checkThreeOfAKind(animal1, animal2, animal3) {
     if (animal1.name === animal2.name && animal2.name === animal3.name) {
-      // alert(`Congratulations! You got three ${animal1.name}s!`);
+
       addToOwnedAnimals(animal1);
-      showFireworks(); // Show fireworks on win
+      showFireworks(); 
     }
   }
 
@@ -141,94 +141,79 @@ function showFireworks() {
   h1Element.setAttribute("data-text", "YOU WIN!");
   fireworksContainer.style.display = "block";
 
-  // Function to launch a single round of fireworks
   function launchFireworksRound() {
     for (let i = 0; i < 10; i++) {
-      // Create firework from bottom-left
       const fireworkLeft = document.createElement("div");
       fireworkLeft.classList.add("firework");
       fireworkLeft.style.backgroundColor = getRandomRGBColor();
       fireworkLeft.style.boxShadow = `0 0 15px 5px ${getRandomRGBColor()}`;
       fireworksContainer.appendChild(fireworkLeft);
 
-      // Animate from the bottom-left
       animateFirework(fireworkLeft, true);
 
-      // Create firework from bottom-right
       const fireworkRight = document.createElement("div");
       fireworkRight.classList.add("firework");
       fireworkRight.style.backgroundColor = getRandomRGBColor();
       fireworkRight.style.boxShadow = `0 0 15px 5px ${getRandomRGBColor()}`;
       fireworksContainer.appendChild(fireworkRight);
 
-      // Animate from the bottom-right
       animateFirework(fireworkRight, false);
     }
   }
 
-  // Launch the first round of fireworks
   launchFireworksRound();
 
-  // Launch the second round after a delay
   setTimeout(() => {
     launchFireworksRound();
-  }, 2000); // Delay of 4 seconds between rounds
+  }, 2000); 
 
-  // Trigger h1 hover effect once after 500 milliseconds
   setTimeout(() => {
     h1Element.classList.add("hover");
   }, 500);
 
-  // Reset the fireworks container and stop hover effect after all rounds are done
   setTimeout(() => {
     fireworksContainer.style.display = "none";
     while (fireworksContainer.firstChild) {
       fireworksContainer.removeChild(fireworksContainer.firstChild);
     }
-    h1Element.classList.remove("hover"); // Ensure hover effect is removed
-    h1Element.innerText = originalText; // Reset text to original
-    h1Element.setAttribute("data-text", originalText); // Reset data-text attribute to original
-  }, 5000); // Adjust this to cover both rounds and their animations
+    h1Element.classList.remove("hover"); 
+    h1Element.innerText = originalText; 
+    h1Element.setAttribute("data-text", originalText); 
+  }, 5000);
 }
 
 
 function animateFirework(firework, isLeft) {
-  const animationDuration = 1.5 + Math.random() * 0.5; // Duration between 1.5s and 2s
-  const randomHeight = 400 + Math.random() * 300; // Random height between 400px and 700px
+  const animationDuration = 1.5 + Math.random() * 0.5;
+  const randomHeight = 400 + Math.random() * 300;
   const screenWidth = window.innerWidth;
 
-  // Define the center region as a random range (e.g., middle 40% of the screen)
-  const centerStart = screenWidth * 0.3; // 30% from the left
-  const centerEnd = screenWidth * 0.7; // 70% from the left
+  const centerStart = screenWidth * 0.3; 
+  const centerEnd = screenWidth * 0.7; 
   const targetLeft = Math.random() * (centerEnd - centerStart) + centerStart;
 
-  // Add randomness to the diagonal tilt (e.g., how much it leans towards the center)
-  const tiltOffset = (Math.random() - 0.5) * 100; // Random offset between -50 and 50 pixels
+  const tiltOffset = (Math.random() - 0.5) * 100; 
 
-  // Set initial position explicitly
   firework.style.position = "absolute";
-  firework.style.bottom = "0px"; // Start at the bottom
+  firework.style.bottom = "0px"; 
   firework.style.left = isLeft
-    ? `${Math.random() * 20}vw` // Random position within 20vw on the left
-    : `${80 + Math.random() * 20}vw`; // Random position within 20vw on the right
+    ? `${Math.random() * 20}vw` 
+    : `${80 + Math.random() * 20}vw`; 
 
-  // Animate to the apex diagonally with added randomness
   setTimeout(() => {
     firework.style.transition = `all ${animationDuration}s ease-out`;
-    firework.style.bottom = `${randomHeight}px`; // Random climb height
-    firework.style.left = `${targetLeft + tiltOffset}px`; // Randomly adjust the tilt
-  }, 50); // Allow time for the DOM to render the initial position
+    firework.style.bottom = `${randomHeight}px`; 
+    firework.style.left = `${targetLeft + tiltOffset}px`;
+  }, 50); 
 
-  // Trigger explosion at the apex
   setTimeout(() => {
     const fireworkRect = firework.getBoundingClientRect();
     createExplosion(fireworkRect.left, fireworkRect.top);
 
-    // Remove the firework element
     if (firework.parentNode) {
       firework.parentNode.removeChild(firework);
     }
-  }, animationDuration * 1000); // Trigger after animation ends
+  }, animationDuration * 1000); 
 }
 
 
@@ -241,26 +226,20 @@ function createExplosion(apexLeft, apexTop) {
     const particle = document.createElement("div");
     particle.classList.add("firework-particle");
 
-    // Position particle at the apex
     particle.style.left = `${apexLeft}px`;
     particle.style.top = `${apexTop}px`;
 
-    // Randomly calculate explosion direction and distance
-    const randomX = Math.random() * 100 - 50; // Random value between -50 and 50
-    const randomY = Math.random() * 100 - 50; // Random value between -50 and 50
+    const randomX = Math.random() * 100 - 50; 
+    const randomY = Math.random() * 100 - 50; 
 
-    // Use inline styles to set random transform for the explosion
     particle.style.setProperty("--particle-x", `${randomX}px`);
     particle.style.setProperty("--particle-y", `${randomY}px`);
 
-    // Assign random colors
     particle.style.backgroundColor = getRandomRGBColor();
     particle.style.boxShadow = `0 0 10px 5px ${getRandomRGBColor()}`;
 
-    // Append particle to container
     fireworksContainer.appendChild(particle);
 
-    // Remove particle after animation ends
     particle.addEventListener("animationend", () => {
       if (particle.parentNode) particle.parentNode.removeChild(particle);
     });
@@ -302,10 +281,10 @@ function getRandomRGBColor() {
 
   function animateSlot(slot, selectedAnimal, callback) {
     let index = 0;
-    let speed = 50; // Initial speed of images moving down
-    const maxSpeed = 500; // Maximum delay to slow down
-    const slowdownRate = 1.05; // Rate at which the animation slows down
-    const stopTime = 3000 + Math.random() * 1000; // Random end time for each slot
+    let speed = 50; 
+    const maxSpeed = 500; 
+    const slowdownRate = 1.05; 
+    const stopTime = 3000 + Math.random() * 1000; 
     const startTime = Date.now();
 
     function spin() {
@@ -319,23 +298,21 @@ function getRandomRGBColor() {
         slotItem.style.transform = "translateY(100%)";
       }, 10);
 
-      // Remove the previous slot item after it moves down
       setTimeout(() => {
         if (slotItem.parentNode) slotItem.parentNode.removeChild(slotItem);
       }, speed + 200);
 
       index = (index + 1) % shopAnimals.length;
-      speed *= slowdownRate; // Gradually increase interval (slows down)
+      speed *= slowdownRate; 
 
-      // Stop the slot on the selected animal after the stop time
       if (Date.now() - startTime >= stopTime) {
         slot.innerHTML = `<img src="${selectedAnimal.img}" alt="${selectedAnimal.name}" style="width: 80px; height: 80px;">`;
-        if (callback) callback(); // Move to the next slot
+        if (callback) callback(); 
       } else {
-        setTimeout(spin, speed); // Recursively call with the new slower speed
+        setTimeout(spin, speed); 
       }
     }
 
-    spin(); // Start the recursive spinning
+    spin(); 
   }
 });

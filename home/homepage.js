@@ -24,7 +24,6 @@ window.onload = function () {
         const currWord = words[currWordIndex];
         let isTag = false;
 
-        // Typewriter effect to display the current word
         for (let i = 0; i < currWord.length; i++) {
           if (currWord[i] === '<') isTag = true;
           if (currWord[i] === '>') isTag = false;
@@ -33,9 +32,8 @@ window.onload = function () {
           if (!isTag) await sleep(sleepTime);
         }
 
-        await sleep(3000); // Increased interval between greetings
+        await sleep(3000); 
 
-        // Typewriter effect to delete the current word
         for (let i = currWord.length; i >= 0; i--) {
           if (currWord[i] === '>') isTag = true;
           if (currWord[i] === '<') isTag = false;
@@ -241,7 +239,7 @@ let isPlaying = false;
       
       const barHeight =
         (Math.pow(dataArray[i], 3) / 210 ** 2) * barHeightFactor;
-      const color = `rgba(203, ${50 + (dataArray[i] / 255) * 205}, 36, 0.8)`; // Even more orange shade
+      const color = `rgba(203, ${50 + (dataArray[i] / 255) * 205}, 36, 0.8)`; 
 
       const barYPosition = canvasHeight / 1.6;
 
@@ -250,7 +248,7 @@ let isPlaying = false;
 
       canvasCtx.fillStyle = `rgba(203, ${
         50 + (dataArray[i] / 255) * 205
-      }, 36, 0.5)`; // Updated reflection color
+      }, 36, 0.5)`; 
       canvasCtx.fillRect(x, barYPosition, barWidth, barHeight);
 
 
@@ -279,12 +277,12 @@ playOSTButton.addEventListener("mousemove", (e) => {
            context.resume();
          }
          audio.play();
-         buttonIcon.src = "../assets/pause.png"; // Change to pause icon
+         buttonIcon.src = "../assets/pause.png"; 
          isPlaying = true;
          renderFrame();
        } else {
          audio.pause();
-         buttonIcon.src = "../assets/playmusic.png"; // Change back to play icon
+         buttonIcon.src = "../assets/playmusic.png"; 
          isPlaying = false;
        }
      });
@@ -300,7 +298,7 @@ let ppat= "../assets/Animals/PPat.webp";
 let labbik= "../assets/Animals/LabbiK.webp"; 
 
 function walkPerSection(section, animal) {
-  if (section.querySelector(".animalWalk")) return; // Ensure only one animal at a time
+  if (section.querySelector(".animalWalk")) return; 
 
   const animalImg = document.createElement("img");
   animalImg.src = animal;
@@ -309,7 +307,7 @@ function walkPerSection(section, animal) {
   const spawnSide = Math.random() < 0.5 ? "left" : "right";
   animalImg.style[spawnSide] = "-100px";
   if (spawnSide === "left") {
-    animalImg.style.transform = "scaleX(-1)"; // Mirror horizontally
+    animalImg.style.transform = "scaleX(-1)"; 
   }
 
   const walkDirection = spawnSide === "left" ? "right" : "left";

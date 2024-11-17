@@ -16,10 +16,10 @@ const restrictedZones = [
   { x: 969, y: 140 + 140, width: 120, height: 100 },
   { x: 949, y: 260, width: 120, height: 100 },
   { x: 929, y: 240, width: 120, height: 100 },
-  { x: 400, y: 140, width: 120, height: 100 }, //this one
-  { x: 420, y: 160, width: 120, height: 100 }, //this one
-  { x: 440, y: 180, width: 120, height: 100 }, //this one
-  { x: 460, y: 200, width: 120, height: 100 }, //this one
+  { x: 400, y: 140, width: 120, height: 100 },
+  { x: 420, y: 160, width: 120, height: 100 },
+  { x: 440, y: 180, width: 120, height: 100 },
+  { x: 460, y: 200, width: 120, height: 100 },
   { x: 890, y: 220, width: 100, height: 100 },
   { x: 1635, y: 140 + 90, width: 1920 - 1635, height: 50 },
   { x: 1169, y: 140 + 90, width: 245, height: 50 },
@@ -55,30 +55,16 @@ const restrictedZones = [
   { x: 1110, y: 160, width: 80, height: 100 },
   { x: 1130, y: 140, width: 80, height: 100 },
   { x: 1130, y: 140, width: 100, height: 30 },
-  { x: 1160, y: 0, width: 100, height: 150 },
-  // { x: 230, y: 540, width: 120, height: 80 },
-  // { x: 210, y: 560, width: 10, height: 80 },
-  // { x: 500, y: 500, width: 100, height: 150 },
-  // { x: 500, y: 500, width: 100, height: 150 },
-  // { x: 500, y: 500, width: 100, height: 150 },
-  // { x: 500, y: 500, width: 100, height: 150 },
-  // { x: 500, y: 500, width: 100, height: 150 },
-  // { x: 500, y: 500, width: 100, height: 150 },
-  // { x: 500, y: 500, width: 100, height: 150 },
-  // { x: 700, y: 50, width: 120, height: 180 },
-  // { x: 800, y: 400, width: 200, height: 100 },
-  // { x: 150, y: 600, width: 140, height: 140 },
-  // { x: 900, y: 250, width: 100, height: 100 },
-  // { x: 300, y: 750, width: 160, height: 100 }
+  { x: 1160, y: 0, width: 100, height: 150 }
 ];
 function updateScalingFactors() {
   const barnElement = document.getElementById("animals");
   const barnRect = barnElement.getBoundingClientRect();
-  scaleX = barnRect.width / 1920; // Scale based on original barn width
-  scaleY = barnRect.height / 1080; // Scale based on original barn height
+  scaleX = barnRect.width / 1920; 
+  scaleY = barnRect.height / 1080; 
 }
 function isInRestrictedZone(animalX, animalY, animalWidth, animalHeight) {
-  updateScalingFactors(); // Ensure scaling is updated before checking
+  updateScalingFactors(); 
 
   return restrictedZones.some((zone) => {
     const zoneX = zone.x * scaleX;
@@ -103,9 +89,9 @@ restrictedZones.forEach((zone) => {
   const endX = Math.floor((zone.x + zone.width) / gridSize);
   const endY = Math.floor((zone.y + zone.height) / gridSize);
   for (let i = startY; i <= endY; i++) {
-    if (i >= rows) continue; // Ensure index is within bounds
+    if (i >= rows) continue; 
     for (let j = startX; j <= endX; j++) {
-      if (j >= cols) continue; // Ensure index is within bounds
+      if (j >= cols) continue; 
       grid[i][j] = 1;
     }
   }
@@ -121,13 +107,13 @@ function createAnimal(animal) {
   animalElement.src = `../assets/Animals/${animal.name}.webp`;
   animalElement.className = "animal";
   animalElement.style.position = "absolute";
-  animalElement.style.width = "3.125rem"; // Use relative unit
-  animalElement.style.height = "3.125rem"; // Use relative unit
+  animalElement.style.width = "3.125rem"; 
+  animalElement.style.height = "3.125rem"; 
   animalElement.dataset.name = animal.name;
   animalElement.dataset.attack = animal.attack;
   animalElement.dataset.health = animal.health;
   animalElement.dataset.cost = animal.cost;
-  animalElement.dataset.color = animal.color; // Set the color attribute
+  animalElement.dataset.color = animal.color; 
   let spawnX, spawnY;
   do {
     spawnX = Math.random() * (animalContainer.clientWidth - 50);
@@ -263,10 +249,10 @@ function moveOutOfRestrictedZone(animal) {
   });
 
   if (!bestDirection) {
-    return; // Prevent infinite loops.
+    return; 
   }
 
-  const duration = 500; // Duration in milliseconds
+  const duration = 500; 
   const startX = parseFloat(animal.style.left);
   const startY = parseFloat(animal.style.top);
   const endX = startX + bestDirection.deltaX;
@@ -349,12 +335,12 @@ function roamAnimal(animal) {
 
 function createFood(event) {
   if (foodElement) {
-    return; // If food already exists, do not create a new one
+    return; 
   }
   const foodX = event.clientX - 10;
   const foodY = event.clientY - 10;
-  const foodWidth = 20; // Assuming food width is 20px
-  const foodHeight = 20; // Assuming food height is 20px
+  const foodWidth = 20;
+  const foodHeight = 20;
 
   if (isInRestrictedZone(foodX, foodY, foodWidth, foodHeight)) {
     return;
@@ -363,8 +349,8 @@ function createFood(event) {
   foodElement = document.createElement("div");
   foodElement.className = "food";
   foodElement.style.position = "absolute";
-  foodElement.style.width = "1.75rem"; // Use relative unit
-  foodElement.style.height = "1.75rem"; // Use relative unit
+  foodElement.style.width = "1.75rem";
+  foodElement.style.height = "1.75rem"; 
   foodElement.style.backgroundImage = "url('../assets/Pizza.webp')";
   foodElement.style.backgroundSize = "cover";
   foodElement.style.borderRadius = "50%";
@@ -414,7 +400,7 @@ function createFood(event) {
       if (path) {
         followPath(closestAnimal, path, () => {
           foodElement.remove();
-          foodElement = null; // Reset foodElement after being eaten
+          foodElement = null; 
           closestAnimal.dataset.isMovingToFood = "false";
           roamAnimal(closestAnimal);
         });
@@ -476,8 +462,8 @@ drawRestrictedZones();
 function updateRestrictedZones() {
   const barnElement = document.getElementById("animals");
   const barnRect = barnElement.getBoundingClientRect();
-  const scaleX = barnRect.width / 1920; // Assuming 1920 is the original width
-  const scaleY = barnRect.height / 1080; // Assuming 1080 is the original height
+  const scaleX = barnRect.width / 1920; 
+  const scaleY = barnRect.height / 1080; 
 
   const restrictedAreaElements = document.querySelectorAll(".restricted-area");
   restrictedAreaElements.forEach((element, index) => {
@@ -492,13 +478,13 @@ function updateRestrictedZones() {
 function updateAnimalSizes() {
   const barnElement = document.getElementById("animals");
   const barnRect = barnElement.getBoundingClientRect();
-  const scaleX = barnRect.width / 1920; // Assuming 1920 is the original width
-  const scaleY = barnRect.height / 1080; // Assuming 1080 is the original height
+  const scaleX = barnRect.width / 1920; 
+  const scaleY = barnRect.height / 1080;
 
   const animals = document.querySelectorAll(".animal");
   animals.forEach((animal) => {
-    const originalWidth = 50; // Original width in pixels
-    const originalHeight = 50; // Original height in pixels
+    const originalWidth = 50; 
+    const originalHeight = 50; 
     animal.style.width = `${originalWidth * scaleX}px`;
     animal.style.height = `${originalHeight * scaleY}px`;
 
@@ -512,8 +498,8 @@ function updateAnimalSizes() {
 function updateCoordinates() {
   const barnElement = document.getElementById("animals");
   const barnRect = barnElement.getBoundingClientRect();
-  const scaleX = barnRect.width / 1920; // Assuming 1920 is the original width
-  const scaleY = barnRect.height / 1080; // Assuming 1080 is the original height
+  const scaleX = barnRect.width / 1920; 
+  const scaleY = barnRect.height / 1080; 
 
   const animals = document.querySelectorAll(".animal");
   animals.forEach((animal) => {
@@ -537,14 +523,10 @@ window.addEventListener("resize", () => {
   updateScalingFactors();
   resetGrid();
   drawRestrictedZones();
-  // updateAnimalSizes();
-  // updateCoordinates();
 });
 updateScalingFactors();
 resetGrid();
 drawRestrictedZones();
-// updateAnimalSizes();
-// updateCoordinates();
 
 document.addEventListener("DOMContentLoaded", () => {
   const userAnimals = getUserAnimals();
@@ -590,13 +572,13 @@ function showStatWindow(animal) {
   const hrElement = statWindow.querySelector("hr");
 
   if (currentAnimal === animal) {
-    return; // Do nothing if the same animal is clicked again
+    return;
   }
 
   currentAnimal = animal;
 
-  const animalColor = animal.dataset.color || "#ffffff"; // Default to white if no color is specified
-  statWindow.style.setProperty('--animal-color', animalColor); // Set the custom property for the gradient
+  const animalColor = animal.dataset.color || "#ffffff"; 
+  statWindow.style.setProperty('--animal-color', animalColor); 
 
   if (statWindow.classList.contains("show")) {
     statWindow.classList.remove("show");
@@ -605,25 +587,25 @@ function showStatWindow(animal) {
       animalAttack.textContent = animal.dataset.attack;
       animalHealth.textContent = animal.dataset.health;
       animalCost.textContent = animal.dataset.cost;
-      hrElement.style.width = "0"; // Reset hr width
+      hrElement.style.width = "0"; 
       statWindow.classList.add("show");
       setTimeout(() => {
-        hrElement.style.width = "100%"; // Animate hr width
-      }, 10); // Slight delay to trigger transition
-    }, 300); // Match transition duration
+        hrElement.style.width = "100%";
+      }, 10); 
+    }, 300); 
   } else {
     animalName.textContent = animal.dataset.name;
     animalAttack.textContent = animal.dataset.attack;
     animalHealth.textContent = animal.dataset.health;
     animalCost.textContent = animal.dataset.cost;
-    hrElement.style.width = "0"; // Reset hr width
-    statWindow.style.display = "block"; // Ensure it is displayed
+    hrElement.style.width = "0";
+    statWindow.style.display = "block"; 
     setTimeout(() => {
       statWindow.classList.add("show");
       setTimeout(() => {
-        hrElement.style.width = "100%"; // Animate hr width
-      }, 10); // Slight delay to trigger transition
-    }, 10); // Slight delay to trigger transition
+        hrElement.style.width = "100%"; 
+      }, 10); 
+    }, 10); 
   }
 }
 
@@ -631,7 +613,7 @@ function hideStatWindow() {
   const statWindow = document.getElementById("statWindow");
   statWindow.classList.remove("show");
   setTimeout(() => {
-    statWindow.style.display = "none"; // Hide after transition
-    currentAnimal = null; // Reset current animal
-  }, 300); // Match transition duration
+    statWindow.style.display = "none"; 
+    currentAnimal = null; 
+  }, 300); 
 }

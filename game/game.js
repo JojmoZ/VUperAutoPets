@@ -149,10 +149,9 @@ class GameState {
     );
     const reversedSlotIndex = maxSlots - 1 - slotIndex;
     const data = event.dataTransfer.getData("text/plain");
-    const source = event.dataTransfer.getData("source"); // Get the source identifier
+    const source = event.dataTransfer.getData("source"); 
     console.log("a");
     if (source === "shop") {
-      // Handle dragging from the shop
       const animalIndex = parseInt(data, 10);
       const selectedAnimal = this.randomAnimals[animalIndex];
       if (
@@ -171,7 +170,6 @@ class GameState {
         alert("Not enough coins or slot is already filled!");
       }
     } else if (source === "battle") {
-      // Handle dragging from the battle lineup
       const animalIndex = parseInt(data, 10);
       const draggedFromSlot = this.battleLineup[animalIndex];
       if (draggedFromSlot) {
@@ -184,7 +182,7 @@ class GameState {
     } else if (source === "item") {
       const itemName = event.dataTransfer.getData("itemName");
       const itemEffect = event.dataTransfer.getData("itemEffect");
-      const targetAnimal = this.battleLineup[reversedSlotIndex]; // The animal in the drop slot
+      const targetAnimal = this.battleLineup[reversedSlotIndex];
       if (targetAnimal) {
         handleItemDrop(event, targetAnimal);
       }
@@ -1791,7 +1789,6 @@ trashBin.addEventListener("drop", (event) => {
   renderBattleSlots();
   saveBattleLineup();
 });
-// Event listener for drag start on battle lineup animals to show the trash bin
 document.querySelectorAll(".battle-slot img").forEach((img) => {
   img.addEventListener("dragstart", (event) => {
     showTrashBin();
@@ -1925,8 +1922,6 @@ function saveCurrentItems() {
     JSON.stringify([currentItem1, currentItem2])
   );
 }
-
-// Function to apply item effects on the animal
 function applyItemEffect(animal, itemName) {
   if (itemName === "Apple") {
     animal.health += 2;
