@@ -444,53 +444,5 @@ images.forEach((image) => {
     }
   });
 });
-//  images.forEach((image, index) => {
-//    image.dataset.originalIndex = index; // Store the original index
-//    image.addEventListener("click", () => {
-//      if (image.classList.contains("fullscreen")) {
-//        // Exit fullscreen
-//        image.classList.remove("fullscreen");
-//        document.body.style.overflow = "auto"; // Re-enable scrolling
-//        mapSection.style.overflow = ""; // Re-enable section scrolling
-
-//        // Insert the image back to its original position
-//        const originalIndex = parseInt(image.dataset.originalIndex);
-//        if (originalIndex === 0) {
-//          mapsContainer.insertBefore(image, mapsContainer.firstChild);
-//        } else {
-//          mapsContainer.insertBefore(
-//            image,
-//            mapsContainer.children[originalIndex]
-//          );
-//        }
-//      } else {
-//        // Enter fullscreen
-//        const fullscreenImage = document.querySelector(
-//          "#maps .image.fullscreen"
-//        );
-//        if (fullscreenImage) {
-//          fullscreenImage.classList.remove("fullscreen");
-//          const originalIndex = parseInt(fullscreenImage.dataset.originalIndex);
-//          if (originalIndex === 0) {
-//            mapsContainer.insertBefore(
-//              fullscreenImage,
-//              mapsContainer.firstChild
-//            );
-//          } else {
-//            mapsContainer.insertBefore(
-//              fullscreenImage,
-//              mapsContainer.children[originalIndex]
-//            );
-//          }
-//        }
-
-//        // Set up transition for the image
-//        image.classList.add("fullscreen");
-//        document.body.style.overflow = "hidden";
-//        mapSection.style.overflow = "hidden";
-//        document.body.appendChild(image); // Move image to body for fullscreen
-//      }
-//    });
-//  });
 
 }

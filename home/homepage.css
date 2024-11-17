@@ -637,13 +637,13 @@ section {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 60px; /* Adjust as needed */
-  height: 60px; /* Adjust as needed */
+  width: 60px; 
+  height: 60px; 
 }
 
 .play-ost-button img {
-  width: 40px; /* Increased size */
-  height: 40px; /* Increased size */
+  width: 40px;
+  height: 40px;
   transition: transform 0.3s ease;
 }
 
@@ -652,9 +652,7 @@ section {
 }
 
 .play-ost-button:hover {
-  /* background-color: #febd01; */
   transform: translateY(-5px);
-  /* box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.3); */
 }
 
 .ost-card {
@@ -686,41 +684,6 @@ section {
   display: flex;
   align-items: center;
 }
-
-/* @media (min-width: 768px) {
-  .jumbotron-box {
-    width: 60%;
-  }
-
-  .play-button {
-    width: 20%;
-  }
-
-  .game-desc img {
-    width: 40%;
-  }
-
-  .description-card {
-    width: 50%;
-  }
-
-  .game-maker .text {
-    width: 50%;
-  }
-
-  .carousel {
-    width: 40%;
-  }
-
-  .visualizer-container {
-    width: 45%;
-  }
-
-  .ost-card {
-    width: 50%;
-  }
-} */
-
 .map-section {
   background-color: #141414;
 }
@@ -734,30 +697,26 @@ section {
   transition: transform 0.5s ease, z-index 0.5s ease;
 }
 
-/* Animation for transitioning to fullscreen */
-/* Default styling for images */
 #maps > .image,
 body > .image {
-  transition: all 0.5s ease; /* Add smooth transition */
-  transform: scale(1); /* Initial scale */
-  z-index: 0; /* Ensure it's below fullscreen elements */
+  transition: all 0.5s ease; 
+  transform: scale(1); 
+  z-index: 0;  
 }
 
-/* When the image is fullscreen */
 #maps > .image.fullscreen,
 body > .image.fullscreen {
-  position: fixed; /* Position fixed for fullscreen */
+  position: fixed; 
   top: 0;
   left: 0;
-  width: 100vw; /* Full width */
-  height: 100vh; /* Full height */
-  transform: scale(1); /* Reset scale to fit the screen */
-  z-index: 10; /* Bring to front */
-  background-color: rgba(0, 0, 0, 0.8); /* Optional overlay background */
+  width: 100vw;
+  height: 100vh;
+  transform: scale(1); 
+  z-index: 10; 
+  background-color: rgba(0, 0, 0, 0.8); 
   cursor: zoom-out;
-  transition: all 0.5s ease; /* Smooth transition */
+  transition: all 0.5s ease; 
 }
-
 
 #maps {
   display: flex;
@@ -770,60 +729,58 @@ body > .image.fullscreen {
 }
 .btn {
   all: unset;
-  font-size: 28px; /* Increased font size */
+  font-size: 28px; 
   background: hsl(0, 0%, 0%);
   color: white;
   text-transform: uppercase;
   position: relative;
-  border-radius: 50px; /* Rounded corners for the rectangle */
+  border-radius: 50px; 
   cursor: pointer;
-  padding: 18px 60px; /* Increased padding */
+  padding: 18px 60px; 
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  z-index: auto; /* Ensure it's on top */
+  z-index: auto; 
   overflow: visible;
-  width: auto; /* Adjust width dynamically based on content */
-  height: auto; /* Adjust height dynamically based on content */
+  width: auto; 
+  height: auto; 
 }
 
 .btn {
-  overflow: visible; /* Ensure pseudo-elements are not clipped */
-  position: relative; /* Required for pseudo-elements */
+  overflow: visible; 
+  position: relative; 
 }
 
-/* Handle the span wrapper for the image */
 .btn > span {
   display: inline-flex;
   justify-content: center;
   align-items: center;
   position: relative;
-  z-index: 11; /* Above pseudo-elements */
+  z-index: 11; 
   transition: color 0.25s ease;
-  gap: 10px; /* Adjust gap between content inside the span */
+  gap: 10px; 
 }
 
 .btn:hover > span {
-  color: hsl(var(--primary) / 1); /* Change color on hover */
+  color: hsl(var(--primary) / 1); 
 }
 
 .btn > span > img {
-  width: 1.75rem; /* Icon size */
-  height: 1.75rem; /* Icon size */
+  width: 1.75rem; 
+  height: 1.75rem; 
   position: relative;
   transition: transform 0.25s ease;
 }
 
 .btn:hover > span > img {
-  transform: scale(1.2); /* Slight zoom on hover */
+  transform: scale(1.2); 
 }
 
-/* Pseudo-elements for glowing effect */
 .btn::before,
 .btn::after {
   content: "";
   position: absolute;
-  inset: -2px; /* Extend beyond the button for a glowing border */
+  inset: -2px; 
   background-color: inherit;
   border-radius: inherit;
   background-image: conic-gradient(
@@ -834,15 +791,14 @@ body > .image.fullscreen {
     transparent 66%,
     transparent 100%
   );
-  animation: rotate 2s infinite linear; /* Rotate effect */
-  z-index: -1; /* Push below the main button */
+  animation: rotate 2s infinite linear; 
+  z-index: -1; 
 }
 
 .btn::before {
-  filter: blur(15px); /* Add a soft glow */
+  filter: blur(15px);
 }
 
-/* Inner radial gradient on hover */
 .inner {
   position: absolute;
   inset: 0;
@@ -852,8 +808,8 @@ body > .image.fullscreen {
     transparent 50%
   );
   border-radius: inherit;
-  z-index: 2; /* Ensure it's above pseudo-elements but below content */
-  opacity: 0; /* Initially hidden */
+  z-index: 2; 
+  opacity: 0; 
   transition: opacity 0.3s ease;
 }
 .jumbotron,
@@ -862,10 +818,9 @@ body > .image.fullscreen {
   overflow: visible;
 }
 .btn:hover .inner {
-  opacity: 1; /* Show the inner radial gradient */
+  opacity: 1; 
 }
 
-/* Rotating border effect */
 @keyframes rotate {
   0% {
     --angle: 0deg;
@@ -876,19 +831,15 @@ body > .image.fullscreen {
 }
 
 #typewriter {
-  color: black; /* Changed to black */
+  color: black; 
 }
 
 .username {
-  color: hsl(50 70% 47%); 
+  color: hsl(50 70% 47%);
 }
 
 #cursor {
-  color: hsl(
-    30,
-    70%,
-    30%
-  ); 
+  color: hsl(30, 70%, 30%);
   font-weight: bold;
   animation: blink 1s linear infinite;
 }
@@ -902,16 +853,16 @@ body > .image.fullscreen {
   }
 }
 
-.animalWalk{
+.animalWalk {
   position: absolute;
   bottom: 10%;
-  height: 100px; /* Adjust size as needed */
+  height: 100px; 
   z-index: 10;
-  transition: transform 10s linear, bottom 1s ease-in-out; /* Changed top to bottom */
+  transition: transform 10s linear, bottom 1s ease-in-out; 
 }
 
-.animalWalk.mirrored{
-  transform: scaleX(-1); /* Mirror the image horizontally */
+.animalWalk.mirrored {
+  transform: scaleX(-1); 
 }
 @keyframes fadeIn {
   from {
