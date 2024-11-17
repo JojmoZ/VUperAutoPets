@@ -33,7 +33,6 @@ body {
   display: none; /* Hide scrollbar for Webkit browsers */
 }
 .card {
-  background-color: #fff;
   user-select: none;
   width: 12rem;
   border-radius: 1rem;
@@ -41,9 +40,14 @@ body {
   overflow: hidden;
   text-align: center;
   padding: 2%;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
   height: auto;
+  clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .sold-out-overlay {
@@ -69,11 +73,13 @@ body {
 
 .card.sold-out {
   pointer-events: none;
+  background-color: #d3d3d3; /* Gray background for sold out */
 }
 
 .card img {
   width: 4rem;
   height: 4rem;
+  margin-bottom: 0.5rem;
 }
 
 .card h3,
@@ -83,10 +89,21 @@ body {
   text-overflow: ellipsis; /* Handle long text */
   white-space: nowrap; /* Prevent text wrapping */
   overflow: hidden; /* Hide overflow */
+  color: #333; /* Darker text color */
+}
+
+@keyframes rainbow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 .card:hover {
   transform: scale(1.05);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.3); /* Larger shadow on hover */
+  background: linear-gradient(135deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);
+  background-size: 400% 400%;
+  animation: rainbow 3s ease infinite;
 }
 
 .modal {
@@ -150,6 +167,10 @@ body {
   margin-bottom: 2%;
 }
 
+.modal-text p {
+  margin: 0.5rem 0;
+}
+
 .modal-text button {
   margin: 1%;
   padding: 1% 2%;
@@ -168,3 +189,5 @@ body {
   background-color: #dc3545;
   color: white;
 }
+
+/* ...existing code... */

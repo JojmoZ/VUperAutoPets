@@ -4,166 +4,191 @@
     "attack": 2,
     "health": 1,
     "cost": 2,
-    "img": "../assets/Animals/VUnt.webp"
+    "img": "../assets/Animals/VUnt.webp",
+    "color": "#636363"
   },
   {
     "name": "fiCM",
     "attack": 2,
     "health": 3,
     "cost": 5,
-    "img": "../assets/Animals/fiCM.webp"
+    "img": "../assets/Animals/fiCM.webp",
+    "color": "#0594DB"
   },
   {
     "name": "KAon",
     "attack": 3,
     "health": 4,
     "cost": 7,
-    "img": "../assets/Animals/KAon.webp"
+    "img": "../assets/Animals/KAon.webp",
+    "color": "#AB7B62"
   },
   {
     "name": "DJig",
     "attack": 3,
     "health": 1,
     "cost": 3,
-    "img": "../assets/Animals/DJig.webp"
+    "img": "../assets/Animals/DJig.webp",
+    "color": "#FF938F"
   },
   {
     "name": "turGTle",
     "attack": 1,
     "health": 2,
     "cost": 4,
-    "img": "../assets/Animals/turGTle.webp"
+    "img": "../assets/Animals/turGTle.webp",
+    "color": "#6C8C09"
   },
   {
     "name": "eLOphant",
     "attack": 8,
     "health": 7,
     "cost": 5,
-    "img": "../assets/Animals/eLOphant.webp"
+    "img": "../assets/Animals/eLOphant.webp",
+    "color": "#B4BCBF"
   },
   {
     "name": "aCFolotl",
     "attack": 2,
     "health": 4,
     "cost": 2,
-    "img": "../assets/Animals/aCFolotl.webp"
+    "img": "../assets/Animals/aCFolotl.webp",
+    "color": "#FF819E"
   },
   {
     "name": "caKRbara",
     "attack": 4,
     "health": 6,
     "cost": 3,
-    "img": "../assets/Animals/caKRbara.webp"
+    "img": "../assets/Animals/caKRbara.webp",
+    "color": "#F09D61"
   },
   {
     "name": "CWinchilla",
     "attack": 2,
     "health": 5,
     "cost": 3,
-    "img": "../assets/Animals/CWinchilla.webp"
+    "img": "../assets/Animals/CWinchilla.webp",
+    "color": "#8F999E"
   },
   {
     "name": "eagSVle",
     "attack": 12,
     "health": 8,
     "cost": 10,
-    "img": "../assets/Animals/eagSVle.webp"
+    "img": "../assets/Animals/eagSVle.webp",
+    "color": "#A3735E"
   },
   {
     "name": "monKKey",
     "attack": 6,
     "health": 7,
     "cost": 8,
-    "img": "../assets/Animals/monKKey.webp"
+    "img": "../assets/Animals/monKKey.webp",
+    "color": "#D6A16F"
   },
   {
     "name": "MSeer",
     "attack": 6,
     "health": 8,
     "cost": 4,
-    "img": "../assets/Animals/MSeer.webp"
+    "img": "../assets/Animals/MSeer.webp",
+    "color": "#EB8760"
   },
   {
     "name": "octoSFus",
     "attack": 10,
     "health": 10,
     "cost": 15,
-    "img": "../assets/Animals/octoSFus.webp"
+    "img": "../assets/Animals/octoSFus.webp",
+    "color": "#CF4F4B"
   },
   {
     "name": "owLF",
     "attack": 5,
     "health": 4,
     "cost": 7,
-    "img": "../assets/Animals/owLF.webp"
+    "img": "../assets/Animals/owLF.webp",
+    "color": "#99593D"
   },
   {
     "name": "PamstIr",
     "attack": 3,
     "health": 5,
     "cost": 2,
-    "img": "../assets/Animals/PamstIr.webp"
+    "img": "../assets/Animals/PamstIr.webp",
+    "color": "#D9A46F"
   },
   {
     "name": "VJanda",
     "attack": 7,
     "health": 10,
     "cost": 6,
-    "img": "../assets/Animals/VJanda.webp"
+    "img": "../assets/Animals/VJanda.webp",
+    "color": "#707070"
   },
   {
     "name": "YenguiK",
     "attack": 4,
     "health": 6,
     "cost": 6,
-    "img": "../assets/Animals/YenguiK.webp"
+    "img": "../assets/Animals/YenguiK.webp",
+    "color": "#676880"
   },
   {
     "name": "PPat",
     "attack": 4,
     "health": 6,
     "cost": 4,
-    "img": "../assets/Animals/PPat.webp"
+    "img": "../assets/Animals/PPat.webp",
+    "color": "#868A91"
   },
   {
     "name": "ZKug",
     "attack": 5,
     "health": 7,
     "cost": 5,
-    "img": "../assets/Animals/ZKug.webp"
+    "img": "../assets/Animals/ZKug.webp",
+    "color": "#FADDA9"
   },
   {
     "name": "t-reXY",
     "attack": 15,
     "health": 18,
     "cost": 20,
-    "img": "../assets/Animals/t-reXY.webp"
+    "img": "../assets/Animals/t-reXY.webp",
+    "color": "#A4C400"
   },
   {
     "name": "VrocodiLe",
     "attack": 11,
     "health": 15,
     "cost": 12,
-    "img": "../assets/Animals/VrocodiLe.webp"
+    "img": "../assets/Animals/VrocodiLe.webp",
+    "color": "#8EA848"
   },
   {
     "name": "WLeopard",
     "attack": 6,
     "health": 9,
     "cost": 9,
-    "img": "../assets/Animals/WLeopard.webp"
+    "img": "../assets/Animals/WLeopard.webp",
+    "color": "#FFDE59"
   },
-   {
-     "name": "Liberian_Husky",
-     "attack": 9,
-     "health": 7,
-     "cost": 11,
-     "img": "../assets/Animals/Liberian_Husky.webp"
-   },{
-     "name": "LabbiK",
-     "attack": 7,
-     "health": 5,
-     "cost": 8,
-     "img": "../assets/Animals/LabbiK.webp"
-   }
+  {
+    "name": "Liberian_Husky",
+    "attack": 9,
+    "health": 7,
+    "cost": 11,
+    "img": "../assets/Animals/Liberian_Husky.webp",
+    "color": "#766D78"
+  },
+  {
+    "name": "LabbiK",
+    "attack": 7,
+    "health": 5,
+    "cost": 8,
+    "img": "../assets/Animals/LabbiK.webp",
+    "color": "#B4D7E3"
+  }
 ]

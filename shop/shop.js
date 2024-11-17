@@ -88,13 +88,43 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const specialAnimals = ["VJanda", "MSeer", "eagSVle", "PamstIr", "YenguiK"];
 
+  function getPrimaryColor(imageUrl) {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.crossOrigin = "Anonymous";
+      img.src = imageUrl;
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        context.drawImage(img, 0, 0, img.width, img.height);
+        const data = context.getImageData(0, 0, img.width, img.height).data;
+        const colorCounts = {};
+        let maxCount = 0;
+        let primaryColor = [0, 0, 0];
+
+        for (let i = 0; i < data.length; i += 4) {
+          const color = `${data[i]},${data[i + 1]},${data[i + 2]}`;
+          colorCounts[color] = (colorCounts[color] || 0) + 1;
+          if (colorCounts[color] > maxCount) {
+            maxCount = colorCounts[color];
+            primaryColor = [data[i], data[i + 1], data[i + 2]];
+          }
+        }
+        resolve(`rgb(${primaryColor[0]}, ${primaryColor[1]}, ${primaryColor[2]})`);
+      };
+    });
+  }
 
   function generateCards(animals) {
     const shopContainer = document.getElementById("shopContainer");
+
     animals.forEach((animal) => {
       const card = document.createElement("div");
       card.classList.add("card");
       card.setAttribute("data-animal", animal.name);
+      card.setAttribute("data-color", animal.color); // Add this line
 
       const img = document.createElement("img");
       img.src = animal.img;
@@ -103,16 +133,11 @@ document.addEventListener("DOMContentLoaded", function () {
       const name = document.createElement("h3");
       name.textContent = animal.name;
 
-      const price = document.createElement("p");
-      price.textContent = `Price: ${animal.cost} Coins`;
-
-      const stats = document.createElement("p");
-      stats.textContent = `Attack: ${animal.attack}, Health: ${animal.health}`;
-
       card.appendChild(img);
       card.appendChild(name);
-      card.appendChild(price);
-      card.appendChild(stats);
+
+      const color = animal.color;
+      card.style.background = `linear-gradient(135deg, ${color} 0%, #ffffff 100%)`;
 
       // Check if the animal is already owned and mark as sold out
       let ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
@@ -128,7 +153,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
       card.addEventListener("click", function () {
         const animalName = this.querySelector("h3").textContent;
-       
         const animalImage = this.querySelector("img").src;
         let ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
         if (ownedAnimals.some((animal) => animal.name === animalName)) {
@@ -139,17 +163,19 @@ document.addEventListener("DOMContentLoaded", function () {
         modal.setAttribute("data-animal", animalName);
         modal.setAttribute(
           "data-price",
-          this.querySelector("p").textContent.match(/\d+/)[0]
+          animal.cost
         );
+        document.getElementById("modal-animal-price").textContent = `Price: ${animal.cost} Coins`;
+        document.getElementById("modal-animal-stats").textContent = `Attack: ${animal.attack}, Health: ${animal.health}`;
         modal.classList.add("show");
-         if (specialAnimals.includes(animalName)) {
+        if (specialAnimals.includes(animalName)) {
           const h3 = document.getElementById("textext")
           h3.innerHTML =
             "you cannot buy this animal, you can only get this animal through gacha";
           confirmButton.style.display = "none"
           h3.style.textAlign = "center"
           cancelButton.innerHTML = "Close"
-         }
+        }
         modal.style.display = "flex";
       });
 
