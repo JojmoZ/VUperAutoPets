@@ -61,4 +61,5 @@ canvas {
   border: 1px solid #ccc;
   border-radius: 5px;
   display: none; /* Hidden by default */
+  margin-top: 4rem;
 }
