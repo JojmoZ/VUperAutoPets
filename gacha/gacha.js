@@ -7,7 +7,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const h1Element = document.querySelector("h1[data-text='Try Your Luck!']");
   let shopAnimals = [];
 
-  // Load shop animals from JSON
   fetch("../assets/shopAnimals.json")
     .then((response) => response.json())
     .then((data) => {

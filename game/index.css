@@ -50,7 +50,7 @@ body {
   user-select: none;
   display: flex;
   justify-content: center;
-  margin-bottom: 2vh; /* Adjusted margin for better responsiveness */
+  margin-bottom: 2vh;
 }
 .battle-slot {
   width: 6.25rem;
@@ -83,7 +83,7 @@ button {
 }
 canvas {
   user-select: none;
-  margin-top: -30vh; /* Adjusted margin to position canvas more upward */
+  margin-top: -30vh; 
 }
 img {
   width: 100%;
@@ -341,7 +341,7 @@ img {
   background-position: bottom;
   position: relative;
   cursor: pointer;
-  top: 20px; /* Moves the stone down, adjust as needed */
+  top: 20px; 
 }
 
 .item-slot img {
@@ -350,7 +350,7 @@ img {
   pointer-events: all;
   cursor: grab;
   position: relative;
-  transform: translateY(-20px); /* Move up by 10px, adjust as needed */
+  transform: translateY(-20px); 
 }
 
 .animal-wrapper {
@@ -360,7 +360,6 @@ img {
   position: relative;
 }
 
-/* ...existing code... */
 .hover-info {
   position: absolute;
   background-color: rgba(0, 0, 0, 0.8);
@@ -374,4 +373,3 @@ img {
   z-index: 91919191919;
   transition: opacity 0.3s ease;
 }
-/* ...existing code... */

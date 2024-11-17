@@ -36,7 +36,7 @@ body::-webkit-scrollbar {
   display: inline-block;
   margin: 0 10px;
   overflow: hidden;
-  border-radius: 10px; /* Rounded edges for the box */
+  border-radius: 10px; 
 }
 
 .nav-item .overlay {
@@ -46,14 +46,14 @@ body::-webkit-scrollbar {
   right: 0;
   bottom: 0;
   background: white;
-  transform: scaleY(0); /* Collapse vertically */
-  transform-origin: center; /* Start expansion from the center */
+  transform: scaleY(0); 
+  transform-origin: center;
   transition: transform 0.3s ease-in-out;
   z-index: -1;
 }
 
 .nav-item:hover .overlay {
-  transform: scaleY(1); /* Expands the overlay vertically on hover */
+  transform: scaleY(1); 
 }
 
 .navbar-left a {
@@ -68,19 +68,19 @@ body::-webkit-scrollbar {
 }
 
 .navbar-left a.active {
-  color: hsl(50, 70%, 47%); /* Orange text for active page */
+  color: hsl(50, 70%, 47%);
 }
 
 .navbar-left a:hover {
-  color: hsl(50, 70%, 47%); /* Orange text when hovered */
+  color: hsl(50, 70%, 47%); 
 }
 
 .navbar-left a.active:hover {
-  color: white; /* Text turns white when hovering over the active page */
+  color: white; 
 }
 
 .navbar-left a.active:hover ~ .overlay {
-  background: hsl(50, 70%, 47%); /* Orange overlay for active page */
+  background: hsl(50, 70%, 47%);
 }
 
 .navbar-right {
