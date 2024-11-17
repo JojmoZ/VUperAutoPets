@@ -104,7 +104,7 @@ document.addEventListener("DOMContentLoaded", function () {
       card.appendChild(name);
 
       const color = animal.color;
-      card.style.setProperty('--animal-color', color);
+      card.style.setProperty("--animal-color", color);
       card.classList.add("gradient-hover");
 
       let ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
@@ -151,7 +151,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const imageContainer = document.querySelector(".image-container");
         const darkerColor = getDarkerColor(animal.color);
-        imageContainer.style.setProperty('--animal-border-color', darkerColor);
+        imageContainer.style.setProperty("--animal-border-color", darkerColor);
 
         if (specialAnimals.includes(animalName)) {
           h3.innerHTML =

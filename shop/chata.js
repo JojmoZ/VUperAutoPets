@@ -49,7 +49,6 @@ function updateCoinsDisplay() {
 
 function giveAllAnimals() {
   localStorage.setItem("ownedAnimals", JSON.stringify(shopAnimals));
-  alert("Cheat activated! You now own all animals.");
   updateOwnedAnimalsDisplay();
 }
 
@@ -68,3 +67,31 @@ function updateOwnedAnimalsDisplay() {
     }
   });
 }
+  const cheatModal = document.getElementById("cheat-modal");
+  const cheatText = document.getElementById("cheat-text");
+  const cheatRewardText = document.getElementById("cheat-reward");
+  function showCheatModal(reward) {
+    cheatText.textContent = "Cheat Activated!";
+    cheatRewardText.textContent = reward;
+    cheatModal.style.display = "flex";
+    setTimeout(() => {
+      cheatModal.classList.add("show");
+    }, 10);
+    setTimeout(() => {
+      cheatModal.classList.remove("show");
+      cheatModal.classList.add("hide");
+      setTimeout(() => {
+        cheatModal.style.display = "none";
+        cheatModal.classList.remove("hide");
+        cheatActivated = false; // Reset cheatActivated flag
+      }, 500);
+    }, 1500); // Automatically close after 1.5 seconds
+  }
+
+  document.addEventListener("keydown", function (event) {
+    // ...existing code...
+    if (cheatActivated) {
+      showCheatModal(cheatReward);
+      cheatActivated = false; // Reset cheatActivated flag after showing modal
+    }
+  });
