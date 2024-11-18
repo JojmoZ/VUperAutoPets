@@ -38,8 +38,11 @@ document.addEventListener("keydown", function (event) {
 function updateCoinsDisplay() {
   let coins = Number(localStorage.getItem("coins"));
   coins += 500000;
-  coinsDisplay.textContent = `Coins: ${coins}`;
   localStorage.setItem("coins", coins);
+  const coinsDisplay = document.getElementById("coinsDisplay");
+  if (coinsDisplay) {
+    coinsDisplay.textContent = `Coins: ${coins}`;
+  }
 }
 
 const cheatModal = document.getElementById("cheat-modal");

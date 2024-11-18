@@ -24,9 +24,10 @@ document.addEventListener("DOMContentLoaded", function () {
     coinsDisplay.textContent = `Coins: ${coins}`;
   }
   updateCoinsDisplay();
-
+  let rolling =false
   lever.addEventListener("mousedown", function () {
     if (isRolling) return; 
+     isRolling = true; 
     lever.style.transform = "translateY(100px)"; 
     setTimeout(() => {
       pullHandle();
@@ -37,6 +38,30 @@ document.addEventListener("DOMContentLoaded", function () {
     lever.style.transform = "translateY(0)"; 
   });
 
+  function handleCheatActivation() {
+    if (cheatAnimal) {
+      const selectedAnimal = shopAnimals.find(animal => animal.name === cheatAnimal);
+      if (selectedAnimal) {
+        slot1.innerHTML = "";
+        slot2.innerHTML = "";
+        slot3.innerHTML = "";
+        animateSlot(slot1, selectedAnimal, () => {
+          animateSlot(slot2, selectedAnimal, () => {
+            animateSlot(slot3, selectedAnimal, () => {
+              isRolling = false;
+              setTimeout(() => {
+                checkThreeOfAKind(selectedAnimal, selectedAnimal, selectedAnimal);
+              }, 100);
+            });
+          });
+        });
+        cheatAnimal = "";
+        return true;
+      }
+    }
+    return false;
+  }
+
   function pullHandle() {
     const coins = parseInt(localStorage.getItem("coins"), 10);
     if (coins < 5) {
@@ -44,8 +69,13 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    isRolling = true; 
+   
 
+    if (handleCheatActivation()) {
+      localStorage.setItem("coins", (coins - 5).toString());
+      updateCoinsDisplay();
+      return;
+    }
   
     slot1.innerHTML = "";
     slot2.innerHTML = "";
