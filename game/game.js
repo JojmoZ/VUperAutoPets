@@ -355,6 +355,7 @@ class UIUpdater {
   }
 
   renderBattleSlots() {
+    console.log('aaaaaaaaaaaaaaaaaaaa')
     const battleSlots = document.querySelectorAll(".battle-slot");
     battleSlots.forEach((slot, index) => {
       slot.setAttribute("data-slot", index);
@@ -370,6 +371,7 @@ class UIUpdater {
         animalImg.style.height = "5rem";
         animalImg.draggable = true;
         animalImg.addEventListener("dragstart", (event) => {
+          hideHoverInfo()
           event.dataTransfer.setData("text/plain", maxSlots - 1 - index);
           event.dataTransfer.setData("source", "battle");
           showTrashBin();
@@ -412,6 +414,7 @@ class UIUpdater {
       animalImage.setAttribute("draggable", true);
       animalImage.addEventListener("dragstart", (event) => {
         event.dataTransfer.setData("text/plain", index);
+        hideHoverInfo();
         event.dataTransfer.setData("source", "shop");
         showFreezeBin();
       });
@@ -640,6 +643,7 @@ function renderRandomAnimals() {
     animalImage.alt = animal.name;
     animalImage.setAttribute("draggable", true);
     animalImage.addEventListener("dragstart", (event) => {
+      hideHoverInfo()
       event.dataTransfer.setData("text/plain", index); // Existing data
       event.dataTransfer.setData("source", "shop"); // New data to identify source
       showFreezeBin();
@@ -743,6 +747,16 @@ function hideHoverInfo() {
 }
 
 function renderBattleSlots() {
+  console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
+  console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
+  console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
+  console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
+  console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
+  console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
+  console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
+  console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
+  console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
+  console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
   const battleSlots = document.querySelectorAll(".battle-slot");
   battleSlots.forEach((slot, index) => {
     slot.setAttribute("data-slot", index);
@@ -764,6 +778,7 @@ function renderBattleSlots() {
 
       // Attach drag events
       animalImg.addEventListener("dragstart", (event) => {
+        hideHoverInfo()
         event.dataTransfer.setData("text/plain", maxSlots - 1 - index);
         event.dataTransfer.setData("source", "battle");
         showTrashBin();
@@ -1791,6 +1806,7 @@ trashBin.addEventListener("drop", (event) => {
 });
 document.querySelectorAll(".battle-slot img").forEach((img) => {
   img.addEventListener("dragstart", (event) => {
+    hideHoverInfo()
     showTrashBin();
     event.dataTransfer.setData(
       "text/plain",
@@ -1902,6 +1918,7 @@ function renderItem() {
 }
 
 function handleItemDragStart(event) {
+  hideHoverInfo()
   const slotId = event.target.closest(".item-slot").id;
   showFreezeBin();
   if (slotId === "itemSlot") {
