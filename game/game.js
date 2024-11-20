@@ -149,7 +149,7 @@ class GameState {
     );
     const reversedSlotIndex = maxSlots - 1 - slotIndex;
     const data = event.dataTransfer.getData("text/plain");
-    const source = event.dataTransfer.getData("source"); 
+    const source = event.dataTransfer.getData("source");
     console.log("a");
     if (source === "shop") {
       const animalIndex = parseInt(data, 10);
@@ -371,7 +371,7 @@ class UIUpdater {
         animalImg.style.height = "5rem";
         animalImg.draggable = true;
         animalImg.addEventListener("dragstart", (event) => {
-          hideHoverInfo()
+          hideHoverInfo();
           event.dataTransfer.setData("text/plain", maxSlots - 1 - index);
           event.dataTransfer.setData("source", "battle");
           showTrashBin();
@@ -643,7 +643,7 @@ function renderRandomAnimals() {
     animalImage.alt = animal.name;
     animalImage.setAttribute("draggable", true);
     animalImage.addEventListener("dragstart", (event) => {
-      hideHoverInfo()
+      hideHoverInfo();
       event.dataTransfer.setData("text/plain", index); // Existing data
       event.dataTransfer.setData("source", "shop"); // New data to identify source
       showFreezeBin();
@@ -778,7 +778,7 @@ function renderBattleSlots() {
 
       // Attach drag events
       animalImg.addEventListener("dragstart", (event) => {
-        hideHoverInfo()
+        hideHoverInfo();
         event.dataTransfer.setData("text/plain", maxSlots - 1 - index);
         event.dataTransfer.setData("source", "battle");
         showTrashBin();
@@ -1806,7 +1806,7 @@ trashBin.addEventListener("drop", (event) => {
 });
 document.querySelectorAll(".battle-slot img").forEach((img) => {
   img.addEventListener("dragstart", (event) => {
-    hideHoverInfo()
+    hideHoverInfo();
     showTrashBin();
     event.dataTransfer.setData(
       "text/plain",
@@ -1918,7 +1918,7 @@ function renderItem() {
 }
 
 function handleItemDragStart(event) {
-  hideHoverInfo()
+  hideHoverInfo();
   const slotId = event.target.closest(".item-slot").id;
   showFreezeBin();
   if (slotId === "itemSlot") {
