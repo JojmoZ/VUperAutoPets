@@ -132,6 +132,7 @@ function renderRandomAnimals() {
     const animalImage = document.createElement("img");
     animalImage.src = animal.img;
     animalImage.alt = animal.name;
+    animalImage.style.aspectRatio = "1/1";
     animalImage.setAttribute("draggable", true);
     animalImage.addEventListener("dragstart", (event) => {
       hideHoverInfo();
@@ -253,8 +254,12 @@ function renderBattleSlots() {
       const animalImg = document.createElement("img");
       animalImg.src = animal.img;
       animalImg.alt = animal.name;
-      animalImg.style.width = "5rem";
-      animalImg.style.height = "5rem";
+      animalImg.style.width = "100%";
+      animalImg.style.height = "auto";
+      animalImg.style.objectFit = "contain"; 
+      animalImg.style.maxHeight = "100%";
+      animalImg.style.maxWidth = "100%";
+      animalImg.style.aspectRatio = "1/1";
       animalImg.draggable = true;
 
       // Attach drag events
@@ -285,7 +290,6 @@ function renderBattleSlots() {
       statContainer.appendChild(attack);
       statContainer.appendChild(health);
 
-      // Append image and stats to wrapper, then wrapper to slot
       wrapper.appendChild(animalImg);
       wrapper.appendChild(statContainer);
       slot.appendChild(wrapper);
