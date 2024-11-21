@@ -538,13 +538,13 @@ function animateAnimalsIntoPosition(onComplete) {
 }
 
 function showNonBattleElements() {
+  hideCanvas();
   document.getElementById("battleSlotsContainer").classList.remove("hidden");
   document.getElementById("controls").classList.remove("hidden");
   document.getElementById("refreshButton").classList.remove("hidden");
   document.getElementById("startBattleButton").classList.remove("hidden");
   document.getElementById("freezeButton").classList.remove("hidden");
   document.getElementById("backArrow").classList.remove("hidden");
-  hideCanvas();
 }
 
 function hideNonBattleElements() {
@@ -1234,8 +1234,15 @@ function loseLife() {
         if (lives <= 0) {
           showDefeatScreen();
         } else {
-          showNonBattleElements();
-          location.reload();
+          showCurtains()
+          closeCurtains()
+          setTimeout(() => {
+            showNonBattleElements();
+            openCurtains(() => {
+              // location.reload();
+              
+            })
+          },1000)
         }
       }, 1000); // Matches animation duration
     }, 1500); // Delay before starting the drop animation
@@ -1267,7 +1274,7 @@ function checkGameOver(playerSurvivors, enemySurvivors) {
     alert("You won this battle! Continue to the next.");
     rollShopAnimals();
     showNonBattleElements();
-    location.reload();
+    // location.reload();
   } else if (playerSurvivors < enemySurvivors) {
     loseLife();
     rollShopAnimals();
@@ -1276,7 +1283,7 @@ function checkGameOver(playerSurvivors, enemySurvivors) {
     alert("It's a draw! Continue to the next battle.");
     showNonBattleElements();
     rollShopAnimals();
-    location.reload();
+    // location.reload();
   }
 }
 function showDefeatScreen() {
