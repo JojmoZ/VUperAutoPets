@@ -137,6 +137,38 @@ function renderRandomAnimals() {
     animalImage.style.transform = "scaleX(-1)";
     animalImage.addEventListener("dragstart", (event) => {
       hideHoverInfo();
+
+      // Get image dimensions or fallback to default values
+      const imageWidth = animalImage.offsetWidth; // Displayed width
+      const imageHeight = animalImage.offsetHeight; // Displayed height
+
+      // Create a temporary canvas
+     const tempCanvas = document.createElement("canvas");
+     tempCanvas.width = imageWidth;
+     tempCanvas.height = imageHeight;
+      const ctx = tempCanvas.getContext("2d");
+
+      // Debugging: Set a green background on the canvas
+      ctx.fillStyle = "rgba(255, 255, 255, 0)"; // Green with 50% transparency
+     ctx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+
+       ctx.scale(-1, 1);
+       ctx.drawImage(animalImage, -imageWidth, 0, imageWidth, imageHeight);
+
+      // Debugging: Append the canvas to the body to visualize it
+      document.body.appendChild(tempCanvas);
+      tempCanvas.style.position = "absolute";
+      tempCanvas.style.top = "10px";
+      tempCanvas.style.left = "10px";
+      tempCanvas.style.aspectRatio = "1/1";
+
+      // Set the custom drag image
+      event.dataTransfer.setDragImage(
+        tempCanvas,
+        tempCanvas.width / 2,
+        tempCanvas.height / 2
+      );
+
       event.dataTransfer.setData("text/plain", index); // Existing data
       event.dataTransfer.setData("source", "shop"); // New data to identify source
       showFreezeBin();
@@ -267,6 +299,36 @@ function renderBattleSlots() {
       // Attach drag events
       animalImg.addEventListener("dragstart", (event) => {
         hideHoverInfo();
+        // Get image dimensions or fallback to default values
+        const imageWidth = animalImg.offsetWidth; // Displayed width
+        const imageHeight = animalImg.offsetHeight; // Displayed height
+
+        // Create a temporary canvas
+        const tempCanvas = document.createElement("canvas");
+        tempCanvas.width = imageWidth;
+        tempCanvas.height = imageHeight;
+        const ctx = tempCanvas.getContext("2d");
+
+        // Debugging: Set a green background on the canvas
+        ctx.fillStyle = "rgba(255, 255, 255, 0)"; // Green with 50% transparency
+        ctx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+
+        ctx.scale(-1, 1);
+        ctx.drawImage(animalImg, -imageWidth, 0, imageWidth, imageHeight);
+
+        // Debugging: Append the canvas to the body to visualize it
+        document.body.appendChild(tempCanvas);
+        tempCanvas.style.position = "absolute";
+        tempCanvas.style.top = "10px";
+        tempCanvas.style.left = "10px";
+        tempCanvas.style.aspectRatio = "1/1";
+
+        // Set the custom drag image
+        event.dataTransfer.setDragImage(
+          tempCanvas,
+          tempCanvas.width / 2,
+          tempCanvas.height / 2
+        );
         event.dataTransfer.setData("text/plain", maxSlots - 1 - index);
         event.dataTransfer.setData("source", "battle");
         showTrashBin();
@@ -678,16 +740,16 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
   const enemyImg = new Image();
   enemyImg.src = enemyAnimal.img;
 
+  const bandageImg = new Image();
+  bandageImg.src = "../assets/hurt.png"; // Path to the bandage image
+
   playerImg.onload = () => {
-    console.log("load1");
     enemyImg.onload = () => {
-      console.log("load2");
       requestAnimationFrame(animate);
     };
   };
 
   function animate(currentTime) {
-    console.log("e");
     const deltaTime = (currentTime - lastFrameTime) / 1000; // Convert to seconds
     lastFrameTime = currentTime;
 
@@ -698,6 +760,7 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
     const playerX = playerStartX - (playerStartX - centerX) * progress;
     const enemyX = enemyStartX + (centerX + 60 - enemyStartX) * progress;
 
+    // Draw the player's animal
     ctx.save();
     ctx.translate(playerX + 40, playerY + 40); // Center of the player's image
     ctx.scale(-1, 1); // Flip horizontally
@@ -716,11 +779,10 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
     ctx.fillText(attackText, attackX, playerY + 85);
     ctx.fillText(healthText, healthX, playerY + 85);
 
+    // Draw the enemy's animal
     ctx.drawImage(enemyImg, enemyX, enemyY, 80, 80);
     ctx.drawImage(fistImg, enemyX, enemyY + 60, 40, 40);
     ctx.drawImage(heartImg, enemyX + 40, enemyY + 60, 40, 40);
-    ctx.fillStyle = "white";
-    ctx.font = "1rem Arial";
     let attackTextEn = `${enemyAnimal.attack}`;
     let attackTextWidthEn = ctx.measureText(attackTextEn).width;
     let attackXEn = enemyX + 20 - attackTextWidthEn / 2;
@@ -730,37 +792,46 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
     ctx.fillText(attackTextEn, attackXEn, enemyY + 85);
     ctx.fillText(healthTextEn, healthXEn, enemyY + 85);
 
-    if (progress > 0.8) {
-      const bandageSize = 60;
-      const bandageImg = new Image();
-      bandageImg.src = "../assets/hurt.png";
-      ctx.drawImage(
-        bandageImg,
-        playerX + 10,
-        playerY,
-        bandageSize,
-        bandageSize
-      );
-      ctx.drawImage(bandageImg, enemyX + 10, enemyY, bandageSize, bandageSize);
-    }
-
     currentFrame += deltaTime;
     if (currentFrame <= duration / 1000) {
       requestAnimationFrame(animate);
     } else {
-      showDamage(
-        playerX,
-        playerAnimal.attack,
-        enemyX,
-        enemyAnimal.attack,
-        playerImg,
-        enemyImg,
-        playerAnimal.health,
-        enemyAnimal.health,
-        () => {
-          animateReturn(playerStartX, playerY, enemyStartX, enemyY);
-        }
-      );
+      // Delay for the bandage effect
+      setTimeout(() => {
+        // Draw the bandage effect
+        const bandageSize = 60; // Size of the bandage
+        ctx.drawImage(
+          bandageImg,
+          playerX + 10,
+          playerY,
+          bandageSize,
+          bandageSize
+        );
+        ctx.drawImage(
+          bandageImg,
+          enemyX + 10,
+          enemyY,
+          bandageSize,
+          bandageSize
+        );
+
+        // Call showDamage after the bandage is visible
+        setTimeout(() => {
+          showDamage(
+            playerX,
+            playerAnimal.attack,
+            enemyX,
+            enemyAnimal.attack,
+            playerImg,
+            enemyImg,
+            playerAnimal.health,
+            enemyAnimal.health,
+            () => {
+              animateReturn(playerStartX, playerY, enemyStartX, enemyY);
+            }
+          );
+        }, 300); // Wait 500ms before proceeding to the next step
+      }, 1); // Wait 500ms before showing the bandage
     }
   }
 
@@ -779,11 +850,11 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
       const playerX = centerX + (playerStartX - centerX) * progress;
       const enemyX = centerX + 60 + (enemyStartX - centerX - 60) * progress;
 
-       ctx.save();
-       ctx.translate(playerX + 40, playerY + 40); // Center of the player's image
-       ctx.scale(-1, 1); // Flip horizontally
-       ctx.drawImage(playerImg, -40, -40, 80, 80);
-       ctx.restore();
+      ctx.save();
+      ctx.translate(playerX + 40, playerY + 40); // Center of the player's image
+      ctx.scale(-1, 1); // Flip horizontally
+      ctx.drawImage(playerImg, -40, -40, 80, 80);
+      ctx.restore();
       ctx.drawImage(fistImg, playerX, playerY + 60, 40, 40);
       ctx.drawImage(heartImg, playerX + 40, playerY + 60, 40, 40);
       ctx.fillStyle = "white";
@@ -796,11 +867,10 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
       let healthX = playerX + 60 - healthTextWidth / 2;
       ctx.fillText(attackText, attackX, playerY + 85);
       ctx.fillText(healthText, healthX, playerY + 85);
+
       ctx.drawImage(enemyImg, enemyX, enemyY, 80, 80);
       ctx.drawImage(fistImg, enemyX, enemyY + 60, 40, 40);
       ctx.drawImage(heartImg, enemyX + 40, enemyY + 60, 40, 40);
-      ctx.fillStyle = "white";
-      ctx.font = "1rem Arial";
       let attackTextEn = `${enemyAnimal.attack}`;
       let attackTextWidthEn = ctx.measureText(attackTextEn).width;
       let attackXEn = enemyX + 20 - attackTextWidthEn / 2;
@@ -820,6 +890,8 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
     requestAnimationFrame(animateBack);
   }
 }
+
+
 function backupLineup() {
   originalBattleLineup = [...battleLineup];
 }
