@@ -16,5 +16,11 @@
         "cost": 3,
         "img": "../assets/items/Strawberry.webp",
         "effect": "Add 1 health and 1 attack"
+    },
+    {
+        "name": "Bus",
+        "cost": 9,
+        "img": "../assets/items/Bus.png",
+        "effect": "After enemy dies spawns bus"
     }
 ]

@@ -1123,12 +1123,22 @@ function handleBothDeaths(playerAnimal, enemyAnimal, onComplete) {
   if (playerAnimal.health <= 0) {
     deathPromises.push(
       new Promise((resolve) => {
-        animateDeathFlyOff(
-          playerAnimal,
-          battleLineup.indexOf(playerAnimal),
-          "player",
-          resolve
-        );
+        if (playerAnimal.specialEffect === "SpawnBus") {
+          // Spawn a Bus in the player's lineup
+          const playerIndex = battleLineup.indexOf(playerAnimal);
+          battleLineup[playerIndex] = createBus();
+          console.log(battleLineup);
+          console.log("A Bus has spawned for the player!");
+          renderBattleSlots(); // Refresh the UI to reflect the new lineup
+          resolve(); // Resolve the promise to indicate this death has been handled
+        } else {
+          animateDeathFlyOff(
+            playerAnimal,
+            battleLineup.indexOf(playerAnimal),
+            "player",
+            resolve
+          );
+        }
       })
     );
   }
@@ -1324,19 +1334,18 @@ function checkGameOver(playerSurvivors, enemySurvivors) {
   if (playerSurvivors > enemySurvivors) {
     console.log("User wins!");
     alert("You won this battle! Continue to the next.");
-    rollfirst();
     showNonBattleElements();
     // location.reload();
   } else if (playerSurvivors < enemySurvivors) {
     loseLife();
-    rollfirst();
   } else {
     console.log("It's a draw!");
     alert("It's a draw! Continue to the next battle.");
     showNonBattleElements();
-    rollfirst();
     // location.reload();
   }
+  rollfirst();
+  restoreOriginalLineup();
 }
 function showDefeatScreen() {
   const defeatScreen = document.getElementById("defeatScreen");
@@ -1539,8 +1548,20 @@ function applyItemEffect(animal, itemName) {
     console.log("makan strawberry");
     animal.health += 1;
     animal.attack += 1;
+  } else if(itemName == "Bus"){
+    animal.specialEffect = "SpawnBus";
   }
   updateCoinsDisplay(); // Update the displayed coin count.
   renderBattleSlots(); // Refresh the animal stats display
   saveBattleLineup();
+}
+function createBus() {
+  return {
+    name: "Bus",
+    img: "../assets/items/Bus.png",
+    attack: 5, // Example stats
+    health: 1,
+    cost: 0,
+    color: "green",
+  };
 }
