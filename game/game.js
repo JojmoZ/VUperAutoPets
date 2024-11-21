@@ -387,7 +387,7 @@ document.querySelectorAll(".battle-slot").forEach((slot) => {
 
 document.getElementById("refreshButton").addEventListener("click", function () {
   rollShopAnimals();
-  loadRandomItems();
+  refreshItems();
 });
 function checkbattlelineup() {
   const battleLineup = JSON.parse(localStorage.getItem("battleLineup"));
@@ -571,27 +571,27 @@ document.addEventListener("DOMContentLoaded", function () {
   window.addEventListener("resize", adjustCanvasSize);
   updateHeartsDisplay();
   randomAnimals = JSON.parse(localStorage.getItem("randomAnimals")) || [];
-   if (!localStorage.getItem("firstTime")) {
-     // First time playing: initialize with 15 coins and roll initial animals
-     localStorage.setItem("firstTime", true); // Mark as not the first time anymore
-     coins = 15; // Start with 15 coins
-     localStorage.setItem("gamecoins", coins); // Save to localStorage
+  if (!localStorage.getItem("firstTime")) {
+    // First time playing: initialize with 15 coins and roll initial animals
+    localStorage.setItem("firstTime", true); // Mark as not the first time anymore
+    coins = 15; // Start with 15 coins
+    localStorage.setItem("gamecoins", coins); // Save to localStorage
 
-     rollfirst(); // Call rollFirst during the first session
-   } else {
-     // Not first time: load saved coins and animals
-     coins = parseInt(localStorage.getItem("gamecoins")) || 0;
-     updateCoinsDisplay();
+    rollfirst(); // Call rollFirst during the first session
+  } else {
+    // Not first time: load saved coins and animals
+    coins = parseInt(localStorage.getItem("gamecoins")) || 0;
+    updateCoinsDisplay();
 
-     randomAnimals = JSON.parse(localStorage.getItem("randomAnimals")) || [];
-     if (randomAnimals.length === 0) {
-       console.log("Shop is empty. Wait for the player to refresh manually.");
-       renderRandomAnimals(); // Render empty shop if necessary
-     } else {
-       console.log("Loaded existing random animals.");
-       renderRandomAnimals(); // Render existing animals
-     }
-   }
+    randomAnimals = JSON.parse(localStorage.getItem("randomAnimals")) || [];
+    if (randomAnimals.length === 0) {
+      console.log("Shop is empty. Wait for the player to refresh manually.");
+      renderRandomAnimals(); // Render empty shop if necessary
+    } else {
+      console.log("Loaded existing random animals.");
+      renderRandomAnimals(); // Render existing animals
+    }
+  }
   if (localStorage.getItem("battleLineup")) {
     battleLineup = JSON.parse(localStorage.getItem("battleLineup"));
     renderTeams();
@@ -1260,7 +1260,7 @@ function resetGame() {
   enemyLineup = [null, null, null, null, null];
   localStorage.removeItem("randomAnimals");
   localStorage.removeItem("currentItems");
-  localStorage.removeItem('firstTime')
+  localStorage.removeItem("firstTime");
   coins = 10;
   updateCoinsDisplay();
   if (lives <= 0) {
@@ -1375,20 +1375,30 @@ let currentItem2 = null;
 
 function loadRandomItems() {
   const savedItems = JSON.parse(localStorage.getItem("currentItems")) || [];
-  currentItem1 = savedItems[0] ? { ...savedItems[0] } : currentItem1;
-  currentItem2 = savedItems[1] ? { ...savedItems[1] } : currentItem2;
 
-  if (!currentItem1?.frozen && items.length > 0) {
+  // Load items from saved state
+  currentItem1 = savedItems[0] ? { ...savedItems[0] } : null;
+  currentItem2 = savedItems[1] ? { ...savedItems[1] } : null;
+
+  renderItem(); // Render the items in the UI
+}
+function refreshItems() {
+  if (items.length === 0) {
+    console.error("No items available to generate!");
+    return;
+  }
+
+  // Generate new items unless they're frozen
+  if (!currentItem1?.frozen) {
     currentItem1 = { ...items[Math.floor(Math.random() * items.length)] };
   }
-  if (!currentItem2?.frozen && items.length > 0) {
+  if (!currentItem2?.frozen) {
     currentItem2 = { ...items[Math.floor(Math.random() * items.length)] };
   }
 
-  saveCurrentItems();
-  renderItem();
+  saveCurrentItems(); // Save the updated items to localStorage
+  renderItem(); // Render the new items in the UI
 }
-
 function handleItemDrop(event, animal) {
   event.preventDefault();
   const itemName = event.dataTransfer.getData("itemName");
