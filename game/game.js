@@ -134,6 +134,7 @@ function renderRandomAnimals() {
     animalImage.alt = animal.name;
     animalImage.style.aspectRatio = "1/1";
     animalImage.setAttribute("draggable", true);
+    animalImage.style.transform = "scaleX(-1)";
     animalImage.addEventListener("dragstart", (event) => {
       hideHoverInfo();
       event.dataTransfer.setData("text/plain", index); // Existing data
@@ -260,6 +261,7 @@ function renderBattleSlots() {
       animalImg.style.maxHeight = "100%";
       animalImg.style.maxWidth = "100%";
       animalImg.style.aspectRatio = "1/1";
+      animalImg.style.transform = "scaleX(-1)";
       animalImg.draggable = true;
 
       // Attach drag events
@@ -310,13 +312,16 @@ function renderTeams() {
       const img = new Image();
       img.src = animal.img;
       img.onload = () => {
-        ctx.drawImage(
-          img,
-          teamOffsetX + (maxSlots - 1 - index) * 100,
-          commonY,
-          80,
-          80
-        );
+        ctx.save(); // Save the canvas state
+        // Translate and flip horizontally
+        const xPosition = teamOffsetX + (maxSlots - 1 - index) * 100;
+        const yPosition = commonY;
+        ctx.translate(xPosition + 40, yPosition + 40); // Center of the image
+        ctx.scale(-1, 1); // Flip horizontally
+        ctx.drawImage(img, -40, -40, 80, 80); // Adjust for the flipped state
+        ctx.restore(); // Restore the canvas state
+
+        // Draw fist and stats (unmirrored)
         ctx.drawImage(
           fistImg,
           teamOffsetX + (maxSlots - 1 - index) * 100,
@@ -348,6 +353,7 @@ function renderTeams() {
       };
     }
   });
+
   enemyLineup.forEach((animal, index) => {
     if (animal) {
       const img = new Image();
@@ -495,8 +501,15 @@ function animateAnimalsIntoPosition(onComplete) {
 
         const currentX = startX + (endX - startX) * adjustedProgress;
         const targetY = commonY - bounceY;
-
-        ctx.drawImage(img, currentX, targetY, 80, 80);
+        
+         ctx.save();
+         // Translate and flip horizontally
+         ctx.translate(currentX + 40, targetY + 40); // Center of the image
+         ctx.scale(-1, 1); // Flip horizontally
+         // Draw the image (adjusted for the flipped state)
+         ctx.drawImage(img, -40, -40, 80, 80);
+         // Restore the canvas state
+         ctx.restore();
       }
     });
 
@@ -685,7 +698,11 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
     const playerX = playerStartX - (playerStartX - centerX) * progress;
     const enemyX = enemyStartX + (centerX + 60 - enemyStartX) * progress;
 
-    ctx.drawImage(playerImg, playerX, playerY, 80, 80);
+    ctx.save();
+    ctx.translate(playerX + 40, playerY + 40); // Center of the player's image
+    ctx.scale(-1, 1); // Flip horizontally
+    ctx.drawImage(playerImg, -40, -40, 80, 80);
+    ctx.restore();
     ctx.drawImage(fistImg, playerX, playerY + 60, 40, 40);
     ctx.drawImage(heartImg, playerX + 40, playerY + 60, 40, 40);
     ctx.fillStyle = "white";
@@ -762,7 +779,11 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
       const playerX = centerX + (playerStartX - centerX) * progress;
       const enemyX = centerX + 60 + (enemyStartX - centerX - 60) * progress;
 
-      ctx.drawImage(playerImg, playerX, playerY, 80, 80);
+       ctx.save();
+       ctx.translate(playerX + 40, playerY + 40); // Center of the player's image
+       ctx.scale(-1, 1); // Flip horizontally
+       ctx.drawImage(playerImg, -40, -40, 80, 80);
+       ctx.restore();
       ctx.drawImage(fistImg, playerX, playerY + 60, 40, 40);
       ctx.drawImage(heartImg, playerX + 40, playerY + 60, 40, 40);
       ctx.fillStyle = "white";
@@ -775,7 +796,6 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
       let healthX = playerX + 60 - healthTextWidth / 2;
       ctx.fillText(attackText, attackX, playerY + 85);
       ctx.fillText(healthText, healthX, playerY + 85);
-
       ctx.drawImage(enemyImg, enemyX, enemyY, 80, 80);
       ctx.drawImage(fistImg, enemyX, enemyY + 60, 40, 40);
       ctx.drawImage(heartImg, enemyX + 40, enemyY + 60, 40, 40);
@@ -840,7 +860,12 @@ function showDamage(
   function drawExpandingDamage() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     renderFullTeam();
-    ctx.drawImage(playerImg, playerX, commonY, 80, 80);
+     ctx.save();
+     ctx.translate(playerX + 40, commonY + 40); // Center of the player's image
+     ctx.scale(-1, 1); // Flip horizontally
+     ctx.drawImage(playerImg, -40, -40, 80, 80);
+     ctx.restore();
+    // ctx.drawImage(playerImg, playerX, commonY, 80, 80);
     ctx.drawImage(fistImg, playerX, commonY + 60, 40, 40);
     ctx.drawImage(heartImg, playerX + 40, commonY + 60, 40, 40);
     ctx.drawImage(enemyImg, enemyX, commonY, 80, 80);
@@ -899,7 +924,11 @@ function showDamage(
   function drawShrinkingDamage() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     renderFullTeam();
-    ctx.drawImage(playerImg, playerX, commonY, 80, 80);
+     ctx.save();
+     ctx.translate(playerX + 40, commonY + 40); // Center of the player's image
+     ctx.scale(-1, 1); // Flip horizontally
+     ctx.drawImage(playerImg, -40, -40, 80, 80);
+     ctx.restore();
     ctx.drawImage(fistImg, playerX, commonY + 60, 40, 40);
     ctx.drawImage(heartImg, playerX + 40, commonY + 60, 40, 40);
     ctx.drawImage(enemyImg, enemyX, commonY, 80, 80);
@@ -958,13 +987,17 @@ function renderFullTeam() {
   battleLineup.forEach((animal, index) => {
     if (animal && index !== 0) {
       const xPos = teamOffsetX + (maxSlots - 1 - index) * 100;
+      ctx.save(); // Save the current state of the canvas
+      ctx.translate(xPos + imgSize / 2, commonY + imgSize / 2); // Move to the center of the image
+      ctx.scale(-1, 1); // Flip horizontally
       ctx.drawImage(
         getAnimalImage(animal.img),
-        xPos,
-        commonY,
+        -imgSize / 2, // Adjust for flipped coordinates
+        -imgSize / 2,
         imgSize,
         imgSize
       );
+      ctx.restore(); // Restore the canvas state
       ctx.drawImage(fistImg, xPos, commonY + 60, iconSize, iconSize);
       ctx.drawImage(heartImg, xPos + 40, commonY + 60, iconSize, iconSize);
       ctx.fillStyle = "white";
@@ -1065,8 +1098,17 @@ function animateDeathFlyOff(animal, index, teamType, onComplete) {
       (1 - progress) * (1 - progress) * startY +
       2 * (1 - progress) * progress * controlPointY +
       progress * progress * (startY + 100);
-    ctx.drawImage(img, curveX, curveY, 60, 60);
-
+        ctx.save(); 
+     if (teamType === "player") {
+       // Mirror the image if it's the player's team
+       ctx.translate(curveX + 30, curveY + 30); // Center of the image
+       ctx.scale(-1, 1); // Flip horizontally
+       ctx.drawImage(img, -30, -30, 60, 60); // Adjust for flipped coordinates
+     } else {
+       // Draw normally for the enemy team
+       ctx.drawImage(img, curveX, curveY, 60, 60);
+     }
+ ctx.restore(); 
     currentFrame += deltaTime * totalFrames * 2; // Increase the increment to make it faster
     if (currentFrame < totalFrames) {
       requestAnimationFrame(animate);
