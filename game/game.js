@@ -1494,4 +1494,5 @@ function applyItemEffect(animal, itemName) {
   coins -= itemCost;
   updateCoinsDisplay(); // Update the displayed coin count.
   renderBattleSlots(); // Refresh the animal stats display
+  saveBattleLineup();
 }
