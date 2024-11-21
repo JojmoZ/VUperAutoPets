@@ -13,7 +13,7 @@ let battleLineup = JSON.parse(localStorage.getItem("battleLineup")) || [
   null,
 ];
 let randomAnimals = JSON.parse(localStorage.getItem("randomAnimals")) || [];
-let coins = parseInt(localStorage.getItem("gamecoins")) || 11;
+let coins;
 document.getElementById("coins").textContent = `Coins: ${coins}`;
 const maxShopAnimals = 3;
 const maxSlots = 5;
@@ -45,38 +45,31 @@ function saveRandomAnimals() {
 }
 function rollfirst() {
   const ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
-  if (ownedAnimals == null) {
-    alert("GK PUNYA OWNED ANIMALS");
-    alert("redirecting");
+  if (!ownedAnimals || ownedAnimals.length === 0) {
+    alert("You don't have any owned animals. Redirecting...");
     setTimeout(() => {
       window.location.href = "/home/homepage.html";
     }, 3000);
-  } else if (ownedAnimals.length == 0) {
-    alert("GK PUNYA OWNED ANIMALS");
-    alert("redirecting");
-    setTimeout(() => {
-      window.location.href = "/home/homepage.html";
-    }, 3000);
-  } else {
-    const frozenAnimals = randomAnimals.filter(
-      (animal) => animal && animal.frozen
-    );
-    const numFrozenAnimals = frozenAnimals.length;
-
-    // Generate new animals for the non-frozen slots
-    const ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
-    const availableAnimals = ownedAnimals ? ownedAnimals : shopAnimals;
-    const newRandomAnimals = availableAnimals
-      .sort(() => Math.random() - 0.5)
-      .slice(0, maxShopAnimals - numFrozenAnimals);
-
-    // Combine frozen and new animals
-    randomAnimals = [...frozenAnimals, ...newRandomAnimals];
-
-    renderRandomAnimals();
-    saveRandomAnimals();
+    return;
   }
+
+  const frozenAnimals = randomAnimals.filter(
+    (animal) => animal && animal.frozen
+  );
+  const numFrozenAnimals = frozenAnimals.length;
+
+  const availableAnimals = ownedAnimals || shopAnimals;
+  const newRandomAnimals = availableAnimals
+    .sort(() => Math.random() - 0.5)
+    .slice(0, maxShopAnimals - numFrozenAnimals);
+
+  // Combine frozen and new animals
+  randomAnimals = [...frozenAnimals, ...newRandomAnimals];
+
+  renderRandomAnimals();
+  saveRandomAnimals();
 }
+
 function showCurtains() {
   curtainTop.style.visibility = "visible";
   curtainBottom.style.visibility = "visible";
@@ -578,12 +571,27 @@ document.addEventListener("DOMContentLoaded", function () {
   window.addEventListener("resize", adjustCanvasSize);
   updateHeartsDisplay();
   randomAnimals = JSON.parse(localStorage.getItem("randomAnimals")) || [];
-  // if (localStorage.getItem("randomAnimals")) {
-  //   renderRandomAnimals();
-  // } else {
-  rollfirst();
-  // }
+   if (!localStorage.getItem("firstTime")) {
+     // First time playing: initialize with 15 coins and roll initial animals
+     localStorage.setItem("firstTime", true); // Mark as not the first time anymore
+     coins = 15; // Start with 15 coins
+     localStorage.setItem("gamecoins", coins); // Save to localStorage
 
+     rollFirst(); // Call rollFirst during the first session
+   } else {
+     // Not first time: load saved coins and animals
+     coins = parseInt(localStorage.getItem("gamecoins")) || 0;
+     updateCoinsDisplay();
+
+     randomAnimals = JSON.parse(localStorage.getItem("randomAnimals")) || [];
+     if (randomAnimals.length === 0) {
+       console.log("Shop is empty. Wait for the player to refresh manually.");
+       renderRandomAnimals(); // Render empty shop if necessary
+     } else {
+       console.log("Loaded existing random animals.");
+       renderRandomAnimals(); // Render existing animals
+     }
+   }
   if (localStorage.getItem("battleLineup")) {
     battleLineup = JSON.parse(localStorage.getItem("battleLineup"));
     renderTeams();
@@ -1252,6 +1260,7 @@ function resetGame() {
   enemyLineup = [null, null, null, null, null];
   localStorage.removeItem("randomAnimals");
   localStorage.removeItem("currentItems");
+  localStorage.removeItem('firstTime')
   coins = 10;
   updateCoinsDisplay();
   if (lives <= 0) {
@@ -1271,17 +1280,17 @@ function checkGameOver(playerSurvivors, enemySurvivors) {
   if (playerSurvivors > enemySurvivors) {
     console.log("User wins!");
     alert("You won this battle! Continue to the next.");
-    rollShopAnimals();
+    rollfirst();
     showNonBattleElements();
     // location.reload();
   } else if (playerSurvivors < enemySurvivors) {
     loseLife();
-    rollShopAnimals();
+    rollfirst();
   } else {
     console.log("It's a draw!");
     alert("It's a draw! Continue to the next battle.");
     showNonBattleElements();
-    rollShopAnimals();
+    rollfirst();
     // location.reload();
   }
 }

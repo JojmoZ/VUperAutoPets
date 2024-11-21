@@ -1,3 +1,4 @@
+const username = localStorage.getItem("username");
 let shopAnimals = [];
 window.onload = function () {
   fetch("../assets/shopAnimals.json")
@@ -45,10 +46,22 @@ function updateCoinsDisplay() {
   coins += 500000;
   coinsDisplay.textContent = `Coins: ${coins}`;
   localStorage.setItem("coins", coins);
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+  const userIndex = users.findIndex((user) => user.username === username);
+  if (userIndex !== -1) {
+    users[userIndex].coins = coins;
+    localStorage.setItem("users", JSON.stringify(users));
+  }
 }
 
 function giveAllAnimals() {
   localStorage.setItem("ownedAnimals", JSON.stringify(shopAnimals));
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+  const userIndex = users.findIndex((user) => user.username === username);
+  if (userIndex !== -1) {
+    users[userIndex].ownedAnimals = shopAnimals;
+    localStorage.setItem("users", JSON.stringify(users));
+  }
   updateOwnedAnimalsDisplay();
 }
 
@@ -67,31 +80,31 @@ function updateOwnedAnimalsDisplay() {
     }
   });
 }
-  const cheatModal = document.getElementById("cheat-modal");
-  const cheatText = document.getElementById("cheat-text");
-  const cheatRewardText = document.getElementById("cheat-reward");
-  function showCheatModal(reward) {
-    cheatText.textContent = "Cheat Activated!";
-    cheatRewardText.textContent = reward;
-    cheatModal.style.display = "flex";
+const cheatModal = document.getElementById("cheat-modal");
+const cheatText = document.getElementById("cheat-text");
+const cheatRewardText = document.getElementById("cheat-reward");
+function showCheatModal(reward) {
+  cheatText.textContent = "Cheat Activated!";
+  cheatRewardText.textContent = reward;
+  cheatModal.style.display = "flex";
+  setTimeout(() => {
+    cheatModal.classList.add("show");
+  }, 10);
+  setTimeout(() => {
+    cheatModal.classList.remove("show");
+    cheatModal.classList.add("hide");
     setTimeout(() => {
-      cheatModal.classList.add("show");
-    }, 10);
-    setTimeout(() => {
-      cheatModal.classList.remove("show");
-      cheatModal.classList.add("hide");
-      setTimeout(() => {
-        cheatModal.style.display = "none";
-        cheatModal.classList.remove("hide");
-        cheatActivated = false; // Reset cheatActivated flag
-      }, 500);
-    }, 1500); // Automatically close after 1.5 seconds
-  }
+      cheatModal.style.display = "none";
+      cheatModal.classList.remove("hide");
+      cheatActivated = false; // Reset cheatActivated flag
+    }, 500);
+  }, 1500); // Automatically close after 1.5 seconds
+}
 
-  document.addEventListener("keydown", function (event) {
-    // ...existing code...
-    if (cheatActivated) {
-      showCheatModal(cheatReward);
-      cheatActivated = false; // Reset cheatActivated flag after showing modal
-    }
-  });
+document.addEventListener("keydown", function (event) {
+  // ...existing code...
+  if (cheatActivated) {
+    showCheatModal(cheatReward);
+    cheatActivated = false; // Reset cheatActivated flag after showing modal
+  }
+});

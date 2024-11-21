@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const slot3 = document.getElementById("slot3");
   const h1Element = document.querySelector("h1[data-text='Try Your Luck!']");
   let shopAnimals = [];
-
+  const username = localStorage.getItem("username");
   fetch("../assets/shopAnimals.json")
     .then((response) => response.json())
     .then((data) => {
@@ -22,6 +22,12 @@ document.addEventListener("DOMContentLoaded", function () {
   function updateCoinsDisplay() {
     const coins = localStorage.getItem("coins");
     coinsDisplay.textContent = `Coins: ${coins}`;
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+    const userIndex = users.findIndex((user) => user.username === username);
+    if (userIndex !== -1) {
+      users[userIndex].coins = coins;
+      localStorage.setItem("users", JSON.stringify(users));
+    }
   }
   updateCoinsDisplay();
   let rolling =false
@@ -51,6 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
               isRolling = false;
               setTimeout(() => {
                 checkThreeOfAKind(selectedAnimal, selectedAnimal, selectedAnimal);
+                addCheatAnimalToUser(selectedAnimal.name);
               }, 100);
             });
           });
@@ -60,6 +67,28 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
     return false;
+  }
+
+  function addCheatAnimalToUser(animalName) {
+    const animal = shopAnimals.find((a) => a.name === animalName);
+    if (animal) {
+      let ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals")) || [];
+      if (!ownedAnimals.some((a) => a.name === animal.name)) {
+        ownedAnimals.push(animal);
+        localStorage.setItem("ownedAnimals", JSON.stringify(ownedAnimals));
+      }
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+      const userIndex = users.findIndex((user) => user.username === username);
+      if (userIndex !== -1) {
+        if (!users[userIndex].ownedAnimals) {
+          users[userIndex].ownedAnimals = [];
+        }
+        if (!users[userIndex].ownedAnimals.some((a) => a.name === animal.name)) {
+          users[userIndex].ownedAnimals.push(animal);
+          localStorage.setItem("users", JSON.stringify(users));
+        }
+      }
+    }
   }
 
   function pullHandle() {

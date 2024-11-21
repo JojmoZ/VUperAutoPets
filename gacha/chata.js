@@ -10,7 +10,7 @@ const cheatSequences = {
 let cheatActivated = false;
 let cheatReward = "";
 let cheatAnimal = "";
-
+  const username = localStorage.getItem("username");
 document.addEventListener("keydown", function (event) {
   cheatCode += event.key.toLowerCase();
   if (cheatCode.length > 10) {
@@ -64,4 +64,14 @@ function showCheatModal(reward) {
       cheatActivated = false;
     }, 500);
   }, 1500);
+
+  if(reward == "500000 Coins"){
+     let users = JSON.parse(localStorage.getItem("users")) || [];
+     let coins = Number(localStorage.getItem("coins"));
+     const userIndex = users.findIndex((user) => user.username === username);
+    if (userIndex !== -1) {
+      users[userIndex].coins = coins;
+      localStorage.setItem("users", JSON.stringify(users));
+    }
+  }
 }

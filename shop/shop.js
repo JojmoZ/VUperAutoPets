@@ -244,6 +244,12 @@ document.addEventListener("DOMContentLoaded", function () {
   function updateCoinsDisplay() {
     const coins = localStorage.getItem("coins");
     coinsDisplay.textContent = `Coins: ${coins}`;
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+    const userIndex = users.findIndex((user) => user.username === username);
+    if (userIndex !== -1) {
+      users[userIndex].coins = parseInt(coins, 10);
+      localStorage.setItem("users", JSON.stringify(users));
+    }
   }
   updateCoinsDisplay();
 
