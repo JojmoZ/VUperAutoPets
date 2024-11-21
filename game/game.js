@@ -1442,10 +1442,13 @@ function renderItem() {
     slot.appendChild(itemWrapper);
 
     itemImg.addEventListener("mouseover", (event) => {
-      showHoverInfo(`${item.name} - Effect: ${item.effect}`, event);
+      showHoverInfo(`${item.name} - Cost: ${item.cost} - Effect: ${item.effect}`, event);
     });
     itemImg.addEventListener("mousemove", (event) => {
-      showHoverInfo(`${item.name} - Effect: ${item.effect}`, event);
+      showHoverInfo(
+        `${item.name} - Cost: ${item.cost} - Effect: ${item.effect}`,
+        event
+      );
     });
     itemImg.addEventListener("mouseout", hideHoverInfo);
   }
@@ -1486,6 +1489,9 @@ function applyItemEffect(animal, itemName) {
     animal.health += 1;
     animal.attack += 1;
   }
-
+  let item = items.find((i) => i.name === itemName);
+  if (item) itemCost = item.cost;
+  coins -= itemCost;
+  updateCoinsDisplay(); // Update the displayed coin count.
   renderBattleSlots(); // Refresh the animal stats display
 }
