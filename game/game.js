@@ -1406,6 +1406,13 @@ function handleItemDrop(event, animal) {
   const slotId = event.dataTransfer.getData("slotId");
 
   if (itemName && itemEffect && animal) {
+     let item = items.find((i) => i.name === itemName);
+     if (item) itemCost = item.cost;
+     if (coins < itemCost) {
+       alert("Not enough coins to buy this item!");
+       return;
+     }
+     coins -= itemCost;
     applyItemEffect(animal, itemName);
     if (slotId === "itemSlot") currentItem1 = null;
     else if (slotId === "itemSlot2") currentItem2 = null;
@@ -1489,9 +1496,6 @@ function applyItemEffect(animal, itemName) {
     animal.health += 1;
     animal.attack += 1;
   }
-  let item = items.find((i) => i.name === itemName);
-  if (item) itemCost = item.cost;
-  coins -= itemCost;
   updateCoinsDisplay(); // Update the displayed coin count.
   renderBattleSlots(); // Refresh the animal stats display
   saveBattleLineup();
