@@ -1,515 +1,3 @@
-class GameState {
-  constructor() {
-    if (GameState.instance) {
-      return GameState.instance;
-    }
-    this.coins = parseInt(localStorage.getItem("gamecoins")) || 11;
-    this.lives = parseInt(localStorage.getItem("lives")) || 3;
-    this.battleLineup = JSON.parse(localStorage.getItem("battleLineup")) || [
-      null,
-      null,
-      null,
-      null,
-      null,
-    ];
-    this.randomAnimals =
-      JSON.parse(localStorage.getItem("randomAnimals")) || [];
-    this.shopAnimals = [];
-    this.enemyLineup = [null, null, null, null, null];
-    this.items = [];
-    this.currentItem1 = null;
-    this.currentItem2 = null;
-    this.observers = [];
-    GameState.instance = this;
-  }
-
-  static getInstance() {
-    if (!GameState.instance) {
-      GameState.instance = new GameState();
-    }
-    return GameState.instance;
-  }
-
-  addObserver(observer) {
-    this.observers.push(observer);
-  }
-
-  notifyObservers() {
-    this.observers.forEach((observer) => observer.update());
-  }
-
-  saveState() {
-    localStorage.setItem("gamecoins", this.coins);
-    localStorage.setItem("lives", this.lives);
-    localStorage.setItem("battleLineup", JSON.stringify(this.battleLineup));
-    localStorage.setItem("randomAnimals", JSON.stringify(this.randomAnimals));
-    localStorage.setItem(
-      "currentItems",
-      JSON.stringify([this.currentItem1, this.currentItem2])
-    );
-  }
-
-  saveRandomAnimals() {
-    localStorage.setItem("randomAnimals", JSON.stringify(this.randomAnimals));
-  }
-
-  rollfirst() {
-    console.log("a");
-    const ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
-    if (ownedAnimals == null) {
-      alert("GK PUNYA OWNED ANIMALS");
-      alert("redirecting");
-      setTimeout(() => {
-        window.location.href = "/home/homepage.html";
-      }, 3000);
-    } else if (ownedAnimals.length == 0) {
-      alert("GK PUNYA OWNED ANIMALS");
-      alert("redirecting");
-      setTimeout(() => {
-        window.location.href = "/home/homepage.html";
-      }, 3000);
-    } else {
-      const shuffledAnimals = ownedAnimals
-        ? ownedAnimals.sort(() => Math.random() - 0.5)
-        : this.shopAnimals.sort(() => Math.random() - 0.5);
-      this.randomAnimals = shuffledAnimals.slice(0, maxShopAnimals);
-      renderRandomAnimals();
-      this.saveRandomAnimals();
-    }
-  }
-
-  showCurtains() {
-    curtainTop.style.visibility = "visible";
-    curtainBottom.style.visibility = "visible";
-  }
-
-  hideCurtains() {
-    curtainTop.style.visibility = "hidden";
-    curtainBottom.style.visibility = "hidden";
-  }
-
-  closeCurtains() {
-    this.showCurtains();
-    curtainTop.style.height = "50vh";
-    curtainBottom.style.height = "50vh";
-  }
-
-  openCurtains(onComplete) {
-    setTimeout(() => {
-      curtainTop.style.height = "0";
-      curtainBottom.style.height = "0";
-      setTimeout(() => {
-        if (onComplete) onComplete();
-      }, 500);
-    }, 500);
-  }
-
-  rollShopAnimals() {
-    if (this.coins >= 1) {
-      this.coins -= 1;
-      updateCoinsDisplay();
-
-      // Filter out frozen animals
-      const frozenAnimals = this.randomAnimals.filter(
-        (animal) => animal && animal.frozen
-      );
-      const numFrozenAnimals = frozenAnimals.length;
-
-      // Generate new animals for the non-frozen slots
-      const ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
-      const availableAnimals = ownedAnimals ? ownedAnimals : this.shopAnimals;
-      const newRandomAnimals = availableAnimals
-        .sort(() => Math.random() - 0.5)
-        .slice(0, maxShopAnimals - numFrozenAnimals);
-
-      // Combine frozen and new animals
-      this.randomAnimals = [...frozenAnimals, ...newRandomAnimals];
-
-      renderRandomAnimals();
-      this.saveRandomAnimals();
-    } else {
-      alert("Not enough coins to refresh!");
-    }
-  }
-
-  saveBattleLineup() {
-    localStorage.setItem("battleLineup", JSON.stringify(this.battleLineup));
-  }
-
-  dragStart(event) {
-    const index = event.target.closest(".animal").getAttribute("data-index");
-    event.dataTransfer.setData("text/plain", index);
-  }
-
-  handleDrop(event) {
-    event.preventDefault();
-    const slotIndex = parseInt(
-      event.currentTarget.getAttribute("data-slot"),
-      10
-    );
-    const reversedSlotIndex = maxSlots - 1 - slotIndex;
-    const data = event.dataTransfer.getData("text/plain");
-    const source = event.dataTransfer.getData("source");
-    console.log("a");
-    if (source === "shop") {
-      const animalIndex = parseInt(data, 10);
-      const selectedAnimal = this.randomAnimals[animalIndex];
-      if (
-        !this.battleLineup[reversedSlotIndex] &&
-        this.coins >= selectedAnimal.cost
-      ) {
-        this.battleLineup[reversedSlotIndex] = selectedAnimal;
-        this.coins -= selectedAnimal.cost;
-        updateCoinsDisplay();
-        this.randomAnimals.splice(animalIndex, 1);
-        renderRandomAnimals();
-        this.saveBattleLineup();
-        this.saveRandomAnimals();
-        renderBattleSlots();
-      } else {
-        alert("Not enough coins or slot is already filled!");
-      }
-    } else if (source === "battle") {
-      const animalIndex = parseInt(data, 10);
-      const draggedFromSlot = this.battleLineup[animalIndex];
-      if (draggedFromSlot) {
-        const temp = this.battleLineup[reversedSlotIndex];
-        this.battleLineup[reversedSlotIndex] = draggedFromSlot;
-        this.battleLineup[animalIndex] = temp;
-        renderBattleSlots();
-        this.saveBattleLineup();
-      }
-    } else if (source === "item") {
-      const itemName = event.dataTransfer.getData("itemName");
-      const itemEffect = event.dataTransfer.getData("itemEffect");
-      const targetAnimal = this.battleLineup[reversedSlotIndex];
-      if (targetAnimal) {
-        handleItemDrop(event, targetAnimal);
-      }
-    }
-  }
-
-  handleDragOver(event) {
-    event.preventDefault();
-  }
-
-  generateEnemyTeam() {
-    const totalTeamCost = calculateTeamCost(this.battleLineup);
-    this.enemyLineup = [];
-
-    while (this.enemyLineup.length < maxSlots && totalTeamCost > 0) {
-      const randomAnimal =
-        this.shopAnimals[Math.floor(Math.random() * this.shopAnimals.length)];
-      const clonedAnimal = { ...randomAnimal };
-
-      if (totalTeamCost >= randomAnimal.cost) {
-        this.enemyLineup.push(clonedAnimal);
-      }
-    }
-  }
-
-  backupLineup() {
-    this.originalBattleLineup = [...this.battleLineup];
-  }
-
-  shiftAnimalsToFront() {
-    const shiftedLineup = this.battleLineup.filter((animal) => animal !== null);
-    while (shiftedLineup.length < maxSlots) {
-      shiftedLineup.push(null);
-    }
-    this.battleLineup = [...shiftedLineup];
-  }
-
-  restoreOriginalLineup() {
-    this.battleLineup = [...this.originalBattleLineup];
-    renderBattleSlots();
-  }
-
-  shiftAnimalsInLineup(lineup) {
-    let shiftedLineup = lineup.filter((animal) => animal !== null);
-    while (shiftedLineup.length < maxSlots) {
-      shiftedLineup.push(null);
-    }
-    for (let i = 0; i < maxSlots; i++) {
-      lineup[i] = shiftedLineup[i];
-    }
-  }
-
-  loseLife() {
-    if (this.lives > 0) {
-      middleHeart.src = "../assets/heart.png";
-      middleHeart.classList.remove("hidden");
-
-      setTimeout(() => {
-        middleHeart.src = "../assets/semibroken.png";
-      }, 500);
-      setTimeout(() => {
-        middleHeart.src = "../assets/broken heart.png";
-        middleHeart.classList.add("hidden");
-        hearts[this.lives - 1].src = "../assets/broken heart.png";
-        this.lives--;
-        localStorage.setItem("lives", this.lives);
-        if (this.lives <= 0) {
-          showDefeatScreen();
-        } else {
-          showNonBattleElements();
-          location.reload();
-        }
-      }, 1500);
-    }
-  }
-
-  resetGame() {
-    this.battleLineup = [null, null, null, null, null];
-    this.enemyLineup = [null, null, null, null, null];
-    localStorage.removeItem("randomAnimals");
-    this.coins = 10;
-    updateCoinsDisplay();
-    if (this.lives <= 0) {
-      this.lives = 3;
-      localStorage.setItem("lives", this.lives);
-      hearts.forEach((heart) => {
-        heart.src = "../assets/heart.png";
-      });
-    }
-    renderBattleSlots();
-    renderRandomAnimals();
-    this.saveBattleLineup();
-    this.saveRandomAnimals();
-    showNonBattleElements();
-  }
-
-  checkGameOver(playerSurvivors, enemySurvivors) {
-    if (playerSurvivors > enemySurvivors) {
-      console.log("User wins!");
-      alert("You won this battle! Continue to the next.");
-      this.rollShopAnimals();
-      showNonBattleElements();
-      location.reload();
-    } else if (playerSurvivors < enemySurvivors) {
-      this.loseLife();
-      this.rollShopAnimals();
-    } else {
-      console.log("It's a draw!");
-      alert("It's a draw! Continue to the next battle.");
-      showNonBattleElements();
-      this.rollShopAnimals();
-      location.reload();
-    }
-  }
-}
-
-class AnimalFactory {
-  static createAnimal(data) {
-    return {
-      name: data.name,
-      img: data.img,
-      attack: data.attack,
-      health: data.health,
-      cost: data.cost,
-      frozen: data.frozen || false,
-    };
-  }
-}
-
-class ItemFactory {
-  static createItem(data) {
-    return {
-      name: data.name,
-      img: data.img,
-      effect: data.effect,
-      frozen: data.frozen || false,
-    };
-  }
-}
-
-class UIUpdater {
-  constructor() {
-    this.gameState = GameState.getInstance();
-    this.gameState.addObserver(this);
-  }
-
-  update() {
-    document.getElementById(
-      "coins"
-    ).textContent = `Coins: ${this.gameState.coins}`;
-    this.updateHeartsDisplay();
-    this.renderBattleSlots();
-    this.renderRandomAnimals();
-    this.renderItems();
-  }
-
-  updateHeartsDisplay() {
-    const hearts = [
-      document.getElementById("heart1"),
-      document.getElementById("heart2"),
-      document.getElementById("heart3"),
-    ];
-    hearts.forEach((heart, index) => {
-      if (index < this.gameState.lives) {
-        heart.src = "../assets/heart.png";
-      } else {
-        heart.src = "../assets/broken heart.png";
-      }
-    });
-  }
-
-  renderBattleSlots() {
-    console.log('aaaaaaaaaaaaaaaaaaaa')
-    const battleSlots = document.querySelectorAll(".battle-slot");
-    battleSlots.forEach((slot, index) => {
-      slot.setAttribute("data-slot", index);
-      const animal = this.gameState.battleLineup[maxSlots - 1 - index];
-      if (animal) {
-        slot.innerHTML = "";
-        const wrapper = document.createElement("div");
-        wrapper.classList.add("animal-wrapper");
-        const animalImg = document.createElement("img");
-        animalImg.src = animal.img;
-        animalImg.alt = animal.name;
-        animalImg.style.width = "5rem";
-        animalImg.style.height = "5rem";
-        animalImg.draggable = true;
-        animalImg.addEventListener("dragstart", (event) => {
-          hideHoverInfo();
-          event.dataTransfer.setData("text/plain", maxSlots - 1 - index);
-          event.dataTransfer.setData("source", "battle");
-          showTrashBin();
-        });
-        animalImg.addEventListener("dragend", hideBins);
-        animalImg.addEventListener("mouseover", (event) => {
-          showHoverInfo(`${animal.name} - Cost: ${animal.cost}`, event);
-        });
-        animalImg.addEventListener("mousemove", (event) => {
-          showHoverInfo(`${animal.name} - Cost: ${animal.cost}`, event);
-        });
-        animalImg.addEventListener("mouseout", hideHoverInfo);
-        const statContainer = document.createElement("div");
-        statContainer.classList.add("stat-container");
-        const attack = document.createElement("p");
-        attack.textContent = animal.attack;
-        const health = document.createElement("p");
-        health.textContent = animal.health;
-        statContainer.appendChild(attack);
-        statContainer.appendChild(health);
-        wrapper.appendChild(animalImg);
-        wrapper.appendChild(statContainer);
-        slot.appendChild(wrapper);
-      } else {
-        slot.innerHTML = "";
-      }
-    });
-  }
-
-  renderRandomAnimals() {
-    const randomAnimalsContainer = document.getElementById("random-animals");
-    randomAnimalsContainer.innerHTML = "";
-    this.gameState.randomAnimals.forEach((animal, index) => {
-      const animalDiv = document.createElement("div");
-      animalDiv.classList.add("animal");
-      animalDiv.setAttribute("data-index", index);
-      const animalImage = document.createElement("img");
-      animalImage.src = animal.img;
-      animalImage.alt = animal.name;
-      animalImage.setAttribute("draggable", true);
-      animalImage.addEventListener("dragstart", (event) => {
-        event.dataTransfer.setData("text/plain", index);
-        hideHoverInfo();
-        event.dataTransfer.setData("source", "shop");
-        showFreezeBin();
-      });
-      animalImage.addEventListener("dragend", hideBins);
-      animalImage.addEventListener("mouseover", (event) => {
-        showHoverInfo(`${animal.name} - Cost: ${animal.cost}`, event);
-      });
-      animalImage.addEventListener("mousemove", (event) => {
-        showHoverInfo(`${animal.name} - Cost: ${animal.cost}`, event);
-      });
-      animalImage.addEventListener("mouseout", hideHoverInfo);
-      if (animal.frozen) {
-        const iceOverlay = document.createElement("div");
-        iceOverlay.classList.add("ice-overlay");
-        animalDiv.appendChild(iceOverlay);
-      }
-      const statContainer = document.createElement("div");
-      statContainer.classList.add("stat-container");
-      const attack = document.createElement("p");
-      const health = document.createElement("p");
-      attack.textContent = `${animal.attack}`;
-      health.textContent = `${animal.health}`;
-      statContainer.appendChild(attack);
-      statContainer.appendChild(health);
-      animalDiv.appendChild(animalImage);
-      animalDiv.appendChild(statContainer);
-      randomAnimalsContainer.appendChild(animalDiv);
-    });
-  }
-
-  renderItems() {
-    const itemSlot1 = document.getElementById("itemSlot");
-    const itemSlot2 = document.getElementById("itemSlot2");
-    itemSlot1.innerHTML = "";
-    itemSlot2.innerHTML = "";
-    function renderItem(item, slot) {
-      if (!item || !item.img) return;
-      const itemWrapper = document.createElement("div");
-      itemWrapper.classList.add("item-wrapper");
-      const itemImg = document.createElement("img");
-      itemImg.src = item.img;
-      itemImg.alt = item.name;
-      itemImg.setAttribute("draggable", true);
-      itemImg.addEventListener("dragstart", handleItemDragStart);
-      if (item.frozen) {
-        const iceOverlay = document.createElement("div");
-        iceOverlay.classList.add("ice-overlay");
-        itemWrapper.appendChild(iceOverlay);
-      }
-      itemWrapper.appendChild(itemImg);
-      slot.appendChild(itemWrapper);
-      itemImg.addEventListener("mouseover", (event) => {
-        showHoverInfo(`${item.name} - Effect: ${item.effect}`, event);
-      });
-      itemImg.addEventListener("mousemove", (event) => {
-        showHoverInfo(`${item.name} - Effect: ${item.effect}`, event);
-      });
-      itemImg.addEventListener("mouseout", hideHoverInfo);
-    }
-    renderItem(this.gameState.currentItem1, itemSlot1);
-    renderItem(this.gameState.currentItem2, itemSlot2);
-  }
-}
-
-const gameState = GameState.getInstance();
-const uiUpdater = new UIUpdater();
-
-document.addEventListener("DOMContentLoaded", function () {
-  loadassets();
-  hideCurtains();
-  adjustCanvasSize();
-  window.addEventListener("resize", adjustCanvasSize);
-  if (localStorage.getItem("randomAnimals")) {
-    gameState.randomAnimals = JSON.parse(localStorage.getItem("randomAnimals"));
-  } else {
-    gameState.rollfirst();
-  }
-  if (localStorage.getItem("battleLineup")) {
-    gameState.battleLineup = JSON.parse(localStorage.getItem("battleLineup"));
-  }
-  fetch("../assets/items.json")
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then((data) => {
-      gameState.items = data.map((item) => ItemFactory.createItem(item));
-      loadRandomItems();
-    })
-    .catch((error) => console.error("Error loading items:", error));
-  uiUpdater.update();
-});
-
 const canvas = document.getElementById("battleCanvas");
 const curtainTop = document.getElementById("curtainTop");
 const curtainBottom = document.getElementById("curtainBottom");
@@ -570,10 +58,21 @@ function rollfirst() {
       window.location.href = "/home/homepage.html";
     }, 3000);
   } else {
-    const shuffledAnimals = ownedAnimals
-      ? ownedAnimals.sort(() => Math.random() - 0.5)
-      : shopAnimals.sort(() => Math.random() - 0.5);
-    randomAnimals = shuffledAnimals.slice(0, maxShopAnimals);
+    const frozenAnimals = randomAnimals.filter(
+      (animal) => animal && animal.frozen
+    );
+    const numFrozenAnimals = frozenAnimals.length;
+
+    // Generate new animals for the non-frozen slots
+    const ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
+    const availableAnimals = ownedAnimals ? ownedAnimals : shopAnimals;
+    const newRandomAnimals = availableAnimals
+      .sort(() => Math.random() - 0.5)
+      .slice(0, maxShopAnimals - numFrozenAnimals);
+
+    // Combine frozen and new animals
+    randomAnimals = [...frozenAnimals, ...newRandomAnimals];
+
     renderRandomAnimals();
     saveRandomAnimals();
   }
@@ -746,16 +245,6 @@ function hideHoverInfo() {
 }
 
 function renderBattleSlots() {
-  console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
-  console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
-  console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
-  console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
-  console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
-  console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
-  console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
-  console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
-  console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
-  console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
   const battleSlots = document.querySelectorAll(".battle-slot");
   battleSlots.forEach((slot, index) => {
     slot.setAttribute("data-slot", index);
@@ -1088,12 +577,12 @@ document.addEventListener("DOMContentLoaded", function () {
   adjustCanvasSize();
   window.addEventListener("resize", adjustCanvasSize);
   updateHeartsDisplay();
-  if (localStorage.getItem("randomAnimals")) {
-    randomAnimals = JSON.parse(localStorage.getItem("randomAnimals"));
-    renderRandomAnimals();
-  } else {
-    rollfirst();
-  }
+  randomAnimals = JSON.parse(localStorage.getItem("randomAnimals")) || [];
+  // if (localStorage.getItem("randomAnimals")) {
+  //   renderRandomAnimals();
+  // } else {
+  rollfirst();
+  // }
 
   if (localStorage.getItem("battleLineup")) {
     battleLineup = JSON.parse(localStorage.getItem("battleLineup"));
@@ -1756,6 +1245,7 @@ function resetGame() {
   battleLineup = [null, null, null, null, null];
   enemyLineup = [null, null, null, null, null];
   localStorage.removeItem("randomAnimals");
+  localStorage.removeItem("currentItems");
   coins = 10;
   updateCoinsDisplay();
   if (lives <= 0) {
@@ -1768,7 +1258,7 @@ function resetGame() {
   renderBattleSlots();
   renderRandomAnimals();
   saveBattleLineup();
-  saveRandomAnimals();
+  // saveRandomAnimals();
   showNonBattleElements();
 }
 function checkGameOver(playerSurvivors, enemySurvivors) {
