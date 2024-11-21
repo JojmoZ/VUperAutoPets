@@ -1234,15 +1234,14 @@ function loseLife() {
         if (lives <= 0) {
           showDefeatScreen();
         } else {
-          showCurtains()
-          closeCurtains()
+          showCurtains();
+          closeCurtains();
           setTimeout(() => {
             showNonBattleElements();
             openCurtains(() => {
-              // location.reload();
-              
-            })
-          },1000)
+              location.reload();
+            });
+          }, 1000);
         }
       }, 1000); // Matches animation duration
     }, 1500); // Delay before starting the drop animation
