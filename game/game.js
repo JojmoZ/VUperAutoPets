@@ -1230,19 +1230,16 @@ function loseLife() {
       middleHeart.style.height = `${rect.height}px`;
       middleHeart.style.transform = "translate(0, 0)";
 
-      // Add the drop animation
       middleHeart.classList.add("drop");
 
       setTimeout(() => {
-        // Remove the dimmer overlay
-        dimmerOverlay.classList.add("hidden");
-
+        
         middleHeart.classList.remove("drop");
         middleHeart.classList.add("hidden");
         hearts[lives - 1].src = "../assets/broken heart.png";
         lives--;
         localStorage.setItem("lives", lives);
-
+        
         if (lives <= 0) {
           showDefeatScreen();
         } else {
@@ -1250,6 +1247,7 @@ function loseLife() {
           closeCurtains();
           setTimeout(() => {
             showNonBattleElements();
+            dimmerOverlay.classList.add("hidden");
             openCurtains(() => {
               location.reload();
             });
