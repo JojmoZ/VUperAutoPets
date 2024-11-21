@@ -556,7 +556,6 @@ function saveRandomAnimals() {
   localStorage.setItem("randomAnimals", JSON.stringify(randomAnimals));
 }
 function rollfirst() {
-  console.log("a");
   const ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
   if (ownedAnimals == null) {
     alert("GK PUNYA OWNED ANIMALS");
@@ -1709,25 +1708,48 @@ function updateHeartsDisplay() {
 }
 function loseLife() {
   if (lives > 0) {
+    // Show the dimmer overlay
+    const dimmerOverlay = document.getElementById("dimmerOverlay");
+    dimmerOverlay.classList.remove("hidden");
+
     middleHeart.src = "../assets/heart.png";
     middleHeart.classList.remove("hidden");
 
     setTimeout(() => {
       middleHeart.src = "../assets/semibroken.png";
-    }, 500);
+    }, 1000);
+
     setTimeout(() => {
-      middleHeart.src = "../assets/broken heart.png";
-      middleHeart.classList.add("hidden");
-      hearts[lives - 1].src = "../assets/broken heart.png";
-      lives--;
-      localStorage.setItem("lives", lives);
-      if (lives <= 0) {
-        showDefeatScreen();
-      } else {
-        showNonBattleElements();
-        location.reload();
-      }
-    }, 1500);
+      // Capture current position
+      const rect = middleHeart.getBoundingClientRect();
+      middleHeart.style.position = "fixed";
+      middleHeart.style.top = `${rect.top}px`;
+      middleHeart.style.left = `${rect.left}px`;
+      middleHeart.style.width = `${rect.width}px`;
+      middleHeart.style.height = `${rect.height}px`;
+      middleHeart.style.transform = "translate(0, 0)";
+
+      // Add the drop animation
+      middleHeart.classList.add("drop");
+
+      setTimeout(() => {
+        // Remove the dimmer overlay
+        dimmerOverlay.classList.add("hidden");
+
+        middleHeart.classList.remove("drop");
+        middleHeart.classList.add("hidden");
+        hearts[lives - 1].src = "../assets/broken heart.png";
+        lives--;
+        localStorage.setItem("lives", lives);
+
+        if (lives <= 0) {
+          showDefeatScreen();
+        } else {
+          showNonBattleElements();
+          location.reload();
+        }
+      }, 1000); // Matches animation duration
+    }, 1500); // Delay before starting the drop animation
   }
 }
 function resetGame() {
