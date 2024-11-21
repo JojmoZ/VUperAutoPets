@@ -35,6 +35,7 @@
       localStorage.removeItem("ownedAnimals");
       localStorage.removeItem("shopAnimals");
       localStorage.removeItem("currentItems");
+      localStorage.removeItem("firstTime");
       window.location.href = "/login/start2.html";
     });
     const currentPage = window.location.pathname;

@@ -577,7 +577,7 @@ document.addEventListener("DOMContentLoaded", function () {
      coins = 15; // Start with 15 coins
      localStorage.setItem("gamecoins", coins); // Save to localStorage
 
-     rollFirst(); // Call rollFirst during the first session
+     rollfirst(); // Call rollFirst during the first session
    } else {
      // Not first time: load saved coins and animals
      coins = parseInt(localStorage.getItem("gamecoins")) || 0;
