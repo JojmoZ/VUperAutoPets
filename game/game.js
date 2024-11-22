@@ -707,7 +707,7 @@ function updateCoinsDisplay() {
 }
 function generateEnemyTeam() {
   enemyLineup = [
-    shopAnimals.find((animal) =>  animal.name === "WLeopard"),
+    shopAnimals.find((animal) =>  animal.name === "VUnt"),
   ];
   // const totalTeamCost = calculateTeamCost(battleLineup);
   // enemyLineup = [];
@@ -1383,11 +1383,6 @@ function checkGameOver(playerSurvivors, enemySurvivors) {
   if (playerSurvivors > enemySurvivors) {
     console.log("User wins!");
     showWinScreen()
-    // alert("You won this battle! Continue to the next.");
-    // showNonBattleElements();
-    // rollfirst();
-    // restoreOriginalLineup();
-    // location.reload();
   } else if (playerSurvivors < enemySurvivors) {
     loseLife();
   } else {
@@ -1733,39 +1728,114 @@ function showDrawScreen() {
     }, 1000); // Wait for the fade-out to complete before removing
   }, 2000); // Show the frown for 2 seconds before fade-out
 }
+// function showWinScreen() {
+//   const dimmerOverlay = document.getElementById("dimmerOverlay");
+//   dimmerOverlay.classList.remove("hidden");
+
+//   // Create and style the win image
+//   const winImage = new Image();
+//   winImage.src = "../assets/win.png";
+//   winImage.id = "winImage";
+//   winImage.style.position = "fixed";
+//   winImage.style.zIndex = "123123";
+//   winImage.style.width = "100px";
+//   winImage.style.height = "100px";
+//   winImage.style.top = "50%";
+//   winImage.style.left = "50%";
+//   winImage.style.transform = "translate(-50%, -50%)";
+//   winImage.style.opacity = "0";
+
+//   document.body.appendChild(winImage);
+//   // Animate the win image and text
+//   setTimeout(() => {
+//     winImage.style.transition =
+//       "transform 1s ease-in-out, opacity 1s ease-in-out";
+//     winImage.style.transform = "translate(-50%, -50%) scale(1.5)";
+//     winImage.style.opacity = "1";
+//   }, 100);
+
+//   // Fade out and remove the win image and text after a short duration
+//   setTimeout(() => {
+//     winImage.style.transition = "opacity 1s ease-in-out";
+//     winImage.style.opacity = "0";
+
+//     setTimeout(() => {
+//       winImage.remove();
+//       showCurtains();
+//       closeCurtains();
+//       setTimeout(() => {
+//         showNonBattleElements();
+//         dimmerOverlay.classList.add("hidden");
+//         openCurtains(() => {
+//           rollfirst();
+//           restoreOriginalLineup();
+//           location.reload();
+//         });
+//       }, 1000);
+//     }, 1000); // Wait for the fade-out to complete before removing
+//   }, 2000); // Show the win image for 2 seconds before fade-out
+// }
 function showWinScreen() {
   const dimmerOverlay = document.getElementById("dimmerOverlay");
   dimmerOverlay.classList.remove("hidden");
+
+  // Create the win container
+  const winContainer = document.createElement("div");
+  winContainer.id = "winContainer";
+  winContainer.style.position = "fixed";
+  winContainer.style.zIndex = "123123";
+  winContainer.style.width = "150px"; // Adjust the size of the image
+  winContainer.style.height = "150px";
+  winContainer.style.top = "50%";
+  winContainer.style.left = "50%";
+  winContainer.style.transform = "translate(-50%, -50%)";
+  winContainer.style.display = "flex";
+  winContainer.style.justifyContent = "center";
+  winContainer.style.alignItems = "center";
 
   // Create and style the win image
   const winImage = new Image();
   winImage.src = "../assets/win.png";
   winImage.id = "winImage";
-  winImage.style.position = "fixed";
-  winImage.style.zIndex = "123123";
-  winImage.style.width = "100px";
-  winImage.style.height = "100px";
-  winImage.style.top = "50%";
-  winImage.style.left = "50%";
-  winImage.style.transform = "translate(-50%, -50%)";
+  winImage.style.width = "100%";
+  winImage.style.height = "100%";
+  winImage.style.position = "absolute";
   winImage.style.opacity = "0";
+  winImage.style.top = "50%"; // Center alignment
+  winImage.style.left = "50%"; // Center alignment
+  winImage.style.transform = "translate(-50%, -50%)"; // Align center
+  winImage.style.animation = "fadeIn 1s ease-in-out forwards";
 
-  document.body.appendChild(winImage);
-  // Animate the win image and text
+  // Create the sunray effect
+  const sunray = document.createElement("div");
+  sunray.id = "sunray";
+  sunray.style.position = "absolute";
+  sunray.style.width = "200%"; // Adjust size relative to the winImage
+  sunray.style.height = "200%";
+  sunray.style.top = "50%"; // Center alignment
+  sunray.style.left = "50%"; // Center alignment
+  sunray.style.transform = "translate(-50%, -50%)"; // Align center
+  sunray.style.borderRadius = "50%";
+  sunray.style.background = `
+    radial-gradient(circle, 
+    rgba(255, 255, 0, 0.3) 0%, 
+    rgba(255, 204, 0, 0.1) 50%, 
+    transparent 70%)
+  `;
+  sunray.style.animation =
+    "spin 3s linear infinite, pulse 2s ease-in-out infinite";
+
+  // Append the elements
+  winContainer.appendChild(sunray);
+  winContainer.appendChild(winImage);
+  document.body.appendChild(winContainer);
+
+  // Remove the win screen after the animation
   setTimeout(() => {
-    winImage.style.transition =
-      "transform 1s ease-in-out, opacity 1s ease-in-out";
-    winImage.style.transform = "translate(-50%, -50%) scale(1.5)";
-    winImage.style.opacity = "1";
-  }, 100);
-
-  // Fade out and remove the win image and text after a short duration
-  setTimeout(() => {
-    winImage.style.transition = "opacity 1s ease-in-out";
-    winImage.style.opacity = "0";
-
+    winContainer.style.transition = "opacity 1s ease-in-out";
+    winContainer.style.opacity = "0";
     setTimeout(() => {
-      winImage.remove();
+      winContainer.remove();
       showCurtains();
       closeCurtains();
       setTimeout(() => {
@@ -1777,6 +1847,6 @@ function showWinScreen() {
           location.reload();
         });
       }, 1000);
-    }, 1000); // Wait for the fade-out to complete before removing
-  }, 2000); // Show the win image for 2 seconds before fade-out
+    }, 1000); // Wait for fade-out before removing
+  }, 3000); // Show the win screen for 3 seconds
 }
