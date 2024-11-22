@@ -219,6 +219,7 @@ window.onload = function () {
     if (existingModal) {
       existingModal.remove();
     }
+    errorModal.style.bottom = "-100px";
     const successModalHTML = `
         <div id="successModal">
             <div class="modal-content">
@@ -259,31 +260,31 @@ window.onload = function () {
       setTimeout(() => successModal.remove(), 500);
     }, 5000);
   }
-    const toggleButtons = document.querySelectorAll(".toggle-password");
+  const toggleButtons = document.querySelectorAll(".toggle-password");
 
-    toggleButtons.forEach((button) => {
-      const targetInput = document.getElementById(button.dataset.target);
+  toggleButtons.forEach((button) => {
+    const targetInput = document.getElementById(button.dataset.target);
 
-      button.style.visibility = "hidden";
-      targetInput.addEventListener("input", () => {
-        if (targetInput.value) {
-          button.style.visibility = "visible";
-        } else {
-          button.style.visibility = "hidden";
-        }
-      });
-      button.addEventListener("click", () => {
-        const img = button.querySelector("img");
-
-        if (targetInput.type === "password") {
-          targetInput.type = "text";
-          img.src = "../assets/hide.png"; 
-        } else {
-          targetInput.type = "password";
-          img.src = "../assets/eye.png"; 
-        }
-      });
+    button.style.visibility = "hidden";
+    targetInput.addEventListener("input", () => {
+      if (targetInput.value) {
+        button.style.visibility = "visible";
+      } else {
+        button.style.visibility = "hidden";
+      }
     });
+    button.addEventListener("click", () => {
+      const img = button.querySelector("img");
+
+      if (targetInput.type === "password") {
+        targetInput.type = "text";
+        img.src = "../assets/hide.png";
+      } else {
+        targetInput.type = "password";
+        img.src = "../assets/eye.png";
+      }
+    });
+  });
   loginForm.addEventListener("submit", function (e) {
     e.preventDefault();
     const username = document.getElementById("loginUsername").value;
@@ -309,6 +310,11 @@ window.onload = function () {
   });
 
   function showErrorModal() {
+    const successModal = document.getElementById("successModal");
+    if (successModal) {
+      successModal.style.bottom = "-100px";
+      setTimeout(() => successModal.remove(), 500);
+    }
     errorModal.style.bottom = "20px";
     setTimeout(() => {
       errorModal.style.bottom = "-100px";

@@ -179,7 +179,7 @@ input[type="submit"] {
 input[type="text"],
 input[type="password"] {
   text-align: left;
-  padding: 1em;
+  /* padding: 1em; */
   margin-bottom: 1em;
   border: none;
   border-radius: 0.5em;
@@ -527,6 +527,7 @@ header{
 }
 
 .check-btn {
+  margin-top: 1rem;
   font-family: 'VUper';
   background-color: #cbac24;
   color: black;
@@ -631,6 +632,7 @@ body.modal-active {
 
 #captchaCanvas {
   border: 1px solid #ccc;
+  margin: 1rem;
 }
 
 .refresh-button {
