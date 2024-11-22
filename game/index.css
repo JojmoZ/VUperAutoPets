@@ -478,3 +478,18 @@ img {
     opacity: 0.2;
   }
 }
+@keyframes riseAndDisappear {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -150%);
+  }
+}
+
+.floating-bus {
+  animation: riseAndDisappear 1s ease-out forwards;
+}
+

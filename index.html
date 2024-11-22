@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Path Params Middleware</title>
+    <script>
+        // Middleware stack 
+        const middlewareStack = [
+        ];
+
+        // Add middleware to the stack
+        function useMiddleware(path, callback) {
+            const pathRegex = pathToRegex(path); // Convert path to regex
+            middlewareStack.push({ pathRegex, callback });
+        }
+
+        // Convert a path like "/test/:id" into a regex
+        function pathToRegex(path) {
+            return new RegExp(
+                '^' +
+                path.replace(/:([^/]+)/g, '([^/]+)') + // Replace ":param" with "([^/]+)"
+                '$'
+            );
+        }
+
+        // Extract path parameters based on regex
+        function extractParams(pathRegex, currentPath) {
+            const matches = currentPath.match(pathRegex);
+            if (!matches) return {};
+            const keys = [...pathRegex.toString().matchAll(/:([^/]+)/g)].map((match) => match[1]);
+            const values = matches.slice(1);
+            return keys.reduce((params, key, index) => {
+                params[key] = values[index];
+                return params;
+            }, {});
+        }
+
+        // Middleware execution
+        function processRequest() {
+            const currentPath = window.location.pathname; // Get current path
+            console.log(currentPath)
+            for (const middleware of middlewareStack) {
+                const match = currentPath.match(middleware.pathRegex);
+                if (match) {
+                    const params = extractParams(middleware.pathRegex, currentPath);
+                    middleware.callback(params); // Execute the callback with params
+                    return;
+                }
+            }
+
+            console.log('No matching route');
+        }
+
+        // Define routes
+        useMiddleware('/test/:id', (params) => {
+            console.log(`Middleware 1: ID is ${params.id}`);
+            document.body.innerHTML = `<h1>Test Page</h1><p>ID: ${params.id}</p>`;
+        });
+
+        useMiddleware('/hello/:name', (params) => {
+            console.log(`Middleware 2: Name is ${params.name}`);
+            document.body.innerHTML = `<h1>Hello, ${params.name}!</h1>`;
+        });
+
+        // Simulate the routing process on page load
+        window.onload = processRequest;
+    </script>
+</head>
+
+<body>
+    <h1>Middleware Example</h1>
+    <p>Change the URL path to test routes (e.g., /test/123 or /hello/John).</p>
+</body>
+
+</html>

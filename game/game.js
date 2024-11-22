@@ -88,8 +88,6 @@ function openCurtains(onComplete) {
   }, 500);
 }
 function rollShopAnimals() {
-  if (coins >= 1) {
-    coins -= 1;
     updateCoinsDisplay();
     const frozenAnimals = randomAnimals.filter(
       (animal) => animal && animal.frozen
@@ -104,10 +102,8 @@ function rollShopAnimals() {
 
     renderRandomAnimals();
     saveRandomAnimals();
-  } else {
-    alert("Not enough coins to refresh!");
   }
-}
+
 function renderRandomAnimals() {
   const randomAnimalsContainer = document.getElementById("random-animals");
   randomAnimalsContainer.innerHTML = "";
@@ -257,7 +253,8 @@ function renderBattleSlots() {
     if (animal) {
       slot.innerHTML = "";
       const wrapper = document.createElement("div");
-      wrapper.classList.add("animal-wrapper"); 
+      wrapper.classList.add("animal-wrapper");
+      wrapper.style.position = "relative";
       const animalImg = document.createElement("img");
       animalImg.src = animal.img;
       animalImg.alt = animal.name;
@@ -293,10 +290,53 @@ function renderBattleSlots() {
       statContainer.appendChild(healthContainer);
       wrapper.appendChild(animalImg);
       wrapper.appendChild(statContainer);
+      if (animal.specialEffect === "SpawnBus") {
+        function spawnBus() {
+          const auraContainer = document.createElement("div");
+          auraContainer.style.position = "absolute";
+          auraContainer.style.zIndex = "2";
+          auraContainer.style.width = "40px";
+          auraContainer.style.height = "40px";
+          auraContainer.style.top = `${Math.random() * 100 - 30}%`; // Random vertical position near the animal
+          auraContainer.style.left = `${Math.random() * 80}%`; // Random horizontal position near the animal
+          auraContainer.style.opacity = "1"; // Start fully visible
+          auraContainer.style.transition =
+            "top 1.5s ease-out, opacity 1.5s ease-out";
+          auraContainer.style.transform = "translate(-50%, -50%)"; // Center alignment
+
+          const busIcon = document.createElement("img");
+          busIcon.src = "../assets/items/Bus.png";
+          busIcon.alt = "Bus Aura";
+          busIcon.style.width = "100%";
+          busIcon.style.height = "100%";
+
+          auraContainer.appendChild(busIcon);
+          wrapper.appendChild(auraContainer); // Append the aura to the animal wrapper
+
+          // Animate the bus floating up and fading out
+          setTimeout(() => {
+            auraContainer.style.top =
+              parseFloat(auraContainer.style.top) - 20 + "px"; // Float up
+            auraContainer.style.opacity = "0"; // Fade out
+            setTimeout(() => {
+              auraContainer.remove(); // Remove the bus after the animation
+            }, 1300); // Wait for the animation to complete
+          }, 0);
+        }
+
+        function startAuraLoop() {
+          setInterval(() => {
+            spawnBus(); // Spawn a bus at a random position
+          }, 400); // Spawn a new bus every 2 seconds
+        }
+
+        startAuraLoop(); // Start the loop for spawning buses
+      }
+
       animalImg.addEventListener("dragstart", (event) => {
         hideHoverInfo();
-        const imageWidth = animalImg.offsetWidth; 
-        const imageHeight = animalImg.offsetHeight; 
+        const imageWidth = animalImg.offsetWidth;
+        const imageHeight = animalImg.offsetHeight;
         const tempCanvas = document.createElement("canvas");
         tempCanvas.width = imageWidth;
         tempCanvas.height = imageHeight;
@@ -335,6 +375,7 @@ function renderBattleSlots() {
     }
   });
 }
+
 function renderTeams() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   const teamOffsetX = 100;
@@ -427,8 +468,13 @@ document.querySelectorAll(".battle-slot").forEach((slot) => {
 });
 
 document.getElementById("refreshButton").addEventListener("click", function () {
-  rollShopAnimals();
-  refreshItems();
+  if(coins >0){
+    coins -=1;
+    rollShopAnimals();
+    refreshItems();
+  }else{
+    return;
+  }
 });
 function checkbattlelineup() {
   const battleLineup = JSON.parse(localStorage.getItem("battleLineup"));
@@ -592,6 +638,11 @@ document.addEventListener("DOMContentLoaded", function () {
   adjustCanvasSize();
   window.addEventListener("resize", adjustCanvasSize);
   updateHeartsDisplay();
+  if (localStorage.getItem("battleLineup")) {
+    battleLineup = JSON.parse(localStorage.getItem("battleLineup"));
+    renderTeams();
+    renderBattleSlots();
+  }
   randomAnimals = JSON.parse(localStorage.getItem("randomAnimals")) || [];
   if (!localStorage.getItem("firstTime")) {
     localStorage.setItem("firstTime", true); // Mark as not the first time anymore
@@ -610,15 +661,10 @@ document.addEventListener("DOMContentLoaded", function () {
       renderRandomAnimals(); // Render existing animals
     }
   }
-  if (localStorage.getItem("battleLineup")) {
-    battleLineup = JSON.parse(localStorage.getItem("battleLineup"));
-    renderTeams();
-    renderBattleSlots();
-  }
   fetch("../assets/items.json")
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
       }
       return response.json();
     })
@@ -640,19 +686,19 @@ function updateCoinsDisplay() {
   document.getElementById("coins").textContent = coins; // Update only the number
 }
 function generateEnemyTeam() {
-  enemyLineup = [shopAnimals.find((animal) => animal.name === "VUnt")];
-  // const totalTeamCost = calculateTeamCost(battleLineup);
-  // enemyLineup = [];
+  // enemyLineup = [shopAnimals.find((animal) => animal.name === "VUnt")];
+  const totalTeamCost = calculateTeamCost(battleLineup);
+  enemyLineup = [];
 
-  // while (enemyLineup.length < maxSlots && totalTeamCost > 0) {
-  //   const randomAnimal =
-  //     shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
-  //   const clonedAnimal = { ...randomAnimal };
+  while (enemyLineup.length < maxSlots && totalTeamCost > 0) {
+    const randomAnimal =
+      shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
+    const clonedAnimal = { ...randomAnimal };
 
-  //   if (totalTeamCost >= randomAnimal.cost) {
-  //     enemyLineup.push(clonedAnimal);
-  //   }
-  // }
+    if (totalTeamCost >= randomAnimal.cost) {
+      enemyLineup.push(clonedAnimal);
+    }
+  }
 }
 
 function calculateTeamCost(team) {
@@ -1123,12 +1169,10 @@ function animateDeathFlyOff(animal, index, teamType, onComplete) {
       progress * progress * (startY + 100);
     ctx.save();
     if (teamType === "player") {
-      // Mirror the image if it's the player's team
       ctx.translate(curveX + 30, curveY + 30); // Center of the image
       ctx.scale(-1, 1); // Flip horizontally
       ctx.drawImage(img, -30, -30, 60, 60); // Adjust for flipped coordinates
     } else {
-      // Draw normally for the enemy team
       ctx.drawImage(img, curveX, curveY, 60, 60);
     }
     ctx.restore();
@@ -1147,7 +1191,6 @@ function handleBothDeaths(playerAnimal, enemyAnimal, onComplete) {
     deathPromises.push(
       new Promise((resolve) => {
         if (playerAnimal.specialEffect === "SpawnBus") {
-          // Spawn a Bus in the player's lineup
           const playerIndex = battleLineup.indexOf(playerAnimal);
           battleLineup[playerIndex] = createBus();
           console.log(battleLineup);
@@ -1282,7 +1325,6 @@ function updateHeartsDisplay() {
     }
   });
 }
-
 function resetGame() {
   battleLineup = [null, null, null, null, null];
   enemyLineup = [null, null, null, null, null];
@@ -1371,7 +1413,6 @@ freezeButton.addEventListener("drop", (event) => {
   const index = event.dataTransfer.getData("text");
   const slotId = event.dataTransfer.getData("slotId");
   if (source === "shop") {
-    // Handle freezing an animal from the shop
     const animal = randomAnimals[index];
     if (animal) {
       animal.frozen = !animal.frozen;
@@ -1379,7 +1420,6 @@ freezeButton.addEventListener("drop", (event) => {
       renderRandomAnimals();
     }
   } else if (source === "item") {
-    // Toggle the frozen state for each item slot based on the slotId
     if (slotId === "itemSlot" && currentItem1) {
       currentItem1.frozen = !currentItem1.frozen;
     } else if (slotId === "itemSlot2" && currentItem2) {
@@ -1392,7 +1432,6 @@ freezeButton.addEventListener("drop", (event) => {
 let items = [];
 let currentItem1 = null;
 let currentItem2 = null;
-
 function loadRandomItems() {
   const savedItems = JSON.parse(localStorage.getItem("currentItems")) || [];
   currentItem1 = savedItems[0] ? { ...savedItems[0] } : null;
@@ -1434,25 +1473,20 @@ function handleItemDrop(event, animal) {
     renderItem();
   }
 }
-
 function renderItem() {
   const itemSlot1 = document.getElementById("itemSlot");
   const itemSlot2 = document.getElementById("itemSlot2");
   itemSlot1.innerHTML = "";
   itemSlot2.innerHTML = "";
-
   function renderItem(item, slot) {
     if (!item || !item.img) return;
-
     const itemWrapper = document.createElement("div");
     itemWrapper.classList.add("item-wrapper");
-
     const itemImg = document.createElement("img");
     itemImg.src = item.img;
     itemImg.alt = item.name;
     itemImg.setAttribute("draggable", true);
     itemImg.addEventListener("dragstart", handleItemDragStart);
-
     if (item.frozen) {
       const iceOverlay = document.createElement("div");
       iceOverlay.classList.add("ice-overlay");
@@ -1478,7 +1512,6 @@ function renderItem() {
   renderItem(currentItem1, itemSlot1);
   renderItem(currentItem2, itemSlot2);
 }
-
 function handleItemDragStart(event) {
   hideHoverInfo();
   const slotId = event.target.closest(".item-slot").id;
