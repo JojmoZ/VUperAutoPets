@@ -52,20 +52,15 @@ function rollfirst() {
     }, 3000);
     return;
   }
-
   const frozenAnimals = randomAnimals.filter(
     (animal) => animal && animal.frozen
   );
   const numFrozenAnimals = frozenAnimals.length;
-
   const availableAnimals = ownedAnimals || shopAnimals;
   const newRandomAnimals = availableAnimals
     .sort(() => Math.random() - 0.5)
     .slice(0, maxShopAnimals - numFrozenAnimals);
-
-  // Combine frozen and new animals
   randomAnimals = [...frozenAnimals, ...newRandomAnimals];
-
   renderRandomAnimals();
   saveRandomAnimals();
 }
@@ -96,21 +91,15 @@ function rollShopAnimals() {
   if (coins >= 1) {
     coins -= 1;
     updateCoinsDisplay();
-
-    // Filter out frozen animals
     const frozenAnimals = randomAnimals.filter(
       (animal) => animal && animal.frozen
     );
     const numFrozenAnimals = frozenAnimals.length;
-
-    // Generate new animals for the non-frozen slots
     const ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
     const availableAnimals = ownedAnimals ? ownedAnimals : shopAnimals;
     const newRandomAnimals = availableAnimals
       .sort(() => Math.random() - 0.5)
       .slice(0, maxShopAnimals - numFrozenAnimals);
-
-    // Combine frozen and new animals
     randomAnimals = [...frozenAnimals, ...newRandomAnimals];
 
     renderRandomAnimals();
@@ -119,16 +108,13 @@ function rollShopAnimals() {
     alert("Not enough coins to refresh!");
   }
 }
-
 function renderRandomAnimals() {
   const randomAnimalsContainer = document.getElementById("random-animals");
   randomAnimalsContainer.innerHTML = "";
-
   randomAnimals.forEach((animal, index) => {
     const animalDiv = document.createElement("div");
     animalDiv.classList.add("animal");
     animalDiv.setAttribute("data-index", index);
-
     const animalImage = document.createElement("img");
     animalImage.src = animal.img;
     animalImage.alt = animal.name;
@@ -139,7 +125,6 @@ function renderRandomAnimals() {
       hideHoverInfo();
       const imageWidth = animalImage.offsetWidth;
       const imageHeight = animalImage.offsetHeight;
-
       const tempCanvas = document.createElement("canvas");
       tempCanvas.width = imageWidth;
       tempCanvas.height = imageHeight;
@@ -147,7 +132,6 @@ function renderRandomAnimals() {
       ctx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
       ctx.scale(-1, 1);
       ctx.drawImage(animalImage, -imageWidth, 0, imageWidth, imageHeight);
-
       document.body.appendChild(tempCanvas);
       tempCanvas.style.top = "10px";
       tempCanvas.style.left = "10px";
@@ -164,7 +148,6 @@ function renderRandomAnimals() {
       event.dataTransfer.setData("source", "shop");
       showFreezeBin();
     });
-
     animalImage.addEventListener("dragend", hideBins);
     animalImage.addEventListener("mouseover", (event) => {
       showHoverInfo(`${animal.name} - Cost: ${animal.cost}`, event);
@@ -173,16 +156,13 @@ function renderRandomAnimals() {
       showHoverInfo(`${animal.name} - Cost: ${animal.cost}`, event);
     });
     animalImage.addEventListener("mouseout", hideHoverInfo);
-
     if (animal.frozen) {
       const iceOverlay = document.createElement("div");
       iceOverlay.classList.add("ice-overlay");
       animalDiv.appendChild(iceOverlay);
     }
-
     const statContainer = document.createElement("div");
     statContainer.classList.add("stat-container");
-    // Attack (Fist Icon)
     const attackContainer = document.createElement("div");
     attackContainer.classList.add("stat-icon");
     const attackIcon = document.createElement("img");
@@ -192,8 +172,6 @@ function renderRandomAnimals() {
     attackText.classList.add("stat-text");
     attackContainer.appendChild(attackIcon);
     attackContainer.appendChild(attackText);
-
-    // Health (Heart Icon)
     const healthContainer = document.createElement("div");
     healthContainer.classList.add("stat-icon");
     const healthIcon = document.createElement("img");
@@ -203,8 +181,6 @@ function renderRandomAnimals() {
     healthText.classList.add("stat-text");
     healthContainer.appendChild(healthIcon);
     healthContainer.appendChild(healthText);
-
-    // Append stats to container
     statContainer.appendChild(attackContainer);
     statContainer.appendChild(healthContainer);
     animalDiv.appendChild(animalImage);
@@ -212,7 +188,6 @@ function renderRandomAnimals() {
     randomAnimalsContainer.appendChild(animalDiv);
   });
 }
-
 function saveBattleLineup() {
   localStorage.setItem("battleLineup", JSON.stringify(battleLineup));
 }
@@ -225,7 +200,7 @@ function handleDrop(event) {
   const slotIndex = parseInt(event.currentTarget.getAttribute("data-slot"), 10);
   const reversedSlotIndex = maxSlots - 1 - slotIndex;
   const data = event.dataTransfer.getData("text/plain");
-  const source = event.dataTransfer.getData("source"); // Get the source identifier
+  const source = event.dataTransfer.getData("source");
   console.log("a");
   if (source === "shop") {
     const animalIndex = parseInt(data, 10);
@@ -243,7 +218,6 @@ function handleDrop(event) {
       alert("Not enough coins or slot is already filled!");
     }
   } else if (source === "battle") {
-    // Handle dragging from the battle lineup
     const animalIndex = parseInt(data, 10);
     const draggedFromSlot = battleLineup[animalIndex];
     if (draggedFromSlot) {
@@ -256,42 +230,34 @@ function handleDrop(event) {
   } else if (source === "item") {
     const itemName = event.dataTransfer.getData("itemName");
     const itemEffect = event.dataTransfer.getData("itemEffect");
-    const targetAnimal = battleLineup[reversedSlotIndex]; // The animal in the drop slot
+    const targetAnimal = battleLineup[reversedSlotIndex]; 
     if (targetAnimal) {
       handleItemDrop(event, targetAnimal);
     }
   }
 }
-
 function handleDragOver(event) {
   event.preventDefault();
 }
 const hoverInfo = document.getElementById("hoverInfo");
-
 function showHoverInfo(text, event) {
   hoverInfo.textContent = text;
   hoverInfo.style.left = `${event.pageX + 10}px`;
   hoverInfo.style.top = `${event.pageY + 10}px`;
   hoverInfo.style.opacity = 1;
 }
-
 function hideHoverInfo() {
   hoverInfo.style.opacity = 0;
 }
-
 function renderBattleSlots() {
   const battleSlots = document.querySelectorAll(".battle-slot");
   battleSlots.forEach((slot, index) => {
     slot.setAttribute("data-slot", index);
     const animal = battleLineup[maxSlots - 1 - index];
     if (animal) {
-      // Clear slot and create a wrapper for the animal and stats
       slot.innerHTML = "";
-
       const wrapper = document.createElement("div");
-      wrapper.classList.add("animal-wrapper"); // Add a wrapper to control layout
-
-      // Animal Image
+      wrapper.classList.add("animal-wrapper"); 
       const animalImg = document.createElement("img");
       animalImg.src = animal.img;
       animalImg.alt = animal.name;
@@ -303,12 +269,8 @@ function renderBattleSlots() {
       animalImg.style.aspectRatio = "1/1";
       animalImg.style.transform = "scaleX(-1)";
       animalImg.draggable = true;
-
-      // Stat Container
       const statContainer = document.createElement("div");
       statContainer.classList.add("stat-container");
-
-      // Attack (Fist Icon)
       const attackContainer = document.createElement("div");
       attackContainer.classList.add("stat-icon");
       const attackIcon = document.createElement("img");
@@ -318,8 +280,6 @@ function renderBattleSlots() {
       attackText.classList.add("stat-text");
       attackContainer.appendChild(attackIcon);
       attackContainer.appendChild(attackText);
-
-      // Health (Heart Icon)
       const healthContainer = document.createElement("div");
       healthContainer.classList.add("stat-icon");
       const healthIcon = document.createElement("img");
@@ -329,37 +289,25 @@ function renderBattleSlots() {
       healthText.classList.add("stat-text");
       healthContainer.appendChild(healthIcon);
       healthContainer.appendChild(healthText);
-
-      // Append both stats to the stat container
       statContainer.appendChild(attackContainer);
       statContainer.appendChild(healthContainer);
       wrapper.appendChild(animalImg);
       wrapper.appendChild(statContainer);
-      // Attach drag events
       animalImg.addEventListener("dragstart", (event) => {
         hideHoverInfo();
-        // Get image dimensions or fallback to default values
-        const imageWidth = animalImg.offsetWidth; // Displayed width
-        const imageHeight = animalImg.offsetHeight; // Displayed height
-
-        // Create a temporary canvas
+        const imageWidth = animalImg.offsetWidth; 
+        const imageHeight = animalImg.offsetHeight; 
         const tempCanvas = document.createElement("canvas");
         tempCanvas.width = imageWidth;
         tempCanvas.height = imageHeight;
         const ctx = tempCanvas.getContext("2d");
         ctx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
-
         ctx.scale(-1, 1);
         ctx.drawImage(animalImg, -imageWidth, 0, imageWidth, imageHeight);
-
-        // Debugging: Append the canvas to the body to visualize it
         document.body.appendChild(tempCanvas);
-        // tempCanvas.style.position = "absolute";
         tempCanvas.style.top = "10px";
         tempCanvas.style.left = "10px";
         tempCanvas.style.aspectRatio = "1/1";
-
-        // Set the custom drag image
         event.dataTransfer.setDragImage(
           tempCanvas,
           tempCanvas.width / 2,
@@ -387,7 +335,6 @@ function renderBattleSlots() {
     }
   });
 }
-
 function renderTeams() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   const teamOffsetX = 100;
@@ -400,15 +347,12 @@ function renderTeams() {
       img.src = animal.img;
       img.onload = () => {
         ctx.save(); // Save the canvas state
-        // Translate and flip horizontally
         const xPosition = teamOffsetX + (maxSlots - 1 - index) * 100;
         const yPosition = commonY;
         ctx.translate(xPosition + 40, yPosition + 40); // Center of the image
         ctx.scale(-1, 1); // Flip horizontally
         ctx.drawImage(img, -40, -40, 80, 80); // Adjust for the flipped state
         ctx.restore(); // Restore the canvas state
-
-        // Draw fist and stats (unmirrored)
         ctx.drawImage(
           fistImg,
           teamOffsetX + (maxSlots - 1 - index) * 100,
@@ -530,8 +474,6 @@ function animateAnimalsIntoPosition(onComplete) {
   const bounceHeight = 30; // Height of the bounce effect
   const duration = 2000; // Extended duration for the entire animation in ms
   const bounceFrequency = 5; // Increase this number for more bounces
-
-  // Preload all images for the player's and enemy's lineup
   const preloadedPlayerImages = battleLineup.map((animal, index) => {
     if (animal) {
       const img = new Image();
@@ -541,7 +483,6 @@ function animateAnimalsIntoPosition(onComplete) {
     }
     return null;
   });
-
   const preloadedEnemyImages = enemyLineup.map((animal, index) => {
     if (animal) {
       const img = new Image();
@@ -551,36 +492,26 @@ function animateAnimalsIntoPosition(onComplete) {
     }
     return null;
   });
-
   let currentFrame = 0;
   let lastFrameTime = performance.now();
-
-  // Easing function for smoother motion
   function easeOutQuad(t) {
     return t * (2 - t);
   }
-
   function animate(currentTime) {
     const deltaTime = (currentTime - lastFrameTime) / 1000; // Convert to seconds
     lastFrameTime = currentTime;
-
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
     const progress = currentFrame / (duration / 1000); // Use delta time for progress
     const easedProgress = easeOutQuad(progress); // Applying ease-out easing
     const bounceY =
       Math.sin(easedProgress * Math.PI * 2 * bounceFrequency) *
       bounceHeight *
       (1 - easedProgress);
-
-    // Draw each preloaded player image with horizontal slide-in + vertical bounce
     preloadedPlayerImages.forEach((img, index) => {
       if (img) {
         const startX = -80; // Start off-screen to the left
         const endX = teamOffsetX + (maxSlots - 1 - index) * 100;
         const delay = index * 0.2; // Reduced delay interval
-
-        // Apply the delay effect
         const adjustedProgress = Math.min(
           Math.max(easedProgress - delay, 0) / (1 - delay),
           1
@@ -588,34 +519,24 @@ function animateAnimalsIntoPosition(onComplete) {
 
         const currentX = startX + (endX - startX) * adjustedProgress;
         const targetY = commonY - bounceY;
-
         ctx.save();
-        // Translate and flip horizontally
         ctx.translate(currentX + 40, targetY + 40); // Center of the image
         ctx.scale(-1, 1); // Flip horizontally
-        // Draw the image (adjusted for the flipped state)
         ctx.drawImage(img, -40, -40, 80, 80);
-        // Restore the canvas state
         ctx.restore();
       }
     });
-
-    // Draw each preloaded enemy image with horizontal slide-in + vertical bounce
     preloadedEnemyImages.forEach((img, index) => {
       if (img) {
         const startX = canvas.width + 80; // Start off-screen to the right
         const endX = enemyOffsetX + index * 100;
         const delay = index * 0.2; // Reduced delay interval for enemies too
-
-        // Apply the delay effect
         const adjustedProgress = Math.min(
           Math.max(easedProgress - delay, 0) / (1 - delay),
           1
         );
-
         const currentX = startX - (startX - endX) * adjustedProgress;
         const targetY = commonY - bounceY;
-
         ctx.drawImage(img, currentX, targetY, 80, 80);
       }
     });
@@ -629,8 +550,6 @@ function animateAnimalsIntoPosition(onComplete) {
       }
     }
   }
-
-  // Start the animation loop
   requestAnimationFrame(animate);
 }
 
@@ -643,7 +562,6 @@ function showNonBattleElements() {
   document.getElementById("freezeButton").classList.remove("hidden");
   document.getElementById("backArrow").classList.remove("hidden");
 }
-
 function hideNonBattleElements() {
   document.getElementById("battleSlotsContainer").classList.add("hidden");
   document.getElementById("controls").classList.add("hidden");
@@ -661,7 +579,7 @@ function hideCanvas() {
 function adjustCanvasSize() {
   const canvas = document.getElementById("battleCanvas");
   canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight * 0.5; // Adjust height based on vh
+  canvas.height = window.innerHeight * 0.5; 
   ctx = canvas.getContext("2d");
 }
 function loadassets() {
@@ -676,17 +594,13 @@ document.addEventListener("DOMContentLoaded", function () {
   updateHeartsDisplay();
   randomAnimals = JSON.parse(localStorage.getItem("randomAnimals")) || [];
   if (!localStorage.getItem("firstTime")) {
-    // First time playing: initialize with 15 coins and roll initial animals
     localStorage.setItem("firstTime", true); // Mark as not the first time anymore
     coins = 15; // Start with 15 coins
     localStorage.setItem("gamecoins", coins); // Save to localStorage
-
     rollfirst(); // Call rollFirst during the first session
   } else {
-    // Not first time: load saved coins and animals
     coins = parseInt(localStorage.getItem("gamecoins")) || 0;
     updateCoinsDisplay();
-
     randomAnimals = JSON.parse(localStorage.getItem("randomAnimals")) || [];
     if (randomAnimals.length === 0) {
       console.log("Shop is empty. Wait for the player to refresh manually.");
@@ -725,7 +639,6 @@ function updateCoinsDisplay() {
   localStorage.setItem("gamecoins", coins);
   document.getElementById("coins").textContent = coins; // Update only the number
 }
-
 function generateEnemyTeam() {
   enemyLineup = [shopAnimals.find((animal) => animal.name === "VUnt")];
   // const totalTeamCost = calculateTeamCost(battleLineup);
@@ -757,16 +670,12 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
   const duration = 500; // Duration in milliseconds
   let currentFrame = 0;
   let lastFrameTime = performance.now();
-
   const playerImg = new Image();
   playerImg.src = playerAnimal.img;
-
   const enemyImg = new Image();
   enemyImg.src = enemyAnimal.img;
-
   const bandageImg = new Image();
   bandageImg.src = "../assets/hurt.png"; // Path to the bandage image
-
   playerImg.onload = () => {
     enemyImg.onload = () => {
       requestAnimationFrame(animate);
@@ -914,20 +823,18 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
     requestAnimationFrame(animateBack);
   }
 }
-
 function backupLineup() {
   originalBattleLineup = battleLineup.map((animal) => {
     if (animal) {
       return {
         ...animal,
         originalAttack: animal.attack,
-        originalHealth: animal.health, // Save the original health
+        originalHealth: animal.health, 
       };
     }
     return null;
   });
 }
-
 function shiftAnimalsToFront() {
   const shiftedLineup = battleLineup.filter((animal) => animal !== null);
   while (shiftedLineup.length < maxSlots) {
@@ -1488,11 +1395,8 @@ let currentItem2 = null;
 
 function loadRandomItems() {
   const savedItems = JSON.parse(localStorage.getItem("currentItems")) || [];
-
-  // Load items from saved state
   currentItem1 = savedItems[0] ? { ...savedItems[0] } : null;
   currentItem2 = savedItems[1] ? { ...savedItems[1] } : null;
-
   renderItem(); // Render the items in the UI
 }
 function refreshItems() {
@@ -1500,15 +1404,12 @@ function refreshItems() {
     console.error("No items available to generate!");
     return;
   }
-
-  // Generate new items unless they're frozen
   if (!currentItem1?.frozen) {
     currentItem1 = { ...items[Math.floor(Math.random() * items.length)] };
   }
   if (!currentItem2?.frozen) {
     currentItem2 = { ...items[Math.floor(Math.random() * items.length)] };
   }
-
   saveCurrentItems(); // Save the updated items to localStorage
   renderItem(); // Render the new items in the UI
 }
@@ -1557,7 +1458,6 @@ function renderItem() {
       iceOverlay.classList.add("ice-overlay");
       itemWrapper.appendChild(iceOverlay);
     }
-
     itemWrapper.appendChild(itemImg);
     slot.appendChild(itemWrapper);
 
@@ -1575,7 +1475,6 @@ function renderItem() {
     });
     itemImg.addEventListener("mouseout", hideHoverInfo);
   }
-
   renderItem(currentItem1, itemSlot1);
   renderItem(currentItem2, itemSlot2);
 }
@@ -1595,7 +1494,6 @@ function handleItemDragStart(event) {
   }
   event.dataTransfer.setData("source", "item");
 }
-
 function saveCurrentItems() {
   localStorage.setItem(
     "currentItems",
@@ -1630,19 +1528,15 @@ function createBus() {
 }
 function loseLife() {
   if (lives > 0) {
-    // Show the dimmer overlay
     const dimmerOverlay = document.getElementById("dimmerOverlay");
     dimmerOverlay.classList.remove("hidden");
-
     middleHeart.src = "../assets/heart.png";
     middleHeart.classList.remove("hidden");
-
     setTimeout(() => {
       middleHeart.src = "../assets/semibroken.png";
     }, 1000);
 
     setTimeout(() => {
-      // Capture current position
       const rect = middleHeart.getBoundingClientRect();
       middleHeart.style.position = "fixed";
       middleHeart.style.top = `${rect.top}px`;
@@ -1650,9 +1544,7 @@ function loseLife() {
       middleHeart.style.width = `${rect.width}px`;
       middleHeart.style.height = `${rect.height}px`;
       middleHeart.style.transform = "translate(0, 0)";
-
       middleHeart.classList.add("drop");
-
       setTimeout(() => {
         middleHeart.classList.remove("drop");
         middleHeart.classList.add("hidden");
@@ -1667,7 +1559,6 @@ function loseLife() {
           closeCurtains();
           setTimeout(() => {
             showNonBattleElements();
-
             dimmerOverlay.classList.add("hidden");
             openCurtains(() => {
               rollfirst();
@@ -1683,7 +1574,6 @@ function loseLife() {
 function showDrawScreen() {
   const dimmerOverlay = document.getElementById("dimmerOverlay");
   dimmerOverlay.classList.remove("hidden");
-
   const frownImage = new Image();
   frownImage.src = "../assets/frown.png";
   frownImage.id = "frownImage";
@@ -1695,8 +1585,6 @@ function showDrawScreen() {
   frownImage.style.left = "50%";
   frownImage.style.transform = "translate(-50%, -50%)";
   frownImage.style.opacity = "0";
-
-  // Text Below the Frown
   const drawText = document.createElement("div");
   drawText.textContent = "DRAW";
   drawText.id = "drawText";
@@ -1710,11 +1598,8 @@ function showDrawScreen() {
   drawText.style.left = "50%";
   drawText.style.transform = "translate(-50%, -50%) translateY(80px)";
   drawText.style.opacity = "0";
-
   document.body.appendChild(frownImage);
   document.body.appendChild(drawText);
-
-  // Animate the frown image and text
   setTimeout(() => {
     frownImage.style.transition =
       "transform 1s ease-in-out, opacity 1s ease-in-out";
@@ -1729,7 +1614,6 @@ function showDrawScreen() {
     drawText.style.transition = "opacity 1s ease-in-out";
     frownImage.style.opacity = "0";
     drawText.style.opacity = "0";
-
     setTimeout(() => {
       frownImage.remove();
       drawText.remove();
@@ -1750,8 +1634,6 @@ function showDrawScreen() {
 function showWinScreen() {
   const dimmerOverlay = document.getElementById("dimmerOverlay");
   dimmerOverlay.classList.remove("hidden");
-
-  // Create the win container
   const winContainer = document.createElement("div");
   winContainer.id = "winContainer";
   winContainer.style.position = "fixed";
@@ -1764,8 +1646,6 @@ function showWinScreen() {
   winContainer.style.display = "flex";
   winContainer.style.justifyContent = "center";
   winContainer.style.alignItems = "center";
-
-  // Create and style the win image
   const winImage = new Image();
   winImage.src = "../assets/win.png";
   winImage.id = "winImage";
@@ -1777,8 +1657,6 @@ function showWinScreen() {
   winImage.style.left = "50%"; // Center alignment
   winImage.style.transform = "translate(-50%, -50%)"; // Align center
   winImage.style.animation = "fadeIn 1s ease-in-out forwards";
-
-  // Create the sunray effect
   const sunray = document.createElement("div");
   sunray.id = "sunray";
   sunray.style.position = "absolute";
@@ -1796,13 +1674,9 @@ function showWinScreen() {
   `;
   sunray.style.animation =
     "spin 3s linear infinite, pulse 2s ease-in-out infinite";
-
-  // Append the elements
   winContainer.appendChild(sunray);
   winContainer.appendChild(winImage);
   document.body.appendChild(winContainer);
-
-  // Remove the win screen after the animation
   setTimeout(() => {
     winContainer.style.transition = "opacity 1s ease-in-out";
     winContainer.style.opacity = "0";
