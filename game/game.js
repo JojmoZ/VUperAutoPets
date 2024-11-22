@@ -148,16 +148,12 @@ function renderRandomAnimals() {
      tempCanvas.height = imageHeight;
       const ctx = tempCanvas.getContext("2d");
  ctx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
-      // Debugging: Set a green background on the canvas
-      ctx.fillStyle = "rgba(255, 255, 255, 0)"; // Green with 50% transparency
-     ctx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
-
        ctx.scale(-1, 1);
        ctx.drawImage(animalImage, -imageWidth, 0, imageWidth, imageHeight);
 
       // Debugging: Append the canvas to the body to visualize it
       document.body.appendChild(tempCanvas);
-      tempCanvas.style.position = "absolute";
+      // tempCanvas.style.position = "absolute";
       tempCanvas.style.top = "10px";
       tempCanvas.style.left = "10px";
       tempCanvas.style.aspectRatio = "1/1";
@@ -311,16 +307,13 @@ function renderBattleSlots() {
         tempCanvas.height = imageHeight;
         const ctx = tempCanvas.getContext("2d");
  ctx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
-        // Debugging: Set a green background on the canvas
-        ctx.fillStyle = "rgba(255, 255, 255, 0)"; // Green with 50% transparency
-        ctx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
 
         ctx.scale(-1, 1);
         ctx.drawImage(animalImg, -imageWidth, 0, imageWidth, imageHeight);
 
         // Debugging: Append the canvas to the body to visualize it
         document.body.appendChild(tempCanvas);
-        tempCanvas.style.position = "absolute";
+        // tempCanvas.style.position = "absolute";
         tempCanvas.style.top = "10px";
         tempCanvas.style.left = "10px";
         tempCanvas.style.aspectRatio = "1/1";
@@ -703,8 +696,9 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 function updateCoinsDisplay() {
   localStorage.setItem("gamecoins", coins);
-  document.getElementById("coins").textContent = `Coins: ${coins}`;
+  document.getElementById("coins").textContent = coins; // Update only the number
 }
+
 function generateEnemyTeam() {
   enemyLineup = [
     shopAnimals.find((animal) =>  animal.name === "VUnt"),
@@ -1703,8 +1697,6 @@ function showDrawScreen() {
     drawText.style.transition = "opacity 1s ease-in-out";
     drawText.style.opacity = "1";
   }, 100);
-
-  // Fade out and remove the frown and text after a short duration
   setTimeout(() => {
     frownImage.style.transition = "opacity 1s ease-in-out";
     drawText.style.transition = "opacity 1s ease-in-out";

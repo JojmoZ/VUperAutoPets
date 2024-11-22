@@ -23,8 +23,8 @@ body {
   height: 100vh;
 }
 #coins {
-  font-size: 1.25rem;
-  margin-top: 1rem;
+  font-size: 2rem;
+  /* margin-top: 1rem; */
   color: black;
 }
 .animal {
@@ -58,6 +58,7 @@ body {
 .battle-slots {
   user-select: none;
   display: flex;
+  margin-top: 14rem;
   justify-content: center;
   margin-bottom: 2vh;
 }
@@ -92,7 +93,7 @@ button {
 }
 canvas {
   user-select: none;
-  margin-top: -30vh;
+  margin-top: -5vh;
 }
 img {
   width: 100%;
@@ -151,10 +152,28 @@ img {
   top: 10px;
   right: 20px;
 }
+.coins-container {
+  position: absolute;
+  top: 50px; /* Adjust spacing below hearts */
+  right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: black;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+.coins-container span {
+  font-family: 'VUper', sans-serif; /* Match the font style */
+}
 .hearts-container img {
   width: 2.5rem;
   height: 2.5rem;
   margin-left: 0.625rem;
+}
+.coins-container img{
+   width: 2.5rem;
+   height: 2.5rem;
 }
 #middleHeart {
   position: absolute;
