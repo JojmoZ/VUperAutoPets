@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const scrollLeft = shopContainer.scrollLeft + scrollAmount;
 
     // Smoothly transition the background scroll position
-    backgroundScroll += (scrollLeft - backgroundScroll) * 0.4;
+    backgroundScroll += (scrollLeft - backgroundScroll) * 0.85;
 
     document.body.style.backgroundPosition = `${-backgroundScroll}px top`;
 
