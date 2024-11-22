@@ -125,8 +125,8 @@ function renderRandomAnimals() {
       ctx.scale(-1, 1);
       ctx.drawImage(animalImage, -imageWidth, 0, imageWidth, imageHeight);
       document.body.appendChild(tempCanvas);
-      tempCanvas.style.top = "10px";
-      tempCanvas.style.left = "10px";
+      tempCanvas.style.top = "0.625rem";
+      tempCanvas.style.left = "0.625rem";
       tempCanvas.style.aspectRatio = "1/1";
       event.dataTransfer.setDragImage(
         tempCanvas,
@@ -328,10 +328,10 @@ function renderBattleSlots() {
       }
       levelImg.alt = `Level ${animal.level} Bar ${animal.bar}`;
       levelImg.style.position = "absolute";
-      levelImg.style.top = "-40px";
+      levelImg.style.top = "-2.5rem";
       levelImg.style.left = "0";
-      levelImg.style.width = "50px"; 
-      levelImg.style.height = "50px";
+      levelImg.style.width = "3.125rem"; 
+      levelImg.style.height = "3.125rem";
       wrapper.appendChild(levelImg);
       const statContainer = document.createElement("div");
       statContainer.classList.add("stat-container");
@@ -362,8 +362,8 @@ function renderBattleSlots() {
           const auraContainer = document.createElement("div");
           auraContainer.style.position = "absolute";
           auraContainer.style.zIndex = "2";
-          auraContainer.style.width = "40px";
-          auraContainer.style.height = "40px";
+          auraContainer.style.width = "2.5rem";
+          auraContainer.style.height = "2.5rem";
           auraContainer.style.top = `${Math.random() * 100 - 30}%`; 
           auraContainer.style.left = `${Math.random() * 80}%`; 
           auraContainer.style.opacity = "1"; 
@@ -412,8 +412,8 @@ function renderBattleSlots() {
         ctx.scale(-1, 1);
         ctx.drawImage(animalImg, -imageWidth, 0, imageWidth, imageHeight);
         document.body.appendChild(tempCanvas);
-        tempCanvas.style.top = "10px";
-        tempCanvas.style.left = "10px";
+        tempCanvas.style.top = "0.625rem";
+        tempCanvas.style.left = "0.625rem";
         tempCanvas.style.aspectRatio = "1/1";
         event.dataTransfer.setDragImage(
           tempCanvas,
@@ -1663,8 +1663,8 @@ function showDrawScreen() {
   frownImage.id = "frownImage";
   frownImage.style.position = "fixed";
   frownImage.style.zIndex = "123123";
-  frownImage.style.width = "100px";
-  frownImage.style.height = "100px";
+  frownImage.style.width = "6.25rem";
+  frownImage.style.height = "6.25rem";
   frownImage.style.top = "50%";
   frownImage.style.left = "50%";
   frownImage.style.transform = "translate(-50%, -50%)";
@@ -1680,7 +1680,7 @@ function showDrawScreen() {
   drawText.style.textAlign = "center";
   drawText.style.top = "60%";
   drawText.style.left = "50%";
-  drawText.style.transform = "translate(-50%, -50%) translateY(80px)";
+  drawText.style.transform = "translate(-50%, -50%) translateY(5rem)";
   drawText.style.opacity = "0";
   document.body.appendChild(frownImage);
   document.body.appendChild(drawText);
@@ -1722,8 +1722,8 @@ function showWinScreen() {
   winContainer.id = "winContainer";
   winContainer.style.position = "fixed";
   winContainer.style.zIndex = "123123";
-  winContainer.style.width = "150px"; 
-  winContainer.style.height = "150px";
+  winContainer.style.width = "13.125rem"; 
+  winContainer.style.height = "13.125rem";
   winContainer.style.top = "50%";
   winContainer.style.left = "50%";
   winContainer.style.transform = "translate(-50%, -50%)";
