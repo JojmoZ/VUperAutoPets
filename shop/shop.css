@@ -7,8 +7,11 @@ body {
   margin: 0;
   height: 100%;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background-size: cover;
   background-image: url(../assets/].webp);
+  background-repeat: repeat-x;
+  background-attachment: fixed; /* Optional, ensures smooth scrolling */
+  background-position: top left;
+  background-size: cover; /* Or adjust as needed */
 }
 .shop-wrapper {
   display: flex;
@@ -211,7 +214,8 @@ body {
 #confirm-buy:hover {
   background-color: #218838;
 }
-#confirm-buy, #cancel-buy {
+#confirm-buy,
+#cancel-buy {
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
 #confirm-buy:hover {

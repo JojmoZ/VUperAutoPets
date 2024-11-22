@@ -53,12 +53,21 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  let backgroundScroll = 0;
+  let isAnimatingBackground = false;
+
   shopContainer.addEventListener(
     "wheel",
     function (event) {
       if (event.deltaY !== 0) {
         event.preventDefault();
         scrollAmount += event.deltaY;
+
+        // Start animating the background if not already animating
+        if (!isAnimatingBackground) {
+          isAnimatingBackground = true;
+          requestAnimationFrame(updateBackgroundPosition);
+        }
 
         if (!isScrolling) {
           isScrolling = true;
@@ -69,6 +78,21 @@ document.addEventListener("DOMContentLoaded", function () {
     { passive: false }
   );
 
+  function updateBackgroundPosition() {
+    const scrollLeft = shopContainer.scrollLeft + scrollAmount;
+
+    // Smoothly transition the background scroll position
+    backgroundScroll += (scrollLeft - backgroundScroll) * 0.4;
+
+    document.body.style.backgroundPosition = `${-backgroundScroll}px top`;
+
+    // Continue the animation until scrollAmount stabilizes
+    if (Math.abs(scrollLeft - backgroundScroll) > 0.1) {
+      requestAnimationFrame(updateBackgroundPosition);
+    } else {
+      isAnimatingBackground = false;
+    }
+  }
   let shopAnimals = [];
 
   fetch("../assets/shopAnimals.json")
