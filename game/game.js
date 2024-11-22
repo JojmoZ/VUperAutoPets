@@ -147,7 +147,7 @@ function renderRandomAnimals() {
      tempCanvas.width = imageWidth;
      tempCanvas.height = imageHeight;
       const ctx = tempCanvas.getContext("2d");
-
+ ctx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
       // Debugging: Set a green background on the canvas
       ctx.fillStyle = "rgba(255, 255, 255, 0)"; // Green with 50% transparency
      ctx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
@@ -168,7 +168,9 @@ function renderRandomAnimals() {
         tempCanvas.width / 2,
         tempCanvas.height / 2
       );
-
+ setTimeout(() => {
+   tempCanvas.remove();
+ }, 0);
       event.dataTransfer.setData("text/plain", index); // Existing data
       event.dataTransfer.setData("source", "shop"); // New data to identify source
       showFreezeBin();
@@ -308,7 +310,7 @@ function renderBattleSlots() {
         tempCanvas.width = imageWidth;
         tempCanvas.height = imageHeight;
         const ctx = tempCanvas.getContext("2d");
-
+ ctx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
         // Debugging: Set a green background on the canvas
         ctx.fillStyle = "rgba(255, 255, 255, 0)"; // Green with 50% transparency
         ctx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
@@ -329,6 +331,9 @@ function renderBattleSlots() {
           tempCanvas.width / 2,
           tempCanvas.height / 2
         );
+         setTimeout(() => {
+           tempCanvas.remove();
+         }, 0);
         event.dataTransfer.setData("text/plain", maxSlots - 1 - index);
         event.dataTransfer.setData("source", "battle");
         showTrashBin();
@@ -1411,8 +1416,10 @@ function checkGameOver(playerSurvivors, enemySurvivors) {
   } else if (playerSurvivors < enemySurvivors) {
     loseLife();
   } else {
-    console.log("It's a draw!");
-    alert("It's a draw! Continue to the next battle.");
+      console.log("It's a draw!");
+      showDrawMessage(() => {
+        showNonBattleElements();
+      });
     showNonBattleElements();
     // location.reload();
   }
@@ -1631,9 +1638,28 @@ function createBus() {
   return {
     name: "Bus",
     img: "../assets/items/Bus.png",
-    attack: 5, // Example stats
-    health: 1,
+    attack: 10, 
+    health: 10,
     cost: 0,
     color: "green",
   };
+}
+function showDrawMessage(onComplete) {
+  const canvas = document.getElementById("battleCanvas");
+  const ctx = canvas.getContext("2d");
+
+  // Clear the canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Draw "Draw!" text
+  ctx.fillStyle = "white";
+  ctx.font = "4rem Arial";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText("Draw!", canvas.width / 2, canvas.height / 2);
+
+  // Set a timeout to proceed after the text is displayed
+  setTimeout(() => {
+    onComplete();
+  }, 2000); // Display "Draw!" for 2 seconds
 }
