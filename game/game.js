@@ -1728,53 +1728,6 @@ function showDrawScreen() {
     }, 1000); // Wait for the fade-out to complete before removing
   }, 2000); // Show the frown for 2 seconds before fade-out
 }
-// function showWinScreen() {
-//   const dimmerOverlay = document.getElementById("dimmerOverlay");
-//   dimmerOverlay.classList.remove("hidden");
-
-//   // Create and style the win image
-//   const winImage = new Image();
-//   winImage.src = "../assets/win.png";
-//   winImage.id = "winImage";
-//   winImage.style.position = "fixed";
-//   winImage.style.zIndex = "123123";
-//   winImage.style.width = "100px";
-//   winImage.style.height = "100px";
-//   winImage.style.top = "50%";
-//   winImage.style.left = "50%";
-//   winImage.style.transform = "translate(-50%, -50%)";
-//   winImage.style.opacity = "0";
-
-//   document.body.appendChild(winImage);
-//   // Animate the win image and text
-//   setTimeout(() => {
-//     winImage.style.transition =
-//       "transform 1s ease-in-out, opacity 1s ease-in-out";
-//     winImage.style.transform = "translate(-50%, -50%) scale(1.5)";
-//     winImage.style.opacity = "1";
-//   }, 100);
-
-//   // Fade out and remove the win image and text after a short duration
-//   setTimeout(() => {
-//     winImage.style.transition = "opacity 1s ease-in-out";
-//     winImage.style.opacity = "0";
-
-//     setTimeout(() => {
-//       winImage.remove();
-//       showCurtains();
-//       closeCurtains();
-//       setTimeout(() => {
-//         showNonBattleElements();
-//         dimmerOverlay.classList.add("hidden");
-//         openCurtains(() => {
-//           rollfirst();
-//           restoreOriginalLineup();
-//           location.reload();
-//         });
-//       }, 1000);
-//     }, 1000); // Wait for the fade-out to complete before removing
-//   }, 2000); // Show the win image for 2 seconds before fade-out
-// }
 function showWinScreen() {
   const dimmerOverlay = document.getElementById("dimmerOverlay");
   dimmerOverlay.classList.remove("hidden");
