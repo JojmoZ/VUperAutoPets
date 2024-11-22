@@ -42,57 +42,42 @@ document.addEventListener("DOMContentLoaded", function () {
   let lastScrollLeft = 0;
   let animationFrame;
 
-  function smoothScroll() {
-    if (Math.abs(scrollAmount) > 0.5) {
-      shopContainer.scrollLeft += scrollAmount;
-      scrollAmount *= 0.85;
-      animationFrame = requestAnimationFrame(smoothScroll);
-    } else {
-      cancelAnimationFrame(animationFrame);
-      isScrolling = false;
-    }
-  }
+shopContainer.addEventListener(
+  "wheel",
+  function (event) {
+    if (event.deltaY !== 0) {
+      event.preventDefault();
+      scrollAmount += event.deltaY;
 
-  let backgroundScroll = 0;
-  let isAnimatingBackground = false;
-
-  shopContainer.addEventListener(
-    "wheel",
-    function (event) {
-      if (event.deltaY !== 0) {
-        event.preventDefault();
-        scrollAmount += event.deltaY;
-
-        // Start animating the background if not already animating
-        if (!isAnimatingBackground) {
-          isAnimatingBackground = true;
-          requestAnimationFrame(updateBackgroundPosition);
-        }
-
-        if (!isScrolling) {
-          isScrolling = true;
-          animationFrame = requestAnimationFrame(smoothScroll);
-        }
+      if (!isScrolling) {
+        isScrolling = true;
+        animationFrame = requestAnimationFrame(smoothScroll);
       }
-    },
-    { passive: false }
-  );
-
-  function updateBackgroundPosition() {
-    const scrollLeft = shopContainer.scrollLeft + scrollAmount;
-
-    // Smoothly transition the background scroll position
-    backgroundScroll += (scrollLeft - backgroundScroll) * 0.85;
-
-    document.body.style.backgroundPosition = `${-backgroundScroll}px top`;
-
-    // Continue the animation until scrollAmount stabilizes
-    if (Math.abs(scrollLeft - backgroundScroll) > 0.1) {
-      requestAnimationFrame(updateBackgroundPosition);
-    } else {
-      isAnimatingBackground = false;
     }
+  },
+  { passive: false }
+);
+
+function smoothScroll() {
+  if (Math.abs(scrollAmount) > 0.5) {
+    shopContainer.scrollLeft += scrollAmount;
+    scrollAmount *= 0.85;
+
+    // Synchronize the background scroll position with shopContainer's scroll position
+    const maxScroll = shopContainer.scrollWidth - window.innerWidth;
+    const scrollLeft = shopContainer.scrollLeft;
+
+    // Ensure the background scrolls only within valid range
+    const clampedScroll = Math.max(0, Math.min(scrollLeft, maxScroll));
+    document.body.style.backgroundPosition = `${-clampedScroll}px top`;
+
+    animationFrame = requestAnimationFrame(smoothScroll);
+  } else {
+    cancelAnimationFrame(animationFrame);
+    isScrolling = false;
   }
+}
+
   let shopAnimals = [];
 
   fetch("../assets/shopAnimals.json")
