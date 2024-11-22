@@ -18,7 +18,6 @@ document.getElementById("coins").textContent = `Coins: ${coins}`;
 const maxShopAnimals = 3;
 const maxSlots = 5;
 let shopAnimals = [];
-
 fetch("../assets/shopAnimals.json")
   .then((response) => {
     if (!response.ok) {
@@ -64,7 +63,6 @@ function rollfirst() {
   renderRandomAnimals();
   saveRandomAnimals();
 }
-
 function showCurtains() {
   curtainTop.style.visibility = "visible";
   curtainBottom.style.visibility = "visible";
@@ -103,7 +101,6 @@ function rollShopAnimals() {
     renderRandomAnimals();
     saveRandomAnimals();
   }
-
 function renderRandomAnimals() {
   const randomAnimalsContainer = document.getElementById("random-animals");
   randomAnimalsContainer.innerHTML = "";
@@ -375,7 +372,6 @@ function renderBattleSlots() {
     }
   });
 }
-
 function renderTeams() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   const teamOffsetX = 100;
@@ -598,7 +594,6 @@ function animateAnimalsIntoPosition(onComplete) {
   }
   requestAnimationFrame(animate);
 }
-
 function showNonBattleElements() {
   hideCanvas();
   document.getElementById("battleSlotsContainer").classList.remove("hidden");
@@ -700,7 +695,6 @@ function generateEnemyTeam() {
     }
   }
 }
-
 function calculateTeamCost(team) {
   return team.reduce(
     (total, animal) => (animal ? total + animal.cost : total),
@@ -902,7 +896,6 @@ function restoreOriginalLineup() {
 
   renderBattleSlots();
 }
-
 function showDamage(
   playerX,
   playerDamage,
