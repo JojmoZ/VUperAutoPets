@@ -706,21 +706,21 @@ function updateCoinsDisplay() {
   document.getElementById("coins").textContent = `Coins: ${coins}`;
 }
 function generateEnemyTeam() {
-  // enemyLineup = [
-  //   shopAnimals.find((animal) =>  animal.name === "t-reXY"),
-  // ];
-  const totalTeamCost = calculateTeamCost(battleLineup);
-  enemyLineup = [];
+  enemyLineup = [
+    shopAnimals.find((animal) =>  animal.name === "t-reXY"),
+  ];
+  // const totalTeamCost = calculateTeamCost(battleLineup);
+  // enemyLineup = [];
 
-  while (enemyLineup.length < maxSlots && totalTeamCost > 0) {
-    const randomAnimal =
-      shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
-    const clonedAnimal = { ...randomAnimal };
+  // while (enemyLineup.length < maxSlots && totalTeamCost > 0) {
+  //   const randomAnimal =
+  //     shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
+  //   const clonedAnimal = { ...randomAnimal };
 
-    if (totalTeamCost >= randomAnimal.cost) {
-      enemyLineup.push(clonedAnimal);
-    }
-  }
+  //   if (totalTeamCost >= randomAnimal.cost) {
+  //     enemyLineup.push(clonedAnimal);
+  //   }
+  // }
 }
 
 function calculateTeamCost(team) {
@@ -898,8 +898,18 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
 
 
 function backupLineup() {
-  originalBattleLineup = [...battleLineup];
+  originalBattleLineup = battleLineup.map((animal) => {
+    if (animal) {
+      return {
+        ...animal,
+        originalAttack: animal.attack,
+        originalHealth: animal.health, // Save the original health
+      };
+    }
+    return null;
+  });
 }
+
 function shiftAnimalsToFront() {
   const shiftedLineup = battleLineup.filter((animal) => animal !== null);
   while (shiftedLineup.length < maxSlots) {
@@ -908,9 +918,20 @@ function shiftAnimalsToFront() {
   battleLineup = [...shiftedLineup];
 }
 function restoreOriginalLineup() {
-  battleLineup = [...originalBattleLineup];
+  battleLineup = originalBattleLineup.map((animal) => {
+    if (animal) {
+      return {
+        ...animal,
+        attack: animal.originalAttack,
+        health: animal.originalHealth, // Restore the original health
+      };
+    }
+    return null;
+  });
+
   renderBattleSlots();
 }
+
 function showDamage(
   playerX,
   playerDamage,
@@ -1376,8 +1397,11 @@ function loseLife() {
           closeCurtains();
           setTimeout(() => {
             showNonBattleElements();
+            
             dimmerOverlay.classList.add("hidden");
             openCurtains(() => {
+              rollfirst();
+              restoreOriginalLineup();
               location.reload();
             });
           }, 1000);
@@ -1412,19 +1436,20 @@ function checkGameOver(playerSurvivors, enemySurvivors) {
     console.log("User wins!");
     alert("You won this battle! Continue to the next.");
     showNonBattleElements();
-    // location.reload();
+    rollfirst();
+    restoreOriginalLineup();
+    location.reload();
   } else if (playerSurvivors < enemySurvivors) {
     loseLife();
   } else {
-      console.log("It's a draw!");
-      showDrawMessage(() => {
-        showNonBattleElements();
-      });
+    console.log("It's a draw!");
+    alert(1)
+      rollfirst();
+      restoreOriginalLineup();
+      showNonBattleElements();
+      location.reload();
     showNonBattleElements();
-    // location.reload();
   }
-  rollfirst();
-  restoreOriginalLineup();
 }
 function showDefeatScreen() {
   const defeatScreen = document.getElementById("defeatScreen");
@@ -1643,23 +1668,4 @@ function createBus() {
     cost: 0,
     color: "green",
   };
-}
-function showDrawMessage(onComplete) {
-  const canvas = document.getElementById("battleCanvas");
-  const ctx = canvas.getContext("2d");
-
-  // Clear the canvas
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  // Draw "Draw!" text
-  ctx.fillStyle = "white";
-  ctx.font = "4rem Arial";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillText("Draw!", canvas.width / 2, canvas.height / 2);
-
-  // Set a timeout to proceed after the text is displayed
-  setTimeout(() => {
-    onComplete();
-  }, 2000); // Display "Draw!" for 2 seconds
 }
