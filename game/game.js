@@ -214,14 +214,10 @@ function handleDrop(event) {
       if (currentAnimal.bar >= barsNeeded) {
         currentAnimal.bar = 0; // Reset bar
         currentAnimal.level += 1; // Increment level
-
-        // Stat bonuses based on the level being upgraded to
         if (currentAnimal.level === 2) {
-          currentAnimal.attack += 2; // Add 2 attack for level 1 → level 2
-          currentAnimal.health += 3; // Add 3 health for level 1 → level 2
+          currentAnimal.attack += 2; 
+          currentAnimal.health += 3; 
         }
-        // Add other bonuses for future level transitions if needed
-        // Example: Level 2 → Level 3
         if (currentAnimal.level === 3) {
           currentAnimal.attack += 3; // Example: Add 3 attack for level 2 → level 3
           currentAnimal.health += 4; // Example: Add 4 health for level 2 → level 3
@@ -256,22 +252,18 @@ function handleDrop(event) {
       targetAnimal.name == draggedFromSlot.name
     ) {
       if (targetAnimal.level < 3) {
-        const barsNeeded = targetAnimal.level === 1 ? 2 : 3; // Dynamic bar requirement based on level
-        targetAnimal.bar += 1; // Increment bar
+        const barsNeeded = targetAnimal.level === 1 ? 2 : 3; 
+        targetAnimal.bar += 1; 
         if (targetAnimal.bar >= barsNeeded) {
-          targetAnimal.bar = 0; // Reset bar
-          targetAnimal.level += 1; // Increment level
-
-          // Stat bonuses based on the level being upgraded to
+          targetAnimal.bar = 0; 
+          targetAnimal.level += 1; 
           if (targetAnimal.level === 2) {
-            targetAnimal.attack += 2; // Add 2 attack for level 1 → level 2
-            targetAnimal.health += 3; // Add 3 health for level 1 → level 2
+            targetAnimal.attack += 2;
+            targetAnimal.health += 3;
           }
-          // Add other bonuses for future level transitions if needed
-          // Example: Level 2 → Level 3
           if (targetAnimal.level === 3) {
-            targetAnimal.attack += 3; // Example: Add 3 attack for level 2 → level 3
-            targetAnimal.health += 4; // Example: Add 4 health for level 2 → level 3
+            targetAnimal.attack += 3; 
+            targetAnimal.health += 4; 
           }
         }
       }
