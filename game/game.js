@@ -1641,12 +1641,13 @@ function loseLife() {
         } else {
           showCurtains();
           closeCurtains();
+          restoreOriginalLineup();
           setTimeout(() => {
             showNonBattleElements();
+            hideCanvas()
             dimmerOverlay.classList.add("hidden");
             openCurtains(() => {
               rollfirst();
-              restoreOriginalLineup();
               location.reload();
             });
           }, 1000);
@@ -1702,13 +1703,13 @@ function showDrawScreen() {
       frownImage.remove();
       drawText.remove();
       showCurtains();
+      restoreOriginalLineup();
       closeCurtains();
       setTimeout(() => {
         showNonBattleElements();
         dimmerOverlay.classList.add("hidden");
         openCurtains(() => {
           rollfirst();
-          restoreOriginalLineup();
           location.reload();
         });
       }, 1000);
@@ -1770,10 +1771,11 @@ function showWinScreen() {
       closeCurtains();
       setTimeout(() => {
         showNonBattleElements();
+        restoreOriginalLineup();
+        hideCanvas()
         dimmerOverlay.classList.add("hidden");
         openCurtains(() => {
           rollfirst();
-          restoreOriginalLineup();
           location.reload();
         });
       }, 1000);
