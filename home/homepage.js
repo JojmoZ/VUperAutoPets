@@ -1,4 +1,9 @@
 window.onload = function () {
+  const track = document.getElementById("maps");
+
+  // Set initial position of the track to be more right
+  track.dataset.percentage = "-30"; // Adjust this value to control how far right it starts
+  track.style.transform = `translate(-30%, -50%)`; // Match the percentage
   console.log("Script Loaded");
   const username = localStorage.getItem("username");
   const logged = localStorage.getItem("loggedin");
@@ -376,7 +381,7 @@ window.onload = function () {
     sectionObserver.observe(section.element);
   });
 
-  track = document.getElementById("maps");
+  // track = document.getElementById("maps");
   const handleOnDown = (e) => {
     track.dataset.mouseDownAt = e.clientX;
   };
@@ -404,7 +409,6 @@ window.onload = function () {
     );
 
     track.dataset.percentage = nextPercentage;
-
     track.animate(
       {
         transform: `translate(${nextPercentage}%, -50%)`,
@@ -427,4 +431,5 @@ window.onload = function () {
   window.ontouchend = (e) => handleOnUp(e.touches[0]);
   window.onmousemove = (e) => handleOnMove(e);
   window.ontouchmove = (e) => handleOnMove(e.touches[0]);
+
 };
