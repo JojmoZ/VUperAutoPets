@@ -137,38 +137,31 @@ function renderRandomAnimals() {
     animalImage.style.transform = "scaleX(-1)";
     animalImage.addEventListener("dragstart", (event) => {
       hideHoverInfo();
+      const imageWidth = animalImage.offsetWidth;
+      const imageHeight = animalImage.offsetHeight;
 
-      // Get image dimensions or fallback to default values
-      const imageWidth = animalImage.offsetWidth; // Displayed width
-      const imageHeight = animalImage.offsetHeight; // Displayed height
-
-      // Create a temporary canvas
-     const tempCanvas = document.createElement("canvas");
-     tempCanvas.width = imageWidth;
-     tempCanvas.height = imageHeight;
+      const tempCanvas = document.createElement("canvas");
+      tempCanvas.width = imageWidth;
+      tempCanvas.height = imageHeight;
       const ctx = tempCanvas.getContext("2d");
- ctx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
-       ctx.scale(-1, 1);
-       ctx.drawImage(animalImage, -imageWidth, 0, imageWidth, imageHeight);
+      ctx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
+      ctx.scale(-1, 1);
+      ctx.drawImage(animalImage, -imageWidth, 0, imageWidth, imageHeight);
 
-      // Debugging: Append the canvas to the body to visualize it
       document.body.appendChild(tempCanvas);
-      // tempCanvas.style.position = "absolute";
       tempCanvas.style.top = "10px";
       tempCanvas.style.left = "10px";
       tempCanvas.style.aspectRatio = "1/1";
-
-      // Set the custom drag image
       event.dataTransfer.setDragImage(
         tempCanvas,
         tempCanvas.width / 2,
         tempCanvas.height / 2
       );
- setTimeout(() => {
-   tempCanvas.remove();
- }, 0);
-      event.dataTransfer.setData("text/plain", index); // Existing data
-      event.dataTransfer.setData("source", "shop"); // New data to identify source
+      setTimeout(() => {
+        tempCanvas.remove();
+      }, 0);
+      event.dataTransfer.setData("text/plain", index);
+      event.dataTransfer.setData("source", "shop");
       showFreezeBin();
     });
 
@@ -189,13 +182,31 @@ function renderRandomAnimals() {
 
     const statContainer = document.createElement("div");
     statContainer.classList.add("stat-container");
-    const attack = document.createElement("p");
-    const health = document.createElement("p");
-    attack.textContent = `${animal.attack}`;
-    health.textContent = `${animal.health}`;
-    statContainer.appendChild(attack);
-    statContainer.appendChild(health);
+    // Attack (Fist Icon)
+    const attackContainer = document.createElement("div");
+    attackContainer.classList.add("stat-icon");
+    const attackIcon = document.createElement("img");
+    attackIcon.src = "../assets/fist.png";
+    const attackText = document.createElement("span");
+    attackText.textContent = animal.attack;
+    attackText.classList.add("stat-text");
+    attackContainer.appendChild(attackIcon);
+    attackContainer.appendChild(attackText);
 
+    // Health (Heart Icon)
+    const healthContainer = document.createElement("div");
+    healthContainer.classList.add("stat-icon");
+    const healthIcon = document.createElement("img");
+    healthIcon.src = "../assets/heart.png";
+    const healthText = document.createElement("span");
+    healthText.textContent = animal.health;
+    healthText.classList.add("stat-text");
+    healthContainer.appendChild(healthIcon);
+    healthContainer.appendChild(healthText);
+
+    // Append stats to container
+    statContainer.appendChild(attackContainer);
+    statContainer.appendChild(healthContainer);
     animalDiv.appendChild(animalImage);
     animalDiv.appendChild(statContainer);
     randomAnimalsContainer.appendChild(animalDiv);
@@ -217,7 +228,6 @@ function handleDrop(event) {
   const source = event.dataTransfer.getData("source"); // Get the source identifier
   console.log("a");
   if (source === "shop") {
-    // Handle dragging from the shop
     const animalIndex = parseInt(data, 10);
     const selectedAnimal = randomAnimals[animalIndex];
     if (!battleLineup[reversedSlotIndex] && coins >= selectedAnimal.cost) {
@@ -287,13 +297,44 @@ function renderBattleSlots() {
       animalImg.alt = animal.name;
       animalImg.style.width = "100%";
       animalImg.style.height = "auto";
-      animalImg.style.objectFit = "contain"; 
+      animalImg.style.objectFit = "contain";
       animalImg.style.maxHeight = "100%";
       animalImg.style.maxWidth = "100%";
       animalImg.style.aspectRatio = "1/1";
       animalImg.style.transform = "scaleX(-1)";
       animalImg.draggable = true;
 
+      // Stat Container
+      const statContainer = document.createElement("div");
+      statContainer.classList.add("stat-container");
+
+      // Attack (Fist Icon)
+      const attackContainer = document.createElement("div");
+      attackContainer.classList.add("stat-icon");
+      const attackIcon = document.createElement("img");
+      attackIcon.src = "../assets/fist.png";
+      const attackText = document.createElement("span");
+      attackText.textContent = animal.attack;
+      attackText.classList.add("stat-text");
+      attackContainer.appendChild(attackIcon);
+      attackContainer.appendChild(attackText);
+
+      // Health (Heart Icon)
+      const healthContainer = document.createElement("div");
+      healthContainer.classList.add("stat-icon");
+      const healthIcon = document.createElement("img");
+      healthIcon.src = "../assets/heart.png";
+      const healthText = document.createElement("span");
+      healthText.textContent = animal.health;
+      healthText.classList.add("stat-text");
+      healthContainer.appendChild(healthIcon);
+      healthContainer.appendChild(healthText);
+
+      // Append both stats to the stat container
+      statContainer.appendChild(attackContainer);
+      statContainer.appendChild(healthContainer);
+      wrapper.appendChild(animalImg);
+      wrapper.appendChild(statContainer);
       // Attach drag events
       animalImg.addEventListener("dragstart", (event) => {
         hideHoverInfo();
@@ -306,7 +347,7 @@ function renderBattleSlots() {
         tempCanvas.width = imageWidth;
         tempCanvas.height = imageHeight;
         const ctx = tempCanvas.getContext("2d");
- ctx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
+        ctx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
 
         ctx.scale(-1, 1);
         ctx.drawImage(animalImg, -imageWidth, 0, imageWidth, imageHeight);
@@ -324,9 +365,9 @@ function renderBattleSlots() {
           tempCanvas.width / 2,
           tempCanvas.height / 2
         );
-         setTimeout(() => {
-           tempCanvas.remove();
-         }, 0);
+        setTimeout(() => {
+          tempCanvas.remove();
+        }, 0);
         event.dataTransfer.setData("text/plain", maxSlots - 1 - index);
         event.dataTransfer.setData("source", "battle");
         showTrashBin();
@@ -340,20 +381,6 @@ function renderBattleSlots() {
       });
       animalImg.addEventListener("mouseout", hideHoverInfo);
 
-      // Stat Container
-      const statContainer = document.createElement("div");
-      statContainer.classList.add("stat-container");
-
-      const attack = document.createElement("p");
-      attack.textContent = animal.attack;
-      const health = document.createElement("p");
-      health.textContent = animal.health;
-
-      statContainer.appendChild(attack);
-      statContainer.appendChild(health);
-
-      wrapper.appendChild(animalImg);
-      wrapper.appendChild(statContainer);
       slot.appendChild(wrapper);
     } else {
       slot.innerHTML = "";
@@ -561,15 +588,15 @@ function animateAnimalsIntoPosition(onComplete) {
 
         const currentX = startX + (endX - startX) * adjustedProgress;
         const targetY = commonY - bounceY;
-        
-         ctx.save();
-         // Translate and flip horizontally
-         ctx.translate(currentX + 40, targetY + 40); // Center of the image
-         ctx.scale(-1, 1); // Flip horizontally
-         // Draw the image (adjusted for the flipped state)
-         ctx.drawImage(img, -40, -40, 80, 80);
-         // Restore the canvas state
-         ctx.restore();
+
+        ctx.save();
+        // Translate and flip horizontally
+        ctx.translate(currentX + 40, targetY + 40); // Center of the image
+        ctx.scale(-1, 1); // Flip horizontally
+        // Draw the image (adjusted for the flipped state)
+        ctx.drawImage(img, -40, -40, 80, 80);
+        // Restore the canvas state
+        ctx.restore();
       }
     });
 
@@ -700,9 +727,7 @@ function updateCoinsDisplay() {
 }
 
 function generateEnemyTeam() {
-  enemyLineup = [
-    shopAnimals.find((animal) =>  animal.name === "VUnt"),
-  ];
+  enemyLineup = [shopAnimals.find((animal) => animal.name === "VUnt")];
   // const totalTeamCost = calculateTeamCost(battleLineup);
   // enemyLineup = [];
 
@@ -890,7 +915,6 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
   }
 }
 
-
 function backupLineup() {
   originalBattleLineup = battleLineup.map((animal) => {
     if (animal) {
@@ -952,11 +976,11 @@ function showDamage(
   function drawExpandingDamage() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     renderFullTeam();
-     ctx.save();
-     ctx.translate(playerX + 40, commonY + 40); // Center of the player's image
-     ctx.scale(-1, 1); // Flip horizontally
-     ctx.drawImage(playerImg, -40, -40, 80, 80);
-     ctx.restore();
+    ctx.save();
+    ctx.translate(playerX + 40, commonY + 40); // Center of the player's image
+    ctx.scale(-1, 1); // Flip horizontally
+    ctx.drawImage(playerImg, -40, -40, 80, 80);
+    ctx.restore();
     // ctx.drawImage(playerImg, playerX, commonY, 80, 80);
     ctx.drawImage(fistImg, playerX, commonY + 60, 40, 40);
     ctx.drawImage(heartImg, playerX + 40, commonY + 60, 40, 40);
@@ -1016,11 +1040,11 @@ function showDamage(
   function drawShrinkingDamage() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     renderFullTeam();
-     ctx.save();
-     ctx.translate(playerX + 40, commonY + 40); // Center of the player's image
-     ctx.scale(-1, 1); // Flip horizontally
-     ctx.drawImage(playerImg, -40, -40, 80, 80);
-     ctx.restore();
+    ctx.save();
+    ctx.translate(playerX + 40, commonY + 40); // Center of the player's image
+    ctx.scale(-1, 1); // Flip horizontally
+    ctx.drawImage(playerImg, -40, -40, 80, 80);
+    ctx.restore();
     ctx.drawImage(fistImg, playerX, commonY + 60, 40, 40);
     ctx.drawImage(heartImg, playerX + 40, commonY + 60, 40, 40);
     ctx.drawImage(enemyImg, enemyX, commonY, 80, 80);
@@ -1190,17 +1214,17 @@ function animateDeathFlyOff(animal, index, teamType, onComplete) {
       (1 - progress) * (1 - progress) * startY +
       2 * (1 - progress) * progress * controlPointY +
       progress * progress * (startY + 100);
-        ctx.save(); 
-     if (teamType === "player") {
-       // Mirror the image if it's the player's team
-       ctx.translate(curveX + 30, curveY + 30); // Center of the image
-       ctx.scale(-1, 1); // Flip horizontally
-       ctx.drawImage(img, -30, -30, 60, 60); // Adjust for flipped coordinates
-     } else {
-       // Draw normally for the enemy team
-       ctx.drawImage(img, curveX, curveY, 60, 60);
-     }
- ctx.restore(); 
+    ctx.save();
+    if (teamType === "player") {
+      // Mirror the image if it's the player's team
+      ctx.translate(curveX + 30, curveY + 30); // Center of the image
+      ctx.scale(-1, 1); // Flip horizontally
+      ctx.drawImage(img, -30, -30, 60, 60); // Adjust for flipped coordinates
+    } else {
+      // Draw normally for the enemy team
+      ctx.drawImage(img, curveX, curveY, 60, 60);
+    }
+    ctx.restore();
     currentFrame += deltaTime * totalFrames * 2; // Increase the increment to make it faster
     if (currentFrame < totalFrames) {
       requestAnimationFrame(animate);
@@ -1376,7 +1400,7 @@ function resetGame() {
 function checkGameOver(playerSurvivors, enemySurvivors) {
   if (playerSurvivors > enemySurvivors) {
     console.log("User wins!");
-    showWinScreen()
+    showWinScreen();
   } else if (playerSurvivors < enemySurvivors) {
     loseLife();
   } else {
@@ -1495,13 +1519,13 @@ function handleItemDrop(event, animal) {
   const slotId = event.dataTransfer.getData("slotId");
 
   if (itemName && itemEffect && animal) {
-     let item = items.find((i) => i.name === itemName);
-     if (item) itemCost = item.cost;
-     if (coins < itemCost) {
-       alert("Not enough coins to buy this item!");
-       return;
-     }
-     coins -= itemCost;
+    let item = items.find((i) => i.name === itemName);
+    if (item) itemCost = item.cost;
+    if (coins < itemCost) {
+      alert("Not enough coins to buy this item!");
+      return;
+    }
+    coins -= itemCost;
     applyItemEffect(animal, itemName);
     if (slotId === "itemSlot") currentItem1 = null;
     else if (slotId === "itemSlot2") currentItem2 = null;
@@ -1538,7 +1562,10 @@ function renderItem() {
     slot.appendChild(itemWrapper);
 
     itemImg.addEventListener("mouseover", (event) => {
-      showHoverInfo(`${item.name} - Cost: ${item.cost} - Effect: ${item.effect}`, event);
+      showHoverInfo(
+        `${item.name} - Cost: ${item.cost} - Effect: ${item.effect}`,
+        event
+      );
     });
     itemImg.addEventListener("mousemove", (event) => {
       showHoverInfo(
@@ -1584,7 +1611,7 @@ function applyItemEffect(animal, itemName) {
     console.log("makan strawberry");
     animal.health += 1;
     animal.attack += 1;
-  } else if(itemName == "Bus"){
+  } else if (itemName == "Bus") {
     animal.specialEffect = "SpawnBus";
   }
   updateCoinsDisplay(); // Update the displayed coin count.
@@ -1595,7 +1622,7 @@ function createBus() {
   return {
     name: "Bus",
     img: "../assets/items/Bus.png",
-    attack: 10, 
+    attack: 10,
     health: 10,
     cost: 0,
     color: "green",
