@@ -707,7 +707,7 @@ function updateCoinsDisplay() {
 }
 function generateEnemyTeam() {
   enemyLineup = [
-    shopAnimals.find((animal) =>  animal.name === "t-reXY"),
+    shopAnimals.find((animal) =>  animal.name === "WLeopard"),
   ];
   // const totalTeamCost = calculateTeamCost(battleLineup);
   // enemyLineup = [];
@@ -1357,59 +1357,7 @@ function updateHeartsDisplay() {
     }
   });
 }
-function loseLife() {
-  if (lives > 0) {
-    // Show the dimmer overlay
-    const dimmerOverlay = document.getElementById("dimmerOverlay");
-    dimmerOverlay.classList.remove("hidden");
 
-    middleHeart.src = "../assets/heart.png";
-    middleHeart.classList.remove("hidden");
-
-    setTimeout(() => {
-      middleHeart.src = "../assets/semibroken.png";
-    }, 1000);
-
-    setTimeout(() => {
-      // Capture current position
-      const rect = middleHeart.getBoundingClientRect();
-      middleHeart.style.position = "fixed";
-      middleHeart.style.top = `${rect.top}px`;
-      middleHeart.style.left = `${rect.left}px`;
-      middleHeart.style.width = `${rect.width}px`;
-      middleHeart.style.height = `${rect.height}px`;
-      middleHeart.style.transform = "translate(0, 0)";
-
-      middleHeart.classList.add("drop");
-
-      setTimeout(() => {
-        
-        middleHeart.classList.remove("drop");
-        middleHeart.classList.add("hidden");
-        hearts[lives - 1].src = "../assets/broken heart.png";
-        lives--;
-        localStorage.setItem("lives", lives);
-        
-        if (lives <= 0) {
-          showDefeatScreen();
-        } else {
-          showCurtains();
-          closeCurtains();
-          setTimeout(() => {
-            showNonBattleElements();
-            
-            dimmerOverlay.classList.add("hidden");
-            openCurtains(() => {
-              rollfirst();
-              restoreOriginalLineup();
-              location.reload();
-            });
-          }, 1000);
-        }
-      }, 1000); // Matches animation duration
-    }, 1500); // Delay before starting the drop animation
-  }
-}
 function resetGame() {
   battleLineup = [null, null, null, null, null];
   enemyLineup = [null, null, null, null, null];
@@ -1434,21 +1382,16 @@ function resetGame() {
 function checkGameOver(playerSurvivors, enemySurvivors) {
   if (playerSurvivors > enemySurvivors) {
     console.log("User wins!");
-    alert("You won this battle! Continue to the next.");
-    showNonBattleElements();
-    rollfirst();
-    restoreOriginalLineup();
-    location.reload();
+    showWinScreen()
+    // alert("You won this battle! Continue to the next.");
+    // showNonBattleElements();
+    // rollfirst();
+    // restoreOriginalLineup();
+    // location.reload();
   } else if (playerSurvivors < enemySurvivors) {
     loseLife();
   } else {
-    console.log("It's a draw!");
-    alert(1)
-      rollfirst();
-      restoreOriginalLineup();
-      showNonBattleElements();
-      location.reload();
-    showNonBattleElements();
+    showDrawScreen();
   }
 }
 function showDefeatScreen() {
@@ -1668,4 +1611,172 @@ function createBus() {
     cost: 0,
     color: "green",
   };
+}
+function loseLife() {
+  if (lives > 0) {
+    // Show the dimmer overlay
+    const dimmerOverlay = document.getElementById("dimmerOverlay");
+    dimmerOverlay.classList.remove("hidden");
+
+    middleHeart.src = "../assets/heart.png";
+    middleHeart.classList.remove("hidden");
+
+    setTimeout(() => {
+      middleHeart.src = "../assets/semibroken.png";
+    }, 1000);
+
+    setTimeout(() => {
+      // Capture current position
+      const rect = middleHeart.getBoundingClientRect();
+      middleHeart.style.position = "fixed";
+      middleHeart.style.top = `${rect.top}px`;
+      middleHeart.style.left = `${rect.left}px`;
+      middleHeart.style.width = `${rect.width}px`;
+      middleHeart.style.height = `${rect.height}px`;
+      middleHeart.style.transform = "translate(0, 0)";
+
+      middleHeart.classList.add("drop");
+
+      setTimeout(() => {
+        middleHeart.classList.remove("drop");
+        middleHeart.classList.add("hidden");
+        hearts[lives - 1].src = "../assets/broken heart.png";
+        lives--;
+        localStorage.setItem("lives", lives);
+
+        if (lives <= 0) {
+          showDefeatScreen();
+        } else {
+          showCurtains();
+          closeCurtains();
+          setTimeout(() => {
+            showNonBattleElements();
+
+            dimmerOverlay.classList.add("hidden");
+            openCurtains(() => {
+              rollfirst();
+              restoreOriginalLineup();
+              location.reload();
+            });
+          }, 1000);
+        }
+      }, 1000); // Matches animation duration
+    }, 1500); // Delay before starting the drop animation
+  }
+}
+function showDrawScreen() {
+  const dimmerOverlay = document.getElementById("dimmerOverlay");
+  dimmerOverlay.classList.remove("hidden");
+
+  const frownImage = new Image();
+  frownImage.src = "../assets/frown.png";
+  frownImage.id = "frownImage";
+  frownImage.style.position = "fixed";
+  frownImage.style.zIndex = "123123";
+  frownImage.style.width = "100px";
+  frownImage.style.height = "100px";
+  frownImage.style.top = "50%";
+  frownImage.style.left = "50%";
+  frownImage.style.transform = "translate(-50%, -50%)";
+  frownImage.style.opacity = "0";
+
+  // Text Below the Frown
+  const drawText = document.createElement("div");
+  drawText.textContent = "DRAW";
+  drawText.id = "drawText";
+  drawText.style.position = "fixed";
+  drawText.style.zIndex = "123123";
+  drawText.style.color = "white";
+  drawText.style.fontFamily = "VUper, sans-serif";
+  drawText.style.fontSize = "3rem";
+  drawText.style.textAlign = "center";
+  drawText.style.top = "60%";
+  drawText.style.left = "50%";
+  drawText.style.transform = "translate(-50%, -50%) translateY(80px)";
+  drawText.style.opacity = "0";
+
+  document.body.appendChild(frownImage);
+  document.body.appendChild(drawText);
+
+  // Animate the frown image and text
+  setTimeout(() => {
+    frownImage.style.transition =
+      "transform 1s ease-in-out, opacity 1s ease-in-out";
+    frownImage.style.transform = "translate(-50%, -50%) scale(1.5)";
+    frownImage.style.opacity = "1";
+
+    drawText.style.transition = "opacity 1s ease-in-out";
+    drawText.style.opacity = "1";
+  }, 100);
+
+  // Fade out and remove the frown and text after a short duration
+  setTimeout(() => {
+    frownImage.style.transition = "opacity 1s ease-in-out";
+    drawText.style.transition = "opacity 1s ease-in-out";
+    frownImage.style.opacity = "0";
+    drawText.style.opacity = "0";
+
+    setTimeout(() => {
+      frownImage.remove();
+      drawText.remove();
+      showCurtains();
+      closeCurtains();
+      setTimeout(() => {
+        showNonBattleElements();
+        dimmerOverlay.classList.add("hidden");
+        openCurtains(() => {
+          rollfirst();
+          restoreOriginalLineup();
+          location.reload();
+        });
+      }, 1000);
+    }, 1000); // Wait for the fade-out to complete before removing
+  }, 2000); // Show the frown for 2 seconds before fade-out
+}
+function showWinScreen() {
+  const dimmerOverlay = document.getElementById("dimmerOverlay");
+  dimmerOverlay.classList.remove("hidden");
+
+  // Create and style the win image
+  const winImage = new Image();
+  winImage.src = "../assets/win.png";
+  winImage.id = "winImage";
+  winImage.style.position = "fixed";
+  winImage.style.zIndex = "123123";
+  winImage.style.width = "100px";
+  winImage.style.height = "100px";
+  winImage.style.top = "50%";
+  winImage.style.left = "50%";
+  winImage.style.transform = "translate(-50%, -50%)";
+  winImage.style.opacity = "0";
+
+  document.body.appendChild(winImage);
+  // Animate the win image and text
+  setTimeout(() => {
+    winImage.style.transition =
+      "transform 1s ease-in-out, opacity 1s ease-in-out";
+    winImage.style.transform = "translate(-50%, -50%) scale(1.5)";
+    winImage.style.opacity = "1";
+  }, 100);
+
+  // Fade out and remove the win image and text after a short duration
+  setTimeout(() => {
+    winImage.style.transition = "opacity 1s ease-in-out";
+    winImage.style.opacity = "0";
+
+    setTimeout(() => {
+      winImage.remove();
+      showCurtains();
+      closeCurtains();
+      setTimeout(() => {
+        showNonBattleElements();
+        dimmerOverlay.classList.add("hidden");
+        openCurtains(() => {
+          rollfirst();
+          restoreOriginalLineup();
+          location.reload();
+        });
+      }, 1000);
+    }, 1000); // Wait for the fade-out to complete before removing
+  }, 2000); // Show the win image for 2 seconds before fade-out
 }

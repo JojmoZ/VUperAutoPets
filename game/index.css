@@ -2,6 +2,9 @@
   font-family: "VUper";
   src: url("../assets/LapsusPro-Bold.otf") format("opentype");
 }
+#drawText {
+  font-family: "VUper", sans-serif;
+}
 body {
   font-family: Arial, sans-serif;
   text-align: center;
