@@ -130,6 +130,7 @@ img {
 
 .stat-icon img {
   width: 2rem;
+  user-select: none;
   height: 2rem;
 }
 

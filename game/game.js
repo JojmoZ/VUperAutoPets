@@ -249,7 +249,7 @@ function handleDrop(event) {
     if (
       targetAnimal &&
       draggedFromSlot &&
-      targetAnimal.name == draggedFromSlot.name
+      targetAnimal.name == draggedFromSlot.name && animalIndex !== reversedSlotIndex
     ) {
       if (targetAnimal.level < 3) {
         const barsNeeded = targetAnimal.level === 1 ? 2 : 3; 
@@ -270,7 +270,7 @@ function handleDrop(event) {
       battleLineup[animalIndex] = null;
       renderBattleSlots();
       saveBattleLineup();
-    } else if (draggedFromSlot && !targetAnimal) {
+    } else if (draggedFromSlot && !targetAnimal ) {
       const temp = battleLineup[reversedSlotIndex];
       battleLineup[reversedSlotIndex] = draggedFromSlot;
       battleLineup[animalIndex] = temp;

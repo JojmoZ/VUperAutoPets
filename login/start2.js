@@ -193,27 +193,81 @@ window.onload = function () {
       if (verifyCaptcha(selectedCaptchaModal)) registerUser(username, password);
     };
   });
-  function registerUser(username, password) {
-    hideCaptcha();
-    let users = JSON.parse(localStorage.getItem("users")) || [];
-    if (users.some((user) => user.username === username)) {
-      modalErrorText.innerText = "Username already exists.";
-      showErrorModal();
-      return;
-    }
+ async function registerUser(username, password) {
+   hideCaptcha();
 
-    users.push({
-      username: username,
-      password: password,
-      coins: 15,
-      ownedAnimals: [],
-    });
-    localStorage.setItem("users", JSON.stringify(users));
-    registrationForm.reset();
-    registerError.style.display = "none";
-    showSuccessModal();
-    showForm(loginForm, registrationForm);
+   // Retrieve the list of users from localStorage
+   let users = JSON.parse(localStorage.getItem("users")) || [];
+
+   // Check if the username already exists
+   if (users.some((user) => user.username === username)) {
+     modalErrorText.innerText = "Username already exists.";
+     showErrorModal();
+     return;
+   }
+
+   // Generate the encryption key and IV
+   let key = await generateKey();
+
+   // Export the raw key
+   const rawKey = await crypto.subtle.exportKey("raw", key.cryptoKey);
+
+   // Encrypt the password
+   let encryptedPassword = await encrypt(password, key);
+
+   // Save the encrypted password, raw key, and IV in localStorage
+   users.push({
+     username: username,
+     password: {
+       encrypted: Array.from(new Uint8Array(encryptedPassword)), // Convert to a storable format
+       key: Array.from(new Uint8Array(rawKey)), // Save the raw key as an array
+       iv: Array.from(key.iv), // Save the IV to decrypt later
+     },
+     coins: 15,
+     ownedAnimals: [],
+   });
+
+   localStorage.setItem("users", JSON.stringify(users));
+
+   // Reset the registration form
+   registrationForm.reset();
+   registerError.style.display = "none";
+
+   // Show the success modal and switch to the login form
+   showSuccessModal();
+   showForm(loginForm, registrationForm);
+ }
+
+
+  async function generateKey() {
+    const iv = crypto.getRandomValues(new Uint8Array(12)); // Generate a random IV
+    const cryptoKey = await crypto.subtle.generateKey(
+      { name: "AES-GCM", length: 256 }, // AES-GCM with a 256-bit key
+      true, // Extractable (can be exported)
+      ["encrypt", "decrypt"] // Usages
+    );
+    return { cryptoKey, iv };
   }
+  async function encrypt(data, key) {
+    const encodedData = new TextEncoder().encode(data);
+    const encrypted = await crypto.subtle.encrypt(
+      { name: "AES-GCM", iv: key.iv },
+      key.cryptoKey,
+      encodedData
+    );
+    return encrypted;
+  }
+
+  // Decryption Example with AES
+  async function decrypt(encryptedData, key) {
+    const decrypted = await crypto.subtle.decrypt(
+      { name: "AES-GCM", iv: key.iv },
+      key.cryptoKey,
+      encryptedData
+    );
+    return new TextDecoder().decode(decrypted);
+  }
+
   function showSuccessModal() {
     const existingModal = document.getElementById("successModal");
     if (existingModal) {
@@ -288,26 +342,71 @@ window.onload = function () {
   loginForm.addEventListener("submit", function (e) {
     e.preventDefault();
     const username = document.getElementById("loginUsername").value;
-    const password = document.getElementById("loginPassword").value;
+    let password = document.getElementById("loginPassword").value;
+    loginUser(username,password)
+    // let key = await generateKey();
+    // password = await decrypt(password,key)
+    // const users = JSON.parse(localStorage.getItem("users")) || [];
 
-    const users = JSON.parse(localStorage.getItem("users")) || [];
+    // const user = users.find(
+    //   (user) => user.username === username && user.password === password
+    // );
 
-    const user = users.find(
-      (user) => user.username === username && user.password === password
-    );
+    // if (user) {
+    //   localStorage.setItem("loggedin", true);
+    //   localStorage.setItem("username", user.username);
+    //   localStorage.setItem("coins", user.coins);
+    //   localStorage.setItem("ownedAnimals", JSON.stringify(user.ownedAnimals));
 
-    if (user) {
-      localStorage.setItem("loggedin", true);
-      localStorage.setItem("username", user.username);
-      localStorage.setItem("coins", user.coins);
-      localStorage.setItem("ownedAnimals", JSON.stringify(user.ownedAnimals));
-
-      window.location.href = "/home/homepage.html";
-    } else {
-      modalErrorText.innerText = "Invalid username or password.";
-      showErrorModal();
-    }
+    //   window.location.href = "/home/homepage.html";
+    // } else {
+    //   modalErrorText.innerText = "Invalid username or password.";
+    //   showErrorModal();
+    // }
   });
+async function loginUser(username, password) {
+  const users = JSON.parse(localStorage.getItem("users")) || [];
+
+  // Find the user with the given username
+  const user = users.find((user) => user.username === username);
+
+  if (!user) {
+    modalErrorText.innerText = "Invalid username or password.";
+    showErrorModal();
+    return;
+  }
+
+  // Reconstruct the key and IV
+  const rawKey = new Uint8Array(user.password.key); // Retrieve the saved raw key
+  const iv = new Uint8Array(user.password.iv); // Retrieve the saved IV
+
+  const cryptoKey = await crypto.subtle.importKey(
+    "raw",
+    rawKey, // Use the raw key data
+    { name: "AES-GCM" },
+    false,
+    ["decrypt"]
+  );
+
+  // Decrypt the stored password
+  const decryptedPassword = await decrypt(
+    new Uint8Array(user.password.encrypted),
+    { cryptoKey, iv }
+  );
+
+  // Compare the decrypted password with the entered password
+  if (decryptedPassword === password) {
+    localStorage.setItem("loggedin", true);
+    localStorage.setItem("username", user.username);
+    localStorage.setItem("coins", user.coins);
+    localStorage.setItem("ownedAnimals", JSON.stringify(user.ownedAnimals));
+    window.location.href = "/home/homepage.html";
+  } else {
+    modalErrorText.innerText = "Invalid username or password.";
+    showErrorModal();
+  }
+}
+
 
   function showErrorModal() {
     const successModal = document.getElementById("successModal");
