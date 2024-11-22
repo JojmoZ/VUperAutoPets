@@ -27,7 +27,6 @@ fetch("../assets/shopAnimals.json")
   })
   .then((data) => {
     shopAnimals = data;
-    console.log("shopAnimals loaded:", shopAnimals);
   })
   .catch((error) => console.error("Error loading shopAnimals:", error));
 let lastFrameTime = performance.now();
@@ -86,21 +85,21 @@ function openCurtains(onComplete) {
   }, 500);
 }
 function rollShopAnimals() {
-    updateCoinsDisplay();
-    const frozenAnimals = randomAnimals.filter(
-      (animal) => animal && animal.frozen
-    );
-    const numFrozenAnimals = frozenAnimals.length;
-    const ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
-    const availableAnimals = ownedAnimals ? ownedAnimals : shopAnimals;
-    const newRandomAnimals = availableAnimals
-      .sort(() => Math.random() - 0.5)
-      .slice(0, maxShopAnimals - numFrozenAnimals);
-    randomAnimals = [...frozenAnimals, ...newRandomAnimals];
+  updateCoinsDisplay();
+  const frozenAnimals = randomAnimals.filter(
+    (animal) => animal && animal.frozen
+  );
+  const numFrozenAnimals = frozenAnimals.length;
+  const ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
+  const availableAnimals = ownedAnimals ? ownedAnimals : shopAnimals;
+  const newRandomAnimals = availableAnimals
+    .sort(() => Math.random() - 0.5)
+    .slice(0, maxShopAnimals - numFrozenAnimals);
+  randomAnimals = [...frozenAnimals, ...newRandomAnimals];
 
-    renderRandomAnimals();
-    saveRandomAnimals();
-  }
+  renderRandomAnimals();
+  saveRandomAnimals();
+}
 function renderRandomAnimals() {
   const randomAnimalsContainer = document.getElementById("random-animals");
   randomAnimalsContainer.innerHTML = "";
@@ -188,17 +187,54 @@ function dragStart(event) {
   const index = event.target.closest(".animal").getAttribute("data-index");
   event.dataTransfer.setData("text/plain", index);
 }
+function initializeAnimal(animal) {
+  return {
+    ...animal,
+    level: 1,
+    bar: 0,
+  };
+}
 function handleDrop(event) {
   event.preventDefault();
   const slotIndex = parseInt(event.currentTarget.getAttribute("data-slot"), 10);
   const reversedSlotIndex = maxSlots - 1 - slotIndex;
   const data = event.dataTransfer.getData("text/plain");
   const source = event.dataTransfer.getData("source");
-  console.log("a");
   if (source === "shop") {
     const animalIndex = parseInt(data, 10);
     const selectedAnimal = randomAnimals[animalIndex];
-    if (!battleLineup[reversedSlotIndex] && coins >= selectedAnimal.cost) {
+    const currentAnimal = battleLineup[reversedSlotIndex];
+    if (
+      currentAnimal &&
+      currentAnimal.name == selectedAnimal.name &&
+      currentAnimal.level < 3
+    ) {
+      const barsNeeded = currentAnimal.level === 1 ? 2 : 3; // Dynamic bar requirement based on level
+      currentAnimal.bar += 1; // Increment bar
+      if (currentAnimal.bar >= barsNeeded) {
+        currentAnimal.bar = 0; // Reset bar
+        currentAnimal.level += 1; // Increment level
+
+        // Stat bonuses based on the level being upgraded to
+        if (currentAnimal.level === 2) {
+          currentAnimal.attack += 2; // Add 2 attack for level 1 → level 2
+          currentAnimal.health += 3; // Add 3 health for level 1 → level 2
+        }
+        // Add other bonuses for future level transitions if needed
+        // Example: Level 2 → Level 3
+        if (currentAnimal.level === 3) {
+          currentAnimal.attack += 3; // Example: Add 3 attack for level 2 → level 3
+          currentAnimal.health += 4; // Example: Add 4 health for level 2 → level 3
+        }
+      }
+      randomAnimals.splice(animalIndex, 1);
+      renderBattleSlots();
+      renderRandomAnimals();
+      saveBattleLineup();
+    } else if (
+      !battleLineup[reversedSlotIndex] &&
+      coins >= selectedAnimal.cost
+    ) {
       battleLineup[reversedSlotIndex] = selectedAnimal;
       coins -= selectedAnimal.cost;
       updateCoinsDisplay();
@@ -208,12 +244,41 @@ function handleDrop(event) {
       saveRandomAnimals();
       renderBattleSlots();
     } else {
-      alert("Not enough coins or slot is already filled!");
+      alert("Not enough coins or slot is already filled! or max level");
     }
   } else if (source === "battle") {
     const animalIndex = parseInt(data, 10);
     const draggedFromSlot = battleLineup[animalIndex];
-    if (draggedFromSlot) {
+    const targetAnimal = battleLineup[reversedSlotIndex];
+    if (
+      targetAnimal &&
+      draggedFromSlot &&
+      targetAnimal.name == draggedFromSlot.name
+    ) {
+      if (targetAnimal.level < 3) {
+        const barsNeeded = targetAnimal.level === 1 ? 2 : 3; // Dynamic bar requirement based on level
+        targetAnimal.bar += 1; // Increment bar
+        if (targetAnimal.bar >= barsNeeded) {
+          targetAnimal.bar = 0; // Reset bar
+          targetAnimal.level += 1; // Increment level
+
+          // Stat bonuses based on the level being upgraded to
+          if (targetAnimal.level === 2) {
+            targetAnimal.attack += 2; // Add 2 attack for level 1 → level 2
+            targetAnimal.health += 3; // Add 3 health for level 1 → level 2
+          }
+          // Add other bonuses for future level transitions if needed
+          // Example: Level 2 → Level 3
+          if (targetAnimal.level === 3) {
+            targetAnimal.attack += 3; // Example: Add 3 attack for level 2 → level 3
+            targetAnimal.health += 4; // Example: Add 4 health for level 2 → level 3
+          }
+        }
+      }
+      battleLineup[animalIndex] = null;
+      renderBattleSlots();
+      saveBattleLineup();
+    } else if (draggedFromSlot && !targetAnimal) {
       const temp = battleLineup[reversedSlotIndex];
       battleLineup[reversedSlotIndex] = draggedFromSlot;
       battleLineup[animalIndex] = temp;
@@ -223,7 +288,7 @@ function handleDrop(event) {
   } else if (source === "item") {
     const itemName = event.dataTransfer.getData("itemName");
     const itemEffect = event.dataTransfer.getData("itemEffect");
-    const targetAnimal = battleLineup[reversedSlotIndex]; 
+    const targetAnimal = battleLineup[reversedSlotIndex];
     if (targetAnimal) {
       handleItemDrop(event, targetAnimal);
     }
@@ -263,6 +328,19 @@ function renderBattleSlots() {
       animalImg.style.aspectRatio = "1/1";
       animalImg.style.transform = "scaleX(-1)";
       animalImg.draggable = true;
+      const levelImg = document.createElement("img");
+      if (animal.level == 3) {
+        levelImg.src = `../assets/Lv${animal.level}.png`; // Update with the uploaded icons
+      } else {
+        levelImg.src = `../assets/Lv${animal.level}_${animal.bar}.png`; // Update with the uploaded icons
+      }
+      levelImg.alt = `Level ${animal.level} Bar ${animal.bar}`;
+      levelImg.style.position = "absolute";
+      levelImg.style.top = "-40px";
+      levelImg.style.left = "0";
+      levelImg.style.width = "50px"; // Adjust size
+      levelImg.style.height = "50px";
+      wrapper.appendChild(levelImg);
       const statContainer = document.createElement("div");
       statContainer.classList.add("stat-container");
       const attackContainer = document.createElement("div");
@@ -464,11 +542,11 @@ document.querySelectorAll(".battle-slot").forEach((slot) => {
 });
 
 document.getElementById("refreshButton").addEventListener("click", function () {
-  if(coins >0){
-    coins -=1;
+  if (coins > 0) {
+    coins -= 1;
     rollShopAnimals();
     refreshItems();
-  }else{
+  } else {
     return;
   }
 });
@@ -611,6 +689,9 @@ function hideNonBattleElements() {
   document.getElementById("freezeButton").classList.add("hidden");
   document.getElementById("backArrow").classList.add("hidden");
 }
+document.getElementById("backArrow").addEventListener("click", function () {  
+  window.location.href = "/home/homepage.html";
+})
 function showCanvas() {
   document.getElementById("battleCanvas").classList.remove("hidden");
 }
@@ -620,7 +701,7 @@ function hideCanvas() {
 function adjustCanvasSize() {
   const canvas = document.getElementById("battleCanvas");
   canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight * 0.5; 
+  canvas.height = window.innerHeight * 0.5;
   ctx = canvas.getContext("2d");
 }
 function loadassets() {
@@ -641,7 +722,7 @@ document.addEventListener("DOMContentLoaded", function () {
   randomAnimals = JSON.parse(localStorage.getItem("randomAnimals")) || [];
   if (!localStorage.getItem("firstTime")) {
     localStorage.setItem("firstTime", true); // Mark as not the first time anymore
-    coins = 15; // Start with 15 coins
+    coins = 15; 
     localStorage.setItem("gamecoins", coins); // Save to localStorage
     rollfirst(); // Call rollFirst during the first session
   } else {
@@ -649,27 +730,23 @@ document.addEventListener("DOMContentLoaded", function () {
     updateCoinsDisplay();
     randomAnimals = JSON.parse(localStorage.getItem("randomAnimals")) || [];
     if (randomAnimals.length === 0) {
-      console.log("Shop is empty. Wait for the player to refresh manually.");
       renderRandomAnimals(); // Render empty shop if necessary
     } else {
-      console.log("Loaded existing random animals.");
       renderRandomAnimals(); // Render existing animals
     }
   }
   fetch("../assets/items.json")
-  .then((response) => {
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
       }
       return response.json();
     })
     .then((data) => {
       items = data;
-      console.log(items);
       if (items.length === 0) {
         console.error("No items found in the JSON data.");
       } else {
-        console.log("Items loaded successfully:", items);
         loadRandomItems();
       }
     })
@@ -869,7 +946,7 @@ function backupLineup() {
       return {
         ...animal,
         originalAttack: animal.attack,
-        originalHealth: animal.health, 
+        originalHealth: animal.health,
       };
     }
     return null;
@@ -1186,8 +1263,6 @@ function handleBothDeaths(playerAnimal, enemyAnimal, onComplete) {
         if (playerAnimal.specialEffect === "SpawnBus") {
           const playerIndex = battleLineup.indexOf(playerAnimal);
           battleLineup[playerIndex] = createBus();
-          console.log(battleLineup);
-          console.log("A Bus has spawned for the player!");
           renderBattleSlots(); // Refresh the UI to reflect the new lineup
           resolve(); // Resolve the promise to indicate this death has been handled
         } else {
@@ -1215,12 +1290,10 @@ function handleBothDeaths(playerAnimal, enemyAnimal, onComplete) {
   }
   Promise.all(deathPromises).then(() => {
     if (enemyAnimal.health <= 0) {
-      console.log(`Enemy's ${enemyAnimal.name} died`);
       enemyLineup[enemyLineup.indexOf(enemyAnimal)] = null;
       shiftAnimalsInLineup(enemyLineup);
     }
     if (playerAnimal.health <= 0) {
-      console.log(`User's ${playerAnimal.name} died`);
       battleLineup[battleLineup.indexOf(playerAnimal)] = null;
       shiftAnimalsInLineup(battleLineup);
     }
@@ -1257,31 +1330,26 @@ async function simulateBattle() {
       return;
     }
 
-    console.log(`Turn ${turnCount}`);
     const playerAnimalIndex = battleLineup.findIndex(
       (animal) => animal !== null
     );
     const playerAnimal = battleLineup[playerAnimalIndex];
 
     if (playerAnimal) {
-      console.log("a");
       const enemyAnimalIndex = enemyLineup.findIndex(
         (animal) => animal !== null
       );
       const enemyAnimal = enemyLineup[enemyAnimalIndex];
       if (enemyAnimal) {
-        console.log("b");
         animateHeadbutt(playerAnimal, enemyAnimal, () => {
           enemyAnimal.health -= playerAnimal.attack;
           playerAnimal.health -= enemyAnimal.attack;
-          console.log("d");
           handleBothDeaths(playerAnimal, enemyAnimal, () => {
             if (
               !battleLineup.some((animal) => animal) ||
               !enemyLineup.some((animal) => animal)
             ) {
               setTimeout(() => {
-                console.log("Game over.");
                 checkGameOver(
                   battleLineup.filter((animal) => animal !== null).length,
                   enemyLineup.filter((animal) => animal !== null).length
@@ -1341,7 +1409,6 @@ function resetGame() {
 }
 function checkGameOver(playerSurvivors, enemySurvivors) {
   if (playerSurvivors > enemySurvivors) {
-    console.log("User wins!");
     showWinScreen();
   } else if (playerSurvivors < enemySurvivors) {
     loseLife();
@@ -1532,7 +1599,6 @@ function applyItemEffect(animal, itemName) {
   } else if (itemName === "Honey") {
     animal.attack += 3;
   } else if (itemName === "Strawberry") {
-    console.log("makan strawberry");
     animal.health += 1;
     animal.attack += 1;
   } else if (itemName == "Bus") {
