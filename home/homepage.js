@@ -441,4 +441,32 @@ window.onload = function () {
   window.onmousemove = (e) => handleOnMove(e);
   window.ontouchmove = (e) => handleOnMove(e.touches[0]);
 
+  // Add background audio
+  const backgroundAudio = new Audio(
+    "../assets/sound/Super Auto Pets  - Menu Theme.mp3"
+  );
+  backgroundAudio.volume = 0.09;
+  backgroundAudio.loop = true;
+
+  const playBackgroundAudio = () => {
+    backgroundAudio.play();
+    document.removeEventListener("click", playBackgroundAudio);
+    document.removeEventListener("keydown", playBackgroundAudio);
+    document.removeEventListener("mousemove", playBackgroundAudio);
+    document.removeEventListener("scroll", playBackgroundAudio);
+    document.removeEventListener("touchstart", playBackgroundAudio);
+    document.removeEventListener("focus", playBackgroundAudio);
+    document.removeEventListener("mousedown", playBackgroundAudio);
+    document.removeEventListener("mouseup", playBackgroundAudio);
+  };
+
+  document.addEventListener("click", playBackgroundAudio);
+  document.addEventListener("keydown", playBackgroundAudio);
+  document.addEventListener("mousemove", playBackgroundAudio);
+  document.addEventListener("scroll", playBackgroundAudio);
+  document.addEventListener("touchstart", playBackgroundAudio);
+  document.addEventListener("focus", playBackgroundAudio);
+  document.addEventListener("mousedown", playBackgroundAudio);
+  document.addEventListener("mouseup", playBackgroundAudio);
+
 };
