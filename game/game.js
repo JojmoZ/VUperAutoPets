@@ -208,18 +208,18 @@ function handleDrop(event) {
       currentAnimal.name == selectedAnimal.name &&
       currentAnimal.level < 3
     ) {
-      const barsNeeded = currentAnimal.level === 1 ? 2 : 3; 
-      currentAnimal.bar += 1; 
+      const barsNeeded = currentAnimal.level === 1 ? 2 : 3;
+      currentAnimal.bar += 1;
       if (currentAnimal.bar >= barsNeeded) {
-        currentAnimal.bar = 0; 
-        currentAnimal.level += 1; 
+        currentAnimal.bar = 0;
+        currentAnimal.level += 1;
         if (currentAnimal.level === 2) {
-          currentAnimal.attack += 2; 
-          currentAnimal.health += 3; 
+          currentAnimal.attack += 2;
+          currentAnimal.health += 3;
         }
         if (currentAnimal.level === 3) {
-          currentAnimal.attack += 3; 
-          currentAnimal.health += 4; 
+          currentAnimal.attack += 3;
+          currentAnimal.health += 4;
         }
       }
       randomAnimals.splice(animalIndex, 1);
@@ -239,7 +239,7 @@ function handleDrop(event) {
       saveRandomAnimals();
       renderBattleSlots();
     } else {
- const randomAnimalElement = document.querySelector(
+      const randomAnimalElement = document.querySelector(
         `#random-animals .animal[data-index="${animalIndex}"] img`
       );
       if (randomAnimalElement) jitterImage(randomAnimalElement);
@@ -251,28 +251,29 @@ function handleDrop(event) {
     if (
       targetAnimal &&
       draggedFromSlot &&
-      targetAnimal.name == draggedFromSlot.name && animalIndex !== reversedSlotIndex
+      targetAnimal.name == draggedFromSlot.name &&
+      animalIndex !== reversedSlotIndex
     ) {
       if (targetAnimal.level < 3) {
-        const barsNeeded = targetAnimal.level === 1 ? 2 : 3; 
-        targetAnimal.bar += 1; 
+        const barsNeeded = targetAnimal.level === 1 ? 2 : 3;
+        targetAnimal.bar += 1;
         if (targetAnimal.bar >= barsNeeded) {
-          targetAnimal.bar = 0; 
-          targetAnimal.level += 1; 
+          targetAnimal.bar = 0;
+          targetAnimal.level += 1;
           if (targetAnimal.level === 2) {
             targetAnimal.attack += 2;
             targetAnimal.health += 3;
           }
           if (targetAnimal.level === 3) {
-            targetAnimal.attack += 3; 
-            targetAnimal.health += 4; 
+            targetAnimal.attack += 3;
+            targetAnimal.health += 4;
           }
         }
       }
       battleLineup[animalIndex] = null;
       renderBattleSlots();
       saveBattleLineup();
-    } else if (draggedFromSlot && !targetAnimal ) {
+    } else if (draggedFromSlot && !targetAnimal) {
       const temp = battleLineup[reversedSlotIndex];
       battleLineup[reversedSlotIndex] = draggedFromSlot;
       battleLineup[animalIndex] = temp;
@@ -302,6 +303,16 @@ function showHoverInfo(text, event) {
 function hideHoverInfo() {
   hoverInfo.style.opacity = 0;
 }
+const busSound = document.getElementById("busSound");
+
+function playBusSound() {
+  return new Promise((resolve) => {
+    busSound.currentTime = 0;
+    busSound.play();
+    busSound.onended = resolve; // Resolve the promise when the sound ends
+  });
+}
+
 function renderBattleSlots() {
   const battleSlots = document.querySelectorAll(".battle-slot");
   battleSlots.forEach((slot, index) => {
@@ -325,15 +336,15 @@ function renderBattleSlots() {
       animalImg.draggable = true;
       const levelImg = document.createElement("img");
       if (animal.level == 3) {
-        levelImg.src = `../assets/Lv${animal.level}.png`; 
+        levelImg.src = `../assets/Lv${animal.level}.png`;
       } else {
-        levelImg.src = `../assets/Lv${animal.level}_${animal.bar}.png`; 
+        levelImg.src = `../assets/Lv${animal.level}_${animal.bar}.png`;
       }
       levelImg.alt = `Level ${animal.level} Bar ${animal.bar}`;
       levelImg.style.position = "absolute";
       levelImg.style.top = "-2.5rem";
       levelImg.style.left = "0";
-      levelImg.style.width = "3.125rem"; 
+      levelImg.style.width = "3.125rem";
       levelImg.style.height = "3.125rem";
       wrapper.appendChild(levelImg);
       const statContainer = document.createElement("div");
@@ -367,12 +378,12 @@ function renderBattleSlots() {
           auraContainer.style.zIndex = "2";
           auraContainer.style.width = "2.5rem";
           auraContainer.style.height = "2.5rem";
-          auraContainer.style.top = `${Math.random() * 100 - 30}%`; 
-          auraContainer.style.left = `${Math.random() * 80}%`; 
-          auraContainer.style.opacity = "1"; 
+          auraContainer.style.top = `${Math.random() * 100 - 30}%`;
+          auraContainer.style.left = `${Math.random() * 80}%`;
+          auraContainer.style.opacity = "1";
           auraContainer.style.transition =
             "top 1.5s ease-out, opacity 1.5s ease-out";
-          auraContainer.style.transform = "translate(-50%, -50%)"; 
+          auraContainer.style.transform = "translate(-50%, -50%)";
 
           const busIcon = document.createElement("img");
           busIcon.src = "../assets/items/Bus.png";
@@ -381,26 +392,25 @@ function renderBattleSlots() {
           busIcon.style.height = "100%";
 
           auraContainer.appendChild(busIcon);
-          wrapper.appendChild(auraContainer); 
+          wrapper.appendChild(auraContainer);
 
-          
           setTimeout(() => {
             auraContainer.style.top =
-              parseFloat(auraContainer.style.top) - 20 + "px"; 
-            auraContainer.style.opacity = "0"; 
+              parseFloat(auraContainer.style.top) - 20 + "px";
+            auraContainer.style.opacity = "0";
             setTimeout(() => {
-              auraContainer.remove(); 
-            }, 1300); 
+              auraContainer.remove();
+            }, 1300);
           }, 0);
         }
 
         function startAuraLoop() {
           setInterval(() => {
-            spawnBus(); 
-          }, 400); 
+            spawnBus();
+          }, 400);
         }
 
-        startAuraLoop(); 
+        startAuraLoop();
       }
 
       animalImg.addEventListener("dragstart", (event) => {
@@ -456,13 +466,13 @@ function renderTeams() {
       const img = new Image();
       img.src = animal.img;
       img.onload = () => {
-        ctx.save(); 
+        ctx.save();
         const xPosition = teamOffsetX + (maxSlots - 1 - index) * 100;
         const yPosition = commonY;
-        ctx.translate(xPosition + 40, yPosition + 40); 
-        ctx.scale(-1, 1); 
-        ctx.drawImage(img, -40, -40, 80, 80); 
-        ctx.restore(); 
+        ctx.translate(xPosition + 40, yPosition + 40);
+        ctx.scale(-1, 1);
+        ctx.drawImage(img, -40, -40, 80, 80);
+        ctx.restore();
         ctx.drawImage(
           fistImg,
           teamOffsetX + (maxSlots - 1 - index) * 100,
@@ -543,7 +553,7 @@ document.getElementById("refreshButton").addEventListener("click", function () {
     refreshItems();
   } else {
     const coinsDisplay = document.getElementById("coinIcon");
-    jitterImage(coinsDisplay)
+    jitterImage(coinsDisplay);
     return;
   }
 });
@@ -563,40 +573,41 @@ document
     if (!playing) {
       checkbattlelineup();
       // if (canPlay) {
-        showCurtains();
-        playing = true;
-        closeCurtains();
-        setTimeout(() => {
-          backupLineup();
-          shiftAnimalsToFront();
-          console.log("Before generateEnemyTeam");
-          generateEnemyTeam();
-          console.log("After generateEnemyTeam");
+      showCurtains();
+      playing = true;
+      closeCurtains();
+      setTimeout(() => {
+        backupLineup();
+        shiftAnimalsToFront();
+        console.log("Before generateEnemyTeam");
+        generateEnemyTeam();
+        console.log("After generateEnemyTeam");
 
-          console.log("Before hideNonBattleElements");
-          hideNonBattleElements();
-          console.log("After hideNonBattleElements");
+        console.log("Before hideNonBattleElements");
+        hideNonBattleElements();
+        console.log("After hideNonBattleElements");
 
-          console.log("Before hideCanvas");
-          hideCanvas();
-          console.log("After hideCanvas");
+        console.log("Before hideCanvas");
+        hideCanvas();
+        console.log("After hideCanvas");
 
-          openCurtains(() => {
-            showCanvas();
-            animateAnimalsIntoPosition(() => {
-              simulateBattle();
-            });
+        openCurtains(() => {
+          showCanvas();
+          playBattleMusic();
+          animateAnimalsIntoPosition(() => {
+            simulateBattle();
           });
-        }, 1000);
+        });
+      }, 1000);
     }
   });
 function animateAnimalsIntoPosition(onComplete) {
   const teamOffsetX = 100;
   const enemyOffsetX = canvas.width - 550;
   const commonY = 210;
-  const bounceHeight = 30; 
-  const duration = 2000; 
-  const bounceFrequency = 5; 
+  const bounceHeight = 30;
+  const duration = 2000;
+  const bounceFrequency = 5;
   const preloadedPlayerImages = battleLineup.map((animal, index) => {
     if (animal) {
       const img = new Image();
@@ -621,20 +632,20 @@ function animateAnimalsIntoPosition(onComplete) {
     return t * (2 - t);
   }
   function animate(currentTime) {
-    const deltaTime = (currentTime - lastFrameTime) / 1000; 
+    const deltaTime = (currentTime - lastFrameTime) / 1000;
     lastFrameTime = currentTime;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const progress = currentFrame / (duration / 1000); 
-    const easedProgress = easeOutQuad(progress); 
+    const progress = currentFrame / (duration / 1000);
+    const easedProgress = easeOutQuad(progress);
     const bounceY =
       Math.sin(easedProgress * Math.PI * 2 * bounceFrequency) *
       bounceHeight *
       (1 - easedProgress);
     preloadedPlayerImages.forEach((img, index) => {
       if (img) {
-        const startX = -80; 
+        const startX = -80;
         const endX = teamOffsetX + (maxSlots - 1 - index) * 100;
-        const delay = index * 0.2; 
+        const delay = index * 0.2;
         const adjustedProgress = Math.min(
           Math.max(easedProgress - delay, 0) / (1 - delay),
           1
@@ -643,17 +654,17 @@ function animateAnimalsIntoPosition(onComplete) {
         const currentX = startX + (endX - startX) * adjustedProgress;
         const targetY = commonY - bounceY;
         ctx.save();
-        ctx.translate(currentX + 40, targetY + 40); 
-        ctx.scale(-1, 1); 
+        ctx.translate(currentX + 40, targetY + 40);
+        ctx.scale(-1, 1);
         ctx.drawImage(img, -40, -40, 80, 80);
         ctx.restore();
       }
     });
     preloadedEnemyImages.forEach((img, index) => {
       if (img) {
-        const startX = canvas.width + 80; 
+        const startX = canvas.width + 80;
         const endX = enemyOffsetX + index * 100;
-        const delay = index * 0.2; 
+        const delay = index * 0.2;
         const adjustedProgress = Math.min(
           Math.max(easedProgress - delay, 0) / (1 - delay),
           1
@@ -669,7 +680,7 @@ function animateAnimalsIntoPosition(onComplete) {
       requestAnimationFrame(animate);
     } else {
       if (onComplete) {
-        onComplete(); 
+        onComplete();
       }
     }
   }
@@ -683,9 +694,10 @@ function showNonBattleElements() {
   document.getElementById("startBattleButton").classList.remove("hidden");
   document.getElementById("freezeButton").classList.remove("hidden");
   document.getElementById("backArrow").classList.remove("hidden");
+  playBackgroundMusic();
 }
 function hideNonBattleElements() {
-  console.log('hiding')
+  console.log("hiding");
   document.getElementById("battleSlotsContainer").classList.add("hidden");
   document.getElementById("controls").classList.add("hidden");
   document.getElementById("refreshButton").classList.add("hidden");
@@ -702,11 +714,11 @@ function hideNonBattleElements() {
     curtainTop.style.height,
     curtainBottom.style.height
   );
-
+  playBattleMusic();
 }
-document.getElementById("backArrow").addEventListener("click", function () {  
+document.getElementById("backArrow").addEventListener("click", function () {
   window.location.href = "/home/homepage.html";
-})
+});
 function showCanvas() {
   document.getElementById("battleCanvas").classList.remove("hidden");
 }
@@ -723,6 +735,24 @@ function loadassets() {
   fistImg.src = "../assets/fist.png";
   heartImg.src = "../assets/heart.png";
 }
+const backgroundMusic = document.getElementById("backgroundMusic");
+const battleMusic = document.getElementById("battleMusic");
+
+backgroundMusic.volume = 0.2;
+battleMusic.volume = 0.05;
+
+function playBackgroundMusic() {
+  battleMusic.pause();
+  battleMusic.currentTime = 0;
+  backgroundMusic.play();
+}
+
+function playBattleMusic() {
+  backgroundMusic.pause();
+  backgroundMusic.currentTime = 0;
+  battleMusic.play();
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   loadassets();
   hideCurtains();
@@ -736,18 +766,18 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   randomAnimals = JSON.parse(localStorage.getItem("randomAnimals")) || [];
   if (!localStorage.getItem("firstTime")) {
-    localStorage.setItem("firstTime", true); 
-    coins = 15; 
-    localStorage.setItem("gamecoins", coins); 
+    localStorage.setItem("firstTime", true);
+    coins = 15;
+    localStorage.setItem("gamecoins", coins);
     rollfirst();
   } else {
     coins = parseInt(localStorage.getItem("gamecoins")) || 0;
     updateCoinsDisplay();
     randomAnimals = JSON.parse(localStorage.getItem("randomAnimals")) || [];
     if (randomAnimals.length === 0) {
-      renderRandomAnimals(); 
+      renderRandomAnimals();
     } else {
-      renderRandomAnimals(); 
+      renderRandomAnimals();
     }
   }
   fetch("../assets/items.json")
@@ -768,10 +798,11 @@ document.addEventListener("DOMContentLoaded", function () {
     })
     .catch((error) => console.error("Error loading items:", error));
   updateCoinsDisplay();
+  playBackgroundMusic();
 });
 function updateCoinsDisplay() {
   localStorage.setItem("gamecoins", coins);
-  document.getElementById("coins").textContent = coins; 
+  document.getElementById("coins").textContent = coins;
 }
 function generateEnemyTeam() {
   const totalPlayerCoins = coins; // Use player's current coins as the basis
@@ -779,26 +810,25 @@ function generateEnemyTeam() {
   let currentCost = 0;
   enemyLineup = [];
 
- let attempts = 0;
- const maxAttempts = 100; // Prevent infinite loop
+  let attempts = 0;
+  const maxAttempts = 100; // Prevent infinite loop
 
- while (enemyLineup.length < maxSlots && currentCost < enemyTeamCost) {
-   const randomAnimal = {
-     ...shopAnimals[Math.floor(Math.random() * shopAnimals.length)],
-   };
+  while (enemyLineup.length < maxSlots && currentCost < enemyTeamCost) {
+    const randomAnimal = {
+      ...shopAnimals[Math.floor(Math.random() * shopAnimals.length)],
+    };
 
-   if (currentCost + randomAnimal.cost <= enemyTeamCost) {
-     enemyLineup.push(randomAnimal);
-     currentCost += randomAnimal.cost;
-   }
+    if (currentCost + randomAnimal.cost <= enemyTeamCost) {
+      enemyLineup.push(randomAnimal);
+      currentCost += randomAnimal.cost;
+    }
 
-   attempts++;
-   if (attempts > maxAttempts) {
-     console.warn("Failed to generate full enemy lineup. Exiting loop.");
-     break;
-   }
- }
-
+    attempts++;
+    if (attempts > maxAttempts) {
+      console.warn("Failed to generate full enemy lineup. Exiting loop.");
+      break;
+    }
+  }
 
   // Fill remaining slots with null if team is incomplete
   while (enemyLineup.length < maxSlots) {
@@ -817,7 +847,7 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
   const enemyStartX = canvas.width - 550;
   const enemyY = 210;
   const centerX = canvas.width / 2 - 60;
-  const duration = 500; 
+  const duration = 500;
   let currentFrame = 0;
   let lastFrameTime = performance.now();
   const playerImg = new Image();
@@ -825,7 +855,7 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
   const enemyImg = new Image();
   enemyImg.src = enemyAnimal.img;
   const bandageImg = new Image();
-  bandageImg.src = "../assets/hurt.png"; 
+  bandageImg.src = "../assets/hurt.png";
   playerImg.onload = () => {
     enemyImg.onload = () => {
       requestAnimationFrame(animate);
@@ -833,20 +863,19 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
   };
 
   function animate(currentTime) {
-    const deltaTime = (currentTime - lastFrameTime) / 1000; 
+    const deltaTime = (currentTime - lastFrameTime) / 1000;
     lastFrameTime = currentTime;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     renderFullTeam();
 
-    const progress = easeInOutQuad(currentFrame / (duration / 1000)); 
+    const progress = easeInOutQuad(currentFrame / (duration / 1000));
     const playerX = playerStartX - (playerStartX - centerX) * progress;
     const enemyX = enemyStartX + (centerX + 60 - enemyStartX) * progress;
 
-    
     ctx.save();
-    ctx.translate(playerX + 40, playerY + 40); 
-    ctx.scale(-1, 1); 
+    ctx.translate(playerX + 40, playerY + 40);
+    ctx.scale(-1, 1);
     ctx.drawImage(playerImg, -40, -40, 80, 80);
     ctx.restore();
     ctx.drawImage(fistImg, playerX, playerY + 60, 40, 40);
@@ -862,7 +891,6 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
     ctx.fillText(attackText, attackX, playerY + 85);
     ctx.fillText(healthText, healthX, playerY + 85);
 
-    
     ctx.drawImage(enemyImg, enemyX, enemyY, 80, 80);
     ctx.drawImage(fistImg, enemyX, enemyY + 60, 40, 40);
     ctx.drawImage(heartImg, enemyX + 40, enemyY + 60, 40, 40);
@@ -879,10 +907,8 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
     if (currentFrame <= duration / 1000) {
       requestAnimationFrame(animate);
     } else {
-      
       setTimeout(() => {
-        
-        const bandageSize = 60; 
+        const bandageSize = 60;
         ctx.drawImage(
           bandageImg,
           playerX + 10,
@@ -898,7 +924,6 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
           bandageSize
         );
 
-        
         setTimeout(() => {
           showDamage(
             playerX,
@@ -913,29 +938,29 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
               animateReturn(playerStartX, playerY, enemyStartX, enemyY);
             }
           );
-        }, 300); 
-      }, 1); 
+        }, 300);
+      }, 1);
     }
   }
 
   function animateReturn(playerStartX, playerY, enemyStartX, enemyY) {
     let returnFrame = 0;
     let lastReturnFrameTime = performance.now();
-    const returnDuration = duration; 
+    const returnDuration = duration;
 
     function animateBack(currentTime) {
-      const deltaTime = (currentTime - lastReturnFrameTime) / 1000; 
+      const deltaTime = (currentTime - lastReturnFrameTime) / 1000;
       lastReturnFrameTime = currentTime;
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       renderFullTeam();
-      const progress = easeInOutQuad(returnFrame / (returnDuration / 1000)); 
+      const progress = easeInOutQuad(returnFrame / (returnDuration / 1000));
       const playerX = centerX + (playerStartX - centerX) * progress;
       const enemyX = centerX + 60 + (enemyStartX - centerX - 60) * progress;
 
       ctx.save();
-      ctx.translate(playerX + 40, playerY + 40); 
-      ctx.scale(-1, 1); 
+      ctx.translate(playerX + 40, playerY + 40);
+      ctx.scale(-1, 1);
       ctx.drawImage(playerImg, -40, -40, 80, 80);
       ctx.restore();
       ctx.drawImage(fistImg, playerX, playerY + 60, 40, 40);
@@ -974,10 +999,10 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
   }
 }
 function backupLineup() {
-   if (!battleLineup.some((animal) => animal !== null)) {
-     console.warn("Cannot backup lineup: No animals in battle lineup.");
-     return;
-   }
+  if (!battleLineup.some((animal) => animal !== null)) {
+    console.warn("Cannot backup lineup: No animals in battle lineup.");
+    return;
+  }
   originalBattleLineup = battleLineup.map((animal) => {
     if (animal) {
       return {
@@ -991,10 +1016,10 @@ function backupLineup() {
 }
 function shiftAnimalsToFront() {
   const shiftedLineup = battleLineup.filter((animal) => animal !== null);
-   if (shiftedLineup.length === 0) {
-     console.warn("No animals in lineup. Skipping shift.");
-     return; // No need to shift if there are no animals
-   }
+  if (shiftedLineup.length === 0) {
+    console.warn("No animals in lineup. Skipping shift.");
+    return; // No need to shift if there are no animals
+  }
   while (shiftedLineup.length < maxSlots) {
     shiftedLineup.push(null);
   }
@@ -1006,7 +1031,7 @@ function restoreOriginalLineup() {
       return {
         ...animal,
         attack: animal.originalAttack,
-        health: animal.originalHealth, 
+        health: animal.originalHealth,
       };
     }
     return null;
@@ -1041,11 +1066,11 @@ function showDamage(
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     renderFullTeam();
     ctx.save();
-    ctx.translate(playerX + 40, commonY + 40); 
-    ctx.scale(-1, 1); 
+    ctx.translate(playerX + 40, commonY + 40);
+    ctx.scale(-1, 1);
     ctx.drawImage(playerImg, -40, -40, 80, 80);
     ctx.restore();
-    
+
     ctx.drawImage(fistImg, playerX, commonY + 60, 40, 40);
     ctx.drawImage(heartImg, playerX + 40, commonY + 60, 40, 40);
     ctx.drawImage(enemyImg, enemyX, commonY, 80, 80);
@@ -1105,8 +1130,8 @@ function showDamage(
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     renderFullTeam();
     ctx.save();
-    ctx.translate(playerX + 40, commonY + 40); 
-    ctx.scale(-1, 1); 
+    ctx.translate(playerX + 40, commonY + 40);
+    ctx.scale(-1, 1);
     ctx.drawImage(playerImg, -40, -40, 80, 80);
     ctx.restore();
     ctx.drawImage(fistImg, playerX, commonY + 60, 40, 40);
@@ -1167,17 +1192,17 @@ function renderFullTeam() {
   battleLineup.forEach((animal, index) => {
     if (animal && index !== 0) {
       const xPos = teamOffsetX + (maxSlots - 1 - index) * 100;
-      ctx.save(); 
-      ctx.translate(xPos + imgSize / 2, commonY + imgSize / 2); 
-      ctx.scale(-1, 1); 
+      ctx.save();
+      ctx.translate(xPos + imgSize / 2, commonY + imgSize / 2);
+      ctx.scale(-1, 1);
       ctx.drawImage(
         getAnimalImage(animal.img),
-        -imgSize / 2, 
+        -imgSize / 2,
         -imgSize / 2,
         imgSize,
         imgSize
       );
-      ctx.restore(); 
+      ctx.restore();
       ctx.drawImage(fistImg, xPos, commonY + 60, iconSize, iconSize);
       ctx.drawImage(heartImg, xPos + 40, commonY + 60, iconSize, iconSize);
       ctx.fillStyle = "white";
@@ -1247,7 +1272,7 @@ function animateDeathFlyOff(animal, index, teamType, onComplete) {
   let lastFrameTime = performance.now();
 
   function animate(currentTime) {
-    const deltaTime = (currentTime - lastFrameTime) / 1000; 
+    const deltaTime = (currentTime - lastFrameTime) / 1000;
     lastFrameTime = currentTime;
 
     const progress = currentFrame / totalFrames;
@@ -1338,11 +1363,13 @@ function handleBothDeaths(playerAnimal, enemyAnimal, onComplete) {
   const deathPromises = [];
   if (playerAnimal.health <= 0) {
     deathPromises.push(
-      new Promise((resolve) => {
+      new Promise(async (resolve) => {
         if (playerAnimal.specialEffect === "SpawnBus") {
           const playerIndex = battleLineup.indexOf(playerAnimal);
           battleLineup[playerIndex] = createBus();
-          resolve(); 
+          renderTeams()
+          await playBusSound()
+          resolve();
         } else {
           animateDeathFlyOff(
             playerAnimal,
@@ -1457,9 +1484,9 @@ function shiftAnimalsInLineup(lineup) {
 function updateHeartsDisplay() {
   hearts.forEach((heart, index) => {
     if (index < lives) {
-      heart.src = "../assets/heart.png"; 
+      heart.src = "../assets/heart.png";
     } else {
-      heart.src = "../assets/broken heart.png"; 
+      heart.src = "../assets/broken heart.png";
     }
   });
 }
@@ -1481,7 +1508,7 @@ function resetGame() {
   renderBattleSlots();
   renderRandomAnimals();
   saveBattleLineup();
-  
+
   showNonBattleElements();
 }
 function checkGameOver(playerSurvivors, enemySurvivors) {
@@ -1519,7 +1546,7 @@ function hideBins() {
 function handleTrashDrop(event) {
   event.preventDefault();
   const slotIndex = event.dataTransfer.getData("text/plain");
-  battleLineup[slotIndex] = null; 
+  battleLineup[slotIndex] = null;
   renderBattleSlots();
   saveBattleLineup();
 }
@@ -1571,9 +1598,9 @@ freezeButton.addEventListener("drop", (event) => {
     } else if (slotId === "itemSlot2" && currentItem2) {
       currentItem2.frozen = !currentItem2.frozen;
     }
-    saveCurrentItems(); 
-    renderItem(); 
-    hideFreezeBin()
+    saveCurrentItems();
+    renderItem();
+    hideFreezeBin();
   }
 });
 let items = [];
@@ -1587,7 +1614,7 @@ function loadRandomItems() {
     refreshItems(); // Generate random items if none are saved
   } else {
     renderItem();
-  } 
+  }
 }
 function refreshItems() {
   if (items.length === 0) {
@@ -1600,21 +1627,21 @@ function refreshItems() {
   if (!currentItem2?.frozen) {
     currentItem2 = { ...items[Math.floor(Math.random() * items.length)] };
   }
-  saveCurrentItems(); 
-  renderItem(); 
+  saveCurrentItems();
+  renderItem();
 }
 function handleItemDrop(event, animal) {
   event.preventDefault();
   const itemName = event.dataTransfer.getData("itemName");
   const itemEffect = event.dataTransfer.getData("itemEffect");
   const slotId = event.dataTransfer.getData("slotId");
-  hideFreezeBin()
+  hideFreezeBin();
   if (itemName && itemEffect && animal) {
-     if (itemName === "Bus" && animal.specialEffect === "SpawnBus") {
-       const itemSlot = document.getElementById(slotId);
-       jitterImage(itemSlot);
+    if (itemName === "Bus" && animal.specialEffect === "SpawnBus") {
+      const itemSlot = document.getElementById(slotId);
+      jitterImage(itemSlot);
       return; // Stop processing without jittering the item slot
-     }
+    }
 
     let item = items.find((i) => i.name === itemName);
     if (item) itemCost = item.cost;
@@ -1677,11 +1704,11 @@ function handleItemDragStart(event) {
   if (slotId === "itemSlot") {
     event.dataTransfer.setData("itemName", currentItem1.name);
     event.dataTransfer.setData("itemEffect", currentItem1.effect);
-    event.dataTransfer.setData("slotId", "itemSlot"); 
+    event.dataTransfer.setData("slotId", "itemSlot");
   } else if (slotId === "itemSlot2") {
     event.dataTransfer.setData("itemName", currentItem2.name);
     event.dataTransfer.setData("itemEffect", currentItem2.effect);
-    event.dataTransfer.setData("slotId", "itemSlot2"); 
+    event.dataTransfer.setData("slotId", "itemSlot2");
   }
   event.dataTransfer.setData("source", "item");
 }
@@ -1702,8 +1729,8 @@ function applyItemEffect(animal, itemName) {
   } else if (itemName == "Bus") {
     animal.specialEffect = "SpawnBus";
   }
-  updateCoinsDisplay(); 
-  renderBattleSlots(); 
+  updateCoinsDisplay();
+  renderBattleSlots();
   saveBattleLineup();
 }
 function createBus() {
@@ -1750,18 +1777,18 @@ function loseLife() {
           restoreOriginalLineup();
           setTimeout(() => {
             showNonBattleElements();
-            hideCanvas()
-            coins+=10
+            hideCanvas();
+            coins += 10;
             dimmerOverlay.classList.add("hidden");
             openCurtains(() => {
               rollfirst();
-              updateCoinsDisplay()
+              updateCoinsDisplay();
               location.reload();
             });
           }, 1000);
         }
-      }, 1000); 
-    }, 1500); 
+      }, 1000);
+    }, 1500);
   }
 }
 function jitterImage(element) {
@@ -1833,16 +1860,16 @@ function showDrawScreen() {
       closeCurtains();
       setTimeout(() => {
         showNonBattleElements();
-        coins +=10
+        coins += 10;
         dimmerOverlay.classList.add("hidden");
         openCurtains(() => {
           rollfirst();
-          updateCoinsDisplay()
+          updateCoinsDisplay();
           location.reload();
         });
       }, 1000);
-    }, 1000); 
-  }, 2000); 
+    }, 1000);
+  }, 2000);
 }
 function showWinScreen() {
   const dimmerOverlay = document.getElementById("dimmerOverlay");
@@ -1851,7 +1878,7 @@ function showWinScreen() {
   winContainer.id = "winContainer";
   winContainer.style.position = "fixed";
   winContainer.style.zIndex = "123123";
-  winContainer.style.width = "13.125rem"; 
+  winContainer.style.width = "13.125rem";
   winContainer.style.height = "13.125rem";
   winContainer.style.top = "50%";
   winContainer.style.left = "50%";
@@ -1866,18 +1893,18 @@ function showWinScreen() {
   winImage.style.height = "100%";
   winImage.style.position = "absolute";
   winImage.style.opacity = "0";
-  winImage.style.top = "50%"; 
-  winImage.style.left = "50%"; 
-  winImage.style.transform = "translate(-50%, -50%)"; 
+  winImage.style.top = "50%";
+  winImage.style.left = "50%";
+  winImage.style.transform = "translate(-50%, -50%)";
   winImage.style.animation = "fadeIn 1s ease-in-out forwards";
   const sunray = document.createElement("div");
   sunray.id = "sunray";
   sunray.style.position = "absolute";
-  sunray.style.width = "200%"; 
+  sunray.style.width = "200%";
   sunray.style.height = "200%";
-  sunray.style.top = "50%"; 
-  sunray.style.left = "50%"; 
-  sunray.style.transform = "translate(-50%, -50%)"; 
+  sunray.style.top = "50%";
+  sunray.style.left = "50%";
+  sunray.style.transform = "translate(-50%, -50%)";
   sunray.style.borderRadius = "50%";
   sunray.style.background = `
     radial-gradient(circle, 
@@ -1903,7 +1930,7 @@ function showWinScreen() {
       setTimeout(() => {
         showNonBattleElements();
         restoreOriginalLineup();
-        hideCanvas()
+        hideCanvas();
         coins += 10;
         dimmerOverlay.classList.add("hidden");
         openCurtains(() => {
@@ -1912,6 +1939,6 @@ function showWinScreen() {
           location.reload();
         });
       }, 1000);
-    }, 1000); 
-  }, 3000); 
+    }, 1000);
+  }, 3000);
 }
