@@ -44,7 +44,6 @@ function saveRandomAnimals() {
 function rollfirst() {
   const ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
   if (!ownedAnimals || ownedAnimals.length === 0) {
-    alert("You don't have any owned animals. Redirecting...");
     setTimeout(() => {
       window.location.href = "/home/homepage.html";
     }, 3000);
@@ -240,7 +239,10 @@ function handleDrop(event) {
       saveRandomAnimals();
       renderBattleSlots();
     } else {
-      alert("Not enough coins or slot is already filled! or max level");
+ const randomAnimalElement = document.querySelector(
+        `#random-animals .animal[data-index="${animalIndex}"] img`
+      );
+      if (randomAnimalElement) jitterImage(randomAnimalElement);
     }
   } else if (source === "battle") {
     const animalIndex = parseInt(data, 10);
@@ -278,6 +280,7 @@ function handleDrop(event) {
       saveBattleLineup();
     }
   } else if (source === "item") {
+    // free
     const itemName = event.dataTransfer.getData("itemName");
     const itemEffect = event.dataTransfer.getData("itemEffect");
     const targetAnimal = battleLineup[reversedSlotIndex];
@@ -539,6 +542,8 @@ document.getElementById("refreshButton").addEventListener("click", function () {
     rollShopAnimals();
     refreshItems();
   } else {
+    const coinsDisplay = document.getElementById("coinIcon");
+    jitterImage(coinsDisplay)
     return;
   }
 });
@@ -557,16 +562,25 @@ document
   .addEventListener("click", function () {
     if (!playing) {
       checkbattlelineup();
-      if (canPlay) {
+      // if (canPlay) {
         showCurtains();
         playing = true;
         closeCurtains();
         setTimeout(() => {
           backupLineup();
           shiftAnimalsToFront();
+          console.log("Before generateEnemyTeam");
           generateEnemyTeam();
+          console.log("After generateEnemyTeam");
+
+          console.log("Before hideNonBattleElements");
           hideNonBattleElements();
+          console.log("After hideNonBattleElements");
+
+          console.log("Before hideCanvas");
           hideCanvas();
+          console.log("After hideCanvas");
+
           openCurtains(() => {
             showCanvas();
             animateAnimalsIntoPosition(() => {
@@ -574,9 +588,6 @@ document
             });
           });
         }, 1000);
-      } else {
-        alert("no animal in battle lineup");
-      }
     }
   });
 function animateAnimalsIntoPosition(onComplete) {
@@ -674,12 +685,24 @@ function showNonBattleElements() {
   document.getElementById("backArrow").classList.remove("hidden");
 }
 function hideNonBattleElements() {
+  console.log('hiding')
   document.getElementById("battleSlotsContainer").classList.add("hidden");
   document.getElementById("controls").classList.add("hidden");
   document.getElementById("refreshButton").classList.add("hidden");
   document.getElementById("startBattleButton").classList.add("hidden");
   document.getElementById("freezeButton").classList.add("hidden");
   document.getElementById("backArrow").classList.add("hidden");
+  console.log(
+    "Curtain visibility:",
+    curtainTop.style.visibility,
+    curtainBottom.style.visibility
+  );
+  console.log(
+    "Curtain heights:",
+    curtainTop.style.height,
+    curtainBottom.style.height
+  );
+
 }
 document.getElementById("backArrow").addEventListener("click", function () {  
   window.location.href = "/home/homepage.html";
@@ -716,7 +739,7 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.setItem("firstTime", true); 
     coins = 15; 
     localStorage.setItem("gamecoins", coins); 
-    rollfirst(); 
+    rollfirst();
   } else {
     coins = parseInt(localStorage.getItem("gamecoins")) || 0;
     updateCoinsDisplay();
@@ -735,11 +758,12 @@ document.addEventListener("DOMContentLoaded", function () {
       return response.json();
     })
     .then((data) => {
+      console.log("Fetched items:", data); // Debug fetched items
       items = data;
       if (items.length === 0) {
         console.error("No items found in the JSON data.");
       } else {
-        loadRandomItems();
+        refreshItems(); // Ensure items are generated
       }
     })
     .catch((error) => console.error("Error loading items:", error));
@@ -750,18 +774,35 @@ function updateCoinsDisplay() {
   document.getElementById("coins").textContent = coins; 
 }
 function generateEnemyTeam() {
-  // enemyLineup = [shopAnimals.find((animal) => animal.name === "VUnt")];
-  const totalTeamCost = calculateTeamCost(battleLineup);
+  const totalPlayerCoins = coins; // Use player's current coins as the basis
+  const enemyTeamCost = totalPlayerCoins; // Match enemy team cost to player coins
+  let currentCost = 0;
   enemyLineup = [];
 
-  while (enemyLineup.length < maxSlots && totalTeamCost > 0) {
-    const randomAnimal =
-      shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
-    const clonedAnimal = { ...randomAnimal };
+ let attempts = 0;
+ const maxAttempts = 100; // Prevent infinite loop
 
-    if (totalTeamCost >= randomAnimal.cost) {
-      enemyLineup.push(clonedAnimal);
-    }
+ while (enemyLineup.length < maxSlots && currentCost < enemyTeamCost) {
+   const randomAnimal = {
+     ...shopAnimals[Math.floor(Math.random() * shopAnimals.length)],
+   };
+
+   if (currentCost + randomAnimal.cost <= enemyTeamCost) {
+     enemyLineup.push(randomAnimal);
+     currentCost += randomAnimal.cost;
+   }
+
+   attempts++;
+   if (attempts > maxAttempts) {
+     console.warn("Failed to generate full enemy lineup. Exiting loop.");
+     break;
+   }
+ }
+
+
+  // Fill remaining slots with null if team is incomplete
+  while (enemyLineup.length < maxSlots) {
+    enemyLineup.push(null);
   }
 }
 function calculateTeamCost(team) {
@@ -933,6 +974,10 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
   }
 }
 function backupLineup() {
+   if (!battleLineup.some((animal) => animal !== null)) {
+     console.warn("Cannot backup lineup: No animals in battle lineup.");
+     return;
+   }
   originalBattleLineup = battleLineup.map((animal) => {
     if (animal) {
       return {
@@ -946,6 +991,10 @@ function backupLineup() {
 }
 function shiftAnimalsToFront() {
   const shiftedLineup = battleLineup.filter((animal) => animal !== null);
+   if (shiftedLineup.length === 0) {
+     console.warn("No animals in lineup. Skipping shift.");
+     return; // No need to shift if there are no animals
+   }
   while (shiftedLineup.length < maxSlots) {
     shiftedLineup.push(null);
   }
@@ -1458,6 +1507,9 @@ const freezeButton = document.getElementById("freezeButton");
 function showFreezeBin() {
   freezeButton.classList.remove("hidden");
 }
+function hideFreezeBin() {
+  freezeButton.classList.add("hidden");
+}
 function showTrashBin() {
   trashBin.classList.remove("hidden");
 }
@@ -1516,6 +1568,7 @@ freezeButton.addEventListener("drop", (event) => {
     }
     saveCurrentItems(); 
     renderItem(); 
+    hideFreezeBin()
   }
 });
 let items = [];
@@ -1525,7 +1578,11 @@ function loadRandomItems() {
   const savedItems = JSON.parse(localStorage.getItem("currentItems")) || [];
   currentItem1 = savedItems[0] ? { ...savedItems[0] } : null;
   currentItem2 = savedItems[1] ? { ...savedItems[1] } : null;
-  renderItem(); 
+  if (!currentItem1 && !currentItem2) {
+    refreshItems(); // Generate random items if none are saved
+  } else {
+    renderItem();
+  } 
 }
 function refreshItems() {
   if (items.length === 0) {
@@ -1546,12 +1603,13 @@ function handleItemDrop(event, animal) {
   const itemName = event.dataTransfer.getData("itemName");
   const itemEffect = event.dataTransfer.getData("itemEffect");
   const slotId = event.dataTransfer.getData("slotId");
-
+  hideFreezeBin()
   if (itemName && itemEffect && animal) {
     let item = items.find((i) => i.name === itemName);
     if (item) itemCost = item.cost;
     if (coins < itemCost) {
-      alert("Not enough coins to buy this item!");
+      const itemSlot = document.getElementById(slotId);
+      jitterImage(itemSlot);
       return;
     }
     coins -= itemCost;
@@ -1692,6 +1750,24 @@ function loseLife() {
       }, 1000); 
     }, 1500); 
   }
+}
+function jitterImage(element) {
+  if (!element) return;
+
+  // Get the current transform value (if any)
+  const currentTransform = window.getComputedStyle(element).transform;
+
+  // Apply jitter with the existing transform
+  const jitterTransform = currentTransform === "none" ? "" : currentTransform;
+  element.style.transition = "transform 0.1s";
+
+  element.style.transform = `${jitterTransform} translateX(-5px)`;
+  setTimeout(() => {
+    element.style.transform = `${jitterTransform} translateX(5px)`;
+    setTimeout(() => {
+      element.style.transform = `${jitterTransform}`;
+    }, 100);
+  }, 100);
 }
 function showDrawScreen() {
   const dimmerOverlay = document.getElementById("dimmerOverlay");
