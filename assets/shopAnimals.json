@@ -7,7 +7,8 @@
     "img": "../assets/Animals/VUnt.webp",
     "color": "#636363",
     "level":1,
-    "bar": 0 
+    "bar": 0,
+    "sound": "../assets/animalsounds/VUnt.wav"
   },
   {
     "name": "fiCM",
@@ -17,7 +18,8 @@
     "img": "../assets/Animals/fiCM.webp",
     "color": "#0594DB",
     "level":1,
-    "bar": 0 
+    "bar": 0,
+    "sound": "../assets/animalsounds/fiCM.wav" 
   },
   {
     "name": "KAon",
@@ -27,7 +29,8 @@
     "img": "../assets/Animals/KAon.webp",
     "color": "#AB7B62",
     "level":1,
-    "bar": 0 
+    "bar": 0,
+    "sound": "../assets/animalsounds/KAon.wav" 
   },
   {
     "name": "DJig",
@@ -37,7 +40,8 @@
     "img": "../assets/Animals/DJig.webp",
     "color": "#FF938F",
     "level":1,
-    "bar": 0 
+    "bar": 0,
+    "sound": "../assets/animalsounds/DJig.wav" 
   },
   {
     "name": "turGTle",
@@ -47,7 +51,8 @@
     "img": "../assets/Animals/turGTle.webp",
     "color": "#6C8C09",
     "level":1,
-    "bar": 0 
+    "bar": 0,
+    "sound": "../assets/animalsounds/turGTle.wav" 
   },
   {
     "name": "eLOphant",
@@ -57,7 +62,8 @@
     "img": "../assets/Animals/eLOphant.webp",
     "color": "#B4BCBF",
     "level":1,
-    "bar": 0 
+    "bar": 0,
+    "sound": "../assets/animalsounds/eLOphant.wav" 
   },
   {
     "name": "aCFolotl",
@@ -67,7 +73,8 @@
     "img": "../assets/Animals/aCFolotl.webp",
     "color": "#FF819E",
     "level":1,
-    "bar": 0 
+    "bar": 0,
+    "sound": "../assets/animalsounds/aCFolotl.m4a" 
   },
   {
     "name": "caKRbara",
@@ -77,7 +84,8 @@
     "img": "../assets/Animals/caKRbara.webp",
     "color": "#F09D61",
     "level":1,
-    "bar": 0 
+    "bar": 0,
+    "sound": "../assets/animalsounds/caKRbara.wav" 
   },
   {
     "name": "CWinchilla",
@@ -87,7 +95,8 @@
     "img": "../assets/Animals/CWinchilla.webp",
     "color": "#8F999E",
     "level":1,
-    "bar": 0 
+    "bar": 0,
+    "sound": "../assets/animalsounds/CWinchilla.wav" 
   },
   {
     "name": "eagSVle",
@@ -97,7 +106,8 @@
     "img": "../assets/Animals/eagSVle.webp",
     "color": "#A3735E",
     "level":1,
-    "bar": 0 
+    "bar": 0,
+    "sound": "../assets/animalsounds/eagSVle.m4a" 
   },
   {
     "name": "monKKey",
@@ -107,7 +117,8 @@
     "img": "../assets/Animals/monKKey.webp",
     "color": "#D6A16F",
     "level":1,
-    "bar": 0 
+    "bar": 0,
+    "sound": "../assets/animalsounds/monKKey.m4a" 
   },
   {
     "name": "MSeer",
@@ -117,7 +128,8 @@
     "img": "../assets/Animals/MSeer.webp",
     "color": "#EB8760",
     "level":1,
-    "bar": 0 
+    "bar": 0,
+    "sound": "../assets/animalsounds/MSeer.m4a" 
   },
   {
     "name": "octoSFus",
@@ -127,7 +139,8 @@
     "img": "../assets/Animals/octoSFus.webp",
     "color": "#CF4F4B",
     "level":1,
-    "bar": 0 
+    "bar": 0,
+    "sound": "../assets/animalsounds/octoSFus.mp3" 
   },
   {
     "name": "owLF",
@@ -137,7 +150,8 @@
     "img": "../assets/Animals/owLF.webp",
     "color": "#99593D",
     "level":1,
-    "bar": 0 
+    "bar": 0,
+    "sound": "../assets/animalsounds/owLF.wav" 
   },
   {
     "name": "PamstIr",
@@ -147,7 +161,8 @@
     "img": "../assets/Animals/PamstIr.webp",
     "color": "#D9A46F",
     "level":1,
-    "bar": 0 
+    "bar": 0,
+    "sound": "../assets/animalsounds/PamstIr.wav" 
   },
   {
     "name": "VJanda",
@@ -157,7 +172,8 @@
     "img": "../assets/Animals/VJanda.webp",
     "color": "#707070",
     "level":1,
-    "bar": 0 
+    "bar": 0,
+    "sound": "../assets/animalsounds/VJanda.wav" 
   },
   {
     "name": "YenguiK",
@@ -167,7 +183,8 @@
     "img": "../assets/Animals/YenguiK.webp",
     "color": "#676880",
     "level":1,
-    "bar": 0 
+    "bar": 0,
+    "sound": "../assets/animalsounds/YenguiK.wav" 
   },
   {
     "name": "PPat",
@@ -177,7 +194,8 @@
     "img": "../assets/Animals/PPat.webp",
     "color": "#868A91",
     "level":1,
-    "bar": 0 
+    "bar": 0,
+    "sound": "../assets/animalsounds/PPat.wav" 
   },
   {
     "name": "ZKug",
@@ -187,7 +205,8 @@
     "img": "../assets/Animals/ZKug.webp",
     "color": "#FADDA9",
     "level":1,
-    "bar": 0 
+    "bar": 0,
+    "sound": "../assets/animalsounds/ZKug.wav" 
   },
   {
     "name": "t-reXY",
@@ -197,7 +216,8 @@
     "img": "../assets/Animals/t-reXY.webp",
     "color": "#A4C400",
     "level":1,
-    "bar": 0 
+    "bar": 0,
+    "sound": "../assets/animalsounds/t-reXY.mp3" 
   },
   {
     "name": "VrocodiLe",
@@ -207,7 +227,8 @@
     "img": "../assets/Animals/VrocodiLe.webp",
     "color": "#8EA848",
     "level":1,
-    "bar": 0 
+    "bar": 0,
+    "sound": "../assets/animalsounds/VrocodiLe.m4a" 
   },
   {
     "name": "WLeopard",
@@ -217,7 +238,8 @@
     "img": "../assets/Animals/WLeopard.webp",
     "color": "#FFDE59",
     "level":1,
-    "bar": 0 
+    "bar": 0,
+    "sound": "../assets/animalsounds/WLeopard.wav" 
   },
   {
     "name": "Liberian_Husky",
@@ -227,7 +249,8 @@
     "img": "../assets/Animals/Liberian_Husky.webp",
     "color": "#766D78",
     "level":1,
-    "bar": 0 
+    "bar": 0,
+    "sound": "../assets/animalsounds/Liberian_Husky.wav" 
   },
   {
     "name": "LabbiK",
@@ -237,6 +260,7 @@
     "img": "../assets/Animals/LabbiK.webp",
     "color": "#B4D7E3",
     "level":1,
-    "bar": 0 
+    "bar": 0,
+    "sound": "../assets/animalsounds/LKabbit.wav" 
   }
 ]
