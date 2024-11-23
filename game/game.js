@@ -1254,7 +1254,6 @@ function animateDeathFlyOff(animal, index, teamType, onComplete) {
       renderFullTeam(); // Render background or other elements
 
       for (let i = 0; i < 20; i++) {
-        // Increase the number of stars
         const angle = (i / 20) * Math.PI * 2; // Spread stars evenly
         const radius = (explosionFrame / explosionDuration) * maxRadius; // Expand explosion radius
         const starX = x + Math.cos(angle) * radius;
@@ -1294,7 +1293,6 @@ function handleBothDeaths(playerAnimal, enemyAnimal, onComplete) {
         if (playerAnimal.specialEffect === "SpawnBus") {
           const playerIndex = battleLineup.indexOf(playerAnimal);
           battleLineup[playerIndex] = createBus();
-          // renderBattleSlots(); 
           resolve(); 
         } else {
           animateDeathFlyOff(
