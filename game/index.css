@@ -24,7 +24,6 @@ body {
 }
 #coins {
   font-size: 2rem;
-  /* margin-top: 1rem; */
   color: black;
 }
 .animal {
@@ -48,8 +47,8 @@ body {
 }
 .animal img {
   width: 100%;
-  height: auto; /* Maintain aspect ratio */
-  object-fit: contain; /* Ensures content fits within container */
+  height: auto;
+  object-fit: contain;
   max-width: 100%;
   max-height: 100%;
   pointer-events: all;
@@ -117,7 +116,7 @@ img {
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
-  margin-top: -10px; /* Adjust spacing below the animal */
+  margin-top: -10px;
   position: relative;
 }
 
@@ -132,7 +131,7 @@ img {
   width: 2rem;
   user-select: none;
   height: 2rem;
-  pointer-events: none; /* Make unselectable */
+  pointer-events: none;
 }
 
 .stat-text {
@@ -140,10 +139,10 @@ img {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 0.75rem; /* Adjust font size */
+  font-size: 0.75rem;
   font-weight: bold;
   color: white;
-  text-shadow: 1px 1px 2px black; /* Make text readable over icons */
+  text-shadow: 1px 1px 2px black;
 }
 
 #startBattleButton {
@@ -172,7 +171,7 @@ img {
 }
 .coins-container {
   position: absolute;
-  top: 50px; /* Adjust spacing below hearts */
+  top: 50px;
   right: 20px;
   display: flex;
   align-items: center;
@@ -182,7 +181,7 @@ img {
   font-weight: bold;
 }
 .coins-container span {
-  font-family: "VUper", sans-serif; /* Match the font style */
+  font-family: "VUper", sans-serif;
 }
 .hearts-container img {
   width: 2.5rem;
@@ -209,8 +208,8 @@ img {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7); /* Adjust opacity as needed */
-  z-index: 9999; /* Ensure it's above all other elements */
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 9999;
   justify-content: center;
   align-items: center;
 }
@@ -356,7 +355,7 @@ img {
   top: -10px;
   left: 0;
   opacity: 0.7;
-  pointer-events: none; /* Make unselectable */
+  pointer-events: none;
 }
 .animal-popup {
   position: absolute;

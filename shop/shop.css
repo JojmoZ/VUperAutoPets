@@ -9,9 +9,9 @@ body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background-image: url(../assets/].webp);
   background-repeat: repeat-x;
-  background-attachment: fixed; /* Optional, ensures smooth scrolling */
+  background-attachment: fixed; 
   background-position: top left;
-  background-size: cover; /* Or adjust as needed */
+  background-size: cover; 
 }
 .shop-wrapper {
   display: flex;

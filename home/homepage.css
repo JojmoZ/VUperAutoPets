@@ -691,7 +691,7 @@ section {
   align-items: center;
 }
 .trailer-background {
-  /* background-image: url("../assets/container2.png"); */
+ 
   background-size: contain;
   background-size: 110%;
   background-position: center;
@@ -703,7 +703,7 @@ section {
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  border-radius: 15px; /* Matches the background container */
+  border-radius: 15px;
   max-width: 800px;
   margin: 0 auto;
 }
@@ -711,8 +711,8 @@ section {
 #trailer-video {
   width: 100%;
   height: auto;
-  border-radius: 10px; /* Rounds the video to blend into the container */
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); /* Adds subtle shadow to the video */
+  border-radius: 10px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 }
 .map-section {
   background-color: #141414;
@@ -739,7 +739,7 @@ section {
   font-size: 3rem;
   color: white;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-  margin-top: -10px; /* Optional for alignment */
+  margin-top: -10px;
 }
 .map-item > .image,
 body > .image {
