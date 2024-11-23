@@ -232,6 +232,7 @@ function handleDrop(event) {
     ) {
       battleLineup[reversedSlotIndex] = selectedAnimal;
       coins -= selectedAnimal.cost;
+      playBuySound();
       updateCoinsDisplay();
       randomAnimals.splice(animalIndex, 1);
       renderRandomAnimals();
@@ -304,6 +305,24 @@ function hideHoverInfo() {
   hoverInfo.style.opacity = 0;
 }
 const busSound = document.getElementById("busSound");
+const buySound = document.getElementById("buySound");
+const eatSound = document.getElementById("eatSound");
+const rollSound = document.getElementById("rollSound");
+
+function playBuySound() {
+  buySound.currentTime = 0;
+  buySound.play();
+}
+
+function playEatSound() {
+  eatSound.currentTime = 0;
+  eatSound.play();
+}
+
+function playRollSound() {
+  rollSound.currentTime = 0;
+  rollSound.play();
+}
 
 function playBusSound() {
   return new Promise((resolve) => {
@@ -548,6 +567,7 @@ document.querySelectorAll(".battle-slot").forEach((slot) => {
 
 document.getElementById("refreshButton").addEventListener("click", function () {
   if (coins > 0) {
+    playRollSound()
     coins -= 1;
     rollShopAnimals();
     refreshItems();
@@ -842,6 +862,7 @@ function calculateTeamCost(team) {
   );
 }
 function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
+  const hitSound = new Audio("../assets/sound/hit sound.wav");
   const playerStartX = 100 + (maxSlots - 1) * 100;
   const playerY = 210;
   const enemyStartX = canvas.width - 550;
@@ -872,7 +893,11 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
     const progress = easeInOutQuad(currentFrame / (duration / 1000));
     const playerX = playerStartX - (playerStartX - centerX) * progress;
     const enemyX = enemyStartX + (centerX + 60 - enemyStartX) * progress;
-
+    // Play the hit sound at the midpoint of the animation
+    if (currentFrame === Math.floor(duration / 1000 / 2)) {
+      hitSound.currentTime = 0;
+      hitSound.play();
+    }
     ctx.save();
     ctx.translate(playerX + 40, playerY + 40);
     ctx.scale(-1, 1);
@@ -1651,6 +1676,7 @@ function handleItemDrop(event, animal) {
       return;
     }
     coins -= itemCost;
+    playEatSound();
     applyItemEffect(animal, itemName);
     if (slotId === "itemSlot") currentItem1 = null;
     else if (slotId === "itemSlot2") currentItem2 = null;
@@ -1745,6 +1771,9 @@ function createBus() {
 }
 function loseLife() {
   if (lives > 0) {
+    const defeatSound = new Audio("../assets/sound/defeat sound.mp3");
+    defeatSound.currentTime = 0; // Ensure it starts from the beginning
+    defeatSound.play(); // Play the win sound
     const dimmerOverlay = document.getElementById("dimmerOverlay");
     dimmerOverlay.classList.remove("hidden");
     middleHeart.src = "../assets/heart.png";
@@ -1810,6 +1839,9 @@ function jitterImage(element) {
   }, 100);
 }
 function showDrawScreen() {
+  const drawSound = new Audio("../assets/sound/draw wound.mp3");
+  drawSound.currentTime = 0; // Ensure it starts from the beginning
+  drawSound.play(); // Play the win sound
   const dimmerOverlay = document.getElementById("dimmerOverlay");
   dimmerOverlay.classList.remove("hidden");
   const frownImage = new Image();
@@ -1872,6 +1904,9 @@ function showDrawScreen() {
   }, 2000);
 }
 function showWinScreen() {
+  const winSound = new Audio("../assets/sound/win sound.mp3");
+  winSound.currentTime = 0; // Ensure it starts from the beginning
+  winSound.play(); // Play the win sound
   const dimmerOverlay = document.getElementById("dimmerOverlay");
   dimmerOverlay.classList.remove("hidden");
   const winContainer = document.createElement("div");
