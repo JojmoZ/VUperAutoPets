@@ -1,4 +1,13 @@
 window.onload = function () {
+  let pendingCoins = parseInt(localStorage.getItem("pendingCoins")) || 0;
+  if (pendingCoins > 0) {
+    let currentCoins = parseInt(localStorage.getItem("coins")) || 0;
+    currentCoins += pendingCoins;
+    // Update coins in localStorage and reset pendingCoins
+    localStorage.setItem("coins", currentCoins);
+    localStorage.setItem("pendingCoins", 0);
+    ShowModal(`You've earned ${pendingCoins} coins!`);
+  }
   const track = document.getElementById("maps");
 
   // Set initial position of the track to be more right

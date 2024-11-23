@@ -1402,7 +1402,8 @@ async function simulateBattle() {
       const enemySurvivors = enemyLineup.filter(
         (animal) => animal !== null
       ).length;
-
+      coins += 10;
+      updateCoinsDisplay();
       checkGameOver(playerSurvivors, enemySurvivors);
       renderTeams();
       return;
@@ -1530,7 +1531,13 @@ trashBin.addEventListener("dragover", (event) => {
 trashBin.addEventListener("drop", (event) => {
   event.preventDefault();
   const slotIndex = event.dataTransfer.getData("text");
-  battleLineup[slotIndex] = null; 
+  const animal = battleLineup[slotIndex];
+  if (animal) {
+    const refundAmount = Math.floor(animal.cost / 2); // Calculate half of the animal's cost
+    coins += refundAmount; // Add coins to the user's balance
+    updateCoinsDisplay(); // Update the displayed coins count
+  }
+  battleLineup[slotIndex] = null; // Remove the animal from the lineup
   renderBattleSlots();
   saveBattleLineup();
 });
@@ -1605,6 +1612,12 @@ function handleItemDrop(event, animal) {
   const slotId = event.dataTransfer.getData("slotId");
   hideFreezeBin()
   if (itemName && itemEffect && animal) {
+     if (itemName === "Bus" && animal.specialEffect === "SpawnBus") {
+       const itemSlot = document.getElementById(slotId);
+       jitterImage(itemSlot);
+      return; // Stop processing without jittering the item slot
+     }
+
     let item = items.find((i) => i.name === itemName);
     if (item) itemCost = item.cost;
     if (coins < itemCost) {
@@ -1875,6 +1888,9 @@ function showWinScreen() {
   winContainer.appendChild(sunray);
   winContainer.appendChild(winImage);
   document.body.appendChild(winContainer);
+  let pendingCoins = parseInt(localStorage.getItem("pendingCoins")) || 0;
+  pendingCoins += 5;
+  localStorage.setItem("pendingCoins", pendingCoins);
   setTimeout(() => {
     winContainer.style.transition = "opacity 1s ease-in-out";
     winContainer.style.opacity = "0";
