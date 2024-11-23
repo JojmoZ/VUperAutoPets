@@ -8,7 +8,7 @@ class Modal {
     this.modalBox = document.createElement("div");
     this.modalContent = document.createElement("div");
     this.modalCloseButton = document.createElement("button");
-    this.closeIcon = document.createElement("span"); // Icon placeholder
+    this.closeIcon = document.createElement("span"); 
     this.modalOverlay.style.cssText = `
       position: fixed;
       top: 0;
@@ -54,17 +54,17 @@ class Modal {
     this.modalCloseButton.textContent = "Close";
     this.modalCloseButton.addEventListener("mouseenter", () => {
       this.modalCloseButton.style.transform = "scale(1.1)";
-      this.modalCloseButton.style.backgroundColor = "#ff4757"; // Change to red on hover
+      this.modalCloseButton.style.backgroundColor = "#ff4757"; 
       this.modalCloseButton.style.color = "white";
 
-      this.closeIcon.style.opacity = "1"; // Show icon
+      this.closeIcon.style.opacity = "1"; 
     });
     this.modalCloseButton.addEventListener("mouseleave", () => {
       this.modalCloseButton.style.transform = "scale(1)";
       this.modalCloseButton.style.backgroundColor = "#007bff";
       this.modalCloseButton.style.color = "white";
 
-      this.closeIcon.style.opacity = "0"; // Hide icon
+      this.closeIcon.style.opacity = "0"; 
     });
     this.closeIcon.style.cssText = `
       position: absolute;
@@ -89,14 +89,14 @@ class Modal {
     setTimeout(() => {
       this.modalBox.style.transform = "scale(1)";
       this.modalBox.style.opacity = "1";
-    }, 10); // Slight delay to allow animation to kick in
+    }, 10); 
   }
   hideModal() {
     this.modalBox.style.transform = "scale(0.8)";
     this.modalBox.style.opacity = "0";
     setTimeout(() => {
       this.modalOverlay.style.display = "none";
-    }, 300); // Match the duration of the CSS transition
+    }, 300); 
   }
 }
 const modal = new Modal();

@@ -458,9 +458,9 @@ function followPath(animal, path, callback) {
         animal.offsetHeight
       )
     ) {
-      unstickAnimal(animal); // Move to nearest open space
+      unstickAnimal(animal); 
     }
-  }, 500); // Delay to allow food consumption animation
+  }, 500); 
 }
 function drawRestrictedZones() {
   const existingZones = document.querySelectorAll(".restricted-area");
@@ -499,14 +499,14 @@ function unstickAnimal(animal) {
   const startX = parseFloat(animal.style.left) + animal.offsetWidth / 2;
   const startY = parseFloat(animal.style.top) + animal.offsetHeight / 2;
 
-  // Parameters for "safe zone" calculation
-  const safeDistance = 30; // Minimum safe distance from restricted zones
-  const searchRadius = 100; // Maximum distance to look for safe spots
-  const stepSize = gridSize; // Incremental step size for nearby positions
+  
+  const safeDistance = 30; 
+  const searchRadius = 100; 
+  const stepSize = gridSize; 
 
   let safeLocations = [];
 
-  // Check grid cells within the search radius
+  
   for (
     let row = -Math.ceil(searchRadius / stepSize);
     row <= Math.ceil(searchRadius / stepSize);
@@ -520,7 +520,7 @@ function unstickAnimal(animal) {
       const candidateX = startX + col * stepSize;
       const candidateY = startY + row * stepSize;
 
-      // Skip if outside container bounds
+      
       if (
         candidateX < 0 ||
         candidateX > animalContainer.clientWidth ||
@@ -529,7 +529,7 @@ function unstickAnimal(animal) {
       )
         continue;
 
-      // Check if candidate position is valid
+      
       if (
         !isInRestrictedZone(
           candidateX - animal.offsetWidth / 2,
@@ -550,7 +550,7 @@ function unstickAnimal(animal) {
             (candidateX - zoneCenterX) ** 2 + (candidateY - zoneCenterY) ** 2
           );
 
-          return distance >= safeDistance; // Ensure it's at least `safeDistance` away
+          return distance >= safeDistance; 
         });
 
         if (isFarEnough) {
@@ -560,7 +560,7 @@ function unstickAnimal(animal) {
     }
   }
 
-  // Pick the closest valid position to the original location
+  
   let closestLocation = null;
   let minDistance = Infinity;
   safeLocations.forEach((location) => {
@@ -573,19 +573,19 @@ function unstickAnimal(animal) {
     }
   });
 
-  // Smoothly move the animal to the closest safe location
+  
   if (closestLocation) {
     const endX = closestLocation.x - animal.offsetWidth / 2;
     const endY = closestLocation.y - animal.offsetHeight / 2;
 
-    const duration = 500; // Movement duration in milliseconds
+    const duration = 500; 
     const startTime = performance.now();
 
     function animateMove(currentTime) {
       const elapsedTime = currentTime - startTime;
-      const progress = Math.min(elapsedTime / duration, 1); // Clamp progress between 0 and 1
+      const progress = Math.min(elapsedTime / duration, 1); 
 
-      // Interpolate position
+      
       const newX = startX + (endX - startX) * progress;
       const newY = startY + (endY - startY) * progress;
 
@@ -593,13 +593,13 @@ function unstickAnimal(animal) {
       animal.style.top = `${newY}px`;
 
       if (progress < 1) {
-        requestAnimationFrame(animateMove); // Continue animation
+        requestAnimationFrame(animateMove); 
       } else {
         console.log("Animal successfully moved to a safe location.");
       }
     }
 
-    requestAnimationFrame(animateMove); // Start animation
+    requestAnimationFrame(animateMove); 
   } else {
     console.warn("No valid nearby location found to unstick the animal.");
   }

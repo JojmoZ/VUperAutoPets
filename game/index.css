@@ -132,6 +132,7 @@ img {
   width: 2rem;
   user-select: none;
   height: 2rem;
+  pointer-events: none; /* Make unselectable */
 }
 
 .stat-text {
@@ -181,16 +182,16 @@ img {
   font-weight: bold;
 }
 .coins-container span {
-  font-family: 'VUper', sans-serif; /* Match the font style */
+  font-family: "VUper", sans-serif; /* Match the font style */
 }
 .hearts-container img {
   width: 2.5rem;
   height: 2.5rem;
   margin-left: 0.625rem;
 }
-.coins-container img{
-   width: 2.5rem;
-   height: 2.5rem;
+.coins-container img {
+  width: 2.5rem;
+  height: 2.5rem;
 }
 #middleHeart {
   position: absolute;
@@ -355,7 +356,7 @@ img {
   top: -10px;
   left: 0;
   opacity: 0.7;
-  pointer-events: none;
+  pointer-events: none; /* Make unselectable */
 }
 .animal-popup {
   position: absolute;
@@ -490,4 +491,3 @@ img {
 .floating-bus {
   animation: riseAndDisappear 1s ease-out forwards;
 }
-

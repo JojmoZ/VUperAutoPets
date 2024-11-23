@@ -1,5 +1,5 @@
-let userInput = ""; // For the original game-specific cheats
-let cheatCode = ""; // For the new cheat-checking logic
+let userInput = ""; 
+let cheatCode = ""; 
 const targetSequenceCoins = "CUTCUTCUT";
 const targetSequenceLives = "JANGANAMPAS";
 let coinsa = parseInt(localStorage.getItem("gamecoins")) || 0;
@@ -7,26 +7,26 @@ function checkSequence() {
   if (userInput === targetSequenceCoins) {
     coinsa += 241241241;
     updateCoinsDisplay();
-    userInput = ""; // Reset input
+    userInput = ""; 
   } else if (userInput === targetSequenceLives) {
     lives = 3;
     localStorage.setItem("lives", lives);
     updateHeartsDisplay();
-    userInput = ""; // Reset input
+    userInput = ""; 
   } else if (
     userInput.length >
     Math.max(targetSequenceCoins.length, targetSequenceLives.length)
   ) {
-    userInput = ""; // Reset if too long and unmatched
+    userInput = ""; 
   }
 }
 
 document.addEventListener("keydown", function (event) {
-  // Add to both input mechanisms
+  
   userInput += event.key.toUpperCase();
   cheatCode += event.key.toLowerCase();
 
-  // Limit input lengths to avoid overflow
+  
   if (
     userInput.length >
     Math.max(targetSequenceCoins.length, targetSequenceLives.length)
@@ -40,10 +40,10 @@ document.addEventListener("keydown", function (event) {
   checkSequence();
 
   if (cheatCode.endsWith("cutcutcut")) {
-    coinsa += 241241241; // Match the behavior of the `CUTCUTCUT` sequence
+    coinsa += 241241241; 
     updateCoinsDisplay();
   } else if (cheatCode.endsWith("janganampas")) {
-    lives = 3; // Match the behavior of the `JANGANAMPAS` sequence
+    lives = 3; 
     localStorage.setItem("lives", lives);
     updateHeartsDisplay();
   }

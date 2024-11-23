@@ -63,11 +63,11 @@ document.addEventListener("DOMContentLoaded", function () {
       shopContainer.scrollLeft += scrollAmount;
       scrollAmount *= 0.85;
 
-      // Synchronize the background scroll position with shopContainer's scroll position
+      
       const maxScroll = shopContainer.scrollWidth - window.innerWidth;
       const scrollLeft = shopContainer.scrollLeft;
 
-      // Ensure the background scrolls only within valid range
+      
       const clampedScroll = Math.max(0, Math.min(scrollLeft, maxScroll));
       document.body.style.backgroundPosition = `${-clampedScroll}px top`;
 
@@ -337,14 +337,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 500);
   });
 
-  // Add background audio
+  
   const backgroundAudio = new Audio(
     "../assets/sound/Super Auto Pets  - Menu Theme.mp3"
   );
   backgroundAudio.volume = 0.08;
   backgroundAudio.loop = true;
 
-  // Resume playback from the last saved time
+  
   const savedTime = localStorage.getItem("backgroundAudioTime");
   if (savedTime) {
     backgroundAudio.currentTime = parseFloat(savedTime);
@@ -371,7 +371,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document.addEventListener("mousedown", playBackgroundAudio);
   document.addEventListener("mouseup", playBackgroundAudio);
 
-  // Save the current playback time before the page unloads
+  
   window.addEventListener("beforeunload", () => {
     localStorage.setItem("backgroundAudioTime", backgroundAudio.currentTime);
   });

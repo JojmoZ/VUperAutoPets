@@ -222,6 +222,7 @@ function handleDrop(event) {
           currentAnimal.health += 4;
         }
       }
+      playAnimalSound(currentAnimal.sound);   
       randomAnimals.splice(animalIndex, 1);
       renderBattleSlots();
       renderRandomAnimals();
@@ -233,6 +234,8 @@ function handleDrop(event) {
       battleLineup[reversedSlotIndex] = selectedAnimal;
       coins -= selectedAnimal.cost;
       playBuySound();
+      console.log(selectedAnimal)
+      playAnimalSound(selectedAnimal.sound); 
       updateCoinsDisplay();
       randomAnimals.splice(animalIndex, 1);
       renderRandomAnimals();
@@ -271,6 +274,7 @@ function handleDrop(event) {
           }
         }
       }
+      playAnimalSound(targetAnimal.sound); 
       battleLineup[animalIndex] = null;
       renderBattleSlots();
       saveBattleLineup();
@@ -282,7 +286,7 @@ function handleDrop(event) {
       saveBattleLineup();
     }
   } else if (source === "item") {
-    // free
+    
     const itemName = event.dataTransfer.getData("itemName");
     const itemEffect = event.dataTransfer.getData("itemEffect");
     const targetAnimal = battleLineup[reversedSlotIndex];
@@ -290,6 +294,12 @@ function handleDrop(event) {
       handleItemDrop(event, targetAnimal);
     }
   }
+}
+function playAnimalSound(soundPath) {
+  console.log("Playing sound:", soundPath);
+  const animalSound = new Audio(`${soundPath}`);
+  animalSound.currentTime = 0;
+  animalSound.play();
 }
 function handleDragOver(event) {
   event.preventDefault();
@@ -308,12 +318,15 @@ const busSound = document.getElementById("busSound");
 const buySound = document.getElementById("buySound");
 const eatSound = document.getElementById("eatSound");
 const rollSound = document.getElementById("rollSound");
-
+const sellSound = document.getElementById("sellSound");
 function playBuySound() {
   buySound.currentTime = 0;
   buySound.play();
 }
-
+function playSellSound(){
+  sellSound.currentTime = 0;
+  sellSound.play()
+}
 function playEatSound() {
   eatSound.currentTime = 0;
   eatSound.play();
@@ -328,7 +341,7 @@ function playBusSound() {
   return new Promise((resolve) => {
     busSound.currentTime = 0;
     busSound.play();
-    busSound.onended = resolve; // Resolve the promise when the sound ends
+    busSound.onended = resolve; 
   });
 }
 
@@ -372,6 +385,7 @@ function renderBattleSlots() {
       attackContainer.classList.add("stat-icon");
       const attackIcon = document.createElement("img");
       attackIcon.src = "../assets/fist.png";
+      attackIcon.draggable = false; 
       const attackText = document.createElement("span");
       attackText.textContent = animal.attack;
       attackText.classList.add("stat-text");
@@ -381,6 +395,7 @@ function renderBattleSlots() {
       healthContainer.classList.add("stat-icon");
       const healthIcon = document.createElement("img");
       healthIcon.src = "../assets/heart.png";
+      healthIcon.draggable = false; 
       const healthText = document.createElement("span");
       healthText.textContent = animal.health;
       healthText.classList.add("stat-text");
@@ -409,6 +424,7 @@ function renderBattleSlots() {
           busIcon.alt = "Bus Aura";
           busIcon.style.width = "100%";
           busIcon.style.height = "100%";
+          busIcon.draggable = false; 
 
           auraContainer.appendChild(busIcon);
           wrapper.appendChild(auraContainer);
@@ -592,7 +608,7 @@ document
   .addEventListener("click", function () {
     if (!playing) {
       checkbattlelineup();
-      // if (canPlay) {
+      
       showCurtains();
       playing = true;
       closeCurtains();
@@ -808,12 +824,12 @@ document.addEventListener("DOMContentLoaded", function () {
       return response.json();
     })
     .then((data) => {
-      console.log("Fetched items:", data); // Debug fetched items
+      console.log("Fetched items:", data); 
       items = data;
       if (items.length === 0) {
         console.error("No items found in the JSON data.");
       } else {
-        refreshItems(); // Ensure items are generated
+        refreshItems(); 
       }
     })
     .catch((error) => console.error("Error loading items:", error));
@@ -825,13 +841,13 @@ function updateCoinsDisplay() {
   document.getElementById("coins").textContent = coins;
 }
 function generateEnemyTeam() {
-  const totalPlayerCoins = coins; // Use player's current coins as the basis
-  const enemyTeamCost = totalPlayerCoins; // Match enemy team cost to player coins
+  const totalPlayerCoins = coins; 
+  const enemyTeamCost = totalPlayerCoins; 
   let currentCost = 0;
   enemyLineup = [];
 
   let attempts = 0;
-  const maxAttempts = 100; // Prevent infinite loop
+  const maxAttempts = 100; 
 
   while (enemyLineup.length < maxSlots && currentCost < enemyTeamCost) {
     const randomAnimal = {
@@ -850,7 +866,7 @@ function generateEnemyTeam() {
     }
   }
 
-  // Fill remaining slots with null if team is incomplete
+  
   while (enemyLineup.length < maxSlots) {
     enemyLineup.push(null);
   }
@@ -893,7 +909,7 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
     const progress = easeInOutQuad(currentFrame / (duration / 1000));
     const playerX = playerStartX - (playerStartX - centerX) * progress;
     const enemyX = enemyStartX + (centerX + 60 - enemyStartX) * progress;
-    // Play the hit sound at the midpoint of the animation
+    
     if (currentFrame === Math.floor(duration / 1000 / 2)) {
       hitSound.currentTime = 0;
       hitSound.play();
@@ -920,7 +936,7 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
     ctx.drawImage(fistImg, enemyX, enemyY + 60, 40, 40);
     ctx.drawImage(heartImg, enemyX + 40, enemyY + 60, 40, 40);
     let attackTextEn = `${enemyAnimal.attack}`;
-    let attackTextWidthEn = ctx.measureText(attackTextEn).width;
+    let attackTextWidthEn = ctx.measureText(attackText).width;
     let attackXEn = enemyX + 20 - attackTextWidthEn / 2;
     let healthTextEn = `${enemyAnimal.health}`;
     let healthTextWidthEn = ctx.measureText(healthTextEn).width;
@@ -1005,7 +1021,7 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
       ctx.drawImage(fistImg, enemyX, enemyY + 60, 40, 40);
       ctx.drawImage(heartImg, enemyX + 40, enemyY + 60, 40, 40);
       let attackTextEn = `${enemyAnimal.attack}`;
-      let attackTextWidthEn = ctx.measureText(attackTextEn).width;
+      let attackTextWidthEn = ctx.measureText(attackText).width;
       let attackXEn = enemyX + 20 - attackTextWidthEn / 2;
       let healthTextEn = `${enemyAnimal.health}`;
       let healthTextWidthEn = ctx.measureText(healthTextEn).width;
@@ -1043,7 +1059,7 @@ function shiftAnimalsToFront() {
   const shiftedLineup = battleLineup.filter((animal) => animal !== null);
   if (shiftedLineup.length === 0) {
     console.warn("No animals in lineup. Skipping shift.");
-    return; // No need to shift if there are no animals
+    return; 
   }
   while (shiftedLineup.length < maxSlots) {
     shiftedLineup.push(null);
@@ -1173,7 +1189,7 @@ function showDamage(
     ctx.fillText(attackText, attackX, commonY + 85);
     ctx.fillText(healthText, healthX, commonY + 85);
     let attackTextEn = `${enemyDamage}`;
-    let attackTextWidthEn = ctx.measureText(attackTextEn).width;
+    let attackTextWidthEn = ctx.measureText(attackText).width;
     let attackXEn = enemyX + 20 - attackTextWidthEn / 2;
     let healthTextEn = `${enemyHealth}`;
     let healthTextWidthEn = ctx.measureText(healthTextEn).width;
@@ -1316,17 +1332,17 @@ function animateDeathFlyOff(animal, index, teamType, onComplete) {
 
     ctx.save();
     if (teamType === "player") {
-      ctx.translate(curveX + 30, curveY + 30); // Mirror the image
-      ctx.scale(-1, 1); // Flip horizontally
-      ctx.drawImage(img, -30, -30, 60, 60); // Draw the animal
+      ctx.translate(curveX + 30, curveY + 30); 
+      ctx.scale(-1, 1); 
+      ctx.drawImage(img, -30, -30, 60, 60); 
     } else {
       ctx.drawImage(img, curveX, curveY, 60, 60);
     }
     ctx.restore();
 
-    currentFrame += deltaTime * totalFrames * 2; // Control animation speed
+    currentFrame += deltaTime * totalFrames * 2; 
 
-    // Check for collision with the edge of the screen
+    
     if (
       (teamType === "player" && curveX <= 0) ||
       (teamType !== "player" && curveX >= canvas.width)
@@ -1334,7 +1350,7 @@ function animateDeathFlyOff(animal, index, teamType, onComplete) {
       triggerStarExplosion(curveX, curveY, () => {
         onComplete();
       });
-      return; // Stop the animation
+      return; 
     }
 
     if (currentFrame < totalFrames) {
@@ -1343,32 +1359,32 @@ function animateDeathFlyOff(animal, index, teamType, onComplete) {
   }
 
   function triggerStarExplosion(x, y, explosionComplete) {
-    const explosionDuration = 40; // Duration of explosion in frames
+    const explosionDuration = 40; 
     let explosionFrame = 0;
-    const maxRadius = 150; // Increase explosion radius
-    const starSize = 80; // Make stars larger
+    const maxRadius = 150; 
+    const starSize = 80; 
 
     function drawExplosion() {
-      ctx.clearRect(x - maxRadius, y - maxRadius, maxRadius * 2, maxRadius * 2); // Clear area around the explosion
-      renderFullTeam(); // Render background or other elements
+      ctx.clearRect(x - maxRadius, y - maxRadius, maxRadius * 2, maxRadius * 2); 
+      renderFullTeam(); 
 
       for (let i = 0; i < 20; i++) {
-        const angle = (i / 20) * Math.PI * 2; // Spread stars evenly
-        const radius = (explosionFrame / explosionDuration) * maxRadius; // Expand explosion radius
+        const angle = (i / 20) * Math.PI * 2; 
+        const radius = (explosionFrame / explosionDuration) * maxRadius; 
         const starX = x + Math.cos(angle) * radius;
         const starY = y + Math.sin(angle) * radius;
 
-        ctx.globalAlpha = 1 - explosionFrame / explosionDuration; // Fade out
+        ctx.globalAlpha = 1 - explosionFrame / explosionDuration; 
         ctx.drawImage(
           starImg,
           starX - starSize / 2,
           starY - starSize / 2,
           starSize,
           starSize
-        ); // Draw stars
+        ); 
       }
 
-      ctx.globalAlpha = 1; // Reset opacity
+      ctx.globalAlpha = 1; 
 
       explosionFrame++;
 
@@ -1583,11 +1599,12 @@ trashBin.addEventListener("drop", (event) => {
   const slotIndex = event.dataTransfer.getData("text");
   const animal = battleLineup[slotIndex];
   if (animal) {
-    const refundAmount = Math.floor(animal.cost / 2); // Calculate half of the animal's cost
-    coins += refundAmount; // Add coins to the user's balance
-    updateCoinsDisplay(); // Update the displayed coins count
+    const refundAmount = Math.floor(animal.cost / 2); 
+    coins += refundAmount; 
+    updateCoinsDisplay(); 
   }
-  battleLineup[slotIndex] = null; // Remove the animal from the lineup
+  playSellSound()
+  battleLineup[slotIndex] = null; 
   renderBattleSlots();
   saveBattleLineup();
 });
@@ -1636,7 +1653,7 @@ function loadRandomItems() {
   currentItem1 = savedItems[0] ? { ...savedItems[0] } : null;
   currentItem2 = savedItems[1] ? { ...savedItems[1] } : null;
   if (!currentItem1 && !currentItem2) {
-    refreshItems(); // Generate random items if none are saved
+    refreshItems(); 
   } else {
     renderItem();
   }
@@ -1665,7 +1682,7 @@ function handleItemDrop(event, animal) {
     if (itemName === "Bus" && animal.specialEffect === "SpawnBus") {
       const itemSlot = document.getElementById(slotId);
       jitterImage(itemSlot);
-      return; // Stop processing without jittering the item slot
+      return; 
     }
 
     let item = items.find((i) => i.name === itemName);
@@ -1772,8 +1789,8 @@ function createBus() {
 function loseLife() {
   if (lives > 0) {
     const defeatSound = new Audio("../assets/sound/defeat sound.mp3");
-    defeatSound.currentTime = 0; // Ensure it starts from the beginning
-    defeatSound.play(); // Play the win sound
+    defeatSound.currentTime = 0; 
+    defeatSound.play(); 
     const dimmerOverlay = document.getElementById("dimmerOverlay");
     dimmerOverlay.classList.remove("hidden");
     middleHeart.src = "../assets/heart.png";
@@ -1823,10 +1840,10 @@ function loseLife() {
 function jitterImage(element) {
   if (!element) return;
 
-  // Get the current transform value (if any)
+  
   const currentTransform = window.getComputedStyle(element).transform;
 
-  // Apply jitter with the existing transform
+  
   const jitterTransform = currentTransform === "none" ? "" : currentTransform;
   element.style.transition = "transform 0.1s";
 
@@ -1840,8 +1857,8 @@ function jitterImage(element) {
 }
 function showDrawScreen() {
   const drawSound = new Audio("../assets/sound/draw wound.mp3");
-  drawSound.currentTime = 0; // Ensure it starts from the beginning
-  drawSound.play(); // Play the win sound
+  drawSound.currentTime = 0; 
+  drawSound.play(); 
   const dimmerOverlay = document.getElementById("dimmerOverlay");
   dimmerOverlay.classList.remove("hidden");
   const frownImage = new Image();
@@ -1905,8 +1922,8 @@ function showDrawScreen() {
 }
 function showWinScreen() {
   const winSound = new Audio("../assets/sound/win sound.mp3");
-  winSound.currentTime = 0; // Ensure it starts from the beginning
-  winSound.play(); // Play the win sound
+  winSound.currentTime = 0; 
+  winSound.play(); 
   const dimmerOverlay = document.getElementById("dimmerOverlay");
   dimmerOverlay.classList.remove("hidden");
   const winContainer = document.createElement("div");

@@ -3,16 +3,16 @@ window.onload = function () {
   if (pendingCoins > 0) {
     let currentCoins = parseInt(localStorage.getItem("coins")) || 0;
     currentCoins += pendingCoins;
-    // Update coins in localStorage and reset pendingCoins
+    
     localStorage.setItem("coins", currentCoins);
     localStorage.setItem("pendingCoins", 0);
     ShowModal(`You've earned ${pendingCoins} coins!`);
   }
   const track = document.getElementById("maps");
 
-  // Set initial position of the track to be more right
-  track.dataset.percentage = "-30"; // Adjust this value to control how far right it starts
-  track.style.transform = `translate(-30%, -50%)`; // Match the percentage
+  
+  track.dataset.percentage = "-30"; 
+  track.style.transform = `translate(-30%, -50%)`; 
   console.log("Script Loaded");
   const username = localStorage.getItem("username");
   const logged = localStorage.getItem("loggedin");
@@ -390,7 +390,6 @@ window.onload = function () {
     sectionObserver.observe(section.element);
   });
 
-  // track = document.getElementById("maps");
   const handleOnDown = (e) => {
     track.dataset.mouseDownAt = e.clientX;
   };
@@ -441,14 +440,14 @@ window.onload = function () {
   window.onmousemove = (e) => handleOnMove(e);
   window.ontouchmove = (e) => handleOnMove(e.touches[0]);
 
-  // Add background audio
+  
   const backgroundAudio = new Audio(
     "../assets/sound/Super Auto Pets  - Menu Theme.mp3"
   );
   backgroundAudio.volume = 0.09;
   backgroundAudio.loop = true;
 
-  // Resume playback from the last saved time
+  
   const savedTime = localStorage.getItem("backgroundAudioTime");
   if (savedTime) {
     backgroundAudio.currentTime = parseFloat(savedTime);
@@ -475,7 +474,7 @@ window.onload = function () {
   document.addEventListener("mousedown", playBackgroundAudio);
   document.addEventListener("mouseup", playBackgroundAudio);
 
-  // Save the current playback time before the page unloads
+  
   window.addEventListener("beforeunload", () => {
     localStorage.setItem("backgroundAudioTime", backgroundAudio.currentTime);
   });

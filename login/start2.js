@@ -196,32 +196,32 @@ window.onload = function () {
  async function registerUser(username, password) {
    hideCaptcha();
 
-   // Retrieve the list of users from localStorage
+   
    let users = JSON.parse(localStorage.getItem("users")) || [];
 
-   // Check if the username already exists
+   
    if (users.some((user) => user.username === username)) {
      modalErrorText.innerText = "Username already exists.";
      showErrorModal();
      return;
    }
 
-   // Generate the encryption key and IV
+   
    let key = await generateKey();
 
-   // Export the raw key
+   
    const rawKey = await crypto.subtle.exportKey("raw", key.cryptoKey);
 
-   // Encrypt the password
+   
    let encryptedPassword = await encrypt(password, key);
 
-   // Save the encrypted password, raw key, and IV in localStorage
+   
    users.push({
      username: username,
      password: {
-       encrypted: Array.from(new Uint8Array(encryptedPassword)), // Convert to a storable format
-       key: Array.from(new Uint8Array(rawKey)), // Save the raw key as an array
-       iv: Array.from(key.iv), // Save the IV to decrypt later
+       encrypted: Array.from(new Uint8Array(encryptedPassword)), 
+       key: Array.from(new Uint8Array(rawKey)), 
+       iv: Array.from(key.iv), 
      },
      coins: 15,
      ownedAnimals: [],
@@ -229,22 +229,22 @@ window.onload = function () {
 
    localStorage.setItem("users", JSON.stringify(users));
 
-   // Reset the registration form
+   
    registrationForm.reset();
    registerError.style.display = "none";
 
-   // Show the success modal and switch to the login form
+   
    showSuccessModal();
    showForm(loginForm, registrationForm);
  }
 
 
   async function generateKey() {
-    const iv = crypto.getRandomValues(new Uint8Array(12)); // Generate a random IV
+    const iv = crypto.getRandomValues(new Uint8Array(12)); 
     const cryptoKey = await crypto.subtle.generateKey(
-      { name: "AES-GCM", length: 256 }, // AES-GCM with a 256-bit key
-      true, // Extractable (can be exported)
-      ["encrypt", "decrypt"] // Usages
+      { name: "AES-GCM", length: 256 }, 
+      true, 
+      ["encrypt", "decrypt"] 
     );
     return { cryptoKey, iv };
   }
@@ -258,7 +258,7 @@ window.onload = function () {
     return encrypted;
   }
 
-  // Decryption Example with AES
+  
   async function decrypt(encryptedData, key) {
     const decrypted = await crypto.subtle.decrypt(
       { name: "AES-GCM", iv: key.iv },
@@ -277,7 +277,7 @@ window.onload = function () {
     const successModalHTML = `
         <div id="successModal">
             <div class="modal-content">
-                <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                <svg class="checkmark" xmlns="http:
                     <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none" style="stroke-dasharray: 166; stroke-dashoffset: 166;" />
                     <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" style="stroke-dasharray: 48; stroke-dashoffset: 48;" />
                 </svg>
@@ -344,30 +344,11 @@ window.onload = function () {
     const username = document.getElementById("loginUsername").value;
     let password = document.getElementById("loginPassword").value;
     loginUser(username,password)
-    // let key = await generateKey();
-    // password = await decrypt(password,key)
-    // const users = JSON.parse(localStorage.getItem("users")) || [];
-
-    // const user = users.find(
-    //   (user) => user.username === username && user.password === password
-    // );
-
-    // if (user) {
-    //   localStorage.setItem("loggedin", true);
-    //   localStorage.setItem("username", user.username);
-    //   localStorage.setItem("coins", user.coins);
-    //   localStorage.setItem("ownedAnimals", JSON.stringify(user.ownedAnimals));
-
-    //   window.location.href = "/home/homepage.html";
-    // } else {
-    //   modalErrorText.innerText = "Invalid username or password.";
-    //   showErrorModal();
-    // }
   });
 async function loginUser(username, password) {
   const users = JSON.parse(localStorage.getItem("users")) || [];
 
-  // Find the user with the given username
+  
   const user = users.find((user) => user.username === username);
 
   if (!user) {
@@ -376,25 +357,25 @@ async function loginUser(username, password) {
     return;
   }
 
-  // Reconstruct the key and IV
-  const rawKey = new Uint8Array(user.password.key); // Retrieve the saved raw key
-  const iv = new Uint8Array(user.password.iv); // Retrieve the saved IV
+  
+  const rawKey = new Uint8Array(user.password.key); 
+  const iv = new Uint8Array(user.password.iv); 
 
   const cryptoKey = await crypto.subtle.importKey(
     "raw",
-    rawKey, // Use the raw key data
+    rawKey, 
     { name: "AES-GCM" },
     false,
     ["decrypt"]
   );
 
-  // Decrypt the stored password
+  
   const decryptedPassword = await decrypt(
     new Uint8Array(user.password.encrypted),
     { cryptoKey, iv }
   );
 
-  // Compare the decrypted password with the entered password
+  
   if (decryptedPassword === password) {
     localStorage.setItem("loggedin", true);
     localStorage.setItem("username", user.username);

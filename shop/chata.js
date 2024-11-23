@@ -96,15 +96,15 @@ function showCheatModal(reward) {
     setTimeout(() => {
       cheatModal.style.display = "none";
       cheatModal.classList.remove("hide");
-      cheatActivated = false; // Reset cheatActivated flag
+      cheatActivated = false; 
     }, 500);
-  }, 1500); // Automatically close after 1.5 seconds
+  }, 1500); 
 }
 
 document.addEventListener("keydown", function (event) {
-  // ...existing code...
+  
   if (cheatActivated) {
     showCheatModal(cheatReward);
-    cheatActivated = false; // Reset cheatActivated flag after showing modal
+    cheatActivated = false; 
   }
 });
