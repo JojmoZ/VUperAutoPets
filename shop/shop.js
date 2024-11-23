@@ -264,6 +264,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function playSound() {
     const audio = new Audio("../coins-135571.mp3");
+    audio.volume = 0.2;
     audio.play();
   }
 
