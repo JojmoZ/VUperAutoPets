@@ -46,10 +46,10 @@ canvas {
   height: 3.125rem; 
 }
 
-/* .restricted-area {
+.restricted-area {
   background-color: rgba(255, 0, 0, 0.3);
   border: 2px solid red;
-} */
+}
 
 .stat-window {
     position: absolute;
