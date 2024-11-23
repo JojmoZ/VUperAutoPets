@@ -1402,8 +1402,6 @@ async function simulateBattle() {
       const enemySurvivors = enemyLineup.filter(
         (animal) => animal !== null
       ).length;
-      coins += 10;
-      updateCoinsDisplay();
       checkGameOver(playerSurvivors, enemySurvivors);
       renderTeams();
       return;
@@ -1753,9 +1751,11 @@ function loseLife() {
           setTimeout(() => {
             showNonBattleElements();
             hideCanvas()
+            coins+=10
             dimmerOverlay.classList.add("hidden");
             openCurtains(() => {
               rollfirst();
+              updateCoinsDisplay()
               location.reload();
             });
           }, 1000);
@@ -1833,9 +1833,11 @@ function showDrawScreen() {
       closeCurtains();
       setTimeout(() => {
         showNonBattleElements();
+        coins +=10
         dimmerOverlay.classList.add("hidden");
         openCurtains(() => {
           rollfirst();
+          updateCoinsDisplay()
           location.reload();
         });
       }, 1000);
@@ -1902,8 +1904,10 @@ function showWinScreen() {
         showNonBattleElements();
         restoreOriginalLineup();
         hideCanvas()
+        coins += 10;
         dimmerOverlay.classList.add("hidden");
         openCurtains(() => {
+          updateCoinsDisplay();
           rollfirst();
           location.reload();
         });
