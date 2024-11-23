@@ -1179,8 +1179,11 @@ function getAnimalImage(src) {
 function animateDeathFlyOff(animal, index, teamType, onComplete) {
   const img = new Image();
   img.src = animal.img;
+  const starImg = new Image();
+  starImg.src = "../assets/star.png";
+
   let currentFrame = 0;
-  const totalFrames = 10; 
+  const totalFrames = 10;
   let startX, startY;
   if (teamType === "player") {
     startX = 100 + (maxSlots - 1 - index) * 100;
@@ -1198,29 +1201,8 @@ function animateDeathFlyOff(animal, index, teamType, onComplete) {
     const deltaTime = (currentTime - lastFrameTime) / 1000; 
     lastFrameTime = currentTime;
 
-    const previousX =
-      (1 - currentFrame / totalFrames) *
-        (1 - currentFrame / totalFrames) *
-        startX +
-      2 *
-        (1 - currentFrame / totalFrames) *
-        (currentFrame / totalFrames) *
-        controlPointX +
-      (currentFrame / totalFrames) * (currentFrame / totalFrames) * endX;
-    const previousY =
-      (1 - currentFrame / totalFrames) *
-        (1 - currentFrame / totalFrames) *
-        startY +
-      2 *
-        (1 - currentFrame / totalFrames) *
-        (currentFrame / totalFrames) *
-        controlPointY +
-      (currentFrame / totalFrames) *
-        (currentFrame / totalFrames) *
-        (startY + 100);
-    ctx.clearRect(previousX - 30, previousY - 30, 120, 160);
-    renderFullTeam();
     const progress = currentFrame / totalFrames;
+
     const curveX =
       (1 - progress) * (1 - progress) * startX +
       2 * (1 - progress) * progress * controlPointX +
@@ -1229,22 +1211,79 @@ function animateDeathFlyOff(animal, index, teamType, onComplete) {
       (1 - progress) * (1 - progress) * startY +
       2 * (1 - progress) * progress * controlPointY +
       progress * progress * (startY + 100);
+
+    ctx.clearRect(curveX - 30, curveY - 30, 120, 160);
+    renderFullTeam();
+
     ctx.save();
     if (teamType === "player") {
-      ctx.translate(curveX + 30, curveY + 30); 
-      ctx.scale(-1, 1); 
-      ctx.drawImage(img, -30, -30, 60, 60); 
+      ctx.translate(curveX + 30, curveY + 30); // Mirror the image
+      ctx.scale(-1, 1); // Flip horizontally
+      ctx.drawImage(img, -30, -30, 60, 60); // Draw the animal
     } else {
       ctx.drawImage(img, curveX, curveY, 60, 60);
     }
     ctx.restore();
-    currentFrame += deltaTime * totalFrames * 2; 
+
+    currentFrame += deltaTime * totalFrames * 2; // Control animation speed
+
+    // Check for collision with the edge of the screen
+    if (
+      (teamType === "player" && curveX <= 0) ||
+      (teamType !== "player" && curveX >= canvas.width)
+    ) {
+      triggerStarExplosion(curveX, curveY, () => {
+        onComplete();
+      });
+      return; // Stop the animation
+    }
+
     if (currentFrame < totalFrames) {
       requestAnimationFrame(animate);
-    } else {
-      onComplete();
     }
   }
+
+  function triggerStarExplosion(x, y, explosionComplete) {
+    const explosionDuration = 40; // Duration of explosion in frames
+    let explosionFrame = 0;
+    const maxRadius = 150; // Increase explosion radius
+    const starSize = 80; // Make stars larger
+
+    function drawExplosion() {
+      ctx.clearRect(x - maxRadius, y - maxRadius, maxRadius * 2, maxRadius * 2); // Clear area around the explosion
+      renderFullTeam(); // Render background or other elements
+
+      for (let i = 0; i < 20; i++) {
+        // Increase the number of stars
+        const angle = (i / 20) * Math.PI * 2; // Spread stars evenly
+        const radius = (explosionFrame / explosionDuration) * maxRadius; // Expand explosion radius
+        const starX = x + Math.cos(angle) * radius;
+        const starY = y + Math.sin(angle) * radius;
+
+        ctx.globalAlpha = 1 - explosionFrame / explosionDuration; // Fade out
+        ctx.drawImage(
+          starImg,
+          starX - starSize / 2,
+          starY - starSize / 2,
+          starSize,
+          starSize
+        ); // Draw stars
+      }
+
+      ctx.globalAlpha = 1; // Reset opacity
+
+      explosionFrame++;
+
+      if (explosionFrame < explosionDuration) {
+        requestAnimationFrame(drawExplosion);
+      } else {
+        explosionComplete();
+      }
+    }
+
+    drawExplosion();
+  }
+
   requestAnimationFrame(animate);
 }
 function handleBothDeaths(playerAnimal, enemyAnimal, onComplete) {
@@ -1255,7 +1294,7 @@ function handleBothDeaths(playerAnimal, enemyAnimal, onComplete) {
         if (playerAnimal.specialEffect === "SpawnBus") {
           const playerIndex = battleLineup.indexOf(playerAnimal);
           battleLineup[playerIndex] = createBus();
-          renderBattleSlots(); 
+          // renderBattleSlots(); 
           resolve(); 
         } else {
           animateDeathFlyOff(
