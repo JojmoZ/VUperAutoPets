@@ -344,6 +344,12 @@ document.addEventListener("DOMContentLoaded", function () {
   backgroundAudio.volume = 0.08;
   backgroundAudio.loop = true;
 
+  // Resume playback from the last saved time
+  const savedTime = localStorage.getItem("backgroundAudioTime");
+  if (savedTime) {
+    backgroundAudio.currentTime = parseFloat(savedTime);
+  }
+
   const playBackgroundAudio = () => {
     backgroundAudio.play();
     document.removeEventListener("click", playBackgroundAudio);
@@ -364,4 +370,9 @@ document.addEventListener("DOMContentLoaded", function () {
   document.addEventListener("focus", playBackgroundAudio);
   document.addEventListener("mousedown", playBackgroundAudio);
   document.addEventListener("mouseup", playBackgroundAudio);
+
+  // Save the current playback time before the page unloads
+  window.addEventListener("beforeunload", () => {
+    localStorage.setItem("backgroundAudioTime", backgroundAudio.currentTime);
+  });
 });

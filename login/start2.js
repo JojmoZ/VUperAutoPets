@@ -453,6 +453,10 @@ async function loginUser(username, password) {
     );
     backgroundAudio.volume = 0.08;
     backgroundAudio.loop = true;
+const savedTime = localStorage.getItem("backgroundAudioTime");
+if (savedTime) {
+  backgroundAudio.currentTime = parseFloat(savedTime);
+}
 
     const playBackgroundAudio = () => {
       backgroundAudio.play();
