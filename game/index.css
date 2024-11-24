@@ -11,7 +11,7 @@ body {
   background-color: #f0f0f0;
   overflow: hidden;
   height: 100vh;
-  background-image: url("../assets/Field.webp");
+  background-image: url("../assets/maps/Field.webp");
   background-size: contain;
   background-position: center;
 }
@@ -30,9 +30,9 @@ body {
   width: 6.25rem;
   height: 6.25rem;
   position: relative;
-  background-image: url(../assets/stone.png);
+  background-image: url(../assets/game-asset/stone.png);
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: contain; 
   background-position: bottom;
   margin: 0.625rem;
   display: flex;
@@ -65,7 +65,7 @@ body {
   width: 6.25rem;
   height: 6.25rem;
   margin: 0 0.625rem;
-  background-image: url(../assets/stone.png);
+  background-image: url(../assets/game-asset/stone.png);
   background-size: contain;
   background-repeat: no-repeat;
   background-position: bottom;
@@ -143,18 +143,6 @@ img {
   font-weight: bold;
   color: white;
   text-shadow: 1px 1px 2px black;
-}
-
-#startBattleButton {
-  background-image: url(../assets/gobattle.png);
-  height: 6.25rem;
-  width: 6.875rem;
-  margin-right: 3.125rem;
-  border: none;
-  background-size: cover;
-  background-repeat: no-repeat;
-  cursor: pointer;
-  background-color: transparent;
 }
 .back-arrow:hover {
   background-color: #d0d0d0;
@@ -307,7 +295,7 @@ img {
 }
 #refreshButton {
   position: absolute;
-  background-image: url(../assets/dice.svg);
+  background-image: url(../assets/game-asset/dice.svg);
   width: 6.875rem;
   height: 6.25rem;
   background-size: cover;
@@ -321,9 +309,10 @@ img {
 }
 #startBattleButton {
   position: absolute;
-  background-image: url(../assets/sword.svg);
+  background-image: url(../assets/game-asset/sword.svg);
   width: 6.875rem;
   height: 6.25rem;
+  margin-right: 3.125rem;
   background-size: cover;
   background-repeat: no-repeat;
   background-color: transparent;
@@ -348,7 +337,7 @@ img {
   position: absolute;
   width: 6rem;
   height: 6rem;
-  background-image: url("../assets/Icecube.png");
+  background-image: url("../assets/game-asset/Icecube.png");
   background-size: cover;
   z-index: 9999;
   background-repeat: no-repeat;
@@ -392,7 +381,7 @@ img {
   margin-right: 2rem;
   width: 6.25rem;
   height: 6.25rem;
-  background-image: url(../assets/stone.png);
+  background-image: url(../assets/game-asset/stone.png);
   background-size: contain;
   background-repeat: no-repeat;
   background-position: bottom;

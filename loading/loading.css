@@ -51,28 +51,28 @@ body {
   background-image: url(../assets/VUVUVU.png);
 }
 #layer-0 {
-  background-image: url("../assets/paral0.png");
+  background-image: url("../assets/parallax/paral0.png");
 }
 #layer-1 {
-  background-image: url("../assets/paral1.png");
+  background-image: url("../assets/parallax/paral1.png");
 }
 #layer-2 {
-  background-image: url("../assets/paral2.png");
+  background-image: url("../assets/parallax/paral2.png");
 }
 #layer-3 {
-  background-image: url("../assets/paral3.png");
+  background-image: url("../assets/parallax/paral3.png");
 }
 #layer-4 {
-  background-image: url("../assets/paral4.png");
+  background-image: url("../assets/parallax/paral4.png");
 }
 #layer-5 {
-  background-image: url("../assets/paral5.png");
+  background-image: url("../assets/parallax/paral5.png");
 }
 #layer-6 {
-  background-image: url("../assets/paral6.png");
+  background-image: url("../assets/parallax/paral6.png");
 }
 #layer-7 {
-  background-image: url("../assets/newnewparal7.png");
+  background-image: url("../assets/parallax/newnewparal7.png");
   position: absolute;
   top: 21.875rem;
   height: 150%;

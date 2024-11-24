@@ -24,7 +24,7 @@ body {
 .jumbotron {
   background-color: rgba(255, 255, 255, 0.8);
   text-align: center;
-  background-image: url("../assets/Field.webp");
+  background-image: url("../assets/maps/Field.webp");
   background-repeat: no-repeat;
   background-size: cover;
   padding: 2rem 1rem;
@@ -145,7 +145,7 @@ text {
 .game-desc {
   color: black;
   text-align: left;
-  background-image: url(../assets/Autumn_Forest.webp);
+  background-image: url(../assets/maps/Autumn_Forest.webp);
   background-repeat: no-repeat;
   background-size: cover;
   opacity: 1;
@@ -180,7 +180,7 @@ text {
   justify-content: center;
   background-repeat: no-repeat;
   background-size: cover;
-  background-image: url(../assets/Scary_Forest.webp);
+  background-image: url(../assets/maps/Scary_Forest.webp);
   padding: 2rem 1rem;
 }
 
@@ -384,7 +384,7 @@ text {
   gap: 12rem;
   background-repeat: no-repeat;
   background-size: cover;
-  background-image: url("../assets/Cyber_Space\ \(2\).webp");
+  background-image: url("../assets/maps/Cyber_Space\ \(2\).webp");
   position: relative;
   overflow: hidden;
   padding: 2rem 1rem;
@@ -616,7 +616,7 @@ section {
   justify-content: center;
   align-items: center;
   padding: 2rem 1rem;
-  background-image: url(../assets/Desert.webp);
+  background-image: url(../assets/maps/Desert.webp);
   color: white;
   text-align: center;
 }
@@ -684,7 +684,7 @@ section {
 
 .trailer {
   justify-content: center;
-  background-image: url(../assets/childroom.png);
+  background-image: url(../assets/maps/childroom.png);
   background-repeat: no-repeat;
   background-size: cover;
   display: flex;

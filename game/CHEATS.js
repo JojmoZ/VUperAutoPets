@@ -57,9 +57,9 @@ function updateCoinsDisplay() {
 function updateHeartsDisplay() {
   hearts.forEach((heart, index) => {
     if (index < lives) {
-      heart.src = "../assets/heart.png";
+      heart.src = "../assets/game-asset/heart.png";
     } else {
-      heart.src = "../assets/broken heart.png";
+      heart.src = "../assets/game-asset/broken heart.png";
     }
   });
 }

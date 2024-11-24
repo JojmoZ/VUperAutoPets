@@ -18,7 +18,7 @@ document.getElementById("coins").textContent = `Coins: ${coins}`;
 const maxShopAnimals = 3;
 const maxSlots = 5;
 let shopAnimals = [];
-fetch("../assets/shopAnimals.json")
+fetch("../assets/jsons/shopAnimals.json")
   .then((response) => {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -157,7 +157,7 @@ function renderRandomAnimals() {
     const attackContainer = document.createElement("div");
     attackContainer.classList.add("stat-icon");
     const attackIcon = document.createElement("img");
-    attackIcon.src = "../assets/fist.png";
+    attackIcon.src = "../assets/game-asset/fist.png";
     const attackText = document.createElement("span");
     attackText.textContent = animal.attack;
     attackText.classList.add("stat-text");
@@ -166,7 +166,7 @@ function renderRandomAnimals() {
     const healthContainer = document.createElement("div");
     healthContainer.classList.add("stat-icon");
     const healthIcon = document.createElement("img");
-    healthIcon.src = "../assets/heart.png";
+    healthIcon.src = "../assets/game-asset/heart.png";
     const healthText = document.createElement("span");
     healthText.textContent = animal.health;
     healthText.classList.add("stat-text");
@@ -368,9 +368,9 @@ function renderBattleSlots() {
       animalImg.draggable = true;
       const levelImg = document.createElement("img");
       if (animal.level == 3) {
-        levelImg.src = `../assets/Lv${animal.level}.png`;
+        levelImg.src = `../assets/Levels/Lv${animal.level}.png`;
       } else {
-        levelImg.src = `../assets/Lv${animal.level}_${animal.bar}.png`;
+        levelImg.src = `../assets/Levels/Lv${animal.level}_${animal.bar}.png`;
       }
       levelImg.alt = `Level ${animal.level} Bar ${animal.bar}`;
       levelImg.style.position = "absolute";
@@ -384,7 +384,7 @@ function renderBattleSlots() {
       const attackContainer = document.createElement("div");
       attackContainer.classList.add("stat-icon");
       const attackIcon = document.createElement("img");
-      attackIcon.src = "../assets/fist.png";
+      attackIcon.src = "../assets/game-asset/fist.png";
       attackIcon.draggable = false; 
       const attackText = document.createElement("span");
       attackText.textContent = animal.attack;
@@ -394,7 +394,7 @@ function renderBattleSlots() {
       const healthContainer = document.createElement("div");
       healthContainer.classList.add("stat-icon");
       const healthIcon = document.createElement("img");
-      healthIcon.src = "../assets/heart.png";
+      healthIcon.src = "../assets/game-asset/heart.png";
       healthIcon.draggable = false; 
       const healthText = document.createElement("span");
       healthText.textContent = animal.health;
@@ -768,8 +768,8 @@ function adjustCanvasSize() {
   ctx = canvas.getContext("2d");
 }
 function loadassets() {
-  fistImg.src = "../assets/fist.png";
-  heartImg.src = "../assets/heart.png";
+  fistImg.src = "../assets/game-asset/fist.png";
+  heartImg.src = "../assets/game-asset/heart.png";
 }
 const backgroundMusic = document.getElementById("backgroundMusic");
 const battleMusic = document.getElementById("battleMusic");
@@ -816,7 +816,7 @@ document.addEventListener("DOMContentLoaded", function () {
       renderRandomAnimals();
     }
   }
-  fetch("../assets/items.json")
+  fetch("../assets/jsons/items.json")
     .then((response) => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -892,7 +892,7 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
   const enemyImg = new Image();
   enemyImg.src = enemyAnimal.img;
   const bandageImg = new Image();
-  bandageImg.src = "../assets/hurt.png";
+  bandageImg.src = "../assets/game-asset/hurt.png";
   playerImg.onload = () => {
     enemyImg.onload = () => {
       requestAnimationFrame(animate);
@@ -1295,7 +1295,7 @@ function animateDeathFlyOff(animal, index, teamType, onComplete) {
   const img = new Image();
   img.src = animal.img;
   const starImg = new Image();
-  starImg.src = "../assets/star.png";
+  starImg.src = "../assets/game-asset/star.png";
 
   let currentFrame = 0;
   const totalFrames = 10;
@@ -1525,9 +1525,9 @@ function shiftAnimalsInLineup(lineup) {
 function updateHeartsDisplay() {
   hearts.forEach((heart, index) => {
     if (index < lives) {
-      heart.src = "../assets/heart.png";
+      heart.src = "../assets/game-asset/heart.png";
     } else {
-      heart.src = "../assets/broken heart.png";
+      heart.src = "../assets/game-asset/broken heart.png";
     }
   });
 }
@@ -1543,7 +1543,7 @@ function resetGame() {
     lives = 3;
     localStorage.setItem("lives", lives);
     hearts.forEach((heart) => {
-      heart.src = "../assets/heart.png";
+      heart.src = "../assets/game-asset/heart.png";
     });
   }
   renderBattleSlots();
@@ -1793,10 +1793,10 @@ function loseLife() {
     defeatSound.play(); 
     const dimmerOverlay = document.getElementById("dimmerOverlay");
     dimmerOverlay.classList.remove("hidden");
-    middleHeart.src = "../assets/heart.png";
+    middleHeart.src = "../assets/game-asset/heart.png";
     middleHeart.classList.remove("hidden");
     setTimeout(() => {
-      middleHeart.src = "../assets/semibroken.png";
+      middleHeart.src = "../assets/game-asset/semibroken.png";
     }, 1000);
 
     setTimeout(() => {
@@ -1811,7 +1811,7 @@ function loseLife() {
       setTimeout(() => {
         middleHeart.classList.remove("drop");
         middleHeart.classList.add("hidden");
-        hearts[lives - 1].src = "../assets/broken heart.png";
+        hearts[lives - 1].src = "../assets/game-asset/broken heart.png";
         lives--;
         localStorage.setItem("lives", lives);
 
@@ -1862,7 +1862,7 @@ function showDrawScreen() {
   const dimmerOverlay = document.getElementById("dimmerOverlay");
   dimmerOverlay.classList.remove("hidden");
   const frownImage = new Image();
-  frownImage.src = "../assets/frown.png";
+  frownImage.src = "../assets/game-asset/frown.png";
   frownImage.id = "frownImage";
   frownImage.style.position = "fixed";
   frownImage.style.zIndex = "123123";
@@ -1939,7 +1939,7 @@ function showWinScreen() {
   winContainer.style.justifyContent = "center";
   winContainer.style.alignItems = "center";
   const winImage = new Image();
-  winImage.src = "../assets/win.png";
+  winImage.src = "../assets/game-asset/win.png";
   winImage.id = "winImage";
   winImage.style.width = "100%";
   winImage.style.height = "100%";

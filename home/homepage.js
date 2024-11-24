@@ -111,8 +111,8 @@ window.onload = function () {
   const carouselSection = document.querySelector(".game-maker");
   const carouselImages = [
     "../assets/LogoVUPER.jpg",
-    "../assets/Steam.png",
-    "../assets/TeamWoodGames.jpg",
+    "../assets/social-media/Steam.png",
+    "../assets/home-asset/TeamWoodGames.jpg",
   ];
   const carouselTexts = [
     "Super Auto Pets is the first game out of independent studio Team Wood Games, and is available both as a free browser title as well as a mobile app for Android, it’s certainly a game worth checking out.",
@@ -298,12 +298,12 @@ window.onload = function () {
         context.resume();
       }
       audio.play();
-      buttonIcon.src = "../assets/pause.png";
+      buttonIcon.src = "../assets/home-asset/pause.png";
       isPlaying = true;
       renderFrame();
     } else {
       audio.pause();
-      buttonIcon.src = "../assets/playmusic.png";
+      buttonIcon.src = "../assets/home-asset/playmusic.png";
       isPlaying = false;
     }
   });

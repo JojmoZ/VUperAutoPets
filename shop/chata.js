@@ -1,7 +1,7 @@
 const username = localStorage.getItem("username");
 let shopAnimals = [];
 window.onload = function () {
-  fetch("../assets/shopAnimals.json")
+  fetch("../assets/jsons/shopAnimals.json")
     .then((response) => {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);

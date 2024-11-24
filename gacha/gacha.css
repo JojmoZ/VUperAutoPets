@@ -11,7 +11,7 @@ body {
   height: 100%;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background-size: cover;
-  background-image: url(../assets/heaven.png);
+  background-image: url(../assets/maps/heaven.png);
 }
 
 .gacha-wrapper {

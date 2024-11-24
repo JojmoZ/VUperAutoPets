@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const h1Element = document.querySelector("h1[data-text='Try Your Luck!']");
   let shopAnimals = [];
   const username = localStorage.getItem("username");
-  fetch("../assets/shopAnimals.json")
+  fetch("../assets/jsons/shopAnimals.json")
     .then((response) => response.json())
     .then((data) => {
       shopAnimals = data;

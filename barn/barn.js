@@ -351,7 +351,7 @@ function createFood(event) {
   foodElement.style.position = "absolute";
   foodElement.style.width = "1.75rem";
   foodElement.style.height = "1.75rem"; 
-  foodElement.style.backgroundImage = "url('../assets/Pizza.webp')";
+  foodElement.style.backgroundImage = "url('../assets/items/Pizza.webp')";
   foodElement.style.backgroundSize = "cover";
   foodElement.style.borderRadius = "50%";
   foodElement.style.left = `${foodX}px`;

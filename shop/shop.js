@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   let shopAnimals = [];
 
-  fetch("../assets/shopAnimals.json")
+  fetch("../assets/jsons/shopAnimals.json")
     .then((response) => {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);

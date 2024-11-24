@@ -332,10 +332,10 @@ window.onload = function () {
 
       if (targetInput.type === "password") {
         targetInput.type = "text";
-        img.src = "../assets/hide.png";
+        img.src = "../assets/login-asset/hide.png";
       } else {
         targetInput.type = "password";
-        img.src = "../assets/eye.png";
+        img.src = "../assets/login-asset/eye.png";
       }
     });
   });
