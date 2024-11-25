@@ -3,7 +3,7 @@
 }
 @font-face {
   font-family: "VUper";
-  src: url("../assets/LapsusPro-Bold.otf") format("opentype");
+  src: url("../assets/font/LapsusPro-Bold.otf") format("opentype");
 }
 @property --angle {
   syntax: "<angle>";

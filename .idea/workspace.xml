@@ -5,7 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="54d862c4-d20b-415f-bc78-50cca1da92eb" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/login-asset/parallax/parallax-1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/login-asset/parallax/parallax-2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/login-asset/parallax/sky-background.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/LapsusPro-Bold.otf" beforeDir="false" afterPath="$PROJECT_DIR$/assets/font/LapsusPro-Bold.otf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/barn/barn.css" beforeDir="false" afterPath="$PROJECT_DIR$/barn/barn.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gacha/gacha.css" beforeDir="false" afterPath="$PROJECT_DIR$/gacha/gacha.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/game-style.css" beforeDir="false" afterPath="$PROJECT_DIR$/game/game-style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/game.html" beforeDir="false" afterPath="$PROJECT_DIR$/game/game.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/home/homepage.css" beforeDir="false" afterPath="$PROJECT_DIR$/home/homepage.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loading/loading.css" beforeDir="false" afterPath="$PROJECT_DIR$/loading/loading.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/login/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/login/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/login/main-script.js" beforeDir="false" afterPath="$PROJECT_DIR$/login/main-script.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/login/main-style.css" beforeDir="false" afterPath="$PROJECT_DIR$/login/main-style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shop/shop.css" beforeDir="false" afterPath="$PROJECT_DIR$/shop/shop.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,6 +29,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/login/main-style.css" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
 }</component>
@@ -23,27 +40,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;JavaScript Debug.homepage.html.executor&quot;: &quot;Run&quot;,
-    &quot;JavaScript Debug.start.html.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/catherine/Documents/Work/NAR25-1/03. Core Training/VUPER&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "JavaScript Debug.homepage.html.executor": "Run",
+    "JavaScript Debug.start.html.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/Users/catherine/Documents/Work/NAR25-1/03. Core Training/VUPER/assets/login-asset/parallax",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/assets/login-asset/parallax" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/assets/font" />
       <recent name="$PROJECT_DIR$/assets/game-asset" />
       <recent name="$PROJECT_DIR$/assets" />
-      <recent name="$PROJECT_DIR$/assets/font" />
       <recent name="$PROJECT_DIR$/assets/logo" />
       <recent name="$PROJECT_DIR$/assets/pet" />
     </key>
@@ -81,7 +101,9 @@
       <workItem from="1731644785419" duration="699000" />
       <workItem from="1731924418048" duration="7000" />
       <workItem from="1732505131102" duration="2610000" />
-      <workItem from="1732509744666" duration="41000" />
+      <workItem from="1732509744666" duration="5986000" />
+      <workItem from="1732525054614" duration="313000" />
+      <workItem from="1732568157258" duration="6144000" />
     </task>
     <servers />
   </component>

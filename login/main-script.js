@@ -1,4 +1,29 @@
 
+// Parallax Effect
+
+document.addEventListener("mousemove", (event) => {
+  const { clientX, clientY } = event;
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+
+  // Normalize mouse position to range -1 to 1
+  const xNorm = (clientX / width - 0.5) * 2; // Horizontal position
+  const yNorm = (clientY / height - 0.5) * 2; // Vertical position
+
+  // Select parallax layers
+  const layer1 = document.querySelector(".parallax-layer-1");
+  const layer2 = document.querySelector(".parallax-layer-2");
+  const layer3Left = document.querySelector(".parallax-layer-3.left");
+  const layer3Right = document.querySelector(".parallax-layer-3.right");
+
+  // Apply transform for parallax effect (tweak multipliers for desired effect)
+  layer1.style.transform = `translate(${xNorm * 10}px, ${yNorm * 10}px)`;
+  layer2.style.transform = `translate(${xNorm * 25}px, ${yNorm * 25}px)`;
+  layer3Left.style.transform = `translate(${xNorm * 40}px, ${yNorm * 40}px) scaleX(-1)`;
+  layer3Right.style.transform = `translate(${xNorm * 40}px, ${yNorm * 40}px)`;
+});
+
+
 window.onload = function () {
   const captchaChallenge = document.getElementById("captchaChallenge");
   const captchaInput = document.getElementById("captchaInput");

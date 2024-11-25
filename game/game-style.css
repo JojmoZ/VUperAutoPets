@@ -1,6 +1,6 @@
 @font-face {
   font-family: "VUper";
-  src: url("../assets/LapsusPro-Bold.otf") format("opentype");
+  src: url("../assets/font/LapsusPro-Bold.otf") format("opentype");
 }
 * {
   font-family: "VUper", sans-serif;
