@@ -16,17 +16,17 @@ socket.onmessage = async (event) => {
     if (data.message === "paired") {
       console.log("Paired with another player!");
       isPaired = true;
+      
       checkStartCondition();
     } else if (data.battleLineup && data.teamName) {
-      // Receive opponent data
       enemyLineup = data.battleLineup;
       enemyTeamName = data.teamName;
       console.log("Received opponent data:", enemyLineup, enemyTeamName);
       receivedOpponentData = true;
       checkStartCondition();
     } else if (data.type === "start" && !gameStarted) {
-      // Start the game
       console.log("Starting the game!");
+      hideLoadingScreen();
       gameStarted = true;
       letsplayonline();
     }
@@ -787,6 +787,7 @@ document
       showTeamNameSelection();
       fadeInElements();
     } else {
+      showLoadingScreen()
       sendPlayerData();
     }
   });
@@ -2410,4 +2411,15 @@ function hideBattleText() {
   document.getElementById("teamNameYour").style.display = "none";
   document.getElementById("teamNameEnemy").style.display = "none";
   document.getElementById("vsLabel").style.display = "none";
+}
+function showLoadingScreen() {
+  const loadingScreen = document.getElementById("loadingScreen");
+  loadingScreen.classList.add("active");
+  loadingScreen.classList.remove("hidden");
+}
+
+function hideLoadingScreen() {
+  const loadingScreen = document.getElementById("loadingScreen");
+  loadingScreen.classList.remove("active");
+  loadingScreen.classList.add("hidden");
 }
