@@ -84,6 +84,9 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  position:relative;
+  top:1rem;
+  left:4rem;
 }
 button {
   padding: 0.625rem 1.25rem;
@@ -478,4 +481,25 @@ img {
 
 .floating-bus {
   animation: riseAndDisappear 1s ease-out forwards;
+}
+.battlesign{
+ width: 4.8rem;
+ height:4.4rem;
+ position: relative;
+ left:0.5rem;
+ top:1.5rem;
+ user-select: none;
+}
+.shopsign{
+  width: 4.8rem;
+  height:4.4rem;
+  position: relative;
+  user-select: none;
+  left:2rem;
+  top:1.5rem;
+
+}
+.randomleft{
+  display: flex;
+  align-items: center;
 }
