@@ -8,6 +8,9 @@
 </head>
 
 <body>
+  <div class="teamNameContainer" id="teamNameContainer">
+    <p class="teamName" id="teamNameDisplay">No Team Name</p>
+  </div>
   <div id="heartsContainer" class="hearts-container">
     <img id="heart1" src="../assets/game-asset/heart.png" alt="Heart 1">
     <img id="heart2" src="../assets/game-asset/heart.png" alt="Heart 2">
@@ -15,7 +18,7 @@
   </div>
   <div id="coinsContainer" class="coins-container">
     <img id="coinIcon" src="../assets/game-asset/gold.png" alt="Gold Coin">
-    <span id="coins">0</span>
+    <span id="coins"></span>
   </div>
   <img id="middleHeart" class="hidden" src="../assets/heart.png" alt="Middle Heart">
   <button class="back-arrow" id="backArrow">&#8592; Back</button>
@@ -26,10 +29,14 @@
       <div class="battle-slot" data-slot="2"></div>
       <div class="battle-slot" data-slot="3"></div>
       <div class="battle-slot" data-slot="4"></div>
+      <img src="../assets/game-asset/battle-sign.png" class="battlesign" alt="">
     </div>
     <div id="shop-container" class="shop"></div>
     <div id="controls" class="selection-area">
-      <div id="random-animals" class="random-animals"></div>
+      <div class="randomleft">
+        <img src="../assets/game-asset/shop-sign.png" class="shopsign" alt="">
+        <div id="random-animals" class="random-animals"></div>
+      </div>
       <div id="itemContainer" class="item-container">
         <div id="itemSlot" class="item-slot"></div>
         <div id="itemSlot2" class="item-slot"></div>
@@ -49,28 +56,30 @@
     </div>
     <button id="refreshButton"></button>
     <button id="startBattleButton"></button>
+    <button id="startBattleButtonOnline"></button>
     <div id="freezeButton" class="hidden">
       <img src="../assets/game-asset/Icecube.png" alt="Freeze Button" />
     </div>
   </div>
   <div id="dimmerOverlay" class="hidden"></div>
-  <div id="defeatScreen" class="hidden">
-    <h1>Defeat!</h1>
-    <p>You have lost all your hearts.</p>
-    <p>Thank you for playing!</p>
+  <div id="loadingScreen" class="hidden">
+    <div class="loading-content">
+      <div class="spinner"></div>
+      <p>Searching for other players...</p>
+    </div>
   </div>
-<audio id="buySound">
-  <source src="../assets/sound/buy sound.mp3" type="audio/mpeg">
-</audio>
-<audio id="eatSound">
-  <source src="../assets/sound/eat sound.mp3" type="audio/mpeg">
-</audio>
-<audio id="rollSound">
-  <source src="../assets/sound/roll sound.mp3" type="audio/mpeg">
-</audio>
-<audio id="sellSound">
-  <source src="../assets/sound/sell sound.m4a" type="audio/mpeg">
-</audio>
+  <audio id="buySound">
+    <source src="../assets/sound/buy sound.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="eatSound">
+    <source src="../assets/sound/eat sound.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="rollSound">
+    <source src="../assets/sound/roll sound.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="sellSound">
+    <source src="../assets/sound/sell sound.m4a" type="audio/mpeg">
+  </audio>
   <audio id="backgroundMusic" loop volume="0.2">
     <source src="../assets/sound/game shop bg.mp3" type="audio/mpeg">
   </audio>
@@ -80,11 +89,15 @@
   <audio id="busSound">
     <source src="../assets/sound/bus sound.mp3" type="audio/mpeg">
   </audio>
-
+  <div id="teamNameSelectionScreen" class="hidden">
+    <h1>Select Your Team Name</h1>
+    <div id="adjectiveRow" class="team-row"></div>
+    <div id="nounRow" class="team-row"></div>
+    <button id="confirmTeamNameButton" disabled>Confirm</button>
+  </div>
+  <div id="teamNameYour" class="team-name">Your Team</div>
+  <div id="teamNameEnemy" class="team-name">Enemy Team</div>
+  <div id="vsLabel" class="vs-label">VS</div>
+  <script src="game-script.js"></script>
 </body>
-
-
-<script src="game-script.js"></script>
-<script src="cheats.js"></script>
-
 </html>

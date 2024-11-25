@@ -609,6 +609,23 @@ section {
   }
 }
 
+@keyframes stampEffect {
+  0% {
+    transform: scale(3);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.big-photo {
+  animation: stampEffect 1s ease forwards;
+  width: 50rem;
+  height: auto;
+}
+
 .ost-section {
   display: flex;
   flex-direction: column;

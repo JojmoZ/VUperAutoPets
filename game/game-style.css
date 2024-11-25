@@ -2,6 +2,9 @@
   font-family: "VUper";
   src: url("../assets/LapsusPro-Bold.otf") format("opentype");
 }
+* {
+  font-family: "VUper", sans-serif;
+}
 #drawText {
   font-family: "VUper", sans-serif;
 }
@@ -32,7 +35,7 @@ body {
   position: relative;
   background-image: url(../assets/game-asset/stone.png);
   background-repeat: no-repeat;
-  background-size: contain; 
+  background-size: contain;
   background-position: bottom;
   margin: 0.625rem;
   display: flex;
@@ -84,6 +87,9 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+  top: 1rem;
+  left: 4rem;
 }
 button {
   padding: 0.625rem 1.25rem;
@@ -307,6 +313,20 @@ img {
   border: none;
   transition: background-color 0.3s ease;
 }
+#startBattleButtonOnline {
+  position: absolute;
+  background-image: url(../assets/game-asset/sword.svg);
+  width: 6.875rem;
+  height: 6.25rem;
+  margin-right: 3.125rem;
+  top:-6rem;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
 #startBattleButton {
   position: absolute;
   background-image: url(../assets/game-asset/sword.svg);
@@ -478,4 +498,261 @@ img {
 
 .floating-bus {
   animation: riseAndDisappear 1s ease-out forwards;
+}
+.battlesign {
+  width: 8rem;
+  height: 7rem;
+  position: relative;
+  left: 0.2rem;
+  top: -2rem;
+  user-select: none;
+}
+.shopsign {
+  width: 8rem;
+  height: 7rem;
+  position: relative;
+  user-select: none;
+  left: 2rem;
+  top: -2rem;
+}
+.randomleft {
+  display: flex;
+  align-items: center;
+}
+
+.teamNameSelectionScreen {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  padding: 2rem;
+  border-radius: 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between; 
+  height: 80%; 
+  width: 50%; 
+  z-index: 10000;
+}
+#teamNameSelectionScreen > * {
+  opacity: 0;
+}
+.teamNameSelectionScreen h1 {
+  position: absolute;
+  top: -5%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2rem;
+  color: white;
+  margin: 0;
+}
+.team-row {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.team-row button {
+  color: white;
+  border: 3px solid transparent;
+  padding: 1.5rem 4rem;
+  border-radius: 15px;
+  cursor: pointer;
+  font-family: "Arial", sans-serif;
+  font-size: 1.5rem;
+  margin: 1rem;
+  box-shadow: 0px 6px 0px rgba(0, 0, 0, 0.4);
+  width: 14rem; 
+  height: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.1s ease, box-shadow 0.1s ease, border-color 0.2s ease;
+  border-width: 4;
+  border-color: white;
+}
+.adjective-button,
+.noun-button {
+  background-color: #2978b5; 
+  box-shadow: 0px 6px 0px #1e5b87;
+}
+.adjective-button:hover,
+.noun-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0px 8px 0px #1e5b87;
+}
+.noun-button {
+  background-color: #4caf50; 
+  box-shadow: 0px 4px 0px #388e3c; 
+}
+.noun-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0px 6px 0px #388e3c;
+}
+.selected-button {
+  position: relative; 
+  transform: translateY(-3px); 
+  box-shadow: 0px 8px 0px rgba(0, 0, 0, 0.5); 
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+.selected-button::after {
+  content: "";
+  position: absolute;
+  top: -5%;
+  left: -2.7%;
+  width: 105.5%;
+  height: 105%;
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.5
+  ); 
+  border-radius: 20px; 
+  pointer-events: none; 
+}
+#adjectiveRow {
+  position: absolute;
+  top: 46%; 
+  left: 50%;
+  transform: translate(-50%, -20%); 
+  display: flex;
+  gap: 1rem;
+}
+#nounRow {
+  position: absolute;
+  top: 80%; 
+  left: 50%;
+  transform: translate(-50%, -50%); 
+  display: flex;
+  gap: 1rem;
+}
+#confirmTeamNameButton {
+  width: 200px;
+  height: 80px;
+  position: absolute;
+  bottom: -30px;
+  right: -350px;
+  padding: 0.8rem 2rem;
+  font-size: 1rem;
+  background-color: #fe6a00;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0px 4px 0px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  border-width: 4;
+  border-color: white;
+  border-radius: 15px;
+}
+#confirmTeamNameButton:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+}
+#confirmTeamNameButton:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0px 6px 0px rgba(0, 0, 0, 0.3);
+}
+.teamNameContainer {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2rem;
+  color: black;
+  font-weight: bold;
+}
+.teamName {
+  font-size: 2rem;
+  font-weight: bold;
+}
+.team-name {
+  position: absolute;
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  width: 100%;
+  z-index: 10;
+}
+
+#teamNameYour {
+  top: 10%;
+  left: 25%;
+  transform: translateX(-50%);
+}
+
+#teamNameEnemy {
+  top: 10%;
+  right: 25%;
+  transform: translateX(50%);
+}
+
+.vs-label {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3rem;
+  font-weight: bold;
+  color: yellow;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+  z-index: 10;
+}
+#teamNameYour, #teamNameEnemy, #vsLabel {
+  transition: opacity 0.5s, transform 0.5s;
+}
+#loadingScreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9991239;
+  pointer-events: none; 
+  transition: opacity 0.5s ease;
+}
+#loadingScreen.active {
+  pointer-events: all;
+  opacity: 1;
+}
+#loadingScreen.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+.loading-content {
+  text-align: center;
+  color: white;
+  font-family: "VUper", sans-serif;
+}
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(255, 255, 255, 0.2);
+  border-top: 5px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 20px;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.loading-content p {
+  font-size: 1.5rem;
+  margin-top: 10px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }

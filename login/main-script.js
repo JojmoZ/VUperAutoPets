@@ -1,17 +1,3 @@
-function hideCaptcha() {
-  captchaModal1.classList.add("hide");
-  captchaModal2.classList.add("hide");
-
-  document.body.classList.remove("modal-active");
-  document.querySelector(".overlay").classList.add("hidden");
-
-  setTimeout(() => {
-    captchaModal1.classList.add("hidden");
-    captchaModal1.classList.remove("show", "hide");
-    captchaModal2.classList.add("hidden");
-    captchaModal2.classList.remove("show", "hide");
-  }, 500);
-}
 
 window.onload = function () {
   const captchaChallenge = document.getElementById("captchaChallenge");
@@ -277,7 +263,7 @@ window.onload = function () {
     const successModalHTML = `
         <div id="successModal">
             <div class="modal-content">
-                <svg class="checkmark" xmlns="http:
+                <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
                     <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none" style="stroke-dasharray: 166; stroke-dashoffset: 166;" />
                     <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" style="stroke-dasharray: 48; stroke-dashoffset: 48;" />
                 </svg>
@@ -459,4 +445,19 @@ if (savedTime) {
     document.addEventListener("focus", playBackgroundAudio);
     document.addEventListener("mousedown", playBackgroundAudio);
     document.addEventListener("mouseup", playBackgroundAudio);
+    function hideCaptcha() {
+      captchaModal1.classList.add("hide");
+      captchaModal2.classList.add("hide");
+
+      document.body.classList.remove("modal-active");
+      document.querySelector(".overlay").classList.add("hidden");
+
+      setTimeout(() => {
+        captchaModal1.classList.add("hidden");
+        captchaModal1.classList.remove("show", "hide");
+        captchaModal2.classList.add("hidden");
+        captchaModal2.classList.remove("show", "hide");
+      }, 500);
+    }
+
 };
