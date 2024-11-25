@@ -640,3 +640,16 @@ img {
   transform: translateY(-3px);
   box-shadow: 0px 6px 0px rgba(0, 0, 0, 0.3);
 }
+.teamNameContainer {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2rem;
+  color: black;
+  font-weight: bold;
+}
+.teamName {
+  font-size: 2rem;
+  font-weight: bold;
+}

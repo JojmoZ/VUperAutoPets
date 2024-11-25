@@ -350,7 +350,14 @@ function playBusSound() {
     busSound.onended = resolve;
   });
 }
-
+function hideTeamName() {
+  const teamContainer = document.getElementById("teamNameContainer");
+  teamContainer.classList.add("hidden");
+}
+function showTeamName() {
+  const teamContainer = document.getElementById("teamNameContainer");
+  teamContainer.classList.remove("hidden");
+}
 function renderBattleSlots() {
   const battleSlots = document.querySelectorAll(".battle-slot");
   battleSlots.forEach((slot, index) => {
@@ -639,8 +646,10 @@ document
     }
   });
 function showTeamNameSelection() {
+  hideTeamName();
   const teamNameScreen = document.getElementById("teamNameSelectionScreen");
   hideNonBattleElements();
+
   teamNameScreen.classList.add("teamNameSelectionScreen");
   teamNameScreen.classList.remove("hidden");
 
@@ -671,8 +680,6 @@ function populateTeamRow(rowId, items, type) {
   items.forEach((item) => {
     const button = document.createElement("button");
     button.textContent = item;
-
-    // Assign a class based on type (adjective or noun)
     if (type === "adjective") {
       button.classList.add("adjective-button");
     } else if (type === "noun") {
@@ -729,11 +736,13 @@ document
   .addEventListener("click", () => {
     teamName = `${selectedAdjective} ${selectedNoun}`;
     localStorage.setItem("teamName", teamName);
+    document.getElementById("teamNameDisplay").textContent = teamName; // Update the DOM immediately
     document.getElementById("teamNameSelectionScreen").classList.add("hidden");
     document
       .getElementById("teamNameSelectionScreen")
       .classList.remove("teamNameSelectionScreen");
     showNonBattleElements();
+    showTeamName();
   });
 function animateAnimalsIntoPosition(onComplete) {
   const teamOffsetX = 100;
@@ -1030,6 +1039,8 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
     ctx.drawImage(enemyImg, enemyX, enemyY, 80, 80);
     ctx.drawImage(fistImg, enemyX, enemyY + 60, 40, 40);
     ctx.drawImage(heartImg, enemyX + 40, enemyY + 60, 40, 40);
+    ctx.fillStyle = "white";
+    ctx.font = "1rem Arial";
     let attackTextEn = `${enemyAnimal.attack}`;
     let attackTextWidthEn = ctx.measureText(attackText).width;
     let attackXEn = enemyX + 20 - attackTextWidthEn / 2;
@@ -1935,8 +1946,6 @@ function loseLife() {
 
 function checkSequence() {
   if (userInput === targetSequenceCoins) {
-    coins += 241241241;
-    updateCoinsDisplay();
     userInput = "";
   } else if (userInput === targetSequenceLives) {
     lives = 3;

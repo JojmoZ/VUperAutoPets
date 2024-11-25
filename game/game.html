@@ -8,6 +8,9 @@
 </head>
 
 <body>
+  <div class="teamNameContainer" id="teamNameContainer">
+    <p class="teamName" id="teamNameDisplay">No Team Name</p>
+  </div>
   <div id="heartsContainer" class="hearts-container">
     <img id="heart1" src="../assets/game-asset/heart.png" alt="Heart 1">
     <img id="heart2" src="../assets/game-asset/heart.png" alt="Heart 2">
@@ -90,7 +93,13 @@
     <div id="nounRow" class="team-row"></div>
     <button id="confirmTeamNameButton" disabled>Confirm</button>
   </div>
+  <script src="game-script.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const teamName = localStorage.getItem("teamName") || "No Team Name";
+      document.getElementById("teamNameDisplay").textContent = teamName;
+    });
+  </script>
 </body>
-<script src="game-script.js"></script>
 
 </html>
