@@ -16,11 +16,16 @@ let battleLineup = JSON.parse(localStorage.getItem("battleLineup")) || [
   null,
   null,
 ];
+const hoverInfo = document.getElementById("hoverInfo");
+let items = [];
+let currentItem1 = null;
+let currentItem2 = null;
+let playing = false;
+let canPlay = false;
 let randomAnimals = JSON.parse(localStorage.getItem("randomAnimals")) || [];
 let coins;
 let totalcoinforbattle;
 let enemyTeamName
-// document.getElementById("coins").textContent = `Coins: ${coins}`;
 const maxShopAnimals = 3;
 const maxSlots = 5;
 let shopAnimals = [];
@@ -47,6 +52,17 @@ let originalBattleLineup = [];
 let selectedAdjective = null;
 let selectedNoun = null;
 let teamName = localStorage.getItem("teamName") || "";
+const trashBin = document.getElementById("trashBin");
+const freezeButton = document.getElementById("freezeButton");
+const backgroundMusic = document.getElementById("backgroundMusic");
+const battleMusic = document.getElementById("battleMusic");
+backgroundMusic.volume = 0.2;
+battleMusic.volume = 0.05;
+const busSound = document.getElementById("busSound");
+const buySound = document.getElementById("buySound");
+const eatSound = document.getElementById("eatSound");
+const rollSound = document.getElementById("rollSound");
+const sellSound = document.getElementById("sellSound");
 function saveRandomAnimals() {
   localStorage.setItem("randomAnimals", JSON.stringify(randomAnimals));
 }
@@ -312,7 +328,6 @@ function playAnimalSound(soundPath) {
 function handleDragOver(event) {
   event.preventDefault();
 }
-const hoverInfo = document.getElementById("hoverInfo");
 function showHoverInfo(text, event) {
   hoverInfo.textContent = text;
   hoverInfo.style.left = `${event.pageX + 10}px`;
@@ -322,11 +337,6 @@ function showHoverInfo(text, event) {
 function hideHoverInfo() {
   hoverInfo.style.opacity = 0;
 }
-const busSound = document.getElementById("busSound");
-const buySound = document.getElementById("buySound");
-const eatSound = document.getElementById("eatSound");
-const rollSound = document.getElementById("rollSound");
-const sellSound = document.getElementById("sellSound");
 function playBuySound() {
   buySound.currentTime = 0;
   buySound.play();
@@ -339,12 +349,10 @@ function playEatSound() {
   eatSound.currentTime = 0;
   eatSound.play();
 }
-
 function playRollSound() {
   rollSound.currentTime = 0;
   rollSound.play();
 }
-
 function playBusSound() {
   return new Promise((resolve) => {
     busSound.currentTime = 0;
@@ -595,7 +603,6 @@ document.querySelectorAll(".battle-slot").forEach((slot) => {
   slot.addEventListener("drop", handleDrop);
   slot.addEventListener("dragover", handleDragOver);
 });
-
 document.getElementById("refreshButton").addEventListener("click", function () {
   if (coins > 0) {
     playRollSound();
@@ -640,8 +647,6 @@ if (!playing) {
   }, 1000);
 }
 }
-let playing = false;
-let canPlay = false;
 document
   .getElementById("startBattleButton")
   .addEventListener("click", function () {
@@ -686,12 +691,10 @@ function showTeamNameSelection() {
     })
     .catch((error) => console.error("Error fetching team names:", error));
 }
-
 function getRandomItems(array, count) {
   const shuffled = array.sort(() => 0.5 - Math.random());
   return shuffled.slice(0, count);
 }
-
 function populateTeamRow(rowId, items, type) {
   const row = document.getElementById(rowId);
   row.innerHTML = ""; // Clear the row before populating
@@ -709,7 +712,6 @@ function populateTeamRow(rowId, items, type) {
     row.appendChild(button);
   });
 }
-
 function handleTeamNameSelection(type, value) {
   if (type === "adjective") {
     selectedAdjective = value;
@@ -738,7 +740,6 @@ function handleTeamNameSelection(type, value) {
   const confirmButton = document.getElementById("confirmTeamNameButton");
   confirmButton.disabled = !(selectedAdjective && selectedNoun);
 }
-
 document
   .getElementById("confirmTeamNameButton")
   .addEventListener("click", () => {
@@ -888,24 +889,16 @@ function loadassets() {
   fistImg.src = "../assets/game-asset/fist.png";
   heartImg.src = "../assets/game-asset/heart.png";
 }
-const backgroundMusic = document.getElementById("backgroundMusic");
-const battleMusic = document.getElementById("battleMusic");
-
-backgroundMusic.volume = 0.2;
-battleMusic.volume = 0.05;
-
 function playBackgroundMusic() {
   battleMusic.pause();
   battleMusic.currentTime = 0;
   backgroundMusic.play();
 }
-
 function playBattleMusic() {
   backgroundMusic.pause();
   backgroundMusic.currentTime = 0;
   battleMusic.play();
 }
-
 document.addEventListener("DOMContentLoaded", function () {
      const teamName = localStorage.getItem("teamName") || "No Team Name";
      document.getElementById("teamNameDisplay").textContent = teamName;
@@ -950,7 +943,6 @@ document.addEventListener("DOMContentLoaded", function () {
   playBackgroundMusic();
   document.addEventListener("dragend", hideFreezeBin);
 });
-
 function updateCoinsDisplay() {
   localStorage.setItem("gamecoins", coins);
   document.getElementById("coins").textContent = `Coins: ${coins}`;
@@ -1689,9 +1681,6 @@ function checkGameOver(playerSurvivors, enemySurvivors) {
     showDrawScreen();
   }
 }
-
-const trashBin = document.getElementById("trashBin");
-const freezeButton = document.getElementById("freezeButton");
 function showFreezeBin() {
   freezeButton.classList.remove("hidden");
 }
@@ -1766,9 +1755,6 @@ freezeButton.addEventListener("drop", (event) => {
     hideFreezeBin();
   }
 });
-let items = [];
-let currentItem1 = null;
-let currentItem2 = null;
 function loadRandomItems() {
   const savedItems = JSON.parse(localStorage.getItem("currentItems")) || [];
   currentItem1 = savedItems[0] ? { ...savedItems[0] } : null;
@@ -1959,7 +1945,6 @@ function loseLife() {
     }, 1500);
   }
 }
-
 function checkSequence() {
   if (userInput === targetSequenceCoins) {
     userInput = "";
@@ -1975,7 +1960,6 @@ function checkSequence() {
     userInput = "";
   }
 }
-
 document.addEventListener("keydown", function (event) {
   userInput += event.key.toUpperCase();
   cheatCode += event.key.toLowerCase();
@@ -2001,7 +1985,6 @@ document.addEventListener("keydown", function (event) {
     updateHeartsDisplay();
   }
 });
-
 function updateHeartsDisplay() {
   hearts.forEach((heart, index) => {
     if (index < lives) {
@@ -2011,7 +1994,6 @@ function updateHeartsDisplay() {
     }
   });
 }
-
 function jitterImage(element) {
   if (!element) return;
 
