@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="54d862c4-d20b-415f-bc78-50cca1da92eb" name="Changes" comment="" />
+    <list default="true" id="54d862c4-d20b-415f-bc78-50cca1da92eb" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/game/CHEATS.js" beforeDir="false" afterPath="$PROJECT_DIR$/game/cheats.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/game.js" beforeDir="false" afterPath="$PROJECT_DIR$/game/game-script.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/game/game-style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/game/game.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loading/loading.js" beforeDir="false" afterPath="$PROJECT_DIR$/loading/loading.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -39,11 +45,11 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/assets" />
       <recent name="$PROJECT_DIR$/assets/font" />
       <recent name="$PROJECT_DIR$/assets/logo" />
       <recent name="$PROJECT_DIR$/assets/pet" />
       <recent name="$PROJECT_DIR$/assets/icon" />
-      <recent name="$PROJECT_DIR$/assets/cursor" />
     </key>
   </component>
   <component name="RunManager" selected="JavaScript Debug.start.html">
@@ -78,7 +84,7 @@
       <workItem from="1729730472586" duration="5301000" />
       <workItem from="1731644785419" duration="699000" />
       <workItem from="1731924418048" duration="7000" />
-      <workItem from="1732505131102" duration="1370000" />
+      <workItem from="1732505131102" duration="1792000" />
     </task>
     <servers />
   </component>

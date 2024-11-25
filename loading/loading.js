@@ -65,7 +65,7 @@ const tips = [
     loadingFill.style.width = `${progress}%`;
 
     if (elapsedTime >= totalGameTime) {
-      window.location.href = "/game/index.html";
+      window.location.href = "../game/game.html";
     }
   }
   const activeTips = [];
