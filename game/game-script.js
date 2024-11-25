@@ -1,3 +1,50 @@
+const socket = new WebSocket("ws://localhost:8080");
+
+let isPaired = false; 
+let receivedOpponentData = false; 
+
+socket.onopen = () => {
+  console.log("Connected to server");
+};
+
+
+let isReady = false; 
+let gameStarted = false; 
+
+socket.onmessage = async (event) => {
+  try {
+    const message =
+      typeof event.data === "string" ? event.data : await event.data.text();
+    const data = JSON.parse(message);
+
+    if (data.message === "paired") {
+      console.log("Paired with another player!");
+      isPaired = true;
+    } else if (data.battleLineup && data.teamName) {
+      
+      enemyLineup = data.battleLineup;
+      enemyTeamName = data.teamName;
+
+      console.log("Received opponent data:", enemyLineup, enemyTeamName);
+      receivedOpponentData = true;
+
+      
+      if (playerDataSent && !isReady) {
+        isReady = true;
+        socket.send(JSON.stringify({ type: "ready" }));
+        console.log("Notified server: ready");
+      }
+    } else if (data.type === "start" && !gameStarted) {
+      console.log("Starting the game!");
+      gameStarted = true;
+      letsplayonline();
+    }
+  } catch (error) {
+    console.error("Error parsing WebSocket message:", error);
+  }
+};
+
+
 const canvas = document.getElementById("battleCanvas");
 const curtainTop = document.getElementById("curtainTop");
 const curtainBottom = document.getElementById("curtainBottom");
@@ -25,7 +72,7 @@ let canPlay = false;
 let randomAnimals = JSON.parse(localStorage.getItem("randomAnimals")) || [];
 let coins;
 let totalcoinforbattle;
-let enemyTeamName
+let enemyTeamName;
 const maxShopAnimals = 3;
 const maxSlots = 5;
 let shopAnimals = [];
@@ -137,52 +184,52 @@ function renderRandomAnimals() {
     animalImage.style.aspectRatio = "1/1";
     animalImage.setAttribute("draggable", true);
     animalImage.style.transform = "scaleX(-1)";
-   animalImage.addEventListener("dragstart", (event) => {
-     hideHoverInfo();
+    animalImage.addEventListener("dragstart", (event) => {
+      hideHoverInfo();
 
-     const imageWidth = animalImage.offsetWidth;
-     const imageHeight = animalImage.offsetHeight;
+      const imageWidth = animalImage.offsetWidth;
+      const imageHeight = animalImage.offsetHeight;
 
-     // Create a temporary canvas for the drag image
-     const tempCanvas = document.createElement("canvas");
-     tempCanvas.width = imageWidth;
-     tempCanvas.height = imageHeight;
+      
+      const tempCanvas = document.createElement("canvas");
+      tempCanvas.width = imageWidth;
+      tempCanvas.height = imageHeight;
 
-     const ctx = tempCanvas.getContext("2d");
+      const ctx = tempCanvas.getContext("2d");
 
-     // Clear the canvas and flip the context horizontally
-     ctx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
-     ctx.scale(-1, 1);
+      
+      ctx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
+      ctx.scale(-1, 1);
 
-     // Draw the image flipped horizontally
-     ctx.drawImage(animalImage, -imageWidth, 0, imageWidth, imageHeight);
+      
+      ctx.drawImage(animalImage, -imageWidth, 0, imageWidth, imageHeight);
 
-     // Temporarily append the canvas to the DOM but move it offscreen
-     tempCanvas.style.position = "absolute";
-     tempCanvas.style.top = "-1000px"; // Move it far offscreen
-     tempCanvas.style.left = "-1000px"; // Move it far offscreen
-     tempCanvas.style.pointerEvents = "none"; // Ensure it doesn’t block interactions
-     document.body.appendChild(tempCanvas);
+      
+      tempCanvas.style.position = "absolute";
+      tempCanvas.style.top = "-1000px"; 
+      tempCanvas.style.left = "-1000px"; 
+      tempCanvas.style.pointerEvents = "none"; 
+      document.body.appendChild(tempCanvas);
 
-     // Use the canvas as the drag image
-     event.dataTransfer.setDragImage(
-       tempCanvas,
-       tempCanvas.width / 2,
-       tempCanvas.height / 2
-     );
+      
+      event.dataTransfer.setDragImage(
+        tempCanvas,
+        tempCanvas.width / 2,
+        tempCanvas.height / 2
+      );
 
-     // Clean up the canvas immediately after use
-     setTimeout(() => {
-       tempCanvas.remove();
-     }, 0);
+      
+      setTimeout(() => {
+        tempCanvas.remove();
+      }, 0);
 
-     // Set drag-related data
-     event.dataTransfer.setData("text/plain", index);
-     event.dataTransfer.setData("source", "shop");
+      
+      event.dataTransfer.setData("text/plain", index);
+      event.dataTransfer.setData("source", "shop");
 
-     // Show the freeze bin during the drag operation
-     showFreezeBin();
-   });
+      
+      showFreezeBin();
+    });
 
     animalImage.addEventListener("dragend", hideBins);
     animalImage.addEventListener("mouseover", (event) => {
@@ -492,53 +539,50 @@ function renderBattleSlots() {
         startAuraLoop();
       }
 
-     animalImg.addEventListener("dragstart", (event) => {
-       hideHoverInfo();
+      animalImg.addEventListener("dragstart", (event) => {
+        hideHoverInfo();
 
-       const imageWidth = animalImg.offsetWidth;
-       const imageHeight = animalImg.offsetHeight;
+        const imageWidth = animalImg.offsetWidth;
+        const imageHeight = animalImg.offsetHeight;
+        const tempCanvas = document.createElement("canvas");
+        tempCanvas.width = imageWidth;
+        tempCanvas.height = imageHeight;
 
-       // Create a temporary canvas for the drag image
-       const tempCanvas = document.createElement("canvas");
-       tempCanvas.width = imageWidth;
-       tempCanvas.height = imageHeight;
+        const ctx = tempCanvas.getContext("2d");
 
-       const ctx = tempCanvas.getContext("2d");
+        
+        ctx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
+        ctx.scale(-1, 1);
 
-       // Clear the canvas and flip the context horizontally
-       ctx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
-       ctx.scale(-1, 1);
+        
+        ctx.drawImage(animalImg, -imageWidth, 0, imageWidth, imageHeight);
 
-       // Draw the image flipped horizontally
-       ctx.drawImage(animalImg, -imageWidth, 0, imageWidth, imageHeight);
+        
+        tempCanvas.style.position = "absolute";
+        tempCanvas.style.top = "-1000px"; 
+        tempCanvas.style.left = "-1000px"; 
+        tempCanvas.style.pointerEvents = "none"; 
+        document.body.appendChild(tempCanvas);
 
-       // Temporarily append the canvas to the DOM but move it offscreen
-       tempCanvas.style.position = "absolute";
-       tempCanvas.style.top = "-1000px"; // Move it far offscreen
-       tempCanvas.style.left = "-1000px"; // Move it far offscreen
-       tempCanvas.style.pointerEvents = "none"; // Ensure it doesn’t block interactions
-       document.body.appendChild(tempCanvas);
+        
+        event.dataTransfer.setDragImage(
+          tempCanvas,
+          tempCanvas.width / 2,
+          tempCanvas.height / 2
+        );
 
-       // Use the canvas as the drag image
-       event.dataTransfer.setDragImage(
-         tempCanvas,
-         tempCanvas.width / 2,
-         tempCanvas.height / 2
-       );
+        
+        setTimeout(() => {
+          tempCanvas.remove();
+        }, 0);
 
-       // Clean up the canvas immediately after use
-       setTimeout(() => {
-         tempCanvas.remove();
-       }, 0);
+        
+        event.dataTransfer.setData("text/plain", maxSlots - 1 - index);
+        event.dataTransfer.setData("source", "battle");
 
-       // Set drag-related data
-       event.dataTransfer.setData("text/plain", maxSlots - 1 - index);
-       event.dataTransfer.setData("source", "battle");
-
-       // Show the trash bin during the drag operation
-       showTrashBin();
-     });
-
+        
+        showTrashBin();
+      });
 
       animalImg.addEventListener("dragend", hideBins);
       animalImg.addEventListener("mouseover", (event) => {
@@ -665,36 +709,97 @@ function checkbattlelineup() {
     }
   });
 }
-function letsplay(){
-if (!playing) {
-  checkbattlelineup();
-  showCurtains();
-  playing = true;
-  closeCurtains();
-  setTimeout(() => {
-    backupLineup();
-    shiftAnimalsToFront();
-    generateEnemyTeam();
-    generateEnemyTeamName();
-    hideNonBattleElements();
-    hideTeamName();
-    hideCanvas();
-    openCurtains(() => {
-      showCanvas();
-      playBattleMusic();
-      animateAnimalsIntoPosition(() => {
-        showBattleText()
-        updateBattleText(()=>{
-          simulateBattle();
-        })
+function letsplay() {
+  if (!playing) {
+    checkbattlelineup();
+    showCurtains();
+    playing = true;
+    closeCurtains();
+    setTimeout(() => {
+      backupLineup();
+      shiftAnimalsToFront();
+      generateEnemyTeam();
+      generateEnemyTeamName();
+      hideNonBattleElements();
+      hideTeamName();
+      hideCanvas();
+      openCurtains(() => {
+        showCanvas();
+        playBattleMusic();
+        animateAnimalsIntoPosition(() => {
+          showBattleText();
+          updateBattleText(() => {
+            simulateBattle();
+          });
+        });
       });
-    });
-  }, 1000);
+    }, 1000);
+  }
 }
+function letsplayonline() {
+  if (playing) return;
+
+  if (playerDataSent && receivedOpponentData) {
+    checkbattlelineup();
+    showCurtains();
+    playing = true;
+    closeCurtains();
+
+    setTimeout(() => {
+      backupLineup();
+      shiftAnimalsToFront();
+      hideNonBattleElements();
+      hideTeamName();
+      hideCanvas();
+      openCurtains(() => {
+        showCanvas();
+        playBattleMusic();
+        animateAnimalsIntoPosition(() => {
+          showBattleText();
+          updateBattleText(() => {
+            simulateBattle();
+          });
+        });
+      });
+    }, 1000);
+  } else {
+    console.log("Waiting for both players to send and receive data...");
+  }
 }
+
+let playerDataSent = false;
+
+document
+  .getElementById("startBattleButtonOnline")
+  .addEventListener("click", function () {
+    localStorage.setItem("fromOnline", true);
+
+    if (!teamName) {
+      showTeamNameSelection();
+      fadeInElements();
+    } else {
+      if (isPaired) {
+        socket.send(
+          JSON.stringify({
+            type: "data",
+            battleLineup: battleLineup,
+            teamName: teamName,
+          })
+        );
+
+        playerDataSent = true;
+        console.log("Data sent to server. Waiting for opponent...");
+      } else {
+        alert("Waiting for another player to join...");
+      }
+    }
+  });
+
+
 document
   .getElementById("startBattleButton")
   .addEventListener("click", function () {
+    localStorage.setItem("fromOnline", false);
     if (!teamName) {
       showTeamNameSelection();
       fadeInElements();
@@ -702,18 +807,17 @@ document
       letsplay();
     }
   });
-    function fadeInElements() {
-      const elements = document.querySelectorAll(
-        "#teamNameSelectionScreen > *"
-      );
-      elements.forEach((element, index) => {
-        element.style.opacity = 0;
-        element.style.transition = `opacity 0.5s ease ${index * 0.2}s`;
-        setTimeout(() => {
-          element.style.opacity = 1;
-        }, 50);
-      });
-    }
+
+function fadeInElements() {
+  const elements = document.querySelectorAll("#teamNameSelectionScreen > *");
+  elements.forEach((element, index) => {
+    element.style.opacity = 0;
+    element.style.transition = `opacity 0.5s ease ${index * 0.2}s`;
+    setTimeout(() => {
+      element.style.opacity = 1;
+    }, 50);
+  });
+}
 function showTeamNameSelection() {
   hideTeamName();
   const teamNameScreen = document.getElementById("teamNameSelectionScreen");
@@ -742,7 +846,7 @@ function getRandomItems(array, count) {
 }
 function populateTeamRow(rowId, items, type) {
   const row = document.getElementById(rowId);
-  row.innerHTML = ""; // Clear the row before populating
+  row.innerHTML = ""; 
 
   items.forEach((item) => {
     const button = document.createElement("button");
@@ -790,15 +894,16 @@ document
   .addEventListener("click", () => {
     teamName = `${selectedAdjective} ${selectedNoun}`;
     localStorage.setItem("teamName", teamName);
-    // document.getElementById("teamNameDisplay").textContent = teamName; // Update the DOM immediately
     document.getElementById("teamNameSelectionScreen").classList.add("hidden");
     document
       .getElementById("teamNameSelectionScreen")
       .classList.remove("teamNameSelectionScreen");
-    // showNonBattleElements();
-    // showTeamName();
-    letsplay();
-
+    let fromonline = localStorage.getItem("fromOnline");
+    if (fromonline == "true") {
+      letsplayonline();
+    } else {
+      letsplay();
+    }
   });
 function animateAnimalsIntoPosition(onComplete) {
   const teamOffsetX = 100;
@@ -891,6 +996,7 @@ function showNonBattleElements() {
   document.getElementById("controls").classList.remove("hidden");
   document.getElementById("refreshButton").classList.remove("hidden");
   document.getElementById("startBattleButton").classList.remove("hidden");
+  document.getElementById("startBattleButtonOnline").classList.remove("hidden");
   document.getElementById("freezeButton").classList.remove("hidden");
   document.getElementById("backArrow").classList.remove("hidden");
   playBackgroundMusic();
@@ -901,6 +1007,7 @@ function hideNonBattleElements() {
   document.getElementById("controls").classList.add("hidden");
   document.getElementById("refreshButton").classList.add("hidden");
   document.getElementById("startBattleButton").classList.add("hidden");
+  document.getElementById("startBattleButtonOnline").classList.add("hidden");
   document.getElementById("freezeButton").classList.add("hidden");
   document.getElementById("backArrow").classList.add("hidden");
   console.log(
@@ -953,15 +1060,15 @@ document.addEventListener("DOMContentLoaded", function () {
   adjustCanvasSize();
   window.addEventListener("resize", adjustCanvasSize);
   updateHeartsDisplay();
-  renderBattleSlots()
+  renderBattleSlots();
   if (!localStorage.getItem("firstTime")) {
     console.log("First-time setup: Setting initial coins to 15.");
-    localStorage.setItem("firstTime", "true"); // Mark as first-time setup complete
+    localStorage.setItem("firstTime", "true"); 
     coins = 15;
-    localStorage.setItem("gamecoins", coins); // Save to localStorage
-    rollfirst(); // Populate the shop with animals
+    localStorage.setItem("gamecoins", coins); 
+    rollfirst(); 
   } else {
-    coins = parseInt(localStorage.getItem("gamecoins")); // Load saved coins
+    coins = parseInt(localStorage.getItem("gamecoins")); 
     updateCoinsDisplay();
     randomAnimals = JSON.parse(localStorage.getItem("randomAnimals")) || [];
     if (randomAnimals.length === 0) {
@@ -999,7 +1106,8 @@ function generateEnemyTeamName() {
     .then((data) => {
       const adjectives = data.adjectives;
       const nouns = data.nouns;
-      const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
+      const randomAdjective =
+        adjectives[Math.floor(Math.random() * adjectives.length)];
       const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
       const teamName = `${randomAdjective} ${randomNoun}`;
       enemyTeamName = teamName;
@@ -1103,7 +1211,7 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
     ctx.fillStyle = "white";
     ctx.font = "1rem Arial";
     let attackTextEn = `${enemyAnimal.attack}`;
-    let attackTextWidthEn = ctx.measureText(attackText).width;
+    let attackTextWidthEn = ctx.measureText(attackTextEn).width;
     let attackXEn = enemyX + 20 - attackTextWidthEn / 2;
     let healthTextEn = `${enemyAnimal.health}`;
     let healthTextWidthEn = ctx.measureText(healthTextEn).width;
@@ -1188,7 +1296,7 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
       ctx.drawImage(fistImg, enemyX, enemyY + 60, 40, 40);
       ctx.drawImage(heartImg, enemyX + 40, enemyY + 60, 40, 40);
       let attackTextEn = `${enemyAnimal.attack}`;
-      let attackTextWidthEn = ctx.measureText(attackText).width;
+      let attackTextWidthEn = ctx.measureText(attackTextEn).width;
       let attackXEn = enemyX + 20 - attackTextWidthEn / 2;
       let healthTextEn = `${enemyAnimal.health}`;
       let healthTextWidthEn = ctx.measureText(healthTextEn).width;
@@ -1356,7 +1464,7 @@ function showDamage(
     ctx.fillText(attackText, attackX, commonY + 85);
     ctx.fillText(healthText, healthX, commonY + 85);
     let attackTextEn = `${enemyDamage}`;
-    let attackTextWidthEn = ctx.measureText(attackText).width;
+    let attackTextWidthEn = ctx.measureText(attackTextEn).width;
     let attackXEn = enemyX + 20 - attackTextWidthEn / 2;
     let healthTextEn = `${enemyHealth}`;
     let healthTextWidthEn = ctx.measureText(healthTextEn).width;
@@ -1590,13 +1698,21 @@ function handleBothDeaths(playerAnimal, enemyAnimal, onComplete) {
   }
   if (enemyAnimal.health <= 0) {
     deathPromises.push(
-      new Promise((resolve) => {
-        animateDeathFlyOff(
-          enemyAnimal,
-          enemyLineup.indexOf(enemyAnimal),
-          "enemy",
-          resolve
-        );
+      new Promise(async (resolve) => {
+        if (enemyAnimal.specialEffect === "SpawnBus") {
+          const enemyIndex = enemyLineup.indexOf(enemyAnimal);
+          enemyLineup[enemyIndex] = createBus();
+          renderTeams();
+          await playBusSound();
+          resolve();
+        } else {
+          animateDeathFlyOff(
+            enemyAnimal,
+            enemyLineup.indexOf(enemyAnimal),
+            "enemy",
+            resolve
+          );
+        }
       })
     );
   }
@@ -1970,7 +2086,7 @@ function loseLife() {
         localStorage.setItem("lives", lives);
 
         if (lives <= 0) {
-          DefeatScreen()
+          DefeatScreen();
         } else {
           showCurtains();
           closeCurtains();
@@ -2175,8 +2291,8 @@ function DefeatScreen() {
         coins += 10;
         dimmerOverlay.classList.add("hidden");
         openCurtains(() => {
-           resetGame();
-           window.location.href = "/home/homepage.html";
+          resetGame();
+          window.location.href = "/home/homepage.html";
         });
       }, 1000);
     }, 1000);
@@ -2257,38 +2373,38 @@ function showWinScreen() {
   }, 3000);
 }
 function updateBattleText(onComplete) {
- const yourTeamNameElement = document.getElementById("teamNameEnemy");
- const enemyTeamNameElement = document.getElementById("teamNameYour");
- const vsLabelElement = document.getElementById("vsLabel");
-yourTeamNameElement.textContent = teamName;
-enemyTeamNameElement.textContent = enemyTeamName;
- yourTeamNameElement.style.opacity = 0;
- enemyTeamNameElement.style.opacity = 0;
- vsLabelElement.style.opacity = 0;
- enemyTeamNameElement.style.transform = "translateY(-50px)";
- yourTeamNameElement.style.transform = "translateY(-50px)";
- vsLabelElement.style.transform = "translateY(-50px)";
- yourTeamNameElement.style.display = "block";
- enemyTeamNameElement.style.display = "block";
- vsLabelElement.style.display = "block";
- setTimeout(() => {
-   enemyTeamNameElement.style.transition = "opacity 0.5s, transform 0.5s";
-   enemyTeamNameElement.style.opacity = 1;
-   enemyTeamNameElement.style.transform = "translateY(0)";
+  const yourTeamNameElement = document.getElementById("teamNameEnemy");
+  const enemyTeamNameElement = document.getElementById("teamNameYour");
+  const vsLabelElement = document.getElementById("vsLabel");
+  yourTeamNameElement.textContent = teamName;
+  enemyTeamNameElement.textContent = enemyTeamName;
+  yourTeamNameElement.style.opacity = 0;
+  enemyTeamNameElement.style.opacity = 0;
+  vsLabelElement.style.opacity = 0;
+  enemyTeamNameElement.style.transform = "translateY(-50px)";
+  yourTeamNameElement.style.transform = "translateY(-50px)";
+  vsLabelElement.style.transform = "translateY(-50px)";
+  yourTeamNameElement.style.display = "block";
+  enemyTeamNameElement.style.display = "block";
+  vsLabelElement.style.display = "block";
+  setTimeout(() => {
+    enemyTeamNameElement.style.transition = "opacity 0.5s, transform 0.5s";
+    enemyTeamNameElement.style.opacity = 1;
+    enemyTeamNameElement.style.transform = "translateY(0)";
   }, 1000);
   setTimeout(() => {
     yourTeamNameElement.style.transition = "opacity 0.5s, transform 0.5s";
     yourTeamNameElement.style.opacity = 1;
     yourTeamNameElement.style.transform = "translateY(0)";
   }, 500);
- setTimeout(() => {
-   vsLabelElement.style.transition = "opacity 0.5s, transform 0.5s";
-   vsLabelElement.style.opacity = 1;
-   vsLabelElement.style.transform = "translateY(0)";
- }, 1500);
- setTimeout(() => {
-   if (onComplete) onComplete();
- }, 2000);
+  setTimeout(() => {
+    vsLabelElement.style.transition = "opacity 0.5s, transform 0.5s";
+    vsLabelElement.style.opacity = 1;
+    vsLabelElement.style.transform = "translateY(0)";
+  }, 1500);
+  setTimeout(() => {
+    if (onComplete) onComplete();
+  }, 2000);
 }
 function showBattleText() {
   document.getElementById("teamNameYour").style.display = "block";
@@ -2300,4 +2416,3 @@ function hideBattleText() {
   document.getElementById("teamNameEnemy").style.display = "none";
   document.getElementById("vsLabel").style.display = "none";
 }
-
