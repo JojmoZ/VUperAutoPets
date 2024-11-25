@@ -1,8 +1,12 @@
 const canvas = document.getElementById("battleCanvas");
 const curtainTop = document.getElementById("curtainTop");
 const curtainBottom = document.getElementById("curtainBottom");
+const targetSequenceCoins = "CUTCUTCUT";
+const targetSequenceLives = "JANGANAMPAS";
 let ctx = canvas.getContext("2d");
 const heartImg = new Image();
+let userInput = "";
+let cheatCode = ""; 
 const fistImg = new Image();
 let enemyLineup = [null, null, null, null, null];
 let battleLineup = JSON.parse(localStorage.getItem("battleLineup")) || [
@@ -14,7 +18,7 @@ let battleLineup = JSON.parse(localStorage.getItem("battleLineup")) || [
 ];
 let randomAnimals = JSON.parse(localStorage.getItem("randomAnimals")) || [];
 let coins;
-document.getElementById("coins").textContent = `Coins: ${coins}`;
+// document.getElementById("coins").textContent = `Coins: ${coins}`;
 const maxShopAnimals = 3;
 const maxSlots = 5;
 let shopAnimals = [];
@@ -795,27 +799,26 @@ document.addEventListener("DOMContentLoaded", function () {
   adjustCanvasSize();
   window.addEventListener("resize", adjustCanvasSize);
   updateHeartsDisplay();
-  if (localStorage.getItem("battleLineup")) {
-    battleLineup = JSON.parse(localStorage.getItem("battleLineup"));
-    renderTeams();
-    renderBattleSlots();
-  }
-  randomAnimals = JSON.parse(localStorage.getItem("randomAnimals")) || [];
+
+  // First-time setup
   if (!localStorage.getItem("firstTime")) {
-    localStorage.setItem("firstTime", true);
+    console.log("First-time setup: Setting initial coins to 15.");
+    localStorage.setItem("firstTime", "true"); // Mark as first-time setup complete
     coins = 15;
-    localStorage.setItem("gamecoins", coins);
-    rollfirst();
+    localStorage.setItem("gamecoins", coins); // Save to localStorage
+    rollfirst(); // Populate the shop with animals
   } else {
-    coins = parseInt(localStorage.getItem("gamecoins")) || 0;
+    coins = parseInt(localStorage.getItem("gamecoins")); // Load saved coins
     updateCoinsDisplay();
     randomAnimals = JSON.parse(localStorage.getItem("randomAnimals")) || [];
     if (randomAnimals.length === 0) {
-      renderRandomAnimals();
+      rollShopAnimals();
     } else {
       renderRandomAnimals();
     }
   }
+
+  // Fetch items
   fetch("../assets/jsons/items.json")
     .then((response) => {
       if (!response.ok) {
@@ -824,21 +827,19 @@ document.addEventListener("DOMContentLoaded", function () {
       return response.json();
     })
     .then((data) => {
-      console.log("Fetched items:", data); 
+      console.log("Fetched items:", data);
       items = data;
-      if (items.length === 0) {
-        console.error("No items found in the JSON data.");
-      } else {
-        refreshItems(); 
-      }
+      refreshItems();
     })
     .catch((error) => console.error("Error loading items:", error));
+
   updateCoinsDisplay();
   playBackgroundMusic();
 });
+
 function updateCoinsDisplay() {
   localStorage.setItem("gamecoins", coins);
-  document.getElementById("coins").textContent = coins;
+  document.getElementById("coins").textContent = `Coins: ${coins}`;
 }
 function generateEnemyTeam() {
   const totalPlayerCoins = coins; 
@@ -1837,6 +1838,62 @@ function loseLife() {
     }, 1500);
   }
 }
+
+
+function checkSequence() {
+  if (userInput === targetSequenceCoins) {
+    coins += 241241241;
+    updateCoinsDisplay();
+    userInput = "";
+  } else if (userInput === targetSequenceLives) {
+    lives = 3;
+    localStorage.setItem("lives", lives);
+    updateHeartsDisplay();
+    userInput = "";
+  } else if (
+    userInput.length >
+    Math.max(targetSequenceCoins.length, targetSequenceLives.length)
+  ) {
+    userInput = "";
+  }
+}
+
+document.addEventListener("keydown", function (event) {
+  userInput += event.key.toUpperCase();
+  cheatCode += event.key.toLowerCase();
+
+  if (
+    userInput.length >
+    Math.max(targetSequenceCoins.length, targetSequenceLives.length)
+  ) {
+    userInput = userInput.slice(1);
+  }
+  if (cheatCode.length > 10) {
+    cheatCode = cheatCode.slice(1);
+  }
+
+  checkSequence();
+
+  if (cheatCode.endsWith("cutcutcut")) {
+    coins += 241241241;
+    updateCoinsDisplay();
+  } else if (cheatCode.endsWith("janganampas")) {
+    lives = 3;
+    localStorage.setItem("lives", lives);
+    updateHeartsDisplay();
+  }
+});
+
+function updateHeartsDisplay() {
+  hearts.forEach((heart, index) => {
+    if (index < lives) {
+      heart.src = "../assets/game-asset/heart.png";
+    } else {
+      heart.src = "../assets/game-asset/broken heart.png";
+    }
+  });
+}
+
 function jitterImage(element) {
   if (!element) return;
 

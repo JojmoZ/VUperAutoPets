@@ -55,16 +55,17 @@ const restrictedZones = [
   { x: 1110, y: 160, width: 80, height: 100 },
   { x: 1130, y: 140, width: 80, height: 100 },
   { x: 1130, y: 140, width: 100, height: 30 },
-  { x: 1160, y: 0, width: 100, height: 150 }
+  { x: 1160, y: 0, width: 100, height: 150 },
+  { x: 0, y: 1070, width: 1920, height: 150 },
 ];
 function updateScalingFactors() {
   const barnElement = document.getElementById("animals");
   const barnRect = barnElement.getBoundingClientRect();
-  scaleX = barnRect.width / 1920; 
-  scaleY = barnRect.height / 1080; 
+  scaleX = barnRect.width / 1920;
+  scaleY = barnRect.height / 1080;
 }
 function isInRestrictedZone(animalX, animalY, animalWidth, animalHeight) {
-  updateScalingFactors(); 
+  updateScalingFactors();
 
   return restrictedZones.some((zone) => {
     const zoneX = zone.x * scaleX;
@@ -89,9 +90,9 @@ restrictedZones.forEach((zone) => {
   const endX = Math.floor((zone.x + zone.width) / gridSize);
   const endY = Math.floor((zone.y + zone.height) / gridSize);
   for (let i = startY; i <= endY; i++) {
-    if (i >= rows) continue; 
+    if (i >= rows) continue;
     for (let j = startX; j <= endX; j++) {
-      if (j >= cols) continue; 
+      if (j >= cols) continue;
       grid[i][j] = 1;
     }
   }
@@ -107,13 +108,13 @@ function createAnimal(animal) {
   animalElement.src = `../assets/Animals/${animal.name}.webp`;
   animalElement.className = "animal";
   animalElement.style.position = "absolute";
-  animalElement.style.width = "3.125rem"; 
-  animalElement.style.height = "3.125rem"; 
+  animalElement.style.width = "3.125rem";
+  animalElement.style.height = "3.125rem";
   animalElement.dataset.name = animal.name;
   animalElement.dataset.attack = animal.attack;
   animalElement.dataset.health = animal.health;
   animalElement.dataset.cost = animal.cost;
-  animalElement.dataset.color = animal.color; 
+  animalElement.dataset.color = animal.color;
   let spawnX, spawnY;
   do {
     spawnX = Math.random() * (animalContainer.clientWidth - 50);
@@ -249,10 +250,10 @@ function moveOutOfRestrictedZone(animal) {
   });
 
   if (!bestDirection) {
-    return; 
+    return;
   }
 
-  const duration = 500; 
+  const duration = 500;
   const startX = parseFloat(animal.style.left);
   const startY = parseFloat(animal.style.top);
   const endX = startX + bestDirection.deltaX;
@@ -273,7 +274,6 @@ function moveOutOfRestrictedZone(animal) {
   requestAnimationFrame(animateUnstuck);
 }
 
-
 function roamAnimal(animal) {
   if (animal.dataset.isMovingToFood === "true") return;
 
@@ -293,7 +293,14 @@ function roamAnimal(animal) {
     animalContainer.clientHeight - animal.offsetHeight / 2
   );
 
-  if (isInRestrictedZone(endX - animal.offsetWidth / 2, endY - animal.offsetHeight / 2, animal.offsetWidth, animal.offsetHeight)) {
+  if (
+    isInRestrictedZone(
+      endX - animal.offsetWidth / 2,
+      endY - animal.offsetHeight / 2,
+      animal.offsetWidth,
+      animal.offsetHeight
+    )
+  ) {
     moveOutOfRestrictedZone(animal);
     setTimeout(() => roamAnimal(animal), 100);
     return;
@@ -315,7 +322,9 @@ function roamAnimal(animal) {
     const nextX = startX + (endX - startX) * progress - animal.offsetWidth / 2;
     const nextY = startY + (endY - startY) * progress - animal.offsetHeight / 2;
 
-    if (isInRestrictedZone(nextX, nextY, animal.offsetWidth, animal.offsetHeight)) {
+    if (
+      isInRestrictedZone(nextX, nextY, animal.offsetWidth, animal.offsetHeight)
+    ) {
       moveOutOfRestrictedZone(animal);
       setTimeout(() => roamAnimal(animal), 100);
       return;
@@ -335,7 +344,7 @@ function roamAnimal(animal) {
 
 function createFood(event) {
   if (foodElement) {
-    return; 
+    return;
   }
   const foodX = event.clientX - 10;
   const foodY = event.clientY - 10;
@@ -350,7 +359,7 @@ function createFood(event) {
   foodElement.className = "food";
   foodElement.style.position = "absolute";
   foodElement.style.width = "1.75rem";
-  foodElement.style.height = "1.75rem"; 
+  foodElement.style.height = "1.75rem";
   foodElement.style.backgroundImage = "url('../assets/items/Pizza.webp')";
   foodElement.style.backgroundSize = "cover";
   foodElement.style.borderRadius = "50%";
@@ -400,7 +409,7 @@ function createFood(event) {
       if (path) {
         followPath(closestAnimal, path, () => {
           foodElement.remove();
-          foodElement = null; 
+          foodElement = null;
           if (
             isInRestrictedZone(
               parseFloat(closestAnimal.style.left),
@@ -450,17 +459,8 @@ function followPath(animal, path, callback) {
   }
   moveStep();
   setTimeout(() => {
-    if (
-      isInRestrictedZone(
-        parseFloat(animal.style.left),
-        parseFloat(animal.style.top),
-        animal.offsetWidth,
-        animal.offsetHeight
-      )
-    ) {
-      unstickAnimal(animal); 
-    }
-  }, 500); 
+    
+  }, 500);
 }
 function drawRestrictedZones() {
   const existingZones = document.querySelectorAll(".restricted-area");
@@ -483,8 +483,8 @@ drawRestrictedZones();
 function updateRestrictedZones() {
   const barnElement = document.getElementById("animals");
   const barnRect = barnElement.getBoundingClientRect();
-  const scaleX = barnRect.width / 1920; 
-  const scaleY = barnRect.height / 1080; 
+  const scaleX = barnRect.width / 1920;
+  const scaleY = barnRect.height / 1080;
 
   const restrictedAreaElements = document.querySelectorAll(".restricted-area");
   restrictedAreaElements.forEach((element, index) => {
@@ -499,14 +499,12 @@ function unstickAnimal(animal) {
   const startX = parseFloat(animal.style.left) + animal.offsetWidth / 2;
   const startY = parseFloat(animal.style.top) + animal.offsetHeight / 2;
 
-  
-  const safeDistance = 30; 
-  const searchRadius = 100; 
-  const stepSize = gridSize; 
+  const safeDistance = 30;
+  const searchRadius = 100;
+  const stepSize = gridSize;
 
   let safeLocations = [];
 
-  
   for (
     let row = -Math.ceil(searchRadius / stepSize);
     row <= Math.ceil(searchRadius / stepSize);
@@ -520,7 +518,6 @@ function unstickAnimal(animal) {
       const candidateX = startX + col * stepSize;
       const candidateY = startY + row * stepSize;
 
-      
       if (
         candidateX < 0 ||
         candidateX > animalContainer.clientWidth ||
@@ -529,7 +526,6 @@ function unstickAnimal(animal) {
       )
         continue;
 
-      
       if (
         !isInRestrictedZone(
           candidateX - animal.offsetWidth / 2,
@@ -550,7 +546,7 @@ function unstickAnimal(animal) {
             (candidateX - zoneCenterX) ** 2 + (candidateY - zoneCenterY) ** 2
           );
 
-          return distance >= safeDistance; 
+          return distance >= safeDistance;
         });
 
         if (isFarEnough) {
@@ -560,7 +556,6 @@ function unstickAnimal(animal) {
     }
   }
 
-  
   let closestLocation = null;
   let minDistance = Infinity;
   safeLocations.forEach((location) => {
@@ -573,19 +568,17 @@ function unstickAnimal(animal) {
     }
   });
 
-  
   if (closestLocation) {
     const endX = closestLocation.x - animal.offsetWidth / 2;
     const endY = closestLocation.y - animal.offsetHeight / 2;
 
-    const duration = 500; 
+    const duration = 500;
     const startTime = performance.now();
 
     function animateMove(currentTime) {
       const elapsedTime = currentTime - startTime;
-      const progress = Math.min(elapsedTime / duration, 1); 
+      const progress = Math.min(elapsedTime / duration, 1);
 
-      
       const newX = startX + (endX - startX) * progress;
       const newY = startY + (endY - startY) * progress;
 
@@ -593,13 +586,13 @@ function unstickAnimal(animal) {
       animal.style.top = `${newY}px`;
 
       if (progress < 1) {
-        requestAnimationFrame(animateMove); 
+        requestAnimationFrame(animateMove);
       } else {
         console.log("Animal successfully moved to a safe location.");
       }
     }
 
-    requestAnimationFrame(animateMove); 
+    requestAnimationFrame(animateMove);
   } else {
     console.warn("No valid nearby location found to unstick the animal.");
   }
@@ -608,13 +601,13 @@ function unstickAnimal(animal) {
 function updateAnimalSizes() {
   const barnElement = document.getElementById("animals");
   const barnRect = barnElement.getBoundingClientRect();
-  const scaleX = barnRect.width / 1920; 
+  const scaleX = barnRect.width / 1920;
   const scaleY = barnRect.height / 1080;
 
   const animals = document.querySelectorAll(".animal");
   animals.forEach((animal) => {
-    const originalWidth = 50; 
-    const originalHeight = 50; 
+    const originalWidth = 50;
+    const originalHeight = 50;
     animal.style.width = `${originalWidth * scaleX}px`;
     animal.style.height = `${originalHeight * scaleY}px`;
 
@@ -628,8 +621,8 @@ function updateAnimalSizes() {
 function updateCoordinates() {
   const barnElement = document.getElementById("animals");
   const barnRect = barnElement.getBoundingClientRect();
-  const scaleX = barnRect.width / 1920; 
-  const scaleY = barnRect.height / 1080; 
+  const scaleX = barnRect.width / 1920;
+  const scaleY = barnRect.height / 1080;
 
   const animals = document.querySelectorAll(".animal");
   animals.forEach((animal) => {
@@ -707,8 +700,8 @@ function showStatWindow(animal) {
 
   currentAnimal = animal;
 
-  const animalColor = animal.dataset.color || "#ffffff"; 
-  statWindow.style.setProperty('--animal-color', animalColor); 
+  const animalColor = animal.dataset.color || "#ffffff";
+  statWindow.style.setProperty("--animal-color", animalColor);
 
   if (statWindow.classList.contains("show")) {
     statWindow.classList.remove("show");
@@ -717,25 +710,25 @@ function showStatWindow(animal) {
       animalAttack.textContent = animal.dataset.attack;
       animalHealth.textContent = animal.dataset.health;
       animalCost.textContent = animal.dataset.cost;
-      hrElement.style.width = "0"; 
+      hrElement.style.width = "0";
       statWindow.classList.add("show");
       setTimeout(() => {
         hrElement.style.width = "100%";
-      }, 10); 
-    }, 300); 
+      }, 10);
+    }, 300);
   } else {
     animalName.textContent = animal.dataset.name;
     animalAttack.textContent = animal.dataset.attack;
     animalHealth.textContent = animal.dataset.health;
     animalCost.textContent = animal.dataset.cost;
     hrElement.style.width = "0";
-    statWindow.style.display = "block"; 
+    statWindow.style.display = "block";
     setTimeout(() => {
       statWindow.classList.add("show");
       setTimeout(() => {
-        hrElement.style.width = "100%"; 
-      }, 10); 
-    }, 10); 
+        hrElement.style.width = "100%";
+      }, 10);
+    }, 10);
   }
 }
 
@@ -743,37 +736,37 @@ function hideStatWindow() {
   const statWindow = document.getElementById("statWindow");
   statWindow.classList.remove("show");
   setTimeout(() => {
-    statWindow.style.display = "none"; 
-    currentAnimal = null; 
-  }, 300); 
+    statWindow.style.display = "none";
+    currentAnimal = null;
+  }, 300);
 }
-  const backgroundAudio = new Audio(
-    "../assets/sound/Super Auto Pets  - Menu Theme.mp3"
-  );
-  backgroundAudio.volume = 0.08;
-  backgroundAudio.loop = true;
+const backgroundAudio = new Audio(
+  "../assets/sound/Super Auto Pets  - Menu Theme.mp3"
+);
+backgroundAudio.volume = 0.08;
+backgroundAudio.loop = true;
 const savedTime = localStorage.getItem("backgroundAudioTime");
 if (savedTime) {
   backgroundAudio.currentTime = parseFloat(savedTime);
 }
 
-  const playBackgroundAudio = () => {
-    backgroundAudio.play();
-    document.removeEventListener("click", playBackgroundAudio);
-    document.removeEventListener("keydown", playBackgroundAudio);
-    document.removeEventListener("mousemove", playBackgroundAudio);
-    document.removeEventListener("scroll", playBackgroundAudio);
-    document.removeEventListener("touchstart", playBackgroundAudio);
-    document.removeEventListener("focus", playBackgroundAudio);
-    document.removeEventListener("mousedown", playBackgroundAudio);
-    document.removeEventListener("mouseup", playBackgroundAudio);
-  };
+const playBackgroundAudio = () => {
+  backgroundAudio.play();
+  document.removeEventListener("click", playBackgroundAudio);
+  document.removeEventListener("keydown", playBackgroundAudio);
+  document.removeEventListener("mousemove", playBackgroundAudio);
+  document.removeEventListener("scroll", playBackgroundAudio);
+  document.removeEventListener("touchstart", playBackgroundAudio);
+  document.removeEventListener("focus", playBackgroundAudio);
+  document.removeEventListener("mousedown", playBackgroundAudio);
+  document.removeEventListener("mouseup", playBackgroundAudio);
+};
 
-  document.addEventListener("click", playBackgroundAudio);
-  document.addEventListener("keydown", playBackgroundAudio);
-  document.addEventListener("mousemove", playBackgroundAudio);
-  document.addEventListener("scroll", playBackgroundAudio);
-  document.addEventListener("touchstart", playBackgroundAudio);
-  document.addEventListener("focus", playBackgroundAudio);
-  document.addEventListener("mousedown", playBackgroundAudio);
-  document.addEventListener("mouseup", playBackgroundAudio);
+document.addEventListener("click", playBackgroundAudio);
+document.addEventListener("keydown", playBackgroundAudio);
+document.addEventListener("mousemove", playBackgroundAudio);
+document.addEventListener("scroll", playBackgroundAudio);
+document.addEventListener("touchstart", playBackgroundAudio);
+document.addEventListener("focus", playBackgroundAudio);
+document.addEventListener("mousedown", playBackgroundAudio);
+document.addEventListener("mouseup", playBackgroundAudio);

@@ -491,12 +491,12 @@ img {
  user-select: none;
 }
 .shopsign{
-  width: 4.8rem;
-  height:4.4rem;
+  width: 10rem;
+  height:9rem;
   position: relative;
   user-select: none;
   left:2rem;
-  top:1.5rem;
+  top:-2rem;
 
 }
 .randomleft{
