@@ -408,7 +408,7 @@ async function loginUser(username, password) {
     const windowHeight = window.innerHeight;
     const bodyHeight = document.body.offsetHeight;
 
-    if (scrollY + windowHeight >= bodyHeight) {
+    if (scrollY + windowHeight >= bodyHeight - 20) {
       loginCard.classList.add("centered");
 
       setTimeout(() => {
