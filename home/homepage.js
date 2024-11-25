@@ -67,7 +67,7 @@ window.onload = function () {
 
     effect();
   } else {
-    window.location.href = "/login/start.html";
+    window.location.href = "/login/index.html";
   }
   const fadeInElements = document.querySelectorAll(".fade-in-element");
   const elementObserver = new IntersectionObserver(

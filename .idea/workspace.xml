@@ -5,11 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="54d862c4-d20b-415f-bc78-50cca1da92eb" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/game/CHEATS.js" beforeDir="false" afterPath="$PROJECT_DIR$/game/cheats.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/game/game.js" beforeDir="false" afterPath="$PROJECT_DIR$/game/game-script.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/game/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/game/game-style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/game/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/game/game.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loading/loading.js" beforeDir="false" afterPath="$PROJECT_DIR$/loading/loading.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/home/homepage.js" beforeDir="false" afterPath="$PROJECT_DIR$/home/homepage.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,7 +81,7 @@
       <workItem from="1729730472586" duration="5301000" />
       <workItem from="1731644785419" duration="699000" />
       <workItem from="1731924418048" duration="7000" />
-      <workItem from="1732505131102" duration="1792000" />
+      <workItem from="1732505131102" duration="1898000" />
     </task>
     <servers />
   </component>
