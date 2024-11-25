@@ -396,6 +396,7 @@ function renderBattleSlots() {
         levelImg.src = `../assets/Levels/Lv${animal.level}_${animal.bar}.png`;
       }
       levelImg.alt = `Level ${animal.level} Bar ${animal.bar}`;
+      levelImg.style.zIndex = "10101";
       levelImg.style.position = "absolute";
       levelImg.style.top = "-2.5rem";
       levelImg.style.left = "0";
@@ -471,33 +472,54 @@ function renderBattleSlots() {
         startAuraLoop();
       }
 
-      animalImg.addEventListener("dragstart", (event) => {
-        hideHoverInfo();
-        const imageWidth = animalImg.offsetWidth;
-        const imageHeight = animalImg.offsetHeight;
-        const tempCanvas = document.createElement("canvas");
-        tempCanvas.width = imageWidth;
-        tempCanvas.height = imageHeight;
-        const ctx = tempCanvas.getContext("2d");
-        ctx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
-        ctx.scale(-1, 1);
-        ctx.drawImage(animalImg, -imageWidth, 0, imageWidth, imageHeight);
-        document.body.appendChild(tempCanvas);
-        tempCanvas.style.top = "0.625rem";
-        tempCanvas.style.left = "0.625rem";
-        tempCanvas.style.aspectRatio = "1/1";
-        event.dataTransfer.setDragImage(
-          tempCanvas,
-          tempCanvas.width / 2,
-          tempCanvas.height / 2
-        );
-        setTimeout(() => {
-          tempCanvas.remove();
-        }, 0);
-        event.dataTransfer.setData("text/plain", maxSlots - 1 - index);
-        event.dataTransfer.setData("source", "battle");
-        showTrashBin();
-      });
+     animalImg.addEventListener("dragstart", (event) => {
+       hideHoverInfo();
+
+       const imageWidth = animalImg.offsetWidth;
+       const imageHeight = animalImg.offsetHeight;
+
+       // Create a temporary canvas for the drag image
+       const tempCanvas = document.createElement("canvas");
+       tempCanvas.width = imageWidth;
+       tempCanvas.height = imageHeight;
+
+       const ctx = tempCanvas.getContext("2d");
+
+       // Clear the canvas and flip the context horizontally
+       ctx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
+       ctx.scale(-1, 1);
+
+       // Draw the image flipped horizontally
+       ctx.drawImage(animalImg, -imageWidth, 0, imageWidth, imageHeight);
+
+       // Temporarily append the canvas to the DOM but move it offscreen
+       tempCanvas.style.position = "absolute";
+       tempCanvas.style.top = "-1000px"; // Move it far offscreen
+       tempCanvas.style.left = "-1000px"; // Move it far offscreen
+       tempCanvas.style.pointerEvents = "none"; // Ensure it doesn’t block interactions
+       document.body.appendChild(tempCanvas);
+
+       // Use the canvas as the drag image
+       event.dataTransfer.setDragImage(
+         tempCanvas,
+         tempCanvas.width / 2,
+         tempCanvas.height / 2
+       );
+
+       // Clean up the canvas immediately after use
+       setTimeout(() => {
+         tempCanvas.remove();
+       }, 0);
+
+       // Set drag-related data
+       event.dataTransfer.setData("text/plain", maxSlots - 1 - index);
+       event.dataTransfer.setData("source", "battle");
+
+       // Show the trash bin during the drag operation
+       showTrashBin();
+     });
+
+
       animalImg.addEventListener("dragend", hideBins);
       animalImg.addEventListener("mouseover", (event) => {
         showHoverInfo(`${animal.name} - Cost: ${animal.cost}`, event);
