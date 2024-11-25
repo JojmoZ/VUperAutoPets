@@ -137,33 +137,53 @@ function renderRandomAnimals() {
     animalImage.style.aspectRatio = "1/1";
     animalImage.setAttribute("draggable", true);
     animalImage.style.transform = "scaleX(-1)";
-    animalImage.addEventListener("dragstart", (event) => {
-      hideHoverInfo();
-      const imageWidth = animalImage.offsetWidth;
-      const imageHeight = animalImage.offsetHeight;
-      const tempCanvas = document.createElement("canvas");
-      tempCanvas.width = imageWidth;
-      tempCanvas.height = imageHeight;
-      const ctx = tempCanvas.getContext("2d");
-      ctx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
-      ctx.scale(-1, 1);
-      ctx.drawImage(animalImage, -imageWidth, 0, imageWidth, imageHeight);
-      document.body.appendChild(tempCanvas);
-      tempCanvas.style.top = "0.625rem";
-      tempCanvas.style.left = "0.625rem";
-      tempCanvas.style.aspectRatio = "1/1";
-      event.dataTransfer.setDragImage(
-        tempCanvas,
-        tempCanvas.width / 2,
-        tempCanvas.height / 2
-      );
-      setTimeout(() => {
-        tempCanvas.remove();
-      }, 0);
-      event.dataTransfer.setData("text/plain", index);
-      event.dataTransfer.setData("source", "shop");
-      showFreezeBin();
-    });
+   animalImage.addEventListener("dragstart", (event) => {
+     hideHoverInfo();
+
+     const imageWidth = animalImage.offsetWidth;
+     const imageHeight = animalImage.offsetHeight;
+
+     // Create a temporary canvas for the drag image
+     const tempCanvas = document.createElement("canvas");
+     tempCanvas.width = imageWidth;
+     tempCanvas.height = imageHeight;
+
+     const ctx = tempCanvas.getContext("2d");
+
+     // Clear the canvas and flip the context horizontally
+     ctx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
+     ctx.scale(-1, 1);
+
+     // Draw the image flipped horizontally
+     ctx.drawImage(animalImage, -imageWidth, 0, imageWidth, imageHeight);
+
+     // Temporarily append the canvas to the DOM but move it offscreen
+     tempCanvas.style.position = "absolute";
+     tempCanvas.style.top = "-1000px"; // Move it far offscreen
+     tempCanvas.style.left = "-1000px"; // Move it far offscreen
+     tempCanvas.style.pointerEvents = "none"; // Ensure it doesn’t block interactions
+     document.body.appendChild(tempCanvas);
+
+     // Use the canvas as the drag image
+     event.dataTransfer.setDragImage(
+       tempCanvas,
+       tempCanvas.width / 2,
+       tempCanvas.height / 2
+     );
+
+     // Clean up the canvas immediately after use
+     setTimeout(() => {
+       tempCanvas.remove();
+     }, 0);
+
+     // Set drag-related data
+     event.dataTransfer.setData("text/plain", index);
+     event.dataTransfer.setData("source", "shop");
+
+     // Show the freeze bin during the drag operation
+     showFreezeBin();
+   });
+
     animalImage.addEventListener("dragend", hideBins);
     animalImage.addEventListener("mouseover", (event) => {
       showHoverInfo(`${animal.name} - Cost: ${animal.cost}`, event);
