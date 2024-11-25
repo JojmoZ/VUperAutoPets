@@ -518,9 +518,9 @@ img {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between; /* Ensures proper spacing between elements */
-  height: 80%; /* Adjust based on design preference */
-  width: 50%; /* Adjust based on design preference */
+  justify-content: space-between; 
+  height: 80%; 
+  width: 50%; 
   z-index: 10000;
 }
 #teamNameSelectionScreen > * {
@@ -551,7 +551,7 @@ img {
   font-size: 1.5rem;
   margin: 1rem;
   box-shadow: 0px 6px 0px rgba(0, 0, 0, 0.4);
-  width: 14rem; /* Fixed width for all buttons */
+  width: 14rem; 
   height: 5rem;
   display: flex;
   justify-content: center;
@@ -562,7 +562,7 @@ img {
 }
 .adjective-button,
 .noun-button {
-  background-color: #2978b5; /* Unified color */
+  background-color: #2978b5; 
   box-shadow: 0px 6px 0px #1e5b87;
 }
 .adjective-button:hover,
@@ -571,17 +571,17 @@ img {
   box-shadow: 0px 8px 0px #1e5b87;
 }
 .noun-button {
-  background-color: #4caf50; /* Green */
-  box-shadow: 0px 4px 0px #388e3c; /* Green shadow */
+  background-color: #4caf50; 
+  box-shadow: 0px 4px 0px #388e3c; 
 }
 .noun-button:hover {
   transform: translateY(-2px);
   box-shadow: 0px 6px 0px #388e3c;
 }
 .selected-button {
-  position: relative; /* Make it relative to add pseudo-element */
-  transform: translateY(-3px); /* Elevate the button */
-  box-shadow: 0px 8px 0px rgba(0, 0, 0, 0.5); /* Deeper shadow */
+  position: relative; 
+  transform: translateY(-3px); 
+  box-shadow: 0px 8px 0px rgba(0, 0, 0, 0.5); 
   transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
 .selected-button::after {
@@ -596,23 +596,23 @@ img {
     255,
     255,
     0.5
-  ); /* Semi-transparent white overlay */
-  border-radius: 20px; /* Match the button's border radius */
-  pointer-events: none; /* Make the overlay non-interactive */
+  ); 
+  border-radius: 20px; 
+  pointer-events: none; 
 }
 #adjectiveRow {
   position: absolute;
-  top: 46%; /* Position it lower */
+  top: 46%; 
   left: 50%;
-  transform: translate(-50%, -20%); /* Adjust the height and center */
+  transform: translate(-50%, -20%); 
   display: flex;
   gap: 1rem;
 }
 #nounRow {
   position: absolute;
-  top: 80%; /* Position it higher */
+  top: 80%; 
   left: 50%;
-  transform: translate(-50%, -50%); /* Adjust the height and center */
+  transform: translate(-50%, -50%); 
   display: flex;
   gap: 1rem;
 }

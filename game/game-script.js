@@ -19,6 +19,7 @@ let battleLineup = JSON.parse(localStorage.getItem("battleLineup")) || [
 let randomAnimals = JSON.parse(localStorage.getItem("randomAnimals")) || [];
 let coins;
 let totalcoinforbattle;
+let enemyTeamName
 // document.getElementById("coins").textContent = `Coins: ${coins}`;
 const maxShopAnimals = 3;
 const maxSlots = 5;
@@ -625,7 +626,9 @@ if (!playing) {
     backupLineup();
     shiftAnimalsToFront();
     generateEnemyTeam();
+    generateEnemyTeamName();
     hideNonBattleElements();
+    hideTeamName();
     hideCanvas();
     openCurtains(() => {
       showCanvas();
@@ -951,6 +954,19 @@ document.addEventListener("DOMContentLoaded", function () {
 function updateCoinsDisplay() {
   localStorage.setItem("gamecoins", coins);
   document.getElementById("coins").textContent = `Coins: ${coins}`;
+}
+function generateEnemyTeamName() {
+  fetch("../assets/jsons/teamnames.json")
+    .then((response) => response.json())
+    .then((data) => {
+      const adjectives = data.adjectives;
+      const nouns = data.nouns;
+      const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
+      const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
+      const teamName = `${randomAdjective} ${randomNoun}`;
+      enemyTeamName = teamName;
+    })
+    .catch((error) => console.error("Error fetching team names:", error));
 }
 function generateEnemyTeam() {
   const totalPlayerCoins = totalcoinforbattle;
