@@ -614,6 +614,28 @@ function checkbattlelineup() {
     }
   });
 }
+function letsplay(){
+if (!playing) {
+  checkbattlelineup();
+  showCurtains();
+  playing = true;
+  closeCurtains();
+  setTimeout(() => {
+    backupLineup();
+    shiftAnimalsToFront();
+    generateEnemyTeam();
+    hideNonBattleElements();
+    hideCanvas();
+    openCurtains(() => {
+      showCanvas();
+      playBattleMusic();
+      animateAnimalsIntoPosition(() => {
+        simulateBattle();
+      });
+    });
+  }, 1000);
+}
+}
 let playing = false;
 let canPlay = false;
 document
@@ -621,28 +643,9 @@ document
   .addEventListener("click", function () {
     if (!teamName) {
       showTeamNameSelection();
-      console.log("a");
+      // console.log("a");
     } else {
-      if (!playing) {
-        checkbattlelineup();
-        showCurtains();
-        playing = true;
-        closeCurtains();
-        setTimeout(() => {
-          backupLineup();
-          shiftAnimalsToFront();
-          generateEnemyTeam();
-          hideNonBattleElements();
-          hideCanvas();
-          openCurtains(() => {
-            showCanvas();
-            playBattleMusic();
-            animateAnimalsIntoPosition(() => {
-              simulateBattle();
-            });
-          });
-        }, 1000);
-      }
+      letsplay();
     }
   });
 function showTeamNameSelection() {
@@ -694,29 +697,20 @@ function populateTeamRow(rowId, items, type) {
 function handleTeamNameSelection(type, value) {
   if (type === "adjective") {
     selectedAdjective = value;
-
-    // Remove the selected class from all adjective buttons
     document.querySelectorAll(".adjective-button").forEach((button) => {
       button.classList.remove("selected-button");
     });
-
-    // Find the clicked button and add the selected class
     const selectedButton = Array.from(
       document.querySelectorAll(".adjective-button")
     ).find((button) => button.textContent === value);
-
     if (selectedButton) {
       selectedButton.classList.add("selected-button");
     }
   } else if (type === "noun") {
     selectedNoun = value;
-
-    // Remove the selected class from all noun buttons
     document.querySelectorAll(".noun-button").forEach((button) => {
       button.classList.remove("selected-button");
     });
-
-    // Find the clicked button and add the selected class
     const selectedButton = Array.from(
       document.querySelectorAll(".noun-button")
     ).find((button) => button.textContent === value);
@@ -725,8 +719,6 @@ function handleTeamNameSelection(type, value) {
       selectedButton.classList.add("selected-button");
     }
   }
-
-  // Enable the confirm button only if both an adjective and a noun are selected
   const confirmButton = document.getElementById("confirmTeamNameButton");
   confirmButton.disabled = !(selectedAdjective && selectedNoun);
 }
@@ -736,13 +728,15 @@ document
   .addEventListener("click", () => {
     teamName = `${selectedAdjective} ${selectedNoun}`;
     localStorage.setItem("teamName", teamName);
-    document.getElementById("teamNameDisplay").textContent = teamName; // Update the DOM immediately
+    // document.getElementById("teamNameDisplay").textContent = teamName; // Update the DOM immediately
     document.getElementById("teamNameSelectionScreen").classList.add("hidden");
     document
       .getElementById("teamNameSelectionScreen")
       .classList.remove("teamNameSelectionScreen");
-    showNonBattleElements();
-    showTeamName();
+    // showNonBattleElements();
+    // showTeamName();
+    letsplay();
+
   });
 function animateAnimalsIntoPosition(onComplete) {
   const teamOffsetX = 100;
@@ -902,7 +896,7 @@ document.addEventListener("DOMContentLoaded", function () {
   adjustCanvasSize();
   window.addEventListener("resize", adjustCanvasSize);
   updateHeartsDisplay();
-
+  renderBattleSlots()
   // First-time setup
   if (!localStorage.getItem("firstTime")) {
     console.log("First-time setup: Setting initial coins to 15.");
