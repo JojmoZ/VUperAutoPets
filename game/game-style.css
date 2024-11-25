@@ -2,6 +2,9 @@
   font-family: "VUper";
   src: url("../assets/LapsusPro-Bold.otf") format("opentype");
 }
+*{
+  font-family: "VUper", sans-serif;
+}
 #drawText {
   font-family: "VUper", sans-serif;
 }
@@ -502,4 +505,135 @@ img {
 .randomleft{
   display: flex;
   align-items: center;
+}
+
+/* ...existing code... */
+.teamNameSelectionScreen {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  padding: 2rem;
+  border-radius: 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between; /* Ensures proper spacing between elements */
+  height: 80%; /* Adjust based on design preference */
+  width: 50%; /* Adjust based on design preference */
+  z-index: 10000;
+}
+.teamNameSelectionScreen h1 {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2rem;
+  color: white;
+  margin: 0;
+}
+.team-row {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.team-row button {
+  color: white;
+  border: 3px solid transparent; /* Default transparent border */
+  padding: 0.8rem 2rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: "Arial", sans-serif;
+  font-size: 1.2rem;
+  margin: 0.5rem;
+  box-shadow: 0px 4px 0px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+  transition: transform 0.1s ease, box-shadow 0.1s ease, border-color 0.2s ease;
+}
+
+.adjective-button {
+  background-color: #2978b5; /* Blue */
+  box-shadow: 0px 4px 0px #1e5b87; /* Blue shadow */
+}
+
+.adjective-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0px 6px 0px #1e5b87;
+}
+
+/* Noun Buttons (Green) */
+.noun-button {
+  background-color: #4caf50; /* Green */
+  box-shadow: 0px 4px 0px #388e3c; /* Green shadow */
+}
+
+.noun-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0px 6px 0px #388e3c;
+}
+.selected-button {
+  position: relative; /* Make it relative to add pseudo-element */
+  transform: translateY(-3px); /* Elevate the button */
+  box-shadow: 0px 8px 0px rgba(0, 0, 0, 0.5); /* Deeper shadow */
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+.selected-button::after {
+  content: "";
+  position: absolute;
+  top: -5%;
+  left: -2.7%;
+  width: 105.5%;
+  height: 105%;
+  background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent white overlay */
+  border-radius: 10px; /* Match the button's border radius */
+  pointer-events: none; /* Make the overlay non-interactive */
+}
+/* Adjusted Adjective Row */
+#adjectiveRow {
+  position: absolute;
+  top: 46%; /* Position it lower */
+  left: 50%;
+  transform: translate(-50%, -20%); /* Adjust the height and center */
+  display: flex;
+  gap: 1rem;
+}
+
+/* Adjusted Noun Row */
+#nounRow {
+  position: absolute;
+  top: 80%; /* Position it higher */
+  left: 50%;
+  transform: translate(-50%, -50%); /* Adjust the height and center */
+  display: flex;
+  gap: 1rem;
+}
+
+/* Confirm Button */
+#confirmTeamNameButton {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  padding: 0.8rem 2rem;
+  font-size: 1rem;
+  background-color: #FE6A00; /* Green background */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0px 4px 0px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+/* Disabled Confirm Button */
+#confirmTeamNameButton:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+}
+
+/* Confirm Button Hover */
+#confirmTeamNameButton:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0px 6px 0px rgba(0, 0, 0, 0.3);
 }

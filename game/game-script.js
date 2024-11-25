@@ -42,6 +42,9 @@ let hearts = [
   document.getElementById("heart3"),
 ];
 let originalBattleLineup = [];
+let selectedAdjective = null;
+let selectedNoun = null;
+let teamName = localStorage.getItem("teamName") || "";
 function saveRandomAnimals() {
   localStorage.setItem("randomAnimals", JSON.stringify(randomAnimals));
 }
@@ -610,37 +613,126 @@ let canPlay = false;
 document
   .getElementById("startBattleButton")
   .addEventListener("click", function () {
-    if (!playing) {
-      checkbattlelineup();
-      
-      showCurtains();
-      playing = true;
-      closeCurtains();
-      setTimeout(() => {
-        backupLineup();
-        shiftAnimalsToFront();
-        console.log("Before generateEnemyTeam");
-        generateEnemyTeam();
-        console.log("After generateEnemyTeam");
-
-        console.log("Before hideNonBattleElements");
-        hideNonBattleElements();
-        console.log("After hideNonBattleElements");
-
-        console.log("Before hideCanvas");
-        hideCanvas();
-        console.log("After hideCanvas");
-
-        openCurtains(() => {
-          showCanvas();
-          playBattleMusic();
-          animateAnimalsIntoPosition(() => {
-            simulateBattle();
+    if (!teamName) {
+      showTeamNameSelection();
+      console.log('a')
+    } else {
+      if (!playing) {
+        checkbattlelineup();
+        showCurtains();
+        playing = true;
+        closeCurtains();
+        setTimeout(() => {
+          backupLineup();
+          shiftAnimalsToFront();
+          generateEnemyTeam();
+          hideNonBattleElements();
+          hideCanvas();
+          openCurtains(() => {
+            showCanvas();
+            playBattleMusic();
+            animateAnimalsIntoPosition(() => {
+              simulateBattle();
+            });
           });
-        });
-      }, 1000);
+        }, 1000);
+      }
     }
   });
+function showTeamNameSelection() {
+  const teamNameScreen = document.getElementById("teamNameSelectionScreen");
+  hideNonBattleElements();
+  teamNameScreen.classList.add("teamNameSelectionScreen");
+  teamNameScreen.classList.remove("hidden");
+
+  fetch("../assets/jsons/teamnames.json")
+    .then((response) => response.json())
+    .then((data) => {
+      const adjectives = data.adjectives;
+      const nouns = data.nouns;
+      populateTeamRow("adjectiveRow", getRandomItems(adjectives, 3), "adjective");
+      populateTeamRow("nounRow", getRandomItems(nouns, 3), "noun");
+    })
+    .catch((error) => console.error("Error fetching team names:", error));
+}
+
+function getRandomItems(array, count) {
+  const shuffled = array.sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, count);
+}
+
+function populateTeamRow(rowId, items, type) {
+  const row = document.getElementById(rowId);
+  row.innerHTML = ""; // Clear the row before populating
+
+  items.forEach((item) => {
+    const button = document.createElement("button");
+    button.textContent = item;
+
+    // Assign a class based on type (adjective or noun)
+    if (type === "adjective") {
+      button.classList.add("adjective-button");
+    } else if (type === "noun") {
+      button.classList.add("noun-button");
+    }
+
+    button.addEventListener("click", () => handleTeamNameSelection(type, item));
+    row.appendChild(button);
+  });
+}
+
+function handleTeamNameSelection(type, value) {
+  if (type === "adjective") {
+    selectedAdjective = value;
+
+    // Remove the selected class from all adjective buttons
+    document.querySelectorAll(".adjective-button").forEach((button) => {
+      button.classList.remove("selected-button");
+    });
+
+    // Find the clicked button and add the selected class
+    const selectedButton = Array.from(
+      document.querySelectorAll(".adjective-button")
+    ).find((button) => button.textContent === value);
+
+    if (selectedButton) {
+      selectedButton.classList.add("selected-button");
+    }
+  } else if (type === "noun") {
+    selectedNoun = value;
+
+    // Remove the selected class from all noun buttons
+    document.querySelectorAll(".noun-button").forEach((button) => {
+      button.classList.remove("selected-button");
+    });
+
+    // Find the clicked button and add the selected class
+    const selectedButton = Array.from(
+      document.querySelectorAll(".noun-button")
+    ).find((button) => button.textContent === value);
+
+    if (selectedButton) {
+      selectedButton.classList.add("selected-button");
+    }
+  }
+
+  // Enable the confirm button only if both an adjective and a noun are selected
+  const confirmButton = document.getElementById("confirmTeamNameButton");
+  confirmButton.disabled = !(selectedAdjective && selectedNoun);
+}
+
+
+
+
+document.getElementById("confirmTeamNameButton").addEventListener("click", () => {
+  teamName = `${selectedAdjective} ${selectedNoun}`;
+  localStorage.setItem("teamName", teamName);
+  document.getElementById("teamNameSelectionScreen").classList.add("hidden");
+  document
+    .getElementById("teamNameSelectionScreen")
+    .classList.remove("teamNameSelectionScreen");
+  showNonBattleElements();
+});
 function animateAnimalsIntoPosition(onComplete) {
   const teamOffsetX = 100;
   const enemyOffsetX = canvas.width - 550;
