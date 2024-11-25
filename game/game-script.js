@@ -1,16 +1,12 @@
 const socket = new WebSocket("ws://localhost:8080");
 
 let isPaired = false; 
+let playerDataSent = false; 
 let receivedOpponentData = false; 
-
+let gameStarted = false; 
 socket.onopen = () => {
   console.log("Connected to server");
 };
-
-
-let isReady = false; 
-let gameStarted = false; 
-
 socket.onmessage = async (event) => {
   try {
     const message =
@@ -20,21 +16,16 @@ socket.onmessage = async (event) => {
     if (data.message === "paired") {
       console.log("Paired with another player!");
       isPaired = true;
+      checkStartCondition();
     } else if (data.battleLineup && data.teamName) {
-      
+      // Receive opponent data
       enemyLineup = data.battleLineup;
       enemyTeamName = data.teamName;
-
       console.log("Received opponent data:", enemyLineup, enemyTeamName);
       receivedOpponentData = true;
-
-      
-      if (playerDataSent && !isReady) {
-        isReady = true;
-        socket.send(JSON.stringify({ type: "ready" }));
-        console.log("Notified server: ready");
-      }
+      checkStartCondition();
     } else if (data.type === "start" && !gameStarted) {
+      // Start the game
       console.log("Starting the game!");
       gameStarted = true;
       letsplayonline();
@@ -43,8 +34,6 @@ socket.onmessage = async (event) => {
     console.error("Error parsing WebSocket message:", error);
   }
 };
-
-
 const canvas = document.getElementById("battleCanvas");
 const curtainTop = document.getElementById("curtainTop");
 const curtainBottom = document.getElementById("curtainBottom");
@@ -767,8 +756,28 @@ function letsplayonline() {
   }
 }
 
-let playerDataSent = false;
 
+function sendPlayerData() {
+  if (isPaired && !playerDataSent) {
+    socket.send(
+      JSON.stringify({
+        type: "data",
+        battleLineup: battleLineup,
+        teamName: teamName,
+      })
+    );
+    playerDataSent = true;
+    console.log("Sent player data to server.");
+    socket.send(JSON.stringify({ type: "ready" }));
+    console.log("Notified server: ready");
+  }
+}
+function checkStartCondition() {
+  if (isPaired && playerDataSent && receivedOpponentData && !gameStarted) {
+    socket.send(JSON.stringify({ type: "start" }));
+    console.log("Notified server to start the game.");
+  }
+}
 document
   .getElementById("startBattleButtonOnline")
   .addEventListener("click", function () {
@@ -778,23 +787,9 @@ document
       showTeamNameSelection();
       fadeInElements();
     } else {
-      if (isPaired) {
-        socket.send(
-          JSON.stringify({
-            type: "data",
-            battleLineup: battleLineup,
-            teamName: teamName,
-          })
-        );
-
-        playerDataSent = true;
-        console.log("Data sent to server. Waiting for opponent...");
-      } else {
-        alert("Waiting for another player to join...");
-      }
+      sendPlayerData();
     }
   });
-
 
 document
   .getElementById("startBattleButton")
