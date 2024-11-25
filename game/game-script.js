@@ -18,6 +18,7 @@ let battleLineup = JSON.parse(localStorage.getItem("battleLineup")) || [
 ];
 let randomAnimals = JSON.parse(localStorage.getItem("randomAnimals")) || [];
 let coins;
+let totalcoinforbattle;
 // document.getElementById("coins").textContent = `Coins: ${coins}`;
 const maxShopAnimals = 3;
 const maxSlots = 5;
@@ -643,11 +644,23 @@ document
   .addEventListener("click", function () {
     if (!teamName) {
       showTeamNameSelection();
-      // console.log("a");
+      fadeInElements();
     } else {
       letsplay();
     }
   });
+    function fadeInElements() {
+      const elements = document.querySelectorAll(
+        "#teamNameSelectionScreen > *"
+      );
+      elements.forEach((element, index) => {
+        element.style.opacity = 0;
+        element.style.transition = `opacity 0.5s ease ${index * 0.2}s`;
+        setTimeout(() => {
+          element.style.opacity = 1;
+        }, 50);
+      });
+    }
 function showTeamNameSelection() {
   hideTeamName();
   const teamNameScreen = document.getElementById("teamNameSelectionScreen");
@@ -891,13 +904,14 @@ function playBattleMusic() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
+     const teamName = localStorage.getItem("teamName") || "No Team Name";
+     document.getElementById("teamNameDisplay").textContent = teamName;
   loadassets();
   hideCurtains();
   adjustCanvasSize();
   window.addEventListener("resize", adjustCanvasSize);
   updateHeartsDisplay();
   renderBattleSlots()
-  // First-time setup
   if (!localStorage.getItem("firstTime")) {
     console.log("First-time setup: Setting initial coins to 15.");
     localStorage.setItem("firstTime", "true"); // Mark as first-time setup complete
@@ -913,9 +927,8 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       renderRandomAnimals();
     }
+    totalcoinforbattle = coins;
   }
-
-  // Fetch items
   fetch("../assets/jsons/items.json")
     .then((response) => {
       if (!response.ok) {
@@ -940,7 +953,7 @@ function updateCoinsDisplay() {
   document.getElementById("coins").textContent = `Coins: ${coins}`;
 }
 function generateEnemyTeam() {
-  const totalPlayerCoins = coins;
+  const totalPlayerCoins = totalcoinforbattle;
   const enemyTeamCost = totalPlayerCoins;
   let currentCost = 0;
   enemyLineup = [];
@@ -1660,14 +1673,7 @@ function checkGameOver(playerSurvivors, enemySurvivors) {
     showDrawScreen();
   }
 }
-function showDefeatScreen() {
-  const defeatScreen = document.getElementById("defeatScreen");
-  defeatScreen.classList.remove("hidden");
-  setTimeout(() => {
-    resetGame();
-    window.location.href = "/home/homepage.html";
-  }, 3000);
-}
+
 const trashBin = document.getElementById("trashBin");
 const freezeButton = document.getElementById("freezeButton");
 function showFreezeBin() {
@@ -1916,7 +1922,7 @@ function loseLife() {
         localStorage.setItem("lives", lives);
 
         if (lives <= 0) {
-          showDefeatScreen();
+          DefeatScreen()
         } else {
           showCurtains();
           closeCurtains();
@@ -2066,6 +2072,67 @@ function showDrawScreen() {
           rollfirst();
           updateCoinsDisplay();
           location.reload();
+        });
+      }, 1000);
+    }, 1000);
+  }, 2000);
+}
+function DefeatScreen() {
+  const dimmerOverlay = document.getElementById("dimmerOverlay");
+  dimmerOverlay.classList.remove("hidden");
+  const defeatImage = new Image();
+  defeatImage.src = "../assets/game-asset/defeat.png";
+  defeatImage.id = "defeatImg";
+  defeatImage.style.position = "fixed";
+  defeatImage.style.zIndex = "123123";
+  defeatImage.style.width = "6.25rem";
+  defeatImage.style.height = "6.25rem";
+  defeatImage.style.top = "50%";
+  defeatImage.style.left = "50%";
+  defeatImage.style.transform = "translate(-50%, -50%)";
+  defeatImage.style.opacity = "0";
+  const defeatText = document.createElement("div");
+  defeatText.textContent = "DEFEAT!";
+  defeatText.id = "defeatText";
+  defeatText.style.position = "fixed";
+  defeatText.style.zIndex = "123123";
+  defeatText.style.color = "white";
+  defeatText.style.fontFamily = "VUper, sans-serif";
+  defeatText.style.fontSize = "3rem";
+  defeatText.style.textAlign = "center";
+  defeatText.style.top = "60%";
+  defeatText.style.left = "50%";
+  defeatText.style.transform = "translate(-50%, -50%) translateY(5rem)";
+  defeatText.style.opacity = "0";
+  document.body.appendChild(defeatImage);
+  document.body.appendChild(defeatText);
+  setTimeout(() => {
+    defeatImage.style.transition =
+      "transform 1s ease-in-out, opacity 1s ease-in-out";
+    defeatImage.style.transform = "translate(-50%, -50%) scale(1.5)";
+    defeatImage.style.opacity = "1";
+
+    defeatText.style.transition = "opacity 1s ease-in-out";
+    defeatText.style.opacity = "1";
+  }, 100);
+  setTimeout(() => {
+    defeatImage.style.transition = "opacity 1s ease-in-out";
+    defeatText.style.transition = "opacity 1s ease-in-out";
+    defeatImage.style.opacity = "0";
+    defeatText.style.opacity = "0";
+    setTimeout(() => {
+      defeatImage.remove();
+      defeatText.remove();
+      showCurtains();
+      restoreOriginalLineup();
+      closeCurtains();
+      setTimeout(() => {
+        showNonBattleElements();
+        coins += 10;
+        dimmerOverlay.classList.add("hidden");
+        openCurtains(() => {
+           resetGame();
+           window.location.href = "/home/homepage.html";
         });
       }, 1000);
     }, 1000);

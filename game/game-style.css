@@ -508,7 +508,7 @@ img {
 
 .teamNameSelectionScreen {
   position: absolute;
-  top:50%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   color: white;
@@ -522,6 +522,9 @@ img {
   height: 80%; /* Adjust based on design preference */
   width: 50%; /* Adjust based on design preference */
   z-index: 10000;
+}
+#teamNameSelectionScreen > * {
+  opacity: 0;
 }
 .teamNameSelectionScreen h1 {
   position: absolute;
