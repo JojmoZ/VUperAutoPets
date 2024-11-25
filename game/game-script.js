@@ -6,7 +6,7 @@ const targetSequenceLives = "JANGANAMPAS";
 let ctx = canvas.getContext("2d");
 const heartImg = new Image();
 let userInput = "";
-let cheatCode = ""; 
+let cheatCode = "";
 const fistImg = new Image();
 let enemyLineup = [null, null, null, null, null];
 let battleLineup = JSON.parse(localStorage.getItem("battleLineup")) || [
@@ -229,7 +229,7 @@ function handleDrop(event) {
           currentAnimal.health += 4;
         }
       }
-      playAnimalSound(currentAnimal.sound);   
+      playAnimalSound(currentAnimal.sound);
       randomAnimals.splice(animalIndex, 1);
       renderBattleSlots();
       renderRandomAnimals();
@@ -241,8 +241,8 @@ function handleDrop(event) {
       battleLineup[reversedSlotIndex] = selectedAnimal;
       coins -= selectedAnimal.cost;
       playBuySound();
-      console.log(selectedAnimal)
-      playAnimalSound(selectedAnimal.sound); 
+      console.log(selectedAnimal);
+      playAnimalSound(selectedAnimal.sound);
       updateCoinsDisplay();
       randomAnimals.splice(animalIndex, 1);
       renderRandomAnimals();
@@ -281,7 +281,7 @@ function handleDrop(event) {
           }
         }
       }
-      playAnimalSound(targetAnimal.sound); 
+      playAnimalSound(targetAnimal.sound);
       battleLineup[animalIndex] = null;
       renderBattleSlots();
       saveBattleLineup();
@@ -293,7 +293,6 @@ function handleDrop(event) {
       saveBattleLineup();
     }
   } else if (source === "item") {
-    
     const itemName = event.dataTransfer.getData("itemName");
     const itemEffect = event.dataTransfer.getData("itemEffect");
     const targetAnimal = battleLineup[reversedSlotIndex];
@@ -330,9 +329,9 @@ function playBuySound() {
   buySound.currentTime = 0;
   buySound.play();
 }
-function playSellSound(){
+function playSellSound() {
   sellSound.currentTime = 0;
-  sellSound.play()
+  sellSound.play();
 }
 function playEatSound() {
   eatSound.currentTime = 0;
@@ -348,7 +347,7 @@ function playBusSound() {
   return new Promise((resolve) => {
     busSound.currentTime = 0;
     busSound.play();
-    busSound.onended = resolve; 
+    busSound.onended = resolve;
   });
 }
 
@@ -392,7 +391,7 @@ function renderBattleSlots() {
       attackContainer.classList.add("stat-icon");
       const attackIcon = document.createElement("img");
       attackIcon.src = "../assets/game-asset/fist.png";
-      attackIcon.draggable = false; 
+      attackIcon.draggable = false;
       const attackText = document.createElement("span");
       attackText.textContent = animal.attack;
       attackText.classList.add("stat-text");
@@ -402,7 +401,7 @@ function renderBattleSlots() {
       healthContainer.classList.add("stat-icon");
       const healthIcon = document.createElement("img");
       healthIcon.src = "../assets/game-asset/heart.png";
-      healthIcon.draggable = false; 
+      healthIcon.draggable = false;
       const healthText = document.createElement("span");
       healthText.textContent = animal.health;
       healthText.classList.add("stat-text");
@@ -431,7 +430,7 @@ function renderBattleSlots() {
           busIcon.alt = "Bus Aura";
           busIcon.style.width = "100%";
           busIcon.style.height = "100%";
-          busIcon.draggable = false; 
+          busIcon.draggable = false;
 
           auraContainer.appendChild(busIcon);
           wrapper.appendChild(auraContainer);
@@ -590,7 +589,7 @@ document.querySelectorAll(".battle-slot").forEach((slot) => {
 
 document.getElementById("refreshButton").addEventListener("click", function () {
   if (coins > 0) {
-    playRollSound()
+    playRollSound();
     coins -= 1;
     rollShopAnimals();
     refreshItems();
@@ -615,7 +614,7 @@ document
   .addEventListener("click", function () {
     if (!teamName) {
       showTeamNameSelection();
-      console.log('a')
+      console.log("a");
     } else {
       if (!playing) {
         checkbattlelineup();
@@ -650,7 +649,11 @@ function showTeamNameSelection() {
     .then((data) => {
       const adjectives = data.adjectives;
       const nouns = data.nouns;
-      populateTeamRow("adjectiveRow", getRandomItems(adjectives, 3), "adjective");
+      populateTeamRow(
+        "adjectiveRow",
+        getRandomItems(adjectives, 3),
+        "adjective"
+      );
       populateTeamRow("nounRow", getRandomItems(nouns, 3), "noun");
     })
     .catch((error) => console.error("Error fetching team names:", error));
@@ -721,18 +724,17 @@ function handleTeamNameSelection(type, value) {
   confirmButton.disabled = !(selectedAdjective && selectedNoun);
 }
 
-
-
-
-document.getElementById("confirmTeamNameButton").addEventListener("click", () => {
-  teamName = `${selectedAdjective} ${selectedNoun}`;
-  localStorage.setItem("teamName", teamName);
-  document.getElementById("teamNameSelectionScreen").classList.add("hidden");
-  document
-    .getElementById("teamNameSelectionScreen")
-    .classList.remove("teamNameSelectionScreen");
-  showNonBattleElements();
-});
+document
+  .getElementById("confirmTeamNameButton")
+  .addEventListener("click", () => {
+    teamName = `${selectedAdjective} ${selectedNoun}`;
+    localStorage.setItem("teamName", teamName);
+    document.getElementById("teamNameSelectionScreen").classList.add("hidden");
+    document
+      .getElementById("teamNameSelectionScreen")
+      .classList.remove("teamNameSelectionScreen");
+    showNonBattleElements();
+  });
 function animateAnimalsIntoPosition(onComplete) {
   const teamOffsetX = 100;
   const enemyOffsetX = canvas.width - 550;
@@ -927,6 +929,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   updateCoinsDisplay();
   playBackgroundMusic();
+  document.addEventListener("dragend", hideFreezeBin);
 });
 
 function updateCoinsDisplay() {
@@ -934,13 +937,13 @@ function updateCoinsDisplay() {
   document.getElementById("coins").textContent = `Coins: ${coins}`;
 }
 function generateEnemyTeam() {
-  const totalPlayerCoins = coins; 
-  const enemyTeamCost = totalPlayerCoins; 
+  const totalPlayerCoins = coins;
+  const enemyTeamCost = totalPlayerCoins;
   let currentCost = 0;
   enemyLineup = [];
 
   let attempts = 0;
-  const maxAttempts = 100; 
+  const maxAttempts = 100;
 
   while (enemyLineup.length < maxSlots && currentCost < enemyTeamCost) {
     const randomAnimal = {
@@ -959,7 +962,6 @@ function generateEnemyTeam() {
     }
   }
 
-  
   while (enemyLineup.length < maxSlots) {
     enemyLineup.push(null);
   }
@@ -1002,7 +1004,7 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
     const progress = easeInOutQuad(currentFrame / (duration / 1000));
     const playerX = playerStartX - (playerStartX - centerX) * progress;
     const enemyX = enemyStartX + (centerX + 60 - enemyStartX) * progress;
-    
+
     if (currentFrame === Math.floor(duration / 1000 / 2)) {
       hitSound.currentTime = 0;
       hitSound.play();
@@ -1152,7 +1154,7 @@ function shiftAnimalsToFront() {
   const shiftedLineup = battleLineup.filter((animal) => animal !== null);
   if (shiftedLineup.length === 0) {
     console.warn("No animals in lineup. Skipping shift.");
-    return; 
+    return;
   }
   while (shiftedLineup.length < maxSlots) {
     shiftedLineup.push(null);
@@ -1425,17 +1427,16 @@ function animateDeathFlyOff(animal, index, teamType, onComplete) {
 
     ctx.save();
     if (teamType === "player") {
-      ctx.translate(curveX + 30, curveY + 30); 
-      ctx.scale(-1, 1); 
-      ctx.drawImage(img, -30, -30, 60, 60); 
+      ctx.translate(curveX + 30, curveY + 30);
+      ctx.scale(-1, 1);
+      ctx.drawImage(img, -30, -30, 60, 60);
     } else {
       ctx.drawImage(img, curveX, curveY, 60, 60);
     }
     ctx.restore();
 
-    currentFrame += deltaTime * totalFrames * 2; 
+    currentFrame += deltaTime * totalFrames * 2;
 
-    
     if (
       (teamType === "player" && curveX <= 0) ||
       (teamType !== "player" && curveX >= canvas.width)
@@ -1443,7 +1444,7 @@ function animateDeathFlyOff(animal, index, teamType, onComplete) {
       triggerStarExplosion(curveX, curveY, () => {
         onComplete();
       });
-      return; 
+      return;
     }
 
     if (currentFrame < totalFrames) {
@@ -1452,32 +1453,32 @@ function animateDeathFlyOff(animal, index, teamType, onComplete) {
   }
 
   function triggerStarExplosion(x, y, explosionComplete) {
-    const explosionDuration = 40; 
+    const explosionDuration = 40;
     let explosionFrame = 0;
-    const maxRadius = 150; 
-    const starSize = 80; 
+    const maxRadius = 150;
+    const starSize = 80;
 
     function drawExplosion() {
-      ctx.clearRect(x - maxRadius, y - maxRadius, maxRadius * 2, maxRadius * 2); 
-      renderFullTeam(); 
+      ctx.clearRect(x - maxRadius, y - maxRadius, maxRadius * 2, maxRadius * 2);
+      renderFullTeam();
 
       for (let i = 0; i < 20; i++) {
-        const angle = (i / 20) * Math.PI * 2; 
-        const radius = (explosionFrame / explosionDuration) * maxRadius; 
+        const angle = (i / 20) * Math.PI * 2;
+        const radius = (explosionFrame / explosionDuration) * maxRadius;
         const starX = x + Math.cos(angle) * radius;
         const starY = y + Math.sin(angle) * radius;
 
-        ctx.globalAlpha = 1 - explosionFrame / explosionDuration; 
+        ctx.globalAlpha = 1 - explosionFrame / explosionDuration;
         ctx.drawImage(
           starImg,
           starX - starSize / 2,
           starY - starSize / 2,
           starSize,
           starSize
-        ); 
+        );
       }
 
-      ctx.globalAlpha = 1; 
+      ctx.globalAlpha = 1;
 
       explosionFrame++;
 
@@ -1501,8 +1502,8 @@ function handleBothDeaths(playerAnimal, enemyAnimal, onComplete) {
         if (playerAnimal.specialEffect === "SpawnBus") {
           const playerIndex = battleLineup.indexOf(playerAnimal);
           battleLineup[playerIndex] = createBus();
-          renderTeams()
-          await playBusSound()
+          renderTeams();
+          await playBusSound();
           resolve();
         } else {
           animateDeathFlyOff(
@@ -1692,12 +1693,12 @@ trashBin.addEventListener("drop", (event) => {
   const slotIndex = event.dataTransfer.getData("text");
   const animal = battleLineup[slotIndex];
   if (animal) {
-    const refundAmount = Math.floor(animal.cost / 2); 
-    coins += refundAmount; 
-    updateCoinsDisplay(); 
+    const refundAmount = Math.floor(animal.cost / 2);
+    coins += refundAmount;
+    updateCoinsDisplay();
   }
-  playSellSound()
-  battleLineup[slotIndex] = null; 
+  playSellSound();
+  battleLineup[slotIndex] = null;
   renderBattleSlots();
   saveBattleLineup();
 });
@@ -1746,7 +1747,7 @@ function loadRandomItems() {
   currentItem1 = savedItems[0] ? { ...savedItems[0] } : null;
   currentItem2 = savedItems[1] ? { ...savedItems[1] } : null;
   if (!currentItem1 && !currentItem2) {
-    refreshItems(); 
+    refreshItems();
   } else {
     renderItem();
   }
@@ -1775,7 +1776,7 @@ function handleItemDrop(event, animal) {
     if (itemName === "Bus" && animal.specialEffect === "SpawnBus") {
       const itemSlot = document.getElementById(slotId);
       jitterImage(itemSlot);
-      return; 
+      return;
     }
 
     let item = items.find((i) => i.name === itemName);
@@ -1847,6 +1848,7 @@ function handleItemDragStart(event) {
     event.dataTransfer.setData("slotId", "itemSlot2");
   }
   event.dataTransfer.setData("source", "item");
+  event.target.addEventListener("dragend", hideFreezeBin);
 }
 function saveCurrentItems() {
   localStorage.setItem(
@@ -1882,8 +1884,8 @@ function createBus() {
 function loseLife() {
   if (lives > 0) {
     const defeatSound = new Audio("../assets/sound/defeat sound.mp3");
-    defeatSound.currentTime = 0; 
-    defeatSound.play(); 
+    defeatSound.currentTime = 0;
+    defeatSound.play();
     const dimmerOverlay = document.getElementById("dimmerOverlay");
     dimmerOverlay.classList.remove("hidden");
     middleHeart.src = "../assets/game-asset/heart.png";
@@ -1930,7 +1932,6 @@ function loseLife() {
     }, 1500);
   }
 }
-
 
 function checkSequence() {
   if (userInput === targetSequenceCoins) {
@@ -1989,10 +1990,8 @@ function updateHeartsDisplay() {
 function jitterImage(element) {
   if (!element) return;
 
-  
   const currentTransform = window.getComputedStyle(element).transform;
 
-  
   const jitterTransform = currentTransform === "none" ? "" : currentTransform;
   element.style.transition = "transform 0.1s";
 
@@ -2006,8 +2005,8 @@ function jitterImage(element) {
 }
 function showDrawScreen() {
   const drawSound = new Audio("../assets/sound/draw wound.mp3");
-  drawSound.currentTime = 0; 
-  drawSound.play(); 
+  drawSound.currentTime = 0;
+  drawSound.play();
   const dimmerOverlay = document.getElementById("dimmerOverlay");
   dimmerOverlay.classList.remove("hidden");
   const frownImage = new Image();
@@ -2071,8 +2070,8 @@ function showDrawScreen() {
 }
 function showWinScreen() {
   const winSound = new Audio("../assets/sound/win sound.mp3");
-  winSound.currentTime = 0; 
-  winSound.play(); 
+  winSound.currentTime = 0;
+  winSound.play();
   const dimmerOverlay = document.getElementById("dimmerOverlay");
   dimmerOverlay.classList.remove("hidden");
   const winContainer = document.createElement("div");
@@ -2108,11 +2107,11 @@ function showWinScreen() {
   sunray.style.transform = "translate(-50%, -50%)";
   sunray.style.borderRadius = "50%";
   sunray.style.background = `
-    radial-gradient(circle, 
-    rgba(255, 255, 0, 0.3) 0%, 
-    rgba(255, 204, 0, 0.1) 50%, 
-    transparent 70%)
-  `;
+      radial-gradient(circle, 
+      rgba(255, 255, 0, 0.3) 0%, 
+      rgba(255, 204, 0, 0.1) 50%, 
+      transparent 70%)
+    `;
   sunray.style.animation =
     "spin 3s linear infinite, pulse 2s ease-in-out infinite";
   winContainer.appendChild(sunray);
