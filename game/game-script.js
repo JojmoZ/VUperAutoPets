@@ -641,7 +641,10 @@ if (!playing) {
       showCanvas();
       playBattleMusic();
       animateAnimalsIntoPosition(() => {
-        simulateBattle();
+        showBattleText()
+        updateBattleText(()=>{
+          simulateBattle();
+        })
       });
     });
   }, 1000);
@@ -900,8 +903,9 @@ function playBattleMusic() {
   battleMusic.play();
 }
 document.addEventListener("DOMContentLoaded", function () {
-     const teamName = localStorage.getItem("teamName") || "No Team Name";
-     document.getElementById("teamNameDisplay").textContent = teamName;
+  const teamName = localStorage.getItem("teamName") || "No Team Name";
+  hideBattleText();
+  document.getElementById("teamNameDisplay").textContent = teamName;
   loadassets();
   hideCurtains();
   adjustCanvasSize();
@@ -2210,3 +2214,48 @@ function showWinScreen() {
     }, 1000);
   }, 3000);
 }
+function updateBattleText(onComplete) {
+ const yourTeamNameElement = document.getElementById("teamNameEnemy");
+ const enemyTeamNameElement = document.getElementById("teamNameYour");
+ const vsLabelElement = document.getElementById("vsLabel");
+yourTeamNameElement.textContent = teamName;
+enemyTeamNameElement.textContent = enemyTeamName;
+ yourTeamNameElement.style.opacity = 0;
+ enemyTeamNameElement.style.opacity = 0;
+ vsLabelElement.style.opacity = 0;
+ enemyTeamNameElement.style.transform = "translateY(-50px)";
+ yourTeamNameElement.style.transform = "translateY(-50px)";
+ vsLabelElement.style.transform = "translateY(-50px)";
+ yourTeamNameElement.style.display = "block";
+ enemyTeamNameElement.style.display = "block";
+ vsLabelElement.style.display = "block";
+ setTimeout(() => {
+   enemyTeamNameElement.style.transition = "opacity 0.5s, transform 0.5s";
+   enemyTeamNameElement.style.opacity = 1;
+   enemyTeamNameElement.style.transform = "translateY(0)";
+  }, 1000);
+  setTimeout(() => {
+    yourTeamNameElement.style.transition = "opacity 0.5s, transform 0.5s";
+    yourTeamNameElement.style.opacity = 1;
+    yourTeamNameElement.style.transform = "translateY(0)";
+  }, 500);
+ setTimeout(() => {
+   vsLabelElement.style.transition = "opacity 0.5s, transform 0.5s";
+   vsLabelElement.style.opacity = 1;
+   vsLabelElement.style.transform = "translateY(0)";
+ }, 1500);
+ setTimeout(() => {
+   if (onComplete) onComplete();
+ }, 2000);
+}
+function showBattleText() {
+  document.getElementById("teamNameYour").style.display = "block";
+  document.getElementById("teamNameEnemy").style.display = "block";
+  document.getElementById("vsLabel").style.display = "block";
+}
+function hideBattleText() {
+  document.getElementById("teamNameYour").style.display = "none";
+  document.getElementById("teamNameEnemy").style.display = "none";
+  document.getElementById("vsLabel").style.display = "none";
+}
+

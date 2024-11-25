@@ -656,3 +656,40 @@ img {
   font-size: 2rem;
   font-weight: bold;
 }
+.team-name {
+  position: absolute;
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  width: 100%;
+  z-index: 10;
+}
+
+#teamNameYour {
+  top: 10%;
+  left: 25%;
+  transform: translateX(-50%);
+}
+
+#teamNameEnemy {
+  top: 10%;
+  right: 25%;
+  transform: translateX(50%);
+}
+
+.vs-label {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3rem;
+  font-weight: bold;
+  color: yellow;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+  z-index: 10;
+}
+#teamNameYour, #teamNameEnemy, #vsLabel {
+  transition: opacity 0.5s, transform 0.5s;
+}
