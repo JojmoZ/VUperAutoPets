@@ -594,7 +594,7 @@ document.getElementById("refreshButton").addEventListener("click", function () {
   }
 });
 function checkbattlelineup() {
-  const battleLineup = JSON.parse(localStorage.getItem("battleLineup"));
+  const battleLineup = JSON.parse(localStorage.getItem("battleLineup")) || [];
   battleLineup.forEach((animal) => {
     if (animal != null) {
       canPlay = true;
