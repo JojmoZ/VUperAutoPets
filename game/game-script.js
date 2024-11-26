@@ -38,7 +38,7 @@ function connectWebSocket() {
 
   socket.onclose = () => {
     console.log("Connection lost, attempting to reconnect...");
-    setTimeout(connectWebSocket, 1000); // Retry connection every 1 second
+    setTimeout(connectWebSocket, 1000); 
   };
 
   socket.onerror = (error) => {
@@ -119,6 +119,7 @@ const buySound = document.getElementById("buySound");
 const eatSound = document.getElementById("eatSound");
 const rollSound = document.getElementById("rollSound");
 const sellSound = document.getElementById("sellSound");
+
 function saveRandomAnimals() {
   localStorage.setItem("randomAnimals", JSON.stringify(randomAnimals));
 }
@@ -429,21 +430,21 @@ function playBusSound() {
 
       busSound.onended = () => {
         console.log("Bus sound playback completed.");
-        resolve(); // Resolve the promise when the sound ends
+        resolve(); 
       };
 
       busSound.onerror = (error) => {
         console.error("Error playing bus sound:", error);
-        reject(error); // Reject the promise on error
+        reject(error); 
       };
 
       busSound.play().catch((error) => {
         console.error("Error starting bus sound:", error);
-        reject(error); // Reject if playback cannot start
+        reject(error); 
       });
     } catch (error) {
       console.error("Unexpected error in playBusSound:", error);
-      reject(error); // Catch unexpected errors
+      reject(error); 
     }
   });
 }
@@ -1118,7 +1119,7 @@ document.addEventListener("DOMContentLoaded", function () {
       } else if (result === "draw") {
         localStorage.removeItem("result");
       }
-      // location.reload();
+      
     } else {
       console.log("No previous result stored.");
     }
@@ -1394,7 +1395,6 @@ function shiftAnimalsToFront() {
   enemyLineup = shiftLineup(enemyLineup);
 }
 
-// ...existing code...
 function restoreOriginalLineup() {
   battleLineup = originalBattleLineup.map((animal) => {
     if (animal) {
@@ -1757,7 +1757,7 @@ async function handleBothDeaths(playerAnimal, enemyAnimal, onComplete) {
 
   console.log("Death Tasks:", deathTasks);
 
-  // Run both tasks simultaneously and wait for all to complete
+  
   try {
     await Promise.all(deathTasks);
     console.log("All death tasks completed.");
@@ -1765,7 +1765,7 @@ async function handleBothDeaths(playerAnimal, enemyAnimal, onComplete) {
     console.error("Error in death tasks:", error);
   }
 
-  // Clean up the lineups
+  
   if (playerAnimal.health <= 0) {
     battleLineup[battleLineup.indexOf(playerAnimal)] = null;
     shiftAnimalsInLineup(battleLineup);
@@ -1789,11 +1789,11 @@ async function handleBusSpawn(lineup, animal, teamType) {
     return;
   }
 
-  lineup[index] = createBus(); // Replace the dead animal with a bus
-  renderTeams(); // Update the UI
+  lineup[index] = createBus(); 
+  renderTeams(); 
 
   try {
-    await playBusSound(); // Play the bus sound and wait for it to complete
+    await playBusSound(); 
     console.log(`Bus spawned successfully for ${teamType}`);
   } catch (error) {
     console.error("Error in bus sound:", error);
@@ -2139,6 +2139,7 @@ function createBus() {
 }
 function loseLife() {
   if (lives > 0) {
+    hideBattleText()
     const defeatSound = new Audio("../assets/sound/defeat sound.mp3");
     defeatSound.currentTime = 0;
     defeatSound.play();
@@ -2255,6 +2256,7 @@ function jitterImage(element) {
   }, 100);
 }
 function showDrawScreen() {
+  hideBattleText()
   const drawSound = new Audio("../assets/sound/draw wound.mp3");
   drawSound.currentTime = 0;
   drawSound.play();
@@ -2383,6 +2385,7 @@ function DefeatScreen() {
   }, 2000);
 }
 function showWinScreen() {
+  hideBattleText()
   const winSound = new Audio("../assets/sound/win sound.mp3");
   winSound.currentTime = 0;
   winSound.play();
@@ -2506,21 +2509,31 @@ function showLoadingScreen() {
   loadingScreen.classList.add("active");
   loadingScreen.classList.remove("hidden");
 }
-
 function hideLoadingScreen() {
   const loadingScreen = document.getElementById("loadingScreen");
   loadingScreen.classList.remove("active");
   loadingScreen.classList.add("hidden");
 }
 function computeBattleResult(playerTeam, enemyTeam) {
-  let playerIndex = 0; // First animal in the player's team
-  let enemyIndex = 0; // First animal in the enemy's team
+  
+  const playerTeamCopy = playerTeam.map((animal) =>
+    animal ? { ...animal } : null
+  );
+  const enemyTeamCopy = enemyTeam.map((animal) =>
+    animal ? { ...animal } : null
+  );
 
-  while (playerIndex < playerTeam.length && enemyIndex < enemyTeam.length) {
-    let playerAnimal = playerTeam[playerIndex];
-    let enemyAnimal = enemyTeam[enemyIndex];
+  let playerIndex = 0; 
+  let enemyIndex = 0; 
 
-    // Skip null animals
+  while (
+    playerIndex < playerTeamCopy.length &&
+    enemyIndex < enemyTeamCopy.length
+  ) {
+    let playerAnimal = playerTeamCopy[playerIndex];
+    let enemyAnimal = enemyTeamCopy[enemyIndex];
+
+    
     if (!playerAnimal) {
       playerIndex++;
       continue;
@@ -2530,28 +2543,37 @@ function computeBattleResult(playerTeam, enemyTeam) {
       continue;
     }
 
-    // Combat interaction
-    enemyAnimal.health -= playerAnimal.attack; // Player attacks enemy
+    
+    enemyAnimal.health -= playerAnimal.attack; 
     if (enemyAnimal.health <= 0) {
-      enemyIndex++; // Enemy defeated, move to the next enemy
+      enemyIndex++; 
       continue;
     }
 
-    playerAnimal.health -= enemyAnimal.attack; // Enemy attacks player
+    playerAnimal.health -= enemyAnimal.attack; 
     if (playerAnimal.health <= 0) {
-      playerIndex++; // Player defeated, move to the next player
+      playerIndex++; 
     }
   }
 
-  // Determine the result
-  const playerSurvivors = playerTeam.filter(
+  
+  const playerSurvivors = playerTeamCopy.filter(
     (animal) => animal && animal.health > 0
   ).length;
-  const enemySurvivors = enemyTeam.filter(
+  const enemySurvivors = enemyTeamCopy.filter(
     (animal) => animal && animal.health > 0
   ).length;
 
   if (playerSurvivors > enemySurvivors) return "win";
   if (playerSurvivors < enemySurvivors) return "lose";
   return "draw";
+}
+function animateSpriteWin(){
+  
+}
+function aniamteSpriteDraw(){
+
+}
+function aniamtSpriteLose(){
+
 }
