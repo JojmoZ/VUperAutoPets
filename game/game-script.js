@@ -119,32 +119,6 @@ const buySound = document.getElementById("buySound");
 const eatSound = document.getElementById("eatSound");
 const rollSound = document.getElementById("rollSound");
 const sellSound = document.getElementById("sellSound");
-let isPaused = false;
-let speedMultiplier = 1;
-
-const pauseButton = document.getElementById("pauseButton");
-const speedButton = document.getElementById("speedButton");
-pauseButton.addEventListener("click", () => {
-  isPaused = !isPaused;
-  if (isPaused) {
-    pauseButton.textContent = "Resume";
-  } else {
-    pauseButton.textContent = "Pause";
-  }
-});
-speedButton.addEventListener("click", () => {
-  speedMultiplier = speedMultiplier === 1 ? 2 : 1;
-  speedButton.textContent = speedMultiplier === 1 ? "2x Speed" : "Normal Speed";
-
-  adjustGameSpeed(speedMultiplier);
-});
-function adjustGameSpeed(multiplier) {
-  // gameInterval = setInterval(mainGameLoop, 1000 / 60 / multiplier);
-}
-function animateWithSpeed(callback, duration) {
-  const adjustedDuration = duration / speedMultiplier;
-  return setTimeout(callback, adjustedDuration);
-}
 
 function saveRandomAnimals() {
   localStorage.setItem("randomAnimals", JSON.stringify(randomAnimals));
@@ -959,11 +933,6 @@ document
     }
   });
 function animateAnimalsIntoPosition(onComplete) {
-  if (isPaused) {
-    console.log("Animation paused. Waiting to resume...");
-    setTimeout(() => requestAnimationFrame(animate), 500); // Poll for resume
-    return;
-  }
   const teamOffsetX = 100;
   const enemyOffsetX = canvas.width - 550;
   const commonY = 210;
@@ -1234,11 +1203,6 @@ function calculateTeamCost(team) {
   );
 }
 function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
-  if (isPaused) {
-    console.log("Animation paused. Waiting to resume...");
-    setTimeout(() => requestAnimationFrame(animate), 500); // Poll for resume
-    return;
-  }
   const hitSound = new Audio("../assets/sound/hit sound.wav");
   const playerStartX = 100 + (maxSlots - 1) * 100;
   const playerY = 210;
@@ -1306,11 +1270,7 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
     let healthXEn = enemyX + 60 - healthTextWidthEn / 2;
     ctx.fillText(attackTextEn, attackXEn, enemyY + 85);
     ctx.fillText(healthTextEn, healthXEn, enemyY + 85);
-    if (isPaused) {
-      console.log("Animation paused. Waiting to resume...");
-      setTimeout(() => requestAnimationFrame(animate), 500); // Poll for resume
-      return;
-    }
+
     currentFrame += deltaTime;
     if (currentFrame <= duration / 1000) {
       requestAnimationFrame(animate);
@@ -1395,11 +1355,7 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
       let healthXEn = enemyX + 60 - healthTextWidthEn / 2;
       ctx.fillText(attackTextEn, attackXEn, enemyY + 85);
       ctx.fillText(healthTextEn, healthXEn, enemyY + 85);
-      if (isPaused) {
-        console.log("Animation paused. Waiting to resume...");
-        setTimeout(() => requestAnimationFrame(animateBack), 500); // Poll for resume
-        return;
-      }
+
       returnFrame += deltaTime;
       if (returnFrame <= returnDuration / 1000) {
         requestAnimationFrame(animateBack);
@@ -1510,7 +1466,7 @@ function showDamage(
     let healthXEn = enemyX + 60 - healthTextWidthEn / 2;
     ctx.fillText(attackTextEn, attackXEn, commonY + 85);
     ctx.fillText(healthTextEn, healthXEn, commonY + 85);
-    
+
     ctx.save();
     const progress = currentFrame / totalFrames;
     const fontSize = minFontSize + progress * (maxFontSize - minFontSize);
@@ -1529,19 +1485,9 @@ function showDamage(
     );
     ctx.restore();
     if (currentFrame < totalFrames) {
-      if (isPaused) {
-        console.log("Animation paused. Waiting to resume...");
-        setTimeout(() => requestAnimationFrame(drawExpandingDamage), 500); // Poll for resume
-        return;
-      }
       currentFrame++;
       requestAnimationFrame(drawExpandingDamage);
     } else {
-      if (isPaused) {
-        console.log("Animation paused. Waiting to resume...");
-        setTimeout(() => requestAnimationFrame(drawShrinkingDamage), 500); // Poll for resume
-        return;
-      }
       setTimeout(() => {
         alpha = 1.0;
         currentFrame = 0;
@@ -1599,11 +1545,6 @@ function showDamage(
     ctx.restore();
     if (currentFrame < totalFrames) {
       currentFrame++;
-      if (isPaused) {
-        console.log("Animation paused. Waiting to resume...");
-        setTimeout(() => requestAnimationFrame(drawShrinkingDamage), 500); // Poll for resume
-        return;
-      }
       requestAnimationFrame(drawShrinkingDamage);
     } else {
       ctx.globalAlpha = 1.0;
@@ -1739,11 +1680,7 @@ function animateDeathFlyOff(animal, index, teamType, onComplete) {
       });
       return;
     }
-    if (isPaused) {
-      console.log("Animation paused. Waiting to resume...");
-      setTimeout(() => requestAnimationFrame(animate), 500); // Poll for resume
-      return;
-    }
+
     if (currentFrame < totalFrames) {
       requestAnimationFrame(animate);
     }
@@ -1754,11 +1691,7 @@ function animateDeathFlyOff(animal, index, teamType, onComplete) {
     let explosionFrame = 0;
     const maxRadius = 150;
     const starSize = 80;
-    if (isPaused) {
-      console.log("Animation paused. Waiting to resume...");
-      setTimeout(() => requestAnimationFrame(animate), 500); // Poll for resume
-      return;
-    }
+
     function drawExplosion() {
       ctx.clearRect(x - maxRadius, y - maxRadius, maxRadius * 2, maxRadius * 2);
       renderFullTeam();
@@ -1782,11 +1715,7 @@ function animateDeathFlyOff(animal, index, teamType, onComplete) {
       ctx.globalAlpha = 1;
 
       explosionFrame++;
-      if (isPaused) {
-        console.log("Animation paused. Waiting to resume...");
-        setTimeout(() => requestAnimationFrame(drawExplosion), 500); // Poll for resume
-        return;
-      }
+
       if (explosionFrame < explosionDuration) {
         requestAnimationFrame(drawExplosion);
       } else {
@@ -1890,13 +1819,8 @@ async function simulateBattle() {
   function pauseBeforeFirstTurn() {
     setTimeout(playTurn, 1500);
   }
-    
+
   function playTurn() {
-    if (isPaused) {
-      console.log("Game paused. Waiting to resume...");
-      setTimeout(playTurn, 500);
-      return;
-    }
     if (
       turnCount > maxTurns ||
       !battleLineup.some((animal) => animal) ||
