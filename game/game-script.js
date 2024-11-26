@@ -1,39 +1,59 @@
-const socket = new WebSocket("ws://localhost:8080");
+const socketUrl = "ws://localhost:8080";
+let socket;
 
-let isPaired = false; 
-let playerDataSent = false; 
-let receivedOpponentData = false; 
-let gameStarted = false; 
-socket.onopen = () => {
-  console.log("Connected to server");
-};
-socket.onmessage = async (event) => {
-  try {
-    const message =
-      typeof event.data === "string" ? event.data : await event.data.text();
-    const data = JSON.parse(message);
+function connectWebSocket() {
+  socket = new WebSocket(socketUrl);
 
-    if (data.message === "paired") {
-      console.log("Paired with another player!");
-      isPaired = true;
-      
-      checkStartCondition();
-    } else if (data.battleLineup && data.teamName) {
-      enemyLineup = data.battleLineup;
-      enemyTeamName = data.teamName;
-      console.log("Received opponent data:", enemyLineup, enemyTeamName);
-      receivedOpponentData = true;
-      checkStartCondition();
-    } else if (data.type === "start" && !gameStarted) {
-      console.log("Starting the game!");
-      hideLoadingScreen();
-      gameStarted = true;
-      letsplayonline();
+  socket.onopen = () => {
+    console.log("Connected to server");
+  };
+
+  socket.onmessage = async (event) => {
+    try {
+      const message =
+        typeof event.data === "string" ? event.data : await event.data.text();
+      const data = JSON.parse(message);
+
+      if (data.message === "paired") {
+        console.log("Paired with another player!");
+        isPaired = true;
+
+        checkStartCondition();
+      } else if (data.battleLineup && data.teamName) {
+        enemyLineup = data.battleLineup;
+        enemyTeamName = data.teamName;
+        console.log("Received opponent data:", enemyLineup, enemyTeamName);
+        receivedOpponentData = true;
+        checkStartCondition();
+      } else if (data.type === "start" && !gameStarted) {
+        console.log("Starting the game!");
+        hideLoadingScreen();
+        gameStarted = true;
+        letsplayonline();
+      }
+    } catch (error) {
+      console.error("Error parsing WebSocket message:", error);
     }
-  } catch (error) {
-    console.error("Error parsing WebSocket message:", error);
-  }
-};
+  };
+
+  socket.onclose = () => {
+    console.log("Connection lost, attempting to reconnect...");
+    setTimeout(connectWebSocket, 1000); // Retry connection every 1 second
+  };
+
+  socket.onerror = (error) => {
+    console.error("WebSocket error:", error);
+    socket.close();
+  };
+}
+
+connectWebSocket();
+
+let isPaired = false;
+let playerDataSent = false;
+let receivedOpponentData = false;
+let gameStarted = false;
+
 const canvas = document.getElementById("battleCanvas");
 const curtainTop = document.getElementById("curtainTop");
 const curtainBottom = document.getElementById("curtainBottom");
@@ -179,44 +199,36 @@ function renderRandomAnimals() {
       const imageWidth = animalImage.offsetWidth;
       const imageHeight = animalImage.offsetHeight;
 
-      
       const tempCanvas = document.createElement("canvas");
       tempCanvas.width = imageWidth;
       tempCanvas.height = imageHeight;
 
       const ctx = tempCanvas.getContext("2d");
 
-      
       ctx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
       ctx.scale(-1, 1);
 
-      
       ctx.drawImage(animalImage, -imageWidth, 0, imageWidth, imageHeight);
 
-      
       tempCanvas.style.position = "absolute";
-      tempCanvas.style.top = "-1000px"; 
-      tempCanvas.style.left = "-1000px"; 
-      tempCanvas.style.pointerEvents = "none"; 
+      tempCanvas.style.top = "-1000px";
+      tempCanvas.style.left = "-1000px";
+      tempCanvas.style.pointerEvents = "none";
       document.body.appendChild(tempCanvas);
 
-      
       event.dataTransfer.setDragImage(
         tempCanvas,
         tempCanvas.width / 2,
         tempCanvas.height / 2
       );
 
-      
       setTimeout(() => {
         tempCanvas.remove();
       }, 0);
 
-      
       event.dataTransfer.setData("text/plain", index);
       event.dataTransfer.setData("source", "shop");
 
-      
       showFreezeBin();
     });
 
@@ -539,37 +551,30 @@ function renderBattleSlots() {
 
         const ctx = tempCanvas.getContext("2d");
 
-        
         ctx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
         ctx.scale(-1, 1);
 
-        
         ctx.drawImage(animalImg, -imageWidth, 0, imageWidth, imageHeight);
 
-        
         tempCanvas.style.position = "absolute";
-        tempCanvas.style.top = "-1000px"; 
-        tempCanvas.style.left = "-1000px"; 
-        tempCanvas.style.pointerEvents = "none"; 
+        tempCanvas.style.top = "-1000px";
+        tempCanvas.style.left = "-1000px";
+        tempCanvas.style.pointerEvents = "none";
         document.body.appendChild(tempCanvas);
 
-        
         event.dataTransfer.setDragImage(
           tempCanvas,
           tempCanvas.width / 2,
           tempCanvas.height / 2
         );
 
-        
         setTimeout(() => {
           tempCanvas.remove();
         }, 0);
 
-        
         event.dataTransfer.setData("text/plain", maxSlots - 1 - index);
         event.dataTransfer.setData("source", "battle");
 
-        
         showTrashBin();
       });
 
@@ -756,7 +761,6 @@ function letsplayonline() {
   }
 }
 
-
 function sendPlayerData() {
   if (isPaired && !playerDataSent) {
     socket.send(
@@ -787,7 +791,7 @@ document
       showTeamNameSelection();
       fadeInElements();
     } else {
-      showLoadingScreen()
+      showLoadingScreen();
       sendPlayerData();
     }
   });
@@ -842,7 +846,7 @@ function getRandomItems(array, count) {
 }
 function populateTeamRow(rowId, items, type) {
   const row = document.getElementById(rowId);
-  row.innerHTML = ""; 
+  row.innerHTML = "";
 
   items.forEach((item) => {
     const button = document.createElement("button");
@@ -1059,12 +1063,12 @@ document.addEventListener("DOMContentLoaded", function () {
   renderBattleSlots();
   if (!localStorage.getItem("firstTime")) {
     console.log("First-time setup: Setting initial coins to 15.");
-    localStorage.setItem("firstTime", "true"); 
+    localStorage.setItem("firstTime", "true");
     coins = 15;
-    localStorage.setItem("gamecoins", coins); 
-    rollfirst(); 
+    localStorage.setItem("gamecoins", coins);
+    rollfirst();
   } else {
-    coins = parseInt(localStorage.getItem("gamecoins")); 
+    coins = parseInt(localStorage.getItem("gamecoins"));
     updateCoinsDisplay();
     randomAnimals = JSON.parse(localStorage.getItem("randomAnimals")) || [];
     if (randomAnimals.length === 0) {
