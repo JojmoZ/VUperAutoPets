@@ -422,12 +422,32 @@ function playRollSound() {
   rollSound.play();
 }
 function playBusSound() {
-  return new Promise((resolve) => {
-    busSound.currentTime = 0;
-    busSound.play();
-    busSound.onended = resolve;
+  return new Promise((resolve, reject) => {
+    try {
+      const busSound = new Audio("../assets/sound/bus sound.mp3");
+      busSound.currentTime = 0;
+
+      busSound.onended = () => {
+        console.log("Bus sound playback completed.");
+        resolve(); // Resolve the promise when the sound ends
+      };
+
+      busSound.onerror = (error) => {
+        console.error("Error playing bus sound:", error);
+        reject(error); // Reject the promise on error
+      };
+
+      busSound.play().catch((error) => {
+        console.error("Error starting bus sound:", error);
+        reject(error); // Reject if playback cannot start
+      });
+    } catch (error) {
+      console.error("Unexpected error in playBusSound:", error);
+      reject(error); // Catch unexpected errors
+    }
   });
 }
+
 function hideTeamName() {
   const teamContainer = document.getElementById("teamNameContainer");
   teamContainer.classList.add("hidden");
@@ -782,6 +802,7 @@ function checkStartCondition() {
     console.log("Notified server to start the game.");
   }
 }
+
 document
   .getElementById("startBattleButtonOnline")
   .addEventListener("click", function () {
@@ -1678,63 +1699,92 @@ function animateDeathFlyOff(animal, index, teamType, onComplete) {
 
   requestAnimationFrame(animate);
 }
-function handleBothDeaths(playerAnimal, enemyAnimal, onComplete) {
-  const deathPromises = [];
+async function handleBothDeaths(playerAnimal, enemyAnimal, onComplete) {
+  const deathTasks = [];
+
   if (playerAnimal.health <= 0) {
-    deathPromises.push(
-      new Promise(async (resolve) => {
-        if (playerAnimal.specialEffect === "SpawnBus") {
-          const playerIndex = battleLineup.indexOf(playerAnimal);
-          battleLineup[playerIndex] = createBus();
-          renderTeams();
-          await playBusSound();
-          resolve();
-        } else {
-          animateDeathFlyOff(
+    deathTasks.push(
+      playerAnimal.specialEffect === "SpawnBus"
+        ? handleBusSpawn(battleLineup, playerAnimal, "player")
+        : handleDeathAnimation(
             playerAnimal,
             battleLineup.indexOf(playerAnimal),
-            "player",
-            resolve
-          );
-        }
-      })
+            "player"
+          )
     );
   }
+
   if (enemyAnimal.health <= 0) {
-    deathPromises.push(
-      new Promise(async (resolve) => {
-        if (enemyAnimal.specialEffect === "SpawnBus") {
-          const enemyIndex = enemyLineup.indexOf(enemyAnimal);
-          enemyLineup[enemyIndex] = createBus();
-          renderTeams();
-          await playBusSound();
-          resolve();
-        } else {
-          animateDeathFlyOff(
+    deathTasks.push(
+      enemyAnimal.specialEffect === "SpawnBus"
+        ? handleBusSpawn(enemyLineup, enemyAnimal, "enemy")
+        : handleDeathAnimation(
             enemyAnimal,
             enemyLineup.indexOf(enemyAnimal),
-            "enemy",
-            resolve
-          );
-        }
-      })
+            "enemy"
+          )
     );
   }
-  Promise.all(deathPromises).then(() => {
-    if (enemyAnimal.health <= 0) {
-      enemyLineup[enemyLineup.indexOf(enemyAnimal)] = null;
-      shiftAnimalsInLineup(enemyLineup);
-    }
-    if (playerAnimal.health <= 0) {
-      battleLineup[battleLineup.indexOf(playerAnimal)] = null;
-      shiftAnimalsInLineup(battleLineup);
-    }
-    renderTeams();
-    setTimeout(() => {
-      onComplete();
-    }, 500);
+
+  console.log("Death Tasks:", deathTasks);
+
+  // Run both tasks simultaneously and wait for all to complete
+  try {
+    await Promise.all(deathTasks);
+    console.log("All death tasks completed.");
+  } catch (error) {
+    console.error("Error in death tasks:", error);
+  }
+
+  // Clean up the lineups
+  if (playerAnimal.health <= 0) {
+    battleLineup[battleLineup.indexOf(playerAnimal)] = null;
+    shiftAnimalsInLineup(battleLineup);
+  }
+  if (enemyAnimal.health <= 0) {
+    enemyLineup[enemyLineup.indexOf(enemyAnimal)] = null;
+    shiftAnimalsInLineup(enemyLineup);
+  }
+
+  renderTeams();
+
+  setTimeout(onComplete, 500);
+}
+
+
+async function handleBusSpawn(lineup, animal, teamType) {
+  console.log(`Spawning bus for ${teamType}`, animal);
+
+  const index = lineup.indexOf(animal);
+  if (index === -1) {
+    console.error("Animal not found in lineup for bus spawn.");
+    return;
+  }
+
+  lineup[index] = createBus(); // Replace the dead animal with a bus
+  renderTeams(); // Update the UI
+
+  try {
+    await playBusSound(); // Play the bus sound and wait for it to complete
+    console.log(`Bus spawned successfully for ${teamType}`);
+  } catch (error) {
+    console.error("Error in bus sound:", error);
+  }
+}
+
+
+async function handleDeathAnimation(animal, index, teamType) {
+  console.log(`Animating death for ${teamType}`, animal);
+
+  return new Promise((resolve) => {
+    animateDeathFlyOff(animal, index, teamType, () => {
+      console.log(`Death animation completed for ${teamType}`);
+      resolve();
+    });
   });
 }
+
+
 async function simulateBattle() {
   console.clear();
   let turnCount = 1;

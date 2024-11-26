@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "Selesai gk case KKrime.Net",
     "Selesai gk case Krusty bAke?",
     "Selesai gk case GiThub?",
-    "Selesai gk case Steven?",
+    "Selesai gk case ScanVision?",
     "Selesai gk case Filtert?",
     "Selesai gk case NieR:CaroluM?",
     "Diam dan Di cut, milik dia yang tak bisa berdiri",
