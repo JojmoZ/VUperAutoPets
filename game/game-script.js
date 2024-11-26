@@ -191,8 +191,8 @@ function renderRandomAnimals() {
     animalImage.src = animal.img;
     animalImage.alt = animal.name;
     animalImage.style.aspectRatio = "1/1";
-    animalImage.setAttribute("draggable", true);
     animalImage.style.transform = "scaleX(-1)";
+    animalImage.setAttribute("draggable", true);
     animalImage.addEventListener("dragstart", (event) => {
       hideHoverInfo();
 
@@ -900,7 +900,8 @@ document
       .classList.remove("teamNameSelectionScreen");
     let fromonline = localStorage.getItem("fromOnline");
     if (fromonline == "true") {
-      letsplayonline();
+      showLoadingScreen();
+      sendPlayerData();
     } else {
       letsplay();
     }
@@ -1331,16 +1332,19 @@ function backupLineup() {
   });
 }
 function shiftAnimalsToFront() {
-  const shiftedLineup = battleLineup.filter((animal) => animal !== null);
-  if (shiftedLineup.length === 0) {
-    console.warn("No animals in lineup. Skipping shift.");
-    return;
-  }
-  while (shiftedLineup.length < maxSlots) {
-    shiftedLineup.push(null);
-  }
-  battleLineup = [...shiftedLineup];
+  const shiftLineup = (lineup) => {
+    const shiftedLineup = lineup.filter((animal) => animal !== null);
+    while (shiftedLineup.length < maxSlots) {
+      shiftedLineup.push(null);
+    }
+    return shiftedLineup;
+  };
+
+  battleLineup = shiftLineup(battleLineup);
+  enemyLineup = shiftLineup(enemyLineup);
 }
+
+// ...existing code...
 function restoreOriginalLineup() {
   battleLineup = originalBattleLineup.map((animal) => {
     if (animal) {
