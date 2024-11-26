@@ -304,9 +304,9 @@ img {
   position: absolute;
   background-image: url(../assets/game-asset/roll.png);
   width: 18rem;
-  height: 6.25rem;
+  height: 6.5rem;
   aspect-ratio: 1/1;
-  background-size: cover;
+  background-size: contain;
   background-repeat: no-repeat;
   background-color: transparent;
   border: none;
@@ -317,11 +317,12 @@ img {
 }
 #startBattleButtonOnline {
   position: absolute;
-  background-image: url(../assets/game-asset/sword.svg);
-  width: 6.875rem;
+  background-image: url(../assets/game-asset/button/battle-btn.png);
+  width: 21rem;
   height: 6.25rem;
+  aspect-ratio: 1/1;
   margin-right: 3.125rem;
-  top: -6rem;
+  right:23rem;
   background-size: cover;
   background-repeat: no-repeat;
   background-color: transparent;
@@ -331,9 +332,10 @@ img {
 }
 #startBattleButton {
   position: absolute;
-  background-image: url(../assets/game-asset/sword.svg);
-  width: 6.875rem;
+  background-image: url(../assets/game-asset/button/practice-btn.png);
+  width: 21rem;
   height: 6.25rem;
+  aspect-ratio: 1/1;
   margin-right: 3.125rem;
   background-size: cover;
   background-repeat: no-repeat;
@@ -344,7 +346,7 @@ img {
 }
 #freezeButton {
   position: absolute;
-  right: 40%;
+  right: 50%;
   width: 6.875rem;
   height: 6.25rem;
   background-color: transparent;
