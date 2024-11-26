@@ -734,6 +734,8 @@ function letsplay() {
       shiftAnimalsToFront();
       generateEnemyTeam();
       generateEnemyTeamName();
+      const result = computeBattleResult(battleLineup, enemyLineup);
+      localStorage.setItem("result", result);
       hideNonBattleElements();
       hideTeamName();
       hideCanvas();
@@ -755,6 +757,8 @@ function letsplayonline() {
 
   if (playerDataSent && receivedOpponentData) {
     checkbattlelineup();
+     const result = computeBattleResult(battleLineup, enemyLineup);
+     localStorage.setItem("result", result);
     showCurtains();
     playing = true;
     closeCurtains();
@@ -1093,6 +1097,31 @@ document.addEventListener("DOMContentLoaded", function () {
     coins = parseInt(localStorage.getItem("gamecoins"));
     updateCoinsDisplay();
     randomAnimals = JSON.parse(localStorage.getItem("randomAnimals")) || [];
+    const result = localStorage.getItem("result");
+
+    if (result) {
+      console.log("Stored result found:", result);
+      coins += 10;
+      updateCoinsDisplay();
+      if (result === "win") {
+        console.log("Player won! Adding pending coins.");
+        let pendingCoins = parseInt(localStorage.getItem("pendingCoins")) || 0;
+        pendingCoins += 5;
+        localStorage.setItem("pendingCoins", pendingCoins);
+        localStorage.removeItem("result");
+      } else if (result === "lose") {
+        console.log("Player lost! Reducing a heart.");
+        hearts[lives - 1].src = "../assets/game-asset/broken heart.png";
+        lives--;
+        localStorage.setItem("lives", lives);
+        localStorage.removeItem("result");
+      } else if (result === "draw") {
+        localStorage.removeItem("result");
+      }
+      location.reload();
+    } else {
+      console.log("No previous result stored.");
+    }
     if (randomAnimals.length === 0) {
       rollShopAnimals();
     } else {
@@ -1889,6 +1918,7 @@ function resetGame() {
   showNonBattleElements();
 }
 function checkGameOver(playerSurvivors, enemySurvivors) {
+   
   if (playerSurvivors > enemySurvivors) {
     showWinScreen();
   } else if (playerSurvivors < enemySurvivors) {
@@ -2281,6 +2311,7 @@ function showDrawScreen() {
       setTimeout(() => {
         showNonBattleElements();
         coins += 10;
+        localStorage.removeItem("result");
         dimmerOverlay.classList.add("hidden");
         openCurtains(() => {
           rollfirst();
@@ -2343,6 +2374,7 @@ function DefeatScreen() {
       setTimeout(() => {
         showNonBattleElements();
         coins += 10;
+        localStorage.removeItem("result");
         dimmerOverlay.classList.add("hidden");
         openCurtains(() => {
           resetGame();
@@ -2416,6 +2448,7 @@ function showWinScreen() {
         restoreOriginalLineup();
         hideCanvas();
         coins += 10;
+        localStorage.removeItem("result");
         dimmerOverlay.classList.add("hidden");
         openCurtains(() => {
           updateCoinsDisplay();
@@ -2480,4 +2513,47 @@ function hideLoadingScreen() {
   const loadingScreen = document.getElementById("loadingScreen");
   loadingScreen.classList.remove("active");
   loadingScreen.classList.add("hidden");
+}
+function computeBattleResult(playerTeam, enemyTeam) {
+ let playerIndex = 0; // First animal in the player's team
+ let enemyIndex = 0; // First animal in the enemy's team
+
+ while (playerIndex < playerTeam.length && enemyIndex < enemyTeam.length) {
+   let playerAnimal = playerTeam[playerIndex];
+   let enemyAnimal = enemyTeam[enemyIndex];
+
+   // Skip null animals
+   if (!playerAnimal) {
+     playerIndex++;
+     continue;
+   }
+   if (!enemyAnimal) {
+     enemyIndex++;
+     continue;
+   }
+
+   // Combat interaction
+   enemyAnimal.health -= playerAnimal.attack; // Player attacks enemy
+   if (enemyAnimal.health <= 0) {
+     enemyIndex++; // Enemy defeated, move to the next enemy
+     continue;
+   }
+
+   playerAnimal.health -= enemyAnimal.attack; // Enemy attacks player
+   if (playerAnimal.health <= 0) {
+     playerIndex++; // Player defeated, move to the next player
+   }
+ }
+
+ // Determine the result
+ const playerSurvivors = playerTeam.filter(
+   (animal) => animal && animal.health > 0
+ ).length;
+ const enemySurvivors = enemyTeam.filter(
+   (animal) => animal && animal.health > 0
+ ).length;
+
+ if (playerSurvivors > enemySurvivors) return "win";
+ if (playerSurvivors < enemySurvivors) return "lose";
+ return "draw";
 }
