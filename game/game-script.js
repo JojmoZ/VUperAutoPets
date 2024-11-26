@@ -38,7 +38,7 @@ function connectWebSocket() {
 
   socket.onclose = () => {
     console.log("Connection lost, attempting to reconnect...");
-    setTimeout(connectWebSocket, 1000); // Retry connection every 1 second
+    setTimeout(connectWebSocket, 1000); 
   };
 
   socket.onerror = (error) => {
@@ -429,21 +429,21 @@ function playBusSound() {
 
       busSound.onended = () => {
         console.log("Bus sound playback completed.");
-        resolve(); // Resolve the promise when the sound ends
+        resolve(); 
       };
 
       busSound.onerror = (error) => {
         console.error("Error playing bus sound:", error);
-        reject(error); // Reject the promise on error
+        reject(error); 
       };
 
       busSound.play().catch((error) => {
         console.error("Error starting bus sound:", error);
-        reject(error); // Reject if playback cannot start
+        reject(error); 
       });
     } catch (error) {
       console.error("Unexpected error in playBusSound:", error);
-      reject(error); // Catch unexpected errors
+      reject(error); 
     }
   });
 }
@@ -1118,7 +1118,7 @@ document.addEventListener("DOMContentLoaded", function () {
       } else if (result === "draw") {
         localStorage.removeItem("result");
       }
-      // location.reload();
+      
     } else {
       console.log("No previous result stored.");
     }
@@ -1394,7 +1394,6 @@ function shiftAnimalsToFront() {
   enemyLineup = shiftLineup(enemyLineup);
 }
 
-// ...existing code...
 function restoreOriginalLineup() {
   battleLineup = originalBattleLineup.map((animal) => {
     if (animal) {
@@ -1757,7 +1756,7 @@ async function handleBothDeaths(playerAnimal, enemyAnimal, onComplete) {
 
   console.log("Death Tasks:", deathTasks);
 
-  // Run both tasks simultaneously and wait for all to complete
+  
   try {
     await Promise.all(deathTasks);
     console.log("All death tasks completed.");
@@ -1765,7 +1764,7 @@ async function handleBothDeaths(playerAnimal, enemyAnimal, onComplete) {
     console.error("Error in death tasks:", error);
   }
 
-  // Clean up the lineups
+  
   if (playerAnimal.health <= 0) {
     battleLineup[battleLineup.indexOf(playerAnimal)] = null;
     shiftAnimalsInLineup(battleLineup);
@@ -1789,11 +1788,11 @@ async function handleBusSpawn(lineup, animal, teamType) {
     return;
   }
 
-  lineup[index] = createBus(); // Replace the dead animal with a bus
-  renderTeams(); // Update the UI
+  lineup[index] = createBus(); 
+  renderTeams(); 
 
   try {
-    await playBusSound(); // Play the bus sound and wait for it to complete
+    await playBusSound(); 
     console.log(`Bus spawned successfully for ${teamType}`);
   } catch (error) {
     console.error("Error in bus sound:", error);
@@ -2513,7 +2512,7 @@ function hideLoadingScreen() {
   loadingScreen.classList.add("hidden");
 }
 function computeBattleResult(playerTeam, enemyTeam) {
-  // Create deep copies of the lineups to avoid modifying the originals
+  
   const playerTeamCopy = playerTeam.map((animal) =>
     animal ? { ...animal } : null
   );
@@ -2521,8 +2520,8 @@ function computeBattleResult(playerTeam, enemyTeam) {
     animal ? { ...animal } : null
   );
 
-  let playerIndex = 0; // First animal in the player's team
-  let enemyIndex = 0; // First animal in the enemy's team
+  let playerIndex = 0; 
+  let enemyIndex = 0; 
 
   while (
     playerIndex < playerTeamCopy.length &&
@@ -2531,7 +2530,7 @@ function computeBattleResult(playerTeam, enemyTeam) {
     let playerAnimal = playerTeamCopy[playerIndex];
     let enemyAnimal = enemyTeamCopy[enemyIndex];
 
-    // Skip null animals
+    
     if (!playerAnimal) {
       playerIndex++;
       continue;
@@ -2541,20 +2540,20 @@ function computeBattleResult(playerTeam, enemyTeam) {
       continue;
     }
 
-    // Combat interaction
-    enemyAnimal.health -= playerAnimal.attack; // Player attacks enemy
+    
+    enemyAnimal.health -= playerAnimal.attack; 
     if (enemyAnimal.health <= 0) {
-      enemyIndex++; // Enemy defeated, move to the next enemy
+      enemyIndex++; 
       continue;
     }
 
-    playerAnimal.health -= enemyAnimal.attack; // Enemy attacks player
+    playerAnimal.health -= enemyAnimal.attack; 
     if (playerAnimal.health <= 0) {
-      playerIndex++; // Player defeated, move to the next player
+      playerIndex++; 
     }
   }
 
-  // Determine the result
+  
   const playerSurvivors = playerTeamCopy.filter(
     (animal) => animal && animal.health > 0
   ).length;
