@@ -4,7 +4,27 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< Updated upstream
     <list default="true" id="54d862c4-d20b-415f-bc78-50cca1da92eb" name="Changes" comment="" />
+=======
+    <list default="true" id="54d862c4-d20b-415f-bc78-50cca1da92eb" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/assets/login/parallax/parallax-1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/login/parallax/parallax-2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/login/start.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/login-asset/background.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/login/background.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/login-asset/captcha-bg.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/login/captcha-bg.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/login-asset/eye.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/login/eye.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/login-asset/hide.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/login/hide.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/login-asset/parallax/parallax-1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/login-asset/parallax/parallax-2.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/login/parallax/parallax-3.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/login-asset/parallax/sky-background.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/login/parallax/sky-background.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/login-asset/reload.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/login/reload.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/login/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/login/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/login/main-script.js" beforeDir="false" afterPath="$PROJECT_DIR$/login/main-script.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/login/main-style.css" beforeDir="false" afterPath="$PROJECT_DIR$/login/main-style.css" afterDir="false" />
+    </list>
+>>>>>>> Stashed changes
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -21,6 +41,7 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
+<<<<<<< Updated upstream
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;JavaScript Debug.homepage.html.executor&quot;: &quot;Run&quot;,
@@ -35,15 +56,45 @@
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+=======
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "JavaScript Debug.homepage.html.executor": "Run",
+    "JavaScript Debug.start.html.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/Users/catherine/Documents/Work/NAR25-1/03. Core Training/VUPER/assets/login",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
+>>>>>>> Stashed changes
   }
 }</component>
   <component name="RecentsManager">
+<<<<<<< Updated upstream
+=======
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/assets/login" />
+      <recent name="$PROJECT_DIR$/assets/login-asset/parallax" />
+    </key>
+>>>>>>> Stashed changes
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/assets/login-asset/parallax" />
+      <recent name="$PROJECT_DIR$/assets/login-asset/parallax/parallax-2" />
       <recent name="$PROJECT_DIR$/assets/font" />
+<<<<<<< Updated upstream
       <recent name="$PROJECT_DIR$/assets/logo" />
       <recent name="$PROJECT_DIR$/assets/pet" />
       <recent name="$PROJECT_DIR$/assets/icon" />
       <recent name="$PROJECT_DIR$/assets/cursor" />
+=======
+      <recent name="$PROJECT_DIR$/assets/game-asset" />
+      <recent name="$PROJECT_DIR$/assets" />
+>>>>>>> Stashed changes
     </key>
   </component>
   <component name="RunManager" selected="JavaScript Debug.start.html">
@@ -78,7 +129,14 @@
       <workItem from="1729730472586" duration="5301000" />
       <workItem from="1731644785419" duration="699000" />
       <workItem from="1731924418048" duration="7000" />
+<<<<<<< Updated upstream
       <workItem from="1732505131102" duration="1370000" />
+=======
+      <workItem from="1732505131102" duration="2610000" />
+      <workItem from="1732509744666" duration="5986000" />
+      <workItem from="1732525054614" duration="313000" />
+      <workItem from="1732568157258" duration="11788000" />
+>>>>>>> Stashed changes
     </task>
     <servers />
   </component>

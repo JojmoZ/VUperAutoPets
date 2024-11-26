@@ -2,8 +2,35 @@ function hideCaptcha() {
   captchaModal1.classList.add("hide");
   captchaModal2.classList.add("hide");
 
+<<<<<<< Updated upstream
   document.body.classList.remove("modal-active");
   document.querySelector(".overlay").classList.add("hidden");
+=======
+// Parallax Effect
+
+document.addEventListener("mousemove", (event) => {
+  const { clientX, clientY } = event;
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+  // Normalize mouse position to range -1 to 1
+  const xNorm = (clientX / width - 0.5) * 2; // Horizontal position
+  const yNorm = (clientY / height - 0.5) * 2; // Vertical position
+
+  // Select parallax layers
+  const layer1 = document.querySelector(".parallax-layer-1");
+  const layer2 = document.querySelector(".parallax-layer-2");
+  const layer3 = document.querySelector(".parallax-layer-3");
+  const layer4Left = document.querySelector(".parallax-layer-4.left");
+  const layer4Right = document.querySelector(".parallax-layer-4.right");
+
+  // Apply transform for parallax effect (tweak multipliers for desired effect)
+  layer1.style.transform = `translate(${xNorm * 8}px, ${yNorm * 8}px)`;
+  layer2.style.transform = `translate(${xNorm * 18}px, ${yNorm * 18}px)`;
+  layer3.style.transform = `translate(${xNorm * 32}px, ${yNorm * 32}px)`;
+  layer4Left.style.transform = `translate(${xNorm * 60}px, ${yNorm * 60}px) scaleX(-1)`;
+  layer4Right.style.transform = `translate(${xNorm * 60}px, ${yNorm * 60}px)`;
+});
+>>>>>>> Stashed changes
 
   setTimeout(() => {
     captchaModal1.classList.add("hidden");
@@ -332,10 +359,10 @@ window.onload = function () {
 
       if (targetInput.type === "password") {
         targetInput.type = "text";
-        img.src = "../assets/login-asset/hide.png";
+        img.src = "../assets/login/hide.png";
       } else {
         targetInput.type = "password";
-        img.src = "../assets/login-asset/eye.png";
+        img.src = "../assets/login/eye.png";
       }
     });
   });
