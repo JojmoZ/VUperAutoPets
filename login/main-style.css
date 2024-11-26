@@ -25,6 +25,7 @@ body {
 }
 
 .logocontop {
+<<<<<<< HEAD
     display: flex;
     justify-content: center;
     align-items: center;
@@ -77,6 +78,94 @@ img#logo {
     position: absolute;
     left: 50%;
     animation: float 3s ease-in-out infinite;
+=======
+<<<<<<< Updated upstream
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+img#logo {
+  transition: transform 1s ease, left 1s ease, width 1s ease;
+  z-index: 1;
+  width: 50vw;
+  position: absolute;
+  left: 53%;
+  animation: float 3s ease-in-out infinite;
+=======
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+
+}
+
+/**
+* Parallax
+*/
+
+.parallax-layer-1, .parallax-layer-2, .parallax-layer-3 {
+    position: absolute;
+    height: 120vh;
+    width: 120vw;
+    transition: transform 0.1s ease;
+}
+
+.parallax-layer-4 {
+    position: absolute;
+    z-index: 1;
+    bottom: -5rem;
+}
+
+.parallax-layer-4.left {
+    left: -3rem;
+    width: 24vw;
+    transform: scaleX(-1);
+}
+
+.parallax-layer-4.right {
+    width: 27vw;
+    right: -3rem;
+}
+
+#border {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 10;
+
+}
+
+#start-button {
+    position: absolute;
+    background-color: transparent;
+    border: none;
+    bottom: 20%;
+}
+
+#start-button img {
+    width: 20vw;
+}
+
+#start-button img:hover {
+    cursor: pointer;
+    filter: brightness(1.15);
+}
+
+img#logo {
+    transition: transform 1s ease, left 1s ease, width 1s ease;
+    z-index: 1;
+    width: 60vw;
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    animation: float 3s ease-in-out infinite;
+>>>>>>> Stashed changes
+>>>>>>> revisi-1
 }
 
 .bottompart {
