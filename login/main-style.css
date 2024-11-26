@@ -24,6 +24,13 @@ body {
     height: 200vh;
 }
 
+.logocontop {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
 /**
 * Parallax
 */
@@ -61,6 +68,16 @@ body {
     pointer-events: none;
     z-index: 10;
 
+}
+
+img#logo {
+    transition: transform 1s ease, left 1s ease, width 1s ease;
+    z-index: 1;
+    width: 60vw;
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    animation: float 3s ease-in-out infinite;
 }
 
 #start-button {
