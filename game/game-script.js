@@ -2513,12 +2513,23 @@ function hideLoadingScreen() {
   loadingScreen.classList.add("hidden");
 }
 function computeBattleResult(playerTeam, enemyTeam) {
+  // Create deep copies of the lineups to avoid modifying the originals
+  const playerTeamCopy = playerTeam.map((animal) =>
+    animal ? { ...animal } : null
+  );
+  const enemyTeamCopy = enemyTeam.map((animal) =>
+    animal ? { ...animal } : null
+  );
+
   let playerIndex = 0; // First animal in the player's team
   let enemyIndex = 0; // First animal in the enemy's team
 
-  while (playerIndex < playerTeam.length && enemyIndex < enemyTeam.length) {
-    let playerAnimal = playerTeam[playerIndex];
-    let enemyAnimal = enemyTeam[enemyIndex];
+  while (
+    playerIndex < playerTeamCopy.length &&
+    enemyIndex < enemyTeamCopy.length
+  ) {
+    let playerAnimal = playerTeamCopy[playerIndex];
+    let enemyAnimal = enemyTeamCopy[enemyIndex];
 
     // Skip null animals
     if (!playerAnimal) {
@@ -2544,10 +2555,10 @@ function computeBattleResult(playerTeam, enemyTeam) {
   }
 
   // Determine the result
-  const playerSurvivors = playerTeam.filter(
+  const playerSurvivors = playerTeamCopy.filter(
     (animal) => animal && animal.health > 0
   ).length;
-  const enemySurvivors = enemyTeam.filter(
+  const enemySurvivors = enemyTeamCopy.filter(
     (animal) => animal && animal.health > 0
   ).length;
 
