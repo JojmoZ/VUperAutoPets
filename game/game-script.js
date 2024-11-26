@@ -2568,3 +2568,12 @@ function computeBattleResult(playerTeam, enemyTeam) {
   if (playerSurvivors < enemySurvivors) return "lose";
   return "draw";
 }
+function animateSpriteWin(){
+  
+}
+function aniamteSpriteDraw(){
+
+}
+function aniamtSpriteLose(){
+
+}
