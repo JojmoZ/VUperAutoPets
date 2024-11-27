@@ -199,27 +199,20 @@ function renderRandomAnimals() {
     animalImage.setAttribute("draggable", true);
     animalImage.addEventListener("dragstart", (event) => {
       hideHoverInfo();
-
       const imageWidth = animalImage.offsetWidth;
       const imageHeight = animalImage.offsetHeight;
-
       const tempCanvas = document.createElement("canvas");
       tempCanvas.width = imageWidth;
       tempCanvas.height = imageHeight;
-
       const ctx = tempCanvas.getContext("2d");
-
       ctx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
       ctx.scale(-1, 1);
-
       ctx.drawImage(animalImage, -imageWidth, 0, imageWidth, imageHeight);
-
       tempCanvas.style.position = "absolute";
       tempCanvas.style.top = "-1000px";
       tempCanvas.style.left = "-1000px";
       tempCanvas.style.pointerEvents = "none";
       document.body.appendChild(tempCanvas);
-
       event.dataTransfer.setDragImage(
         tempCanvas,
         tempCanvas.width / 2,
