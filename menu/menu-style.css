@@ -7,6 +7,7 @@
 body {
     font-family: 'Lapsus Pro', sans-serif;
     background: url("../assets/background/menu-bg.png") no-repeat center center fixed;
+    height: 100vh;
 }
 
 button {
@@ -25,7 +26,7 @@ button:hover {
 }
 
 button:active {
-    transform: translateY(0.5rem);
+    transform: translateY(3%);
 }
 
 #logo {
@@ -46,18 +47,43 @@ header {
 .sub-btn {
     width: 4rem;
     height: 4rem;
+    z-index: 10;
+
 }
 
 main {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    height: 100vh;
+    justify-content: center;
 }
 
-main button {
+.main-btn {
+    width: 40%;
+    height: auto;
+}
+
+.menu-btn {
+    width: 40%;
+    height: auto;
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    position: fixed;
+    top: 0.75rem;
+    right: 0.5rem;
+    background: white;
+    border: 0.5rem solid black;
+    border-radius: 1rem;
     width: 20rem;
-    height: 5rem;
-    margin: 1rem;
+    height: 10.5rem;
+    z-index: 0;
+}
+
+.logout-button {
+    width: 100%;
 }
