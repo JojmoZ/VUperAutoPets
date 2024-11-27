@@ -131,7 +131,10 @@ document.addEventListener("DOMContentLoaded", () => {
       mainContent.appendChild(tipElement);
       tipBox = tipElement.getBoundingClientRect();
       mainContent.removeChild(tipElement);
-
+       const logged = localStorage.getItem("loggedin");
+       if (!logged) {
+         window.location.href = "/login/index.html";
+       }
       // const debugPaddingBox = document.createElement("div");
       // debugPaddingBox.style.position = "absolute";
       // debugPaddingBox.style.border = "1px dashed red"; // Dashed red border for padding area

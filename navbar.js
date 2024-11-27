@@ -46,4 +46,7 @@
         link.classList.add("active");
       }
    });
-
+   const logged = localStorage.getItem("loggedin");
+   if(!logged) {
+     window.location.href = "/login/index.html";
+   }

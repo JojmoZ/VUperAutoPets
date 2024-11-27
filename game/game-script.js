@@ -119,7 +119,10 @@ const buySound = document.getElementById("buySound");
 const eatSound = document.getElementById("eatSound");
 const rollSound = document.getElementById("rollSound");
 const sellSound = document.getElementById("sellSound");
-
+ const logged = localStorage.getItem("loggedin");
+ if (!logged) {
+   window.location.href = "/login/index.html";
+ }
 function saveRandomAnimals() {
   localStorage.setItem("randomAnimals", JSON.stringify(randomAnimals));
 }
