@@ -1,0 +1,63 @@
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Lapsus Pro', sans-serif;
+    background: url("../assets/background/menu-bg.png") no-repeat center center fixed;
+}
+
+button {
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+button img {
+    width: 100%;
+    height: auto;
+}
+
+button:hover {
+    filter: brightness(1.2);
+}
+
+button:active {
+    transform: translateY(0.5rem);
+}
+
+#logo {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    width: 16rem;
+    height: auto;
+}
+
+header {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding: 1rem;
+}
+
+.sub-btn {
+    width: 4rem;
+    height: 4rem;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+main button {
+    width: 20rem;
+    height: 5rem;
+    margin: 1rem;
+}
