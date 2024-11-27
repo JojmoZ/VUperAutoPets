@@ -10,7 +10,10 @@ window.onload = function () {
   }
   const track = document.getElementById("maps");
 
-  
+  const backbtn = document.getElementById("backArrow");
+  backbtn.addEventListener("click", function () {
+    window.location = "/menu/menu.html";
+  })
   track.dataset.percentage = "-30"; 
   track.style.transform = `translate(-30%, -50%)`; 
   console.log("Script Loaded");

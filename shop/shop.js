@@ -13,14 +13,18 @@ document.addEventListener("DOMContentLoaded", function () {
   const cancelButton = document.getElementById("cancel-buy");
   const coinsDisplay = document.createElement("div");
   coinsDisplay.id = "coinsDisplay";
+  coinsDisplay.style.fontFamily = "VUper"
   coinsDisplay.style.position = "fixed";
-  coinsDisplay.style.top = "1.75rem";
+  coinsDisplay.style.top = "1.75rem"
   coinsDisplay.style.right = "9.375rem";
   coinsDisplay.style.color = "white";
-  coinsDisplay.style.fontSize = "20px";
+  coinsDisplay.style.fontSize = "2rem";
   coinsDisplay.style.zIndex = "9999";
   document.body.appendChild(coinsDisplay);
-
+const backbtn = document.getElementById("backArrow");
+backbtn.addEventListener("click", function () {
+  window.location = "/menu/menu.html";
+});
   const shopContainer = document.querySelector(".shop-container");
 
   function arrangeCardsInAlternatingPattern() {

@@ -7,9 +7,13 @@ let foodElement = null;
 let scaleX, scaleY;
 const restrictedZones = [
   { x: 0, y: 0, width: 50, height: 1080 },
-  { x: 0, y: 0, width: 1920, height: 90 },
+  { x: 0, y: 0, width: 320, height: 230 },
   { x: 1850, y: 0, width: 70, height: 1080 },
-  { x: 1410, y: 60, width: 245, height: 70 },
+  { x: 915 - 5, y: 90, width: 25, height: 130  }, 
+  { x: 915 - 5, y: 170, width: 50, height: 60  }, 
+  { x: 1410, y: 0, width: 220, height: 120 },
+  { x: 1630, y: 60, width: 25, height: 50 },
+  { x: 1680, y: 0, width: 90, height: 55 },
   { x: 1635, y: 160, width: 14, height: 140 },
   { x: 1610, y: 140 + 140, width: 1920 - 1610, height: 100 },
   { x: 1169, y: 140 + 140, width: 250, height: 100 },
@@ -24,10 +28,11 @@ const restrictedZones = [
   { x: 1635, y: 140 + 90, width: 1920 - 1635, height: 50 },
   { x: 1169, y: 140 + 90, width: 245, height: 50 },
   { x: 1169 + 225, y: 160, width: 16, height: 100 },
-  { x: 0, y: 0, width: 320, height: 230 },
-  { x: 390, y: 0, width: 440, height: 230 },
-  { x: 915 - 25, y: 0, width: 245 + 25, height: 320 },
-  { x: 500, y: 200, width: 330, height: 120 },
+  { x: 410, y: 0, width: 20, height: 230 }, 
+  { x: 430, y: 90, width: 30, height: 50 },
+  { x: 795, y: 100, width: 20, height: 90 },
+  { x: 605, y: 0, width: 150, height: 80 },
+  { x: 500, y: 180, width: 330, height: 140 },
   { x: 0, y: 420, width: 445, height: 35 },
   { x: 435, y: 420, width: 15, height: 175 },
   { x: 435, y: 650, width: 15, height: 180 },
@@ -55,7 +60,8 @@ const restrictedZones = [
   { x: 1110, y: 160, width: 80, height: 100 },
   { x: 1130, y: 140, width: 80, height: 100 },
   { x: 1130, y: 140, width: 100, height: 30 },
-  { x: 1160, y: 0, width: 100, height: 150 },
+  { x: 1160, y: 0, width: 100, height: 20 },
+  { x: 1160, y: 40, width: 100, height: 100 },
   { x: 0, y: 1070, width: 1920, height: 150 },
 ];
 function updateScalingFactors() {
@@ -216,7 +222,10 @@ function isValidCell(row, col) {
     row >= 0 && row < rows && col >= 0 && col < cols && grid[row][col] !== 1
   );
 }
-
+const backbtn = document.getElementById("backArrow");
+backbtn.addEventListener("click", function () {
+  window.location = "/menu/menu.html";
+});
 function moveOutOfRestrictedZone(animal) {
   const directions = [
     [0, 1],

@@ -5,6 +5,25 @@
 body::-webkit-scrollbar {
   display: none;
 }
+.back-arrow {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  padding: 0;
+  z-index: 2421241241241;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+.back-arrow img {
+  width: 4rem;
+  height: 3rem;
+}
+
+.back-arrow:hover {
+  transform: scale(1.1);
+}
 html,
 body {
   margin: 0;
