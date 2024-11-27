@@ -1,24 +1,20 @@
 document.body.classList.remove("modal-active");
 document.querySelector(".overlay").classList.add("hidden");
 
-// Parallax Effect
 
 document.addEventListener("mousemove", (event) => {
     const {clientX, clientY} = event;
     const width = window.innerWidth;
     const height = window.innerHeight;
-    // Normalize mouse position to range -1 to 1
     const xNorm = (clientX / width - 0.5) * 2; // Horizontal position
     const yNorm = (clientY / height - 0.5) * 2; // Vertical position
 
-    // Select parallax layers
     const layer1 = document.querySelector(".parallax-layer-1");
     const layer2 = document.querySelector(".parallax-layer-2");
     const layer3 = document.querySelector(".parallax-layer-3");
     const layer4Left = document.querySelector(".parallax-layer-4.left");
     const layer4Right = document.querySelector(".parallax-layer-4.right");
 
-    // Apply transform for parallax effect (tweak multipliers for desired effect)
     layer1.style.transform = `translate(${xNorm * 8}px, ${yNorm * 8}px)`;
     layer2.style.transform = `translate(${xNorm * 18}px, ${yNorm * 18}px)`;
     layer3.style.transform = `translate(${xNorm * 32}px, ${yNorm * 32}px)`;
@@ -154,6 +150,34 @@ window.onload = function () {
 
     const logo = document.getElementById("logo");
     const loginCard = document.getElementById("loginCard");
+    const startButton = document.getElementById("start-button");
+    const turtle = document.getElementById("turtle");
+    const parallaxLayersAnimals =
+      document.querySelectorAll(".parallax-layer-4");
+     startButton.addEventListener("click", () => {
+          parallaxLayersAnimals.forEach((layer) => {
+            layer.style.transition =
+              "transform 1s ease-out, opacity 0.5s ease-out";
+            layer.style.transform = "translateX(-100vw)";
+            layer.style.opacity = "0";
+          });
+       logo.style.transition = "transform 1s ease-out, opacity 0.5s ease-out";
+       logo.style.transform = "translateX(-100vw)";
+       logo.style.opacity = "0";
+       startButton.style.transition =
+       "transform 1s ease-out, opacity 0.5s ease-out";
+       startButton.style.transform = "translateX(-100vw)";
+       startButton.style.opacity = "0";
+       setTimeout(() => {
+        showpushing();
+        //  turtle.classList.add("pushing");
+        //  loginCard.classList.add("centered");
+        //  setTimeout(() => {
+        //    turtle.classList.remove("pushing");
+        //    turtle.style.transform = "scaleX(-1)";
+        //  }, 3000);
+       }, 1000);
+     });
     const registerTab = document.getElementById("registerTab");
     const loginTab = document.getElementById("loginTab");
     const registrationForm = document.getElementById("registrationForm");
@@ -258,8 +282,6 @@ window.onload = function () {
         showSuccessModal();
         showForm(loginForm, registrationForm);
     }
-
-
     async function generateKey() {
         const iv = crypto.getRandomValues(new Uint8Array(12));
         const cryptoKey = await crypto.subtle.generateKey(
@@ -269,7 +291,6 @@ window.onload = function () {
         );
         return {cryptoKey, iv};
     }
-
     async function encrypt(data, key) {
         const encodedData = new TextEncoder().encode(data);
         const encrypted = await crypto.subtle.encrypt(
@@ -279,8 +300,6 @@ window.onload = function () {
         );
         return encrypted;
     }
-
-
     async function decrypt(encryptedData, key) {
         const decrypted = await crypto.subtle.decrypt(
             {name: "AES-GCM", iv: key.iv},
@@ -289,7 +308,6 @@ window.onload = function () {
         );
         return new TextDecoder().decode(decrypted);
     }
-
     function showSuccessModal() {
         const existingModal = document.getElementById("successModal");
         if (existingModal) {
@@ -336,9 +354,7 @@ window.onload = function () {
             setTimeout(() => successModal.remove(), 500);
         }, 5000);
     }
-
     const toggleButtons = document.querySelectorAll(".toggle-password");
-
     toggleButtons.forEach((button) => {
         const targetInput = document.getElementById(button.dataset.target);
 
@@ -411,8 +427,6 @@ window.onload = function () {
             showErrorModal();
         }
     }
-
-
     function showErrorModal() {
         const successModal = document.getElementById("successModal");
         if (successModal) {
@@ -424,35 +438,27 @@ window.onload = function () {
             errorModal.style.bottom = "-100px";
         }, 3000);
     }
+    function showpushing(){
+   loginCard.classList.add("centered");
 
-    const turtle = document.getElementById("turtle");
-    const logoHeight = document.querySelector(".logocontop").offsetHeight;
-    window.addEventListener("scroll", function () {
-        const scrollY = window.scrollY;
-        const windowHeight = window.innerHeight;
-        const bodyHeight = document.body.offsetHeight;
+   setTimeout(() => {
+     turtle.classList.add("pushing");
+   }, 540);
 
-        if (scrollY + windowHeight >= bodyHeight - 20) {
-            loginCard.classList.add("centered");
+   setTimeout(() => {
+     turtle.classList.remove("pushing");
+     turtle.style.transform = "scaleX(-1)";
+   }, 3000 + 500);
 
-            setTimeout(() => {
-                turtle.classList.add("pushing");
-            }, 540);
-
-            setTimeout(() => {
-                turtle.classList.remove("pushing");
-                turtle.style.transform = "scaleX(-1)";
-            }, 3000 + 500);
-
-            setTimeout(() => {
-                turtle.classList.add("offscreen");
-            }, 3000 + 500 + 500);
-        } else {
-            turtle.classList.remove("pushing", "offscreen");
-            turtle.style.transform = "scaleX(1)";
-            loginCard.classList.remove("centered");
-        }
-    });
+   setTimeout(() => {
+     turtle.classList.add("offscreen");
+   }, 3000 + 500 + 500);
+    }
+    function hideturtle(){
+  turtle.classList.remove("pushing", "offscreen");
+  turtle.style.transform = "scaleX(1)";
+  loginCard.classList.remove("centered");
+    }
     const backgroundAudio = new Audio(
         "../assets/sound/Super Auto Pets  - Menu Theme.mp3"
     );

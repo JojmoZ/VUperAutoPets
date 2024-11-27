@@ -9,6 +9,8 @@ body {
     padding: 0;
     background-color: black;
     overflow-x: hidden;
+    overflow-y: hidden;
+    height:100vh;
 }
 
 .hide-scrollbar::-webkit-scrollbar {
@@ -20,9 +22,9 @@ body {
     scrollbar-width: none;
 }
 
-.big {
+/* .big {
     height: 200vh;
-}
+} */
 
 .logocontop {
     display: flex;
@@ -30,10 +32,6 @@ body {
     align-items: center;
     height: 100vh;
 }
-
-/**
-* Parallax
-*/
 
 .parallax-layer-1, .parallax-layer-2, .parallax-layer-3 {
     position: absolute;
@@ -96,13 +94,7 @@ img#logo {
     filter: brightness(1.15);
 }
 
-.bottompart {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
+
 
 img#turtle.active,
 #loginCard.active {
@@ -168,10 +160,11 @@ img#turtle.offscreen {
 }
 
 #loginCard {
+    top:20%;
     position: absolute;
     right: -50%;
     transition: opacity 1s ease, right 1s ease, transform 1s ease;
-    z-index: 2;
+    z-index: 123789129;
     color: white;
     display: flex;
     flex-direction: column;
