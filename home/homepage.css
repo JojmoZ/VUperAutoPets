@@ -1,6 +1,9 @@
 :root {
   --primary: 50 70% 47%;
 }
+body::-webkit-scrollbar {
+  display: none;
+}
 @font-face {
   font-family: "VUper";
   src: url("../assets/font/LapsusPro-Bold.otf") format("opentype");
@@ -78,6 +81,7 @@ text {
   height: 60px;
   transition: opacity 1s ease;
 }
+
 
 .play-button.hidden {
   opacity: 0;
@@ -922,4 +926,7 @@ body > .image {
   to {
     opacity: 1;
   }
+}
+.hidden {
+  display: none;
 }

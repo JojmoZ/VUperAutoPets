@@ -37,19 +37,8 @@ button:active {
     height: auto;
 }
 
-header {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-    padding: 1rem;
-}
 
-.sub-btn {
-    width: 4rem;
-    height: 4rem;
-    z-index: 10;
 
-}
 
 main {
     display: flex;
@@ -67,7 +56,18 @@ main {
     width: 40%;
     height: auto;
 }
+header {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding: 1rem;
+}
+.sub-btn {
+    width: 4rem;
+    height: 4rem;
+    z-index: 10;
 
+}
 .menu {
     display: flex;
     flex-direction: column;
