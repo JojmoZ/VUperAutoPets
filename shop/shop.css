@@ -2,6 +2,9 @@
   font-family: "VUper";
   src: url("../assets/font/LapsusPro-Bold.otf") format("opentype");
 }
+body::-webkit-scrollbar {
+  display: none;
+}
 html,
 body {
   margin: 0;
@@ -151,6 +154,9 @@ body {
 }
 .modal.show .modal-content {
   animation: fadeIn 0.5s ease-out forwards;
+}
+.hidden {
+  display: none;
 }
 .modal.hide .modal-content {
   animation: fadeOut 0.5s ease-out forwards;
