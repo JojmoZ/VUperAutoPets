@@ -661,6 +661,7 @@ resetGrid();
 drawRestrictedZones();
 
 document.addEventListener("DOMContentLoaded", () => {
+   hideStatWindow();
   const userAnimals = getUserAnimals();
   userAnimals.forEach((animal) => {
     const animalElement = createAnimal(animal);
