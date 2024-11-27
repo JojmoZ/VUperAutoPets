@@ -314,6 +314,9 @@ img {
   border: none;
   transition: background-color 0.3s ease;
 }
+#refreshButton:hover {
+  filter: brightness(1.2);
+}
 #startBattleButtonOnline {
   position: absolute;
   background-image: url(../assets/game-asset/button/battle-btn.png);
@@ -329,6 +332,9 @@ img {
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
+#startBattleButtonOnline:hover{
+  filter: brightness(1.2);
+}
 #startBattleButton {
   position: absolute;
   background-image: url(../assets/game-asset/button/practice-btn.png);
@@ -342,6 +348,9 @@ img {
   border: none;
   cursor: pointer;
   transition: background-color 0.3s ease;
+}
+#startBattleButton:hover{
+  filter: brightness(1.2);
 }
 #freezeButton {
   position: absolute;
