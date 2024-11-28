@@ -12,6 +12,15 @@ document.addEventListener("DOMContentLoaded", function () {
   const confirmButton = document.getElementById("confirm-buy");
   const cancelButton = document.getElementById("cancel-buy");
   const coinsDisplay = document.createElement("div");
+  const coinImg = document.createElement("img");
+  coinImg.src = '../assets/game-asset/Gold.png'
+  coinImg.style.width = "3rem";
+  coinImg.style.height = "3rem";
+  coinImg.style.position = "fixed";
+  coinImg.style.top = "1.5rem";
+  coinImg.style.right = "5.5rem";
+  coinImg.style.zIndex = "9999";
+  document.body.appendChild(coinImg);
   coinsDisplay.id = "coinsDisplay";
   coinsDisplay.style.fontFamily = "VUper"
   coinsDisplay.style.position = "fixed";
@@ -284,7 +293,10 @@ backbtn.addEventListener("click", function () {
       animalCard.classList.add("sold-out");
     }
   }
-
+  const gotoGacha = document.getElementById("gacha-btn");
+  gotoGacha.addEventListener("click", function () {
+    window.location = "/gacha/gachapage.html";  
+  })
   const ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals")) || [];
   ownedAnimals.forEach((animal) => {
     markSoldOut(animal.name);

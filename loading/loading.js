@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "Subco WD emang badut",
     "Subco DB emang badut",
     "Subco Java emang badut",
-    "Subco C pernah katain trainer badut",
+    "Subco C emang badut",
     "Jangan Sampe ketuan COPAS",
     "Jangan Budayakan Menyontek ya guys",
     "Jangan Sampe kalo ditanya gk ngerti!",

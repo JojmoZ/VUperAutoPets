@@ -18,7 +18,25 @@ body {
   background-size: cover;
   background-image: url(../assets/maps/heaven.png);
 }
+.back-arrow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 0;
+  z-index: 2421241241241;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+.back-arrow img {
+  width: 8rem;
+  height: auto;
+}
 
+.back-arrow:hover {
+  transform: scale(1.1);
+}
 .gacha-wrapper {
   display: flex;
   height: 100vh;

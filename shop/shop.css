@@ -31,9 +31,9 @@ body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background-image: url(../assets/maps/].webp);
   background-repeat: repeat-x;
-  background-attachment: fixed; 
+  background-attachment: fixed;
   background-position: top left;
-  background-size: cover; 
+  background-size: cover;
 }
 .shop-wrapper {
   display: flex;
@@ -270,4 +270,21 @@ body {
     opacity: 0;
     transform: translateY(-20px);
   }
+}
+.gacha-btn {
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+.gacha-btn img {
+  width: 25rem;
+  height: auto;
+}
+.gacha-contain{
+  position: absolute;
+  bottom:0%;
+  right:0%;
+}
+.gacha-btn:hover{
+  filter: brightness(1.2);
 }

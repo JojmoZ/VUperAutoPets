@@ -18,9 +18,28 @@ document.addEventListener("DOMContentLoaded", function () {
   let isRolling = false;
 
   const coinsDisplay = document.getElementById("coinsDisplay");
-
+  const backBtn = document.getElementById("backArrow");
+  backBtn.addEventListener("click", function () {
+    window.location.href = "/shop/shoppage.html";
+  })
+  const coinImg = document.createElement("img");
+  coinImg.src = "../assets/game-asset/Gold.png";
+  coinImg.style.width = "3rem";
+  coinImg.style.height = "3rem";
+  coinImg.style.position = "fixed";
+  coinImg.style.top = "1.5rem";
+  coinImg.style.right = "5.5rem";
+  coinImg.style.zIndex = "9999";
+  document.body.appendChild(coinImg);
   function updateCoinsDisplay() {
     const coins = localStorage.getItem("coins");
+     coinsDisplay.style.fontFamily = "VUper";
+     coinsDisplay.style.position = "fixed";
+     coinsDisplay.style.top = "1.75rem";
+     coinsDisplay.style.right = "9.375rem";
+     coinsDisplay.style.color = "black";
+     coinsDisplay.style.fontSize = "2rem";
+     coinsDisplay.style.zIndex = "9999";
     coinsDisplay.textContent = `Coins: ${coins}`;
     let users = JSON.parse(localStorage.getItem("users")) || [];
     const userIndex = users.findIndex((user) => user.username === username);
