@@ -421,7 +421,7 @@ window.onload = function () {
             localStorage.setItem("username", user.username);
             localStorage.setItem("coins", user.coins);
             localStorage.setItem("ownedAnimals", JSON.stringify(user.ownedAnimals));
-            window.location.href = "/home/homepage.html";
+            window.location.href = "/menu/menu.html";
         } else {
             modalErrorText.innerText = "Invalid username or password.";
             showErrorModal();

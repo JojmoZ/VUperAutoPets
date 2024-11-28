@@ -15,8 +15,8 @@ body::-webkit-scrollbar {
 }
 .back-arrow {
   position: absolute;
-  top: 20px;
-  left: 20px;
+  top: 0;
+  left: 0;
   padding: 0;
   z-index: 2421241241241;
   border: none;
@@ -25,8 +25,8 @@ body::-webkit-scrollbar {
   transition: transform 0.3s ease;
 }
 .back-arrow img {
-  width: 4rem;
-  height: 3rem;
+  width: 8rem;
+  height: auto;
 }
 
 .back-arrow:hover {
@@ -100,7 +100,6 @@ text {
   height: 60px;
   transition: opacity 1s ease;
 }
-
 
 .play-button.hidden {
   opacity: 0;
@@ -731,7 +730,6 @@ section {
   align-items: center;
 }
 .trailer-background {
- 
   background-size: contain;
   background-size: 110%;
   background-position: center;

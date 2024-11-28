@@ -105,8 +105,8 @@ img {
 }
 .back-arrow {
   position: absolute;
-  top: 20px;
-  left: 20px;
+  top: 0;
+  left: 0;
   padding: 0;
   border: none;
   background-color: transparent;
@@ -115,8 +115,8 @@ img {
 }
 
 .back-arrow img {
-  width: 4rem;
-  height: 3rem;
+  width: 8rem;
+  height: auto;
 }
 
 .back-arrow:hover {
