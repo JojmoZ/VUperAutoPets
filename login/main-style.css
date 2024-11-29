@@ -1,4 +1,5 @@
 @font-face {
+<<<<<<< Updated upstream
   font-family: 'VUper';
   src: url('../assets/LapsusPro-Bold.otf') format('opentype'); 
 }
@@ -8,6 +9,28 @@ body {
   padding: 0;
   background-color: black;
   overflow-x: hidden;
+=======
+    font-family: 'Lapsus Pro';
+    src: url('../assets/font/LapsusPro-Bold.otf') format('opentype');
+}
+
+body {
+    margin: 0;
+    font-family: 'Lapsus Pro', serif;
+    padding: 0;
+    background-color: black;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    height: 100vh;
+    cursor: url("../assets/cursor/cursor1.png"), default;
+    background-image: url(../assets/login/background.png);
+    background-size: auto;"
+}
+
+img {
+    user-select: none;
+    pointer-events: none;
+>>>>>>> Stashed changes
 }
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
