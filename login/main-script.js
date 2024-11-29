@@ -25,14 +25,14 @@ document.addEventListener("mousemove", (event) => {
     const layer1 = document.querySelector(".parallax-layer-1");
     const layer2 = document.querySelector(".parallax-layer-2");
     const layer3 = document.querySelector(".parallax-layer-3");
-    const layer4Left = document.querySelector(".parallax-layer-4.left");
-    const layer4Right = document.querySelector(".parallax-layer-4.right");
+    // const layer4Left = document.querySelector(".parallax-layer-4.left");
+    // const layer4Right = document.querySelector(".parallax-layer-4.right");
 
     layer1.style.transform = `translate(${xNorm * 8}px, ${yNorm * 8}px)`;
     layer2.style.transform = `translate(${xNorm * 18}px, ${yNorm * 18}px)`;
     layer3.style.transform = `translate(${xNorm * 32}px, ${yNorm * 32}px)`;
-    layer4Left.style.transform = `translate(${xNorm * 60}px, ${yNorm * 60}px) scaleX(-1)`;
-    layer4Right.style.transform = `translate(${xNorm * 60}px, ${yNorm * 60}px)`;
+    // layer4Left.style.transform = `translate(${xNorm * 60}px, ${yNorm * 60}px) scaleX(-1)`;
+    // layer4Right.style.transform = `translate(${xNorm * 60}px, ${yNorm * 60}px)`;
 });
 
 window.onload = function () {
@@ -165,15 +165,15 @@ window.onload = function () {
     const loginCard = document.getElementById("loginCard");
     const startButton = document.getElementById("start-button");
     const turtle = document.getElementById("turtle");
-    const parallaxLayersAnimals =
-      document.querySelectorAll(".parallax-layer-4");
+    // const parallaxLayersAnimals =
+    //   document.querySelectorAll(".parallax-layer-4");
      startButton.addEventListener("click", () => {
-          parallaxLayersAnimals.forEach((layer) => {
-            layer.style.transition =
-              "transform 1s ease-out, opacity 0.5s ease-out";
-            layer.style.transform = "translateX(-100vw)";
-            layer.style.opacity = "0";
-          });
+        //   parallaxLayersAnimals.forEach((layer) => {
+        //     layer.style.transition =
+        //       "transform 1s ease-out, opacity 0.5s ease-out";
+        //     layer.style.transform = "translateX(-100vw)";
+        //     layer.style.opacity = "0";
+        //   });
        logo.style.transition = "transform 1s ease-out, opacity 0.5s ease-out";
        logo.style.transform = "translateX(-100vw)";
        logo.style.opacity = "0";

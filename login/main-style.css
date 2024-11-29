@@ -1,75 +1,39 @@
 @font-face {
-<<<<<<< Updated upstream
-  font-family: 'VUper';
-  src: url('../assets/LapsusPro-Bold.otf') format('opentype'); 
-}
-body {
-  margin: 0;
-  font-family: 'VUper';
-  padding: 0;
-  background-color: black;
-  overflow-x: hidden;
-=======
-    font-family: 'Lapsus Pro';
+    font-family: 'VUper';
     src: url('../assets/font/LapsusPro-Bold.otf') format('opentype');
 }
-
+*{
+  font-family: 'VUper';
+}
 body {
     margin: 0;
-    font-family: 'Lapsus Pro', serif;
+    font-family: 'VUper', serif;
     padding: 0;
     background-color: black;
     overflow-x: hidden;
     overflow-y: hidden;
-    height: 100vh;
-    cursor: url("../assets/cursor/cursor1.png"), default;
-    background-image: url(../assets/login/background.png);
-    background-size: auto;"
+    height:100vh;
 }
 
-img {
-    user-select: none;
-    pointer-events: none;
->>>>>>> Stashed changes
-}
 .hide-scrollbar::-webkit-scrollbar {
-  display: none;
+    display: none;
 }
 
 .hide-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
-.big {
-  height: 200vh;
-}
+
+/* .big {
+    height: 200vh;
+} */
 
 .logocontop {
-<<<<<<< Updated upstream
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-img#logo {
-  transition: transform 1s ease, left 1s ease, width 1s ease;
-  z-index: 1;
-  width: 50vw;
-  position: absolute;
-  left: 53%;
-  animation: float 3s ease-in-out infinite;
-=======
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-
 }
-
-/**
-* Parallax
-*/
 
 .parallax-layer-1, .parallax-layer-2, .parallax-layer-3 {
     position: absolute;
@@ -106,6 +70,16 @@ img#logo {
 
 }
 
+img#logo {
+    transition: transform 1s ease, left 1s ease, width 1s ease;
+    z-index: 1;
+    width: 60vw;
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    animation: float 3s ease-in-out infinite;
+}
+
 #start-button {
     position: absolute;
     background-color: transparent;
@@ -122,678 +96,677 @@ img#logo {
     filter: brightness(1.15);
 }
 
-img#logo {
-    transition: transform 1s ease, left 1s ease, width 1s ease;
-    z-index: 1;
-    width: 60vw;
-    position: absolute;
-    top: 10%;
-    left: 50%;
-    animation: float 3s ease-in-out infinite;
->>>>>>> Stashed changes
-}
 
-.bottompart {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
 
 img#turtle.active,
 #loginCard.active {
-  right: 10%;
-  opacity: 1;
-  transform: translateX(0);
-  transition: right 1s ease-in-out, opacity 0.5s ease-in-out;
+    right: 10%;
+    opacity: 1;
+    transform: translateX(0);
+    transition: right 1s ease-in-out, opacity 0.5s ease-in-out;
 }
 
 #loginCard.active {
-  opacity: 1;
-  right: 10%;
-  transform: translateX(0);
+    opacity: 1;
+    right: 10%;
+    transform: translateX(0);
 }
+
 img#turtle.active {
-  right: 0%;
+    right: 0%;
 }
+
 img#turtle {
-  position: absolute;
-  bottom: 13%;
-  right: -20%;
-  width: 10vw;
-  transition: right 3s ease-in-out, bottom 3s ease-in-out;
+    position: absolute;
+    bottom: 13%;
+    right: -20%;
+    width: 10vw;
+    transition: right 3s ease-in-out, bottom 3s ease-in-out;
 }
 
 img#turtle.pushing {
-  right: calc(50% - 13vw - 12.5em);
-  bottom: 13%;
-  transition: right 2.35s ease-in-out, bottom 2.35s ease-in-out;
+    right: calc(50% - 13vw - 12.5em);
+    bottom: 13%;
+    transition: right 2.35s ease-in-out, bottom 2.35s ease-in-out;
 }
 
 img#turtle.offscreen {
-  transform: scaleX(-1);
-  right: -20%;
-  animation: jumpBack 0.5s ease-in-out infinite alternate;
+    transform: scaleX(-1);
+    right: -20%;
+    animation: jumpBack 0.5s ease-in-out infinite alternate;
 }
 
 @keyframes jumpBack {
-  0% {
-    bottom: 13%;
-  }
-  100% {
-    bottom: 17%;
-  }
+    0% {
+        bottom: 13%;
+    }
+    100% {
+        bottom: 17%;
+    }
 }
 
 #loginCard.centered {
-  right: 50%;
-  transform: translateX(50%);
-  transition: right 2.5s ease-in-out, transform 2.5s ease-in-out;
+    right: 50%;
+    transform: translateX(50%);
+    transition: right 2.5s ease-in-out, transform 2.5s ease-in-out;
 }
 
 @keyframes float {
-  0%,
-  100% {
-    transform: translateY(0) translateX(-50%);
-  }
-  50% {
-    transform: translateY(-2vh) translateX(-50%);
-  }
+    0%,
+    100% {
+        transform: translateY(0) translateX(-50%);
+    }
+    50% {
+        transform: translateY(-2vh) translateX(-50%);
+    }
 }
 
 #loginCard {
-  position: absolute;
-  right: -50%;
-  transition: opacity 1s ease, right 1s ease, transform 1s ease;
-  z-index: 2;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 80vw;
-  max-width: 25em;
-  background-color: rgba(0, 0, 0, 0.8);
-  border-radius: 1em;
-  padding: 0 2em 2em 2em;
-  box-shadow: 0 0.4em 1em rgba(0, 0, 0, 0.3);
+    top:20%;
+    position: absolute;
+    right: -50%;
+    transition: opacity 1s ease, right 1s ease, transform 1s ease;
+    z-index: 123789129;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80vw;
+    max-width: 25em;
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 1em;
+    padding: 0 2em 2em 2em;
+    box-shadow: 0 0.4em 1em rgba(0, 0, 0, 0.3);
 }
 
 form {
-  opacity: 0;
-  transform: translateY(2vh);
-  transition: opacity 0.5s ease, transform 0.5s ease;
-  width: 100%;
+    opacity: 0;
+    transform: translateY(2vh);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    width: 100%;
 }
 
 form.active {
-  opacity: 1;
-  transform: translateY(0);
+    opacity: 1;
+    transform: translateY(0);
 }
 
 #loginCard .header {
-  background-color: #cbac24;
-  width: 104%;
-  text-align: center;
-  padding: 1em;
-  border-top-left-radius: 0.5em;
-  border-top-right-radius: 0.5em;
-  font-size: 1.5em;
-  color: white;
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-  gap: 5vw;
+    background-color: #cbac24;
+    width: 104%;
+    text-align: center;
+    padding: 1em;
+    border-top-left-radius: 0.5em;
+    border-top-right-radius: 0.5em;
+    font-size: 1.5em;
+    color: white;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    gap: 5vw;
 }
 
 #loginCard .header span {
-  cursor: pointer;
-  padding: 0 1em;
+    cursor: pointer;
+    padding: 0 1em;
 }
 
 #loginCard .content {
-  padding: 2em;
-  width: 100%;
-  text-align: center;
+    padding: 2em;
+    width: 100%;
+    text-align: center;
 }
 
 .title {
-  font-size: 2em;
-  color: #cbac24;
+    font-size: 2em;
+    color: #cbac24;
 }
 
 input[type="submit"] {
-  padding: 1em 2em;
-  background-color: #cbac24;
-  color: white;
-  border: none;
-  cursor: pointer;
-  border-radius: 0.5em;
-  margin-top: 1em;
+    padding: 1em 2em;
+    background-color: #cbac24;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 0.5em;
+    margin-top: 1em;
 }
 
 input[type="text"],
 input[type="password"] {
-  text-align: left;
-  margin-bottom: 1em;
-  border: none;
-  border-radius: 0.5em;
-  width: 100%;
-  box-sizing: border-box;
+    text-align: left;
+    margin-bottom: 1em;
+    border: none;
+    border-radius: 0.5em;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 #errorModal {
-  position: fixed;
-  bottom: -20vh;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #f44336;
-  color: white;
-  width: 80vw;
-  max-width: 20em;
-  text-align: center;
-  border-radius: 1em;
-  box-shadow: 0 0.4em 0.8em rgba(0, 0, 0, 0.2);
-  transition: all 0.5s ease;
-  z-index: 3;
+    position: fixed;
+    bottom: -20vh;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #f44336;
+    color: white;
+    width: 80vw;
+    max-width: 20em;
+    text-align: center;
+    border-radius: 1em;
+    box-shadow: 0 0.4em 0.8em rgba(0, 0, 0, 0.2);
+    transition: all 0.5s ease;
+    z-index: 123789140;
 }
 
 .modal-content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1em;
 }
 
 .modal-icon {
-  position: relative;
-  width: 3em;
-  height: 3em;
-  background-color: white;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  animation: rotate 2s linear infinite;
+    position: relative;
+    width: 3em;
+    height: 3em;
+    background-color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: rotate 2s linear infinite;
 }
 
 .cross {
-  position: relative;
-  width: 1.4em;
-  height: 1.4em;
+    position: relative;
+    width: 1.4em;
+    height: 1.4em;
 }
+
 .cross::before,
 .cross::after {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 0.2em;
-  background-color: #f44336;
-  top: 40%;
-  left: 0;
-  transform-origin: center;
-  transform: translateY(-50%);
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 0.2em;
+    background-color: #f44336;
+    top: 40%;
+    left: 0;
+    transform-origin: center;
+    transform: translateY(-50%);
 }
 
 .cross::before {
-  transform: rotate(45deg);
+    transform: rotate(45deg);
 }
 
 .cross::after {
-  transform: rotate(-45deg);
+    transform: rotate(-45deg);
 }
 
 @keyframes rotate {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 #modalErrorText {
-  font-size: 1.2em;
-  line-height: 3em;
+    font-size: 1.2em;
+    line-height: 3em;
 }
 
 .checkmark-circle,
 .checkmark-check {
-  stroke-dasharray: 166, 48;
-  stroke-dashoffset: 166, 48;
-  transition: stroke-dashoffset 1.5s ease-in-out;
+    stroke-dasharray: 166, 48;
+    stroke-dashoffset: 166, 48;
+    transition: stroke-dashoffset 1.5s ease-in-out;
 }
 
 #successModal.show .checkmark-circle {
-  stroke-dashoffset: 0;
-  transition: stroke-dashoffset 1.5s ease-in-out;
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 1.5s ease-in-out;
 }
 
 #successModal.show .checkmark-check {
-  stroke-dashoffset: 0;
-  transition: stroke-dashoffset 1s 1.5s ease-in-out;
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 1s 1.5s ease-in-out;
 }
 
 #successModal {
-  position: fixed;
-  bottom: -10vh;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #4caf50;
-  color: white;
-  width: 80vw;
-  max-width: 20em;
-  text-align: center;
-  padding: 1.5em;
-  border-radius: 1em;
-  box-shadow: 0 0.4em 0.8em rgba(0, 0, 0, 0.2);
-  transition: all 0.5s ease;
-  z-index: 3;
+    position: fixed;
+    bottom: -10vh;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #4caf50;
+    color: white;
+    width: 80vw;
+    max-width: 20em;
+    text-align: center;
+    padding: 1.5em;
+    border-radius: 1em;
+    box-shadow: 0 0.4em 0.8em rgba(0, 0, 0, 0.2);
+    transition: all 0.5s ease;
+    z-index: 3;
 }
 
 .modal-content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1em;
 }
 
 .checkmark {
-  width: 5.2em;
-  height: 5.2em;
-  display: inline-block;
-  stroke-width: 0.2em;
-  stroke: white;
-  stroke-miterlimit: 10;
+    width: 5.2em;
+    height: 5.2em;
+    display: inline-block;
+    stroke-width: 0.2em;
+    stroke: white;
+    stroke-miterlimit: 10;
 }
 
 @keyframes strokeCircle {
-  100% {
-    stroke-dashoffset: 0;
-  }
+    100% {
+        stroke-dashoffset: 0;
+    }
 }
 
 @keyframes strokeCheck {
-  100% {
-    stroke-dashoffset: 0;
-  }
+    100% {
+        stroke-dashoffset: 0;
+    }
 }
 
 #modalSuccessText {
-  font-size: 1.2em;
-  line-height: 3em;
+    font-size: 1.2em;
+    line-height: 3em;
 }
 
 .captcha-container {
-  display: flex;
-  align-items: center;
-  gap: 1em;
-  margin: 1em 0;
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    margin: 1em 0;
 }
 
 #captchaChallenge {
-  padding: 1em;
-  background-color: #cbac24;
-  color: white;
-  font-weight: bold;
-  border-radius: 0.5em;
-  user-select: none;
+    padding: 1em;
+    background-color: #cbac24;
+    color: white;
+    font-weight: bold;
+    border-radius: 0.5em;
+    user-select: none;
 }
+
 .hidden {
-  display: none;
+    display: none;
 }
 
 .captcha-modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgb(51, 50, 50);
-  padding: 30px;
-  z-index: 1000;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  max-width: 400px;
-  width: 100%;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgb(51, 50, 50);
+    padding: 30px;
+    z-index: 123789130;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    max-width: 400px;
+    width: 100%;
 }
 
 .captcha-wrapper {
-  text-align: center;
+    text-align: center;
 }
-header{
-  font-size:2.5rem;
-  color: #cbac24;
+
+header {
+    font-size: 2.5rem;
+    color: #cbac24;
 }
+
 .captcha-header {
-  color: #cbac24;
-  font-size:2.5rem;
-  font-weight: bold;
-  margin-bottom: 20px;
+    color: #cbac24;
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
 }
 
 .captcha-area {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 20px;
-  position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    position: relative;
 }
 
 .captcha-img {
-  width: 300px;
-  height: 80px;
-  position: relative;
-  border-radius: 5px;
-  overflow: hidden;
-  user-select: none;
-  pointer-events: none;
+    width: 300px;
+    height: 80px;
+    position: relative;
+    border-radius: 5px;
+    overflow: hidden;
+    user-select: none;
+    pointer-events: none;
 }
 
 .captcha-img img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0.7;
-  user-select: none;
-  pointer-events: none;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.7;
+    user-select: none;
+    pointer-events: none;
 }
 
 .captcha {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 32px;
-  font-family: "Noto Serif", serif;
-  color: #fff;
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
-  letter-spacing: 6px;
-  user-select: none;
-  pointer-events: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 32px;
+    font-family: "Noto Serif", serif;
+    color: #fff;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    letter-spacing: 6px;
+    user-select: none;
+    pointer-events: none;
 }
 
 .reload-btn {
-  background-color: #cbac24;
-  border: none;
-  border-radius: 5px;
-  padding: 10px;
-  cursor: pointer;
-  position: absolute;
-  right: -50px;
-  top: 15px;
-  transition: background-color 0.3s;
+    background-color: #cbac24;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    position: absolute;
+    right: -50px;
+    top: 15px;
+    transition: background-color 0.3s;
 }
+
 .reload-btn2 {
-  background-color: #cbac24;
-  border: none;
-  border-radius: 5px;
-  padding: 10px;
-  cursor: pointer;
-  position: absolute;
-  right: -50px;
-  top: 15px;
-  transition: background-color 0.3s;
+    background-color: #cbac24;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    position: absolute;
+    right: -50px;
+    top: 15px;
+    transition: background-color 0.3s;
 }
+
 .reload-btn2:hover {
-  background-color: #976f18;
+    background-color: #976f18;
 }
+
 .reload-btn:hover {
-  background-color: #976f18;
+    background-color: #976f18;
 }
 
 .input-area {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  font-size: 1.25rem;
-  --primary: #cbac24;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    font-size: 1.25rem;
+    --primary: #cbac24;
 }
-#captchaInput2{
-  border: 1px solid #9e9e9e;
+
+#captchaInput2 {
+    border: 1px solid #9e9e9e;
 }
+
 .input-area input,
 #captchaModal2 .input_field input {
-  all: unset;
-  color: #fefefe;
-  padding: 1rem;
-  border: 1px solid #9e9e9e;
-  border-radius: 10px;
-  transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-  background-color: rgba(0, 0, 0, 0.8);
-  width: 100%;
-  box-sizing: border-box;
-  position: relative;
+    all: unset;
+    color: #fefefe;
+    padding: 1rem;
+    border: 1px solid #9e9e9e;
+    border-radius: 10px;
+    transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    background-color: rgba(0, 0, 0, 0.8);
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
 }
 
 .input-area input:focus,
 #captchaModal2 .input_field input:focus {
-  border: 1px solid var(--primary);
+    border: 1px solid var(--primary);
 }
 
 .input-area input::placeholder,
 #captchaModal2 .input_field input::placeholder {
-  color: #d4d4d4;
-  transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    color: #d4d4d4;
+    transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .input-area input:focus::placeholder,
 #captchaModal2 .input_field input:focus::placeholder {
-  transform: translateY(-120%) scale(0.7);
-  background-color: rgba(0, 0, 0, 0.8);
-  padding-inline: 0.3rem;
-  color: var(--primary);
+    transform: translateY(-120%) scale(0.7);
+    background-color: rgba(0, 0, 0, 0.8);
+    padding-inline: 0.3rem;
+    color: var(--primary);
 }
 
 .input-area .label,
 #captchaModal2 .input_field .label {
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  color: #d4d4d4;
-  pointer-events: none;
-  transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    color: #d4d4d4;
+    pointer-events: none;
+    transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .input-area input:is(:focus, :valid) ~ .label,
 #captchaModal2 .input_field input:is(:focus, :valid) ~ .label {
-  transform: translateY(-120%) scale(0.7);
-  background-color: rgba(0, 0, 0, 0.8);
-  padding-inline: 0.3rem;
-  color: var(--primary);
+    transform: translateY(-120%) scale(0.7);
+    background-color: rgba(0, 0, 0, 0.8);
+    padding-inline: 0.3rem;
+    color: var(--primary);
 }
 
 .input-area input,
 #captchaModal2 .input_field input {
-  all: unset;
-  color: #fefefe;
-  padding: 1rem;
-  border: 1px solid #9e9e9e;
-  border-radius: 10px;
-  transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-  background-color: rgba(0, 0, 0, 0.8);
-  width: 100%;
-  box-sizing: border-box;
+    all: unset;
+    color: #fefefe;
+    padding: 1rem;
+    border: 1px solid #9e9e9e;
+    border-radius: 10px;
+    transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    background-color: rgba(0, 0, 0, 0.8);
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .input-area input:focus,
 #captchaModal2 .input_field input:focus {
-  border: 1px solid var(--primary);
+    border: 1px solid var(--primary);
 }
 
 .check-btn {
-  margin-top: 1rem;
-  font-family: 'VUper';
-  background-color: #cbac24;
-  color: black;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s;
+    margin-top: 1rem;
+    font-family: 'VUper';
+    background-color: #cbac24;
+    color: black;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
 }
 
 .check-btn:hover {
-  background-color: #976f18;
+    background-color: #976f18;
 }
 
 .footer {
-  margin-top: 10px;
-  font-size: 12px;
-  color: #cbac24;
+    margin-top: 10px;
+    font-size: 12px;
+    color: #cbac24;
 }
+
 body.modal-active {
-  overflow: hidden;
+    overflow: hidden;
 }
 
 .overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 999;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
 }
 
 .overlay.hidden {
-  display: none;
+    display: none;
 }
 
 .captcha-modal::backdrop {
-  background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.5);
 }
+
 .close-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: none;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-  color: white;
-  transition: color 0.3s;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: white;
+    transition: color 0.3s;
 }
 
 .close-btn:hover {
-  color: #cbac24;
+    color: #cbac24;
 }
 
 @keyframes slideDownFadeIn {
-  0% {
-    transform: translate(-50%, -40%);
-    opacity: 0;
-  }
-  100% {
-    transform: translate(-50%, -50%);
-    opacity: 1;
-  }
+    0% {
+        transform: translate(-50%, -40%);
+        opacity: 0;
+    }
+    100% {
+        transform: translate(-50%, -50%);
+        opacity: 1;
+    }
 }
 
 .captcha-modal {
-  opacity: 0;
-  animation-duration: 0.5s;
-  animation-fill-mode: forwards;
+    opacity: 0;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
 }
 
 .captcha-modal.show {
-  animation-name: slideDownFadeIn;
+    animation-name: slideDownFadeIn;
 }
 
 @keyframes slideUpFadeOut {
-  0% {
-    transform: translate(-50%, -50%);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(-50%, -60%);
-    opacity: 0;
-  }
+    0% {
+        transform: translate(-50%, -50%);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -60%);
+        opacity: 0;
+    }
 }
 
 .captcha-modal.hide {
-  animation-name: slideUpFadeOut;
-  animation-duration: 0.5s;
-  animation-fill-mode: forwards;
+    animation-name: slideUpFadeOut;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
 }
+
 .captcha-area {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
 }
 
 #captchaCanvas {
-  border: 1px solid #ccc;
-  margin: 1rem;
+    border: 1px solid #ccc;
+    margin: 1rem;
 }
 
 .refresh-button {
-  cursor: pointer;
-  color: #cbac24;
-  text-decoration: underline;
-  font-size: 16px;
+    cursor: pointer;
+    color: #cbac24;
+    text-decoration: underline;
+    font-size: 16px;
 }
 
 #captchaModal2 .container {
-  text-align: center;
+    text-align: center;
 }
 
 #captchaModal2 .captcha-area {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
 }
 
 #captchaModal2 #captchaCanvas {
-  border: 1px solid #ccc;
+    border: 1px solid #ccc;
 }
 
 #captchaModal2 .refresh-button {
-  cursor: pointer;
-  color: #cbac24;
-  text-decoration: underline;
-  font-size: 16px;
+    cursor: pointer;
+    color: #cbac24;
+    text-decoration: underline;
+    font-size: 16px;
 }
 
 #captchaModal2 .input_field {
-  margin-bottom: 15px;
+    margin-bottom: 15px;
 }
 
 #captchaModal2 .input_field input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 16px;
-  text-align: center;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    text-align: center;
 }
 
 #captchaModal2 .input_field button {
-  font-family: 'VUper';
-  background-color: #cbac24;
-  color: black;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s;
+    font-family: 'VUper';
+    background-color: #cbac24;
+    color: black;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
 }
 
 #captchaModal2 .input_field button:hover {
-  background-color: #976f18;
+    background-color: #976f18;
 }
 
 #captchaModal2 .message {
-  font-size: 14px;
-  color: green;
-  margin-top: 10px;
+    font-size: 14px;
+    color: green;
+    margin-top: 10px;
 }
+
 .input-group {
     position: relative;
     font-size: 1.25rem;
@@ -824,8 +797,8 @@ body.modal-active {
 .toggle-password {
     position: absolute;
     top: 50%;
-    right: 1rem; 
-    transform: translateY(-90%); 
+    right: 1rem;
+    transform: translateY(-90%);
     background: none;
     border: none;
     cursor: pointer;
@@ -851,76 +824,77 @@ body.modal-active {
     padding-inline: 0.3rem;
     color: var(--primary);
 }
+
 .btn {
-  all: unset;
-  font-size: 18px;
-  padding: 0.8rem 3rem;
-  background-color: #fefefe;
-  color: black;
-  line-height: 1.5;
-  font-weight: 600;
-  border: 2px solid black;
-  border-radius: 1000px;
-  position: relative;
-  overflow: hidden;
-  z-index: 0;
-  cursor: pointer;
+    all: unset;
+    font-size: 18px;
+    padding: 0.8rem 3rem;
+    background-color: #fefefe;
+    color: black;
+    line-height: 1.5;
+    font-weight: 600;
+    border: 2px solid black;
+    border-radius: 1000px;
+    position: relative;
+    overflow: hidden;
+    z-index: 0;
+    cursor: pointer;
 }
 
 .btn::before,
 .btn::after {
-  content: "";
-  position: absolute;
-  background: #cbac24; 
-  width: 100%;
-  height: 102%;
-  pointer-events: none;
-  transform: skew(30deg) translateY(0);
-  transition: transform 0.3s ease;
-  z-index: -1;
+    content: "";
+    position: absolute;
+    background: #cbac24;
+    width: 100%;
+    height: 102%;
+    pointer-events: none;
+    transform: skew(30deg) translateY(0);
+    transition: transform 0.3s ease;
+    z-index: -1;
 }
 
 .btn::before {
-  --direction: 1;
-  top: -103%;
-  left: -70%;
+    --direction: 1;
+    top: -103%;
+    left: -70%;
 }
 
 .btn::after {
-  --direction: -1;
-  top: 102%;
-  left: 69%;
+    --direction: -1;
+    top: 102%;
+    left: 69%;
 }
 
 .btn:hover::before,
 .btn:hover::after {
-  transform: skew(30deg) translateY(calc(var(--direction) * 100%));
+    transform: skew(30deg) translateY(calc(var(--direction) * 100%));
 }
 
 .text-container {
-  display: block;
-  overflow: hidden;
-  position: relative;
+    display: block;
+    overflow: hidden;
+    position: relative;
 }
 
 .text {
-  display: block;
-  transition: 0.3s;
+    display: block;
+    transition: 0.3s;
 }
 
 .btn:hover .text:nth-child(1) {
-  color: white;
-  translate: 0 80%;
+    color: white;
+    translate: 0 80%;
 }
 
 .text:nth-child(2) {
-  color: white;
-  position: absolute;
-  inset: 0;
-  translate: 0 -80%;
+    color: white;
+    position: absolute;
+    inset: 0;
+    translate: 0 -80%;
 }
 
 .btn:hover .text:nth-child(2) {
-  transition-delay: 0.1s;
-  translate: 0 0;
+    transition-delay: 0.1s;
+    translate: 0 0;
 }
