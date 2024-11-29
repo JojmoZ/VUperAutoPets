@@ -22,7 +22,6 @@ document.addEventListener("mousemove", (event) => {
 });
 
 
-
 window.onload = function () {
     const captchaChallenge = document.getElementById("captchaChallenge");
     const captchaInput = document.getElementById("captchaInput");
@@ -153,14 +152,14 @@ window.onload = function () {
     const startButton = document.getElementById("start-button");
     const turtle = document.getElementById("turtle");
     const parallaxLayersAnimals =
-      document.querySelectorAll(".parallax-layer-4");
+        document.querySelectorAll(".parallax-layer-4");
     startButton.addEventListener("click", () => {
-          parallaxLayersAnimals.forEach((layer) => {
+        parallaxLayersAnimals.forEach((layer) => {
             layer.style.transition =
-              "transform 1s ease-out, opacity 0.5s ease-out";
+                "transform 1s ease-out, opacity 0.5s ease-out";
             layer.style.transform = "translateX(-100vw)";
             layer.style.opacity = "0";
-          });
+        });
         logo.style.transition = "transform 1s ease-out, opacity 0.5s ease-out";
         logo.style.transform = "translateX(-100vw)";
         logo.style.opacity = "0";
@@ -237,77 +236,50 @@ window.onload = function () {
             const response = await fetch("../assets/jsons/trainee.json");
             const trainees = await response.json();
             // Check if the username matches any TraineeCode or TraineeName
-    return trainees.some(
-      (trainee) =>
-        trainee.TraineeCode === username || trainee.TraineeName === username
-    );
-  } catch (error) {
-    console.error("Error loading trainee data:", error);
-    return false; // Fail gracefully if trainee data can't be fetched
-  }
-}
-async function registerTrainee(displayName, username, password) {
-     hideCaptcha();
-
-     let users = JSON.parse(localStorage.getItem("users")) || [];
-
-     if (users.some((user) => user.username === username)) {
-       modalErrorText.innerText = "User already exists.";
-       showErrorModal();
-       return;
-     }
-
-     let key = await generateKey();
-
-     const rawKey = await crypto.subtle.exportKey("raw", key.cryptoKey);
-
-     let encryptedPassword = await encrypt(password, key);
-
-     users.push({
-       displayName: displayName,
-       username: username,
-       password: {
-         encrypted: Array.from(new Uint8Array(encryptedPassword)),
-         key: Array.from(new Uint8Array(rawKey)),
-         iv: Array.from(key.iv),
-       },
-       coins: 15,
-       ownedAnimals: [],
-     });
-
-     localStorage.setItem("users", JSON.stringify(users));
-
-     registrationForm.reset();
-     registerError.style.display = "none";
-     if (displayName != username) {
-       loginUser(username, password);
-     }
-     showSuccessModal();
-     showForm(loginForm, registrationForm);
-    }
-    async function registerUser(displayName, username, password) {
-        const traineeExists = await checkTraineeData(username);
-        if (traineeExists) {
-            modalErrorText.innerText = "User already exists.";
-            showErrorModal();
-            return;
+            return trainees.some(
+                (trainee) =>
+                    trainee.TraineeCode === username || trainee.TraineeName === username
+            );
+        } catch (error) {
+            console.error("Error loading trainee data:", error);
+            return false; // Fail gracefully if trainee data can't be fetched
         }
+    }
+
+    async function registerUser(displayName, username, password, isTrainee = false) {
+        // Hide captcha
         hideCaptcha();
 
+        // Check for existing user (including trainee check if needed)
+        if (isTrainee) {
+            const traineeExists = await checkTraineeData(username);
+            if (traineeExists) {
+                modalErrorText.innerText = "User already exists.";
+                showErrorModal();
+                return;
+            }
+        }
+
+        // Get current users list
         let users = JSON.parse(localStorage.getItem("users")) || [];
 
+        // Check if username already exists in local storage
         if (users.some((user) => user.username === username)) {
             modalErrorText.innerText = "User already exists.";
             showErrorModal();
             return;
         }
 
+        // Generate encryption key
         let key = await generateKey();
 
+        // Export raw key
         const rawKey = await crypto.subtle.exportKey("raw", key.cryptoKey);
 
+        // Encrypt password
         let encryptedPassword = await encrypt(password, key);
 
+        // Create new user object
         users.push({
             displayName: displayName,
             username: username,
@@ -320,15 +292,25 @@ async function registerTrainee(displayName, username, password) {
             ownedAnimals: [],
         });
 
+        // Save updated users list
         localStorage.setItem("users", JSON.stringify(users));
 
+        // Reset form and hide error
         registrationForm.reset();
         registerError.style.display = "none";
-        if (displayName != username) {
-            loginUser(username, password);
+
+        // Login if display name is different from username
+        if (displayName !== username) {
+            await loginUser(username, password);
         }
+
+        // Show success and switch forms
         showSuccessModal();
         showForm(loginForm, registrationForm);
+    }
+
+    async function registerTrainee(displayName, username, password) {
+        await registerUser(displayName, username, password, true);
     }
 
     async function generateKey() {
@@ -343,12 +325,11 @@ async function registerTrainee(displayName, username, password) {
 
     async function encrypt(data, key) {
         const encodedData = new TextEncoder().encode(data);
-        const encrypted = await crypto.subtle.encrypt(
+        return await crypto.subtle.encrypt(
             {name: "AES-GCM", iv: key.iv},
             key.cryptoKey,
             encodedData
         );
-        return encrypted;
     }
 
     async function decrypt(encryptedData, key) {
@@ -538,6 +519,7 @@ async function registerTrainee(displayName, username, password) {
     const backgroundAudio = new Audio(
         "../assets/sound/Super Auto Pets  - Menu Theme.mp3"
     );
+    
     backgroundAudio.volume = 0.08;
     backgroundAudio.loop = true;
     const savedTime = localStorage.getItem("backgroundAudioTime");
