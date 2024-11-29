@@ -16,8 +16,16 @@ body {
   background-image: url("../assets/maps/Field.webp");
   background-size: contain;
   background-position: center;
-  
-  cursor: url("../assets/cursor/cursor1-smol.jpeg"), default;
+  /* cursor: url("../assets/cursor/cursor1-smol.jpeg"), default; */
+}
+.pause-btn{
+  border-radius: 15px;
+  position: absolute;
+  padding: 0.5rem;
+  left:47.7%;
+  background-color: black;
+  border: none;
+  cursor:pointer
 }
 #mainContainer {
   display: flex;

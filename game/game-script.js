@@ -38,7 +38,7 @@ function connectWebSocket() {
 
   socket.onclose = () => {
     console.log("Connection lost, attempting to reconnect...");
-    setTimeout(connectWebSocket, 1000); 
+    setTimeout(connectWebSocket, 100); 
   };
 
   socket.onerror = (error) => {
@@ -740,6 +740,7 @@ function letsplay() {
       hideTeamName();
       hideCanvas();
       openCurtains(() => {
+        showPauseButton()
         showCanvas();
         playBattleMusic();
         animateAnimalsIntoPosition(() => {
@@ -771,6 +772,7 @@ function letsplayonline() {
       hideCanvas();
       openCurtains(() => {
         showCanvas();
+        showPauseButton();
         playBattleMusic();
         animateAnimalsIntoPosition(() => {
           showBattleText();
@@ -1029,6 +1031,7 @@ function showNonBattleElements() {
   document.getElementById("startBattleButtonOnline").classList.remove("hidden");
   document.getElementById("freezeButton").classList.remove("hidden");
   document.getElementById("backArrow").classList.remove("hidden");
+  
   playBackgroundMusic();
 }
 function hideNonBattleElements() {
@@ -1268,6 +1271,7 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
   const centerX = canvas.width / 2 - 60;
   const duration = 500;
   let currentFrame = 0;
+  let pauseStartTime = null;
   let lastFrameTime = performance.now();
   const playerImg = new Image();
   playerImg.src = playerAnimal.img;
@@ -1281,8 +1285,13 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
 
   function animate(currentTime) {
     if(paused){
+      if(!pauseStartTime) pauseStartTime = currentTime;
       requestAnimationFrame(animate)
       return;
+    }
+    if(pauseStartTime){
+      lastFrameTime += currentTime - pauseStartTime;
+      pauseStartTime = null;
     }
     const deltaTime = (currentTime - lastFrameTime) / 1000;
     lastFrameTime = currentTime;
@@ -1374,8 +1383,19 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
     let returnFrame = 0;
     let lastReturnFrameTime = performance.now();
     const returnDuration = duration;
-
+    let pauseStartTime = null;
     function animateBack(currentTime) {
+    if (paused) {
+      if (!pauseStartTime) pauseStartTime = currentTime; // Record when pause started
+      requestAnimationFrame(animateBack);
+      return;
+    }
+
+    if (pauseStartTime) {
+      // Adjust last frame time to account for pause duration
+      lastReturnFrameTime += currentTime - pauseStartTime;
+      pauseStartTime = null;
+    }
       const deltaTime = (currentTime - lastReturnFrameTime) / 1000;
       lastReturnFrameTime = currentTime;
 
@@ -1985,7 +2005,7 @@ function resetGame() {
   renderBattleSlots();
   renderRandomAnimals();
   saveBattleLineup();
-
+  hidePauseButton()
   showNonBattleElements();
 }
 function checkGameOver(playerSurvivors, enemySurvivors) {
@@ -2247,6 +2267,7 @@ function loseLife() {
           closeCurtains();
           restoreOriginalLineup();
           setTimeout(() => {
+            hidePauseButton()
             showNonBattleElements();
             hideCanvas();
             coins += 10;
@@ -2382,6 +2403,7 @@ function showDrawScreen() {
       restoreOriginalLineup();
       closeCurtains();
       setTimeout(() => {
+        hidePauseButton()
         showNonBattleElements();
         coins += 10;
         localStorage.removeItem("result");
@@ -2445,6 +2467,7 @@ function DefeatScreen() {
       restoreOriginalLineup();
       closeCurtains();
       setTimeout(() => {
+        hidePauseButton()
         showNonBattleElements();
         coins += 10;
         localStorage.removeItem("result");
@@ -2518,6 +2541,7 @@ function showWinScreen() {
       showCurtains();
       closeCurtains();
       setTimeout(() => {
+        hidePauseButton()
         showNonBattleElements();
         restoreOriginalLineup();
         hideCanvas();
@@ -2643,29 +2667,27 @@ function computeBattleResult(playerTeam, enemyTeam) {
 }
 let paused = false; // Global pause flag
 let pauseStartTime = null; // Time when the pause starts
-
+const pauseButton = document.getElementById("pause-btn");
 function togglePause() {
   paused = !paused;
-
   if (paused) {
+    document.getElementById("pauseasset").src = "../assets/home-asset/playmusic.png";
     pauseStartTime = performance.now();
   } else if (pauseStartTime !== null) {
-    // Adjust all animations' last frame time to account for the pause
+    document.getElementById("pauseasset").src =
+      "../assets/home-asset/pause.png";
     const pauseDuration = performance.now() - pauseStartTime;
-    adjustAnimationTimings(pauseDuration);
+     activeAnimations.forEach((anim) => {
+       anim.lastFrameTime += pauseDuration; // Compensate for time spent paused
+     });
     pauseStartTime = null;
   }
 }
-
-function adjustAnimationTimings(pauseDuration) {
-  // Adjust all active animations
-  activeAnimations.forEach((anim) => {
-    anim.lastFrameTime += pauseDuration;
-  });
+function showPauseButton(){
+  document.getElementById("pause-btn").classList.remove("hidden");
 }
-document.addEventListener("keydown", (event) => {
-  if (event.key === "p") {
-    // Press "P" to toggle pause
-    togglePause();
-  }
-});
+function hidePauseButton(){
+  document.getElementById("pause-btn").classList.add("hidden");
+}
+
+pauseButton.addEventListener("click", togglePause);
