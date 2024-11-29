@@ -1,45 +1,31 @@
-document.body.classList.remove("modal-active");
-document.querySelector(".overlay").classList.add("hidden");
- function hideCaptcha() {
-   captchaModal1.classList.add("hide");
-   captchaModal2.classList.add("hide");
-
-   document.body.classList.remove("modal-active");
-   document.querySelector(".overlay").classList.add("hidden");
-
-   setTimeout(() => {
-     captchaModal1.classList.add("hidden");
-     captchaModal1.classList.remove("show", "hide");
-     captchaModal2.classList.add("hidden");
-     captchaModal2.classList.remove("show", "hide");
-   }, 500);
- }
+const captchaModal1 = document.getElementById("captchaModal1");
+const captchaModal2 = document.getElementById("captchaModal2");
 
 document.addEventListener("mousemove", (event) => {
     const {clientX, clientY} = event;
     const width = window.innerWidth;
     const height = window.innerHeight;
-    const xNorm = (clientX / width - 0.5) * 2; 
-    const yNorm = (clientY / height - 0.5) * 2; 
+    const xNorm = (clientX / width - 0.5) * 2;
+    const yNorm = (clientY / height - 0.5) * 2;
 
     const layer1 = document.querySelector(".parallax-layer-1");
     const layer2 = document.querySelector(".parallax-layer-2");
     const layer3 = document.querySelector(".parallax-layer-3");
-    // const layer4Left = document.querySelector(".parallax-layer-4.left");
-    // const layer4Right = document.querySelector(".parallax-layer-4.right");
+    const layer4Left = document.querySelector(".parallax-layer-4.left");
+    const layer4Right = document.querySelector(".parallax-layer-4.right");
 
     layer1.style.transform = `translate(${xNorm * 8}px, ${yNorm * 8}px)`;
     layer2.style.transform = `translate(${xNorm * 18}px, ${yNorm * 18}px)`;
     layer3.style.transform = `translate(${xNorm * 32}px, ${yNorm * 32}px)`;
-    // layer4Left.style.transform = `translate(${xNorm * 60}px, ${yNorm * 60}px) scaleX(-1)`;
-    // layer4Right.style.transform = `translate(${xNorm * 60}px, ${yNorm * 60}px)`;
+    layer4Left.style.transform = `translate(${xNorm * 60}px, ${yNorm * 60}px) scaleX(-1)`;
+    layer4Right.style.transform = `translate(${xNorm * 60}px, ${yNorm * 60}px)`;
 });
+
+
 
 window.onload = function () {
     const captchaChallenge = document.getElementById("captchaChallenge");
     const captchaInput = document.getElementById("captchaInput");
-    const captchaModal1 = document.getElementById("captchaModal1");
-    const captchaModal2 = document.getElementById("captchaModal2");
     const captchaText = captchaModal1.querySelector(".captcha");
     const reloadBtn = captchaModal1.querySelector(".reload-btn");
     const reloadBtn2 = captchaModal2.querySelector(".reload-btn2");
@@ -62,6 +48,7 @@ window.onload = function () {
         clearCaptcha();
         generateCaptcha1();
     });
+
     reloadBtn2.addEventListener("click", () => {
         clearCaptcha();
         generateCaptcha2();
@@ -165,32 +152,26 @@ window.onload = function () {
     const loginCard = document.getElementById("loginCard");
     const startButton = document.getElementById("start-button");
     const turtle = document.getElementById("turtle");
-    // const parallaxLayersAnimals =
-    //   document.querySelectorAll(".parallax-layer-4");
-     startButton.addEventListener("click", () => {
-        //   parallaxLayersAnimals.forEach((layer) => {
-        //     layer.style.transition =
-        //       "transform 1s ease-out, opacity 0.5s ease-out";
-        //     layer.style.transform = "translateX(-100vw)";
-        //     layer.style.opacity = "0";
-        //   });
-       logo.style.transition = "transform 1s ease-out, opacity 0.5s ease-out";
-       logo.style.transform = "translateX(-100vw)";
-       logo.style.opacity = "0";
-       startButton.style.transition =
-       "transform 1s ease-out, opacity 0.5s ease-out";
-       startButton.style.transform = "translateX(-100vw)";
-       startButton.style.opacity = "0";
-       setTimeout(() => {
-        showpushing();
-        //  turtle.classList.add("pushing");
-        //  loginCard.classList.add("centered");
-        //  setTimeout(() => {
-        //    turtle.classList.remove("pushing");
-        //    turtle.style.transform = "scaleX(-1)";
-        //  }, 3000);
-       }, 1000);
-     });
+    const parallaxLayersAnimals =
+      document.querySelectorAll(".parallax-layer-4");
+    startButton.addEventListener("click", () => {
+          parallaxLayersAnimals.forEach((layer) => {
+            layer.style.transition =
+              "transform 1s ease-out, opacity 0.5s ease-out";
+            layer.style.transform = "translateX(-100vw)";
+            layer.style.opacity = "0";
+          });
+        logo.style.transition = "transform 1s ease-out, opacity 0.5s ease-out";
+        logo.style.transform = "translateX(-100vw)";
+        logo.style.opacity = "0";
+        startButton.style.transition =
+            "transform 1s ease-out, opacity 0.5s ease-out";
+        startButton.style.transform = "translateX(-100vw)";
+        startButton.style.opacity = "0";
+        setTimeout(() => {
+            showpushing();
+        }, 1000);
+    });
     const registerTab = document.getElementById("registerTab");
     const loginTab = document.getElementById("loginTab");
     const registrationForm = document.getElementById("registrationForm");
@@ -250,66 +231,69 @@ window.onload = function () {
             if (verifyCaptcha(selectedCaptchaModal)) registerUser(username, username, password);
         };
     });
-async function checkTraineeData(username) {
-  try {
-    const response = await fetch("../assets/jsons/trainee.json");
-    const trainees = await response.json();
 
-    // Check if the username matches any TraineeCode or TraineeName
-    return trainees.some(
-      (trainee) =>
-        trainee.TraineeCode === username || trainee.TraineeName === username
-    );
-  } catch (error) {
-    console.error("Error loading trainee data:", error);
-    return false; // Fail gracefully if trainee data can't be fetched
-  }
-}
+    async function checkTraineeData(username) {
+        try {
+            const response = await fetch("../assets/jsons/trainee.json");
+            const trainees = await response.json();
+
+            // Check if the username matches any TraineeCode or TraineeName
+            return trainees.some(
+                (trainee) =>
+                    trainee.TraineeCode === username || trainee.TraineeName === username
+            );
+        } catch (error) {
+            console.error("Error loading trainee data:", error);
+            return false; // Fail gracefully if trainee data can't be fetched
+        }
+    }
+
     async function registerUser(displayName, username, password) {
         const traineeExists = await checkTraineeData(username);
         if (traineeExists) {
-          modalErrorText.innerText = "User already exists.";
-          showErrorModal();
-          return;
+            modalErrorText.innerText = "User already exists.";
+            showErrorModal();
+            return;
         }
-      hideCaptcha();
+        hideCaptcha();
 
-      let users = JSON.parse(localStorage.getItem("users")) || [];
+        let users = JSON.parse(localStorage.getItem("users")) || [];
 
-      if (users.some((user) => user.username === username)) {
-        modalErrorText.innerText = "User already exists.";
-        showErrorModal();
-        return;
-      }
+        if (users.some((user) => user.username === username)) {
+            modalErrorText.innerText = "User already exists.";
+            showErrorModal();
+            return;
+        }
 
-      let key = await generateKey();
+        let key = await generateKey();
 
-      const rawKey = await crypto.subtle.exportKey("raw", key.cryptoKey);
+        const rawKey = await crypto.subtle.exportKey("raw", key.cryptoKey);
 
-      let encryptedPassword = await encrypt(password, key);
+        let encryptedPassword = await encrypt(password, key);
 
-      users.push({
-        displayName: displayName,
-        username: username,
-        password: {
-          encrypted: Array.from(new Uint8Array(encryptedPassword)),
-          key: Array.from(new Uint8Array(rawKey)),
-          iv: Array.from(key.iv),
-        },
-        coins: 15,
-        ownedAnimals: [],
-      });
+        users.push({
+            displayName: displayName,
+            username: username,
+            password: {
+                encrypted: Array.from(new Uint8Array(encryptedPassword)),
+                key: Array.from(new Uint8Array(rawKey)),
+                iv: Array.from(key.iv),
+            },
+            coins: 15,
+            ownedAnimals: [],
+        });
 
-      localStorage.setItem("users", JSON.stringify(users));
+        localStorage.setItem("users", JSON.stringify(users));
 
-      registrationForm.reset();
-      registerError.style.display = "none";
-    if (displayName != username){
-        loginUser(username, password);
+        registrationForm.reset();
+        registerError.style.display = "none";
+        if (displayName != username) {
+            loginUser(username, password);
+        }
+        showSuccessModal();
+        showForm(loginForm, registrationForm);
     }
-      showSuccessModal();
-      showForm(loginForm, registrationForm);
-    }
+
     async function generateKey() {
         const iv = crypto.getRandomValues(new Uint8Array(12));
         const cryptoKey = await crypto.subtle.generateKey(
@@ -319,6 +303,7 @@ async function checkTraineeData(username) {
         );
         return {cryptoKey, iv};
     }
+
     async function encrypt(data, key) {
         const encodedData = new TextEncoder().encode(data);
         const encrypted = await crypto.subtle.encrypt(
@@ -328,6 +313,7 @@ async function checkTraineeData(username) {
         );
         return encrypted;
     }
+
     async function decrypt(encryptedData, key) {
         const decrypted = await crypto.subtle.decrypt(
             {name: "AES-GCM", iv: key.iv},
@@ -336,6 +322,7 @@ async function checkTraineeData(username) {
         );
         return new TextDecoder().decode(decrypted);
     }
+
     function showSuccessModal() {
         const existingModal = document.getElementById("successModal");
         if (existingModal) {
@@ -382,6 +369,7 @@ async function checkTraineeData(username) {
             setTimeout(() => successModal.remove(), 500);
         }, 5000);
     }
+
     const toggleButtons = document.querySelectorAll(".toggle-password");
     toggleButtons.forEach((button) => {
         const targetInput = document.getElementById(button.dataset.target);
@@ -412,6 +400,7 @@ async function checkTraineeData(username) {
         let password = document.getElementById("loginPassword").value;
         loginUser(username, password)
     });
+
     async function loginUser(username, password) {
         const users = JSON.parse(localStorage.getItem("users")) || [];
 
@@ -419,20 +408,20 @@ async function checkTraineeData(username) {
         const user = users.find((user) => user.username === username);
         if (!user) {
             try {
-              const response = await fetch("../assets/jsons/trainee.json");
-              const trainees = await response.json();
+                const response = await fetch("../assets/jsons/trainee.json");
+                const trainees = await response.json();
 
-              const trainee = trainees.find(
-                (trainee) =>
-                  trainee.TraineeCode === username &&
-                  trainee.TraineePassword === password
-              );
+                const trainee = trainees.find(
+                    (trainee) =>
+                        trainee.TraineeCode === username &&
+                        trainee.TraineePassword === password
+                );
 
-              if (trainee) {
-                registerUser(trainee.TraineeName, trainee.TraineeCode, trainee.TraineePassword);
-              }
+                if (trainee) {
+                    registerUser(trainee.TraineeName, trainee.TraineeCode, trainee.TraineePassword);
+                }
             } catch (error) {
-              console.error("Error loading trainee data:", error);
+                console.error("Error loading trainee data:", error);
             }
             modalErrorText.innerText = "Invalid username or password.";
             showErrorModal();
@@ -469,6 +458,7 @@ async function checkTraineeData(username) {
             showErrorModal();
         }
     }
+
     function showErrorModal() {
         const successModal = document.getElementById("successModal");
         if (successModal) {
@@ -480,27 +470,30 @@ async function checkTraineeData(username) {
             errorModal.style.bottom = "-100px";
         }, 3000);
     }
-    function showpushing(){
-   loginCard.classList.add("centered");
 
-   setTimeout(() => {
-     turtle.classList.add("pushing");
-   }, 540);
+    function showpushing() {
+        loginCard.classList.add("centered");
 
-   setTimeout(() => {
-     turtle.classList.remove("pushing");
-     turtle.style.transform = "scaleX(-1)";
-   }, 3000 + 500);
+        setTimeout(() => {
+            turtle.classList.add("pushing");
+        }, 540);
 
-   setTimeout(() => {
-     turtle.classList.add("offscreen");
-   }, 3000 + 500 + 500);
+        setTimeout(() => {
+            turtle.classList.remove("pushing");
+            turtle.style.transform = "scaleX(-1)";
+        }, 3000 + 500);
+
+        setTimeout(() => {
+            turtle.classList.add("offscreen");
+        }, 3000 + 500 + 500);
     }
-    function hideturtle(){
-  turtle.classList.remove("pushing", "offscreen");
-  turtle.style.transform = "scaleX(1)";
-  loginCard.classList.remove("centered");
+
+    function hideturtle() {
+        turtle.classList.remove("pushing", "offscreen");
+        turtle.style.transform = "scaleX(1)";
+        loginCard.classList.remove("centered");
     }
+
     const backgroundAudio = new Audio(
         "../assets/sound/Super Auto Pets  - Menu Theme.mp3"
     );
@@ -532,6 +525,19 @@ async function checkTraineeData(username) {
     document.addEventListener("mousedown", playBackgroundAudio);
     document.addEventListener("mouseup", playBackgroundAudio);
 
-   
-
 };
+
+function hideCaptcha() {
+    captchaModal1.classList.add("hide");
+    captchaModal2.classList.add("hide");
+
+    document.body.classList.remove("modal-active");
+    document.querySelector(".overlay").classList.add("hidden");
+
+    setTimeout(() => {
+        captchaModal1.classList.add("hidden");
+        captchaModal1.classList.remove("show", "hide");
+        captchaModal2.classList.add("hidden");
+        captchaModal2.classList.remove("show", "hide");
+    }, 500);
+}
