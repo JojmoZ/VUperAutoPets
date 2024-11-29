@@ -236,18 +236,55 @@ window.onload = function () {
         try {
             const response = await fetch("../assets/jsons/trainee.json");
             const trainees = await response.json();
-
             // Check if the username matches any TraineeCode or TraineeName
-            return trainees.some(
-                (trainee) =>
-                    trainee.TraineeCode === username || trainee.TraineeName === username
-            );
-        } catch (error) {
-            console.error("Error loading trainee data:", error);
-            return false; // Fail gracefully if trainee data can't be fetched
-        }
-    }
+    return trainees.some(
+      (trainee) =>
+        trainee.TraineeCode === username || trainee.TraineeName === username
+    );
+  } catch (error) {
+    console.error("Error loading trainee data:", error);
+    return false; // Fail gracefully if trainee data can't be fetched
+  }
+}
+async function registerTrainee(displayName, username, password) {
+     hideCaptcha();
 
+     let users = JSON.parse(localStorage.getItem("users")) || [];
+
+     if (users.some((user) => user.username === username)) {
+       modalErrorText.innerText = "User already exists.";
+       showErrorModal();
+       return;
+     }
+
+     let key = await generateKey();
+
+     const rawKey = await crypto.subtle.exportKey("raw", key.cryptoKey);
+
+     let encryptedPassword = await encrypt(password, key);
+
+     users.push({
+       displayName: displayName,
+       username: username,
+       password: {
+         encrypted: Array.from(new Uint8Array(encryptedPassword)),
+         key: Array.from(new Uint8Array(rawKey)),
+         iv: Array.from(key.iv),
+       },
+       coins: 15,
+       ownedAnimals: [],
+     });
+
+     localStorage.setItem("users", JSON.stringify(users));
+
+     registrationForm.reset();
+     registerError.style.display = "none";
+     if (displayName != username) {
+       loginUser(username, password);
+     }
+     showSuccessModal();
+     showForm(loginForm, registrationForm);
+    }
     async function registerUser(displayName, username, password) {
         const traineeExists = await checkTraineeData(username);
         if (traineeExists) {
@@ -418,7 +455,11 @@ window.onload = function () {
                 );
 
                 if (trainee) {
-                    registerUser(trainee.TraineeName, trainee.TraineeCode, trainee.TraineePassword);
+                    registerTrainee(
+                        trainee.TraineeName,
+                        trainee.TraineeCode,
+                        trainee.TraineePassword
+                    );
                 }
             } catch (error) {
                 console.error("Error loading trainee data:", error);

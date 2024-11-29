@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const specialAnimals = ["VJanda", "MSeer", "eagSVle", "PamstIr", "YenguiK"];
+  const specialAnimals = ["VandaJ", "MSeer", "eagSVle", "PamstIr", "YenguiK"];
   if (!localStorage.getItem("coins")) {
     localStorage.setItem("coins", "15");
     localStorage.setItem("ownedAnimals", JSON.stringify([]));

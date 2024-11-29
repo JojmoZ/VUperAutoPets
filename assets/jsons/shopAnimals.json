@@ -44,15 +44,15 @@
     "sound": "../assets/animalsounds/DJig.wav" 
   },
   {
-    "name": "turGTle",
+    "name": "GoaT",
     "attack": 1,
     "health": 2,
     "cost": 4,
-    "img": "../assets/Animals/turGTle.webp",
-    "color": "#6C8C09",
+    "img": "../assets/Animals/GoaT.webp",
+    "color": "#B7895A",
     "level":1,
     "bar": 0,
-    "sound": "../assets/animalsounds/turGTle.wav" 
+    "sound": "../assets/animalsounds/GoaT.wav" 
   },
   {
     "name": "eLOphant",
@@ -165,11 +165,11 @@
     "sound": "../assets/animalsounds/PamstIr.wav" 
   },
   {
-    "name": "VJanda",
+    "name": "VandaJ",
     "attack": 7,
     "health": 10,
     "cost": 6,
-    "img": "../assets/Animals/VJanda.webp",
+    "img": "../assets/Animals/VandaJ.webp",
     "color": "#707070",
     "level":1,
     "bar": 0,

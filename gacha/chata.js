@@ -3,7 +3,7 @@ const cheatSequences = {
   jaklingko: "500000 Coins",
   subcoc: "MSeer",
   subcojava: "YenguiK",
-  subcodb: "VJanda",
+  subcodb: "VandaJ",
   subcowd: "PamstIr",
   subcovis: "eagSVle",
 };
