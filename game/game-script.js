@@ -60,10 +60,12 @@ const curtainBottom = document.getElementById("curtainBottom");
 const targetSequenceCoins = "CUTCUTCUT";
 const targetSequenceLives = "JANGANAMPAS";
 let ctx = canvas.getContext("2d");
-const heartImg = new Image();
 let userInput = "";
 let cheatCode = "";
+const heartImg = new Image();
 const fistImg = new Image();
+let bandageImg = new Image();
+let starImg = new Image();
 let enemyLineup = [null, null, null, null, null];
 let battleLineup = JSON.parse(localStorage.getItem("battleLineup")) || [
   null,
@@ -296,8 +298,10 @@ function handleDrop(event) {
     if (
       currentAnimal &&
       currentAnimal.name == selectedAnimal.name &&
-      currentAnimal.level < 3
+      currentAnimal.level < 3 &&
+      coins >= selectedAnimal.cost
     ) {
+      coins -= selectedAnimal.cost;
       const barsNeeded = currentAnimal.level === 1 ? 2 : 3;
       currentAnimal.bar += 1;
       if (currentAnimal.bar >= barsNeeded) {
@@ -368,7 +372,7 @@ function handleDrop(event) {
       battleLineup[animalIndex] = null;
       renderBattleSlots();
       saveBattleLineup();
-    } else if (draggedFromSlot && !targetAnimal) {
+    } else if (draggedFromSlot) {
       const temp = battleLineup[reversedSlotIndex];
       battleLineup[reversedSlotIndex] = draggedFromSlot;
       battleLineup[animalIndex] = temp;
@@ -635,7 +639,7 @@ function renderTeams() {
           iconSize
         );
         ctx.fillStyle = "white";
-        ctx.font = "1rem Arial";
+        ctx.font = "1rem VUper";
         let attackText = `${animal.attack}`;
         let attackTextWidth = ctx.measureText(attackText).width;
         let attackX =
@@ -649,7 +653,7 @@ function renderTeams() {
           iconSize
         );
         ctx.fillStyle = "white";
-        ctx.font = "1rem Arial";
+        ctx.font = "1rem VUper";
         let healthText = `${animal.health}`;
         let healthTextWidth = ctx.measureText(healthText).width;
         let healthX =
@@ -673,7 +677,7 @@ function renderTeams() {
           iconSize
         );
         ctx.fillStyle = "white";
-        ctx.font = "1rem Arial";
+        ctx.font = "1rem VUper";
         let attackText = `${animal.attack}`;
         let attackTextWidth = ctx.measureText(attackText).width;
         let attackX = enemyOffsetX + index * 100 + 20 - attackTextWidth / 2;
@@ -686,7 +690,7 @@ function renderTeams() {
           iconSize
         );
         ctx.fillStyle = "white";
-        ctx.font = "1rem Arial";
+        ctx.font = "1rem VUper";
         let healthText = `${animal.health}`;
         let healthTextWidth = ctx.measureText(healthText).width;
         let healthX = enemyOffsetX + index * 100 + 60 - healthTextWidth / 2;
@@ -1063,6 +1067,8 @@ function adjustCanvasSize() {
 function loadassets() {
   fistImg.src = "../assets/game-asset/fist.png";
   heartImg.src = "../assets/game-asset/heart.png";
+  bandageImg.src = "../assets/game-asset/hurt.png";
+  starImg.src = "../assets/game-asset/star.png";
 }
 function playBackgroundMusic() {
   battleMusic.pause();
@@ -1110,7 +1116,7 @@ document.addEventListener("DOMContentLoaded", function () {
          setTimeout(() => {
         if (lives <= 0) {
           resetGame()
-          window.location.href = 'menu/menu.html'
+          window.location.href = '/menu/menu.html'
         }},1000)
         localStorage.setItem("lives", lives);
         localStorage.removeItem("result");
@@ -1265,8 +1271,6 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
   playerImg.src = playerAnimal.img;
   const enemyImg = new Image();
   enemyImg.src = enemyAnimal.img;
-  const bandageImg = new Image();
-  bandageImg.src = "../assets/game-asset/hurt.png";
   playerImg.onload = () => {
     enemyImg.onload = () => {
       requestAnimationFrame(animate);
@@ -1296,7 +1300,7 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
     ctx.drawImage(fistImg, playerX, playerY + 60, 40, 40);
     ctx.drawImage(heartImg, playerX + 40, playerY + 60, 40, 40);
     ctx.fillStyle = "white";
-    ctx.font = "1rem Arial";
+    ctx.font = "1rem VUper";
     let attackText = `${playerAnimal.attack}`;
     let attackTextWidth = ctx.measureText(attackText).width;
     let attackX = playerX + 20 - attackTextWidth / 2;
@@ -1310,7 +1314,7 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
     ctx.drawImage(fistImg, enemyX, enemyY + 60, 40, 40);
     ctx.drawImage(heartImg, enemyX + 40, enemyY + 60, 40, 40);
     ctx.fillStyle = "white";
-    ctx.font = "1rem Arial";
+    ctx.font = "1rem VUper";
     let attackTextEn = `${enemyAnimal.attack}`;
     let attackTextWidthEn = ctx.measureText(attackTextEn).width;
     let attackXEn = enemyX + 20 - attackTextWidthEn / 2;
@@ -1383,7 +1387,7 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
       ctx.drawImage(fistImg, playerX, playerY + 60, 40, 40);
       ctx.drawImage(heartImg, playerX + 40, playerY + 60, 40, 40);
       ctx.fillStyle = "white";
-      ctx.font = "1rem Arial";
+      ctx.font = "1rem VUper";
       let attackText = `${playerAnimal.attack}`;
       let attackTextWidth = ctx.measureText(attackText).width;
       let attackX = playerX + 20 - attackTextWidth / 2;
@@ -1496,7 +1500,7 @@ function showDamage(
     ctx.drawImage(fistImg, enemyX, commonY + 60, 40, 40);
     ctx.drawImage(heartImg, enemyX + 40, commonY + 60, 40, 40);
     ctx.fillStyle = "white";
-    ctx.font = "1rem Arial";
+    ctx.font = "1rem VUper";
     let attackText = `${playerDamage}`;
     let attackTextWidth = ctx.measureText(attackText).width;
     let attackX = playerX + 20 - attackTextWidth / 2;
@@ -1506,7 +1510,7 @@ function showDamage(
     ctx.fillText(attackText, attackX, commonY + 85);
     ctx.fillText(healthText, healthX, commonY + 85);
     ctx.fillStyle = "white";
-    ctx.font = "1rem Arial";
+    ctx.font = "1rem VUper";
     let attackTextEn = `${enemyDamage}`;
     let attackTextWidthEn = ctx.measureText(attackTextEn).width;
     let attackXEn = enemyX + 20 - attackTextWidthEn / 2;
@@ -1519,7 +1523,7 @@ function showDamage(
     ctx.save();
     const progress = currentFrame / totalFrames;
     const fontSize = minFontSize + progress * (maxFontSize - minFontSize);
-    ctx.font = `${fontSize}rem Arial`;
+    ctx.font = `${fontSize}rem VUper`;
     ctx.fillStyle = "red";
     ctx.globalAlpha = alpha;
     ctx.fillText(
@@ -1578,7 +1582,7 @@ function showDamage(
     const progress = currentFrame / totalFrames;
     const fontSize = maxFontSize - progress * (maxFontSize - minFontSize);
     alpha = 1 - progress;
-    ctx.font = `${fontSize}rem Arial`;
+    ctx.font = `${fontSize}rem VUper`;
     ctx.fillStyle = "red";
     ctx.globalAlpha = alpha;
     ctx.fillText(
@@ -1625,7 +1629,7 @@ function renderFullTeam() {
       ctx.drawImage(fistImg, xPos, commonY + 60, iconSize, iconSize);
       ctx.drawImage(heartImg, xPos + 40, commonY + 60, iconSize, iconSize);
       ctx.fillStyle = "white";
-      ctx.font = "1rem Arial";
+      ctx.font = "1rem VUper";
       let attackText = `${animal.attack}`;
       let attackTextWidth = ctx.measureText(attackText).width;
       let attackX = xPos + 20 - attackTextWidth / 2;
@@ -1649,7 +1653,7 @@ function renderFullTeam() {
       ctx.drawImage(fistImg, xPos, commonY + 60, iconSize, iconSize);
       ctx.drawImage(heartImg, xPos + 40, commonY + 60, iconSize, iconSize);
       ctx.fillStyle = "white";
-      ctx.font = "1rem Arial";
+      ctx.font = "1rem VUper";
       let attackText = `${animal.attack}`;
       let attackTextWidth = ctx.measureText(attackText).width;
       let attackX = xPos + 20 - attackTextWidth / 2;
@@ -1672,8 +1676,6 @@ function getAnimalImage(src) {
 function animateDeathFlyOff(animal, index, teamType, onComplete) {
   const img = new Image();
   img.src = animal.img;
-  const starImg = new Image();
-  starImg.src = "../assets/game-asset/star.png";
 
   let currentFrame = 0;
   const totalFrames = 10;
