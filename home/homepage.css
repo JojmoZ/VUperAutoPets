@@ -1,21 +1,40 @@
 :root {
   --primary: 50 70% 47%;
 }
-<<<<<<< Updated upstream
-=======
+
 body::-webkit-scrollbar {
   display: none;
 }
 
->>>>>>> Stashed changes
 @font-face {
   font-family: "VUper";
-  src: url("../assets/LapsusPro-Bold.otf") format("opentype");
+  src: url("../assets/font/LapsusPro-Bold.otf") format("opentype");
 }
 @property --angle {
   syntax: "<angle>";
   initial-value: 0deg;
   inherits: false;
+}
+*{
+  font-family: 'VUper';
+}
+.back-arrow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 0;
+  z-index: 2421241241241;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+.back-arrow img {
+  width: 8rem;
+  height: auto;
+}
+.back-arrow:hover {
+  transform: scale(1.1);
 }
 html,
 body {
@@ -24,7 +43,6 @@ body {
   scroll-snap-type: y mandatory;
   overflow-y: scroll;
   overflow-x: hidden;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background-size: cover;
 }
 
@@ -59,12 +77,28 @@ svg {
 }
 
 text {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-weight: bold;
   font-size: 3rem;
   fill: #febd01;
 }
-
+@keyframes stampEffect {
+  0% {
+    transform: scale(3);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.big-photo {
+  animation: stampEffect 1s ease forwards;
+  width: 50rem;
+  height: auto;
+}
+.hidden {
+  display: none;
+}
 .jumbotron p {
   font-weight: bold;
   font-size: 2rem;
