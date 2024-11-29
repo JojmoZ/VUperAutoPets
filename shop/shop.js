@@ -5,18 +5,18 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.setItem("ownedAnimals", JSON.stringify([]));
   }
   const username = localStorage.getItem("username");
-  const redeem = document.getElementById('redeem-btn')
-  redeem.addEventListener('click',function(){
+  const redeem = document.getElementById("redeem-btn");
+  redeem.addEventListener("click", function () {
     let pendingCoins = parseInt(localStorage.getItem("pendingCoins")) || 0;
     if (pendingCoins > 0) {
-    let currentCoins = parseInt(localStorage.getItem("coins")) || 0;
-    currentCoins += pendingCoins;
-    
-    localStorage.setItem("coins", currentCoins);
-    localStorage.setItem("pendingCoins", 0);
-    ShowModal(`You've earned ${pendingCoins} coins!`);
-  }
-  })
+      let currentCoins = parseInt(localStorage.getItem("coins")) || 0;
+      currentCoins += pendingCoins;
+
+      localStorage.setItem("coins", currentCoins);
+      localStorage.setItem("pendingCoins", 0);
+      ShowModal(`You've earned ${pendingCoins} coins!`);
+    }
+  });
   const cards = document.querySelectorAll(".card");
   const modal = document.getElementById("modal");
   const modalImage = document.getElementById("modal-animal-image");
@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const cancelButton = document.getElementById("cancel-buy");
   const coinsDisplay = document.createElement("div");
   const coinImg = document.createElement("img");
-  coinImg.src = '../assets/game-asset/Gold.png'
+  coinImg.src = "../assets/game-asset/Gold.png";
   coinImg.style.width = "3rem";
   coinImg.style.height = "3rem";
   coinImg.style.position = "fixed";
@@ -33,18 +33,18 @@ document.addEventListener("DOMContentLoaded", function () {
   coinImg.style.zIndex = "9999";
   document.body.appendChild(coinImg);
   coinsDisplay.id = "coinsDisplay";
-  coinsDisplay.style.fontFamily = "VUper"
+  coinsDisplay.style.fontFamily = "VUper";
   coinsDisplay.style.position = "fixed";
-  coinsDisplay.style.top = "1.75rem"
+  coinsDisplay.style.top = "1.75rem";
   coinsDisplay.style.right = "9.375rem";
   coinsDisplay.style.color = "white";
   coinsDisplay.style.fontSize = "2rem";
   coinsDisplay.style.zIndex = "9999";
   document.body.appendChild(coinsDisplay);
-const backbtn = document.getElementById("backArrow");
-backbtn.addEventListener("click", function () {
-  window.location = "/menu/menu.html";
-});
+  const backbtn = document.getElementById("backArrow");
+  backbtn.addEventListener("click", function () {
+    window.location = "/menu/menu.html";
+  });
   const shopContainer = document.querySelector(".shop-container");
 
   function arrangeCardsInAlternatingPattern() {
@@ -87,11 +87,9 @@ backbtn.addEventListener("click", function () {
       shopContainer.scrollLeft += scrollAmount;
       scrollAmount *= 0.85;
 
-      
       const maxScroll = shopContainer.scrollWidth - window.innerWidth;
       const scrollLeft = shopContainer.scrollLeft;
 
-      
       const clampedScroll = Math.max(0, Math.min(scrollLeft, maxScroll));
       document.body.style.backgroundPosition = `${-clampedScroll}px top`;
 
@@ -306,8 +304,8 @@ backbtn.addEventListener("click", function () {
   }
   const gotoGacha = document.getElementById("gacha-btn");
   gotoGacha.addEventListener("click", function () {
-    window.location = "/gacha/gachapage.html";  
-  })
+    window.location = "/gacha/gachapage.html";
+  });
   const ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals")) || [];
   ownedAnimals.forEach((animal) => {
     markSoldOut(animal.name);
@@ -364,14 +362,12 @@ backbtn.addEventListener("click", function () {
     }, 500);
   });
 
-  
   const backgroundAudio = new Audio(
     "../assets/sound/Super Auto Pets  - Menu Theme.mp3"
   );
   backgroundAudio.volume = 0.08;
   backgroundAudio.loop = true;
 
-  
   const savedTime = localStorage.getItem("backgroundAudioTime");
   if (savedTime) {
     backgroundAudio.currentTime = parseFloat(savedTime);
@@ -398,8 +394,21 @@ backbtn.addEventListener("click", function () {
   document.addEventListener("mousedown", playBackgroundAudio);
   document.addEventListener("mouseup", playBackgroundAudio);
 
-  
   window.addEventListener("beforeunload", () => {
     localStorage.setItem("backgroundAudioTime", backgroundAudio.currentTime);
+  });
+
+  const searchInput = document.getElementById("search-input");
+  searchInput.addEventListener("input", function () {
+    const searchTerm = searchInput.value.toLowerCase();
+    const cards = document.querySelectorAll(".card");
+    cards.forEach((card) => {
+      const animalName = card.getAttribute("data-animal").toLowerCase();
+      if (animalName.includes(searchTerm)) {
+        card.style.display = "block";
+      } else {
+        card.style.display = "none";
+      }
+    });
   });
 });

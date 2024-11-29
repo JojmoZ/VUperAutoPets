@@ -2,8 +2,8 @@
   font-family: "VUper";
   src: url("../assets/font/LapsusPro-Bold.otf") format("opentype");
 }
-*{
-  font-family: 'VUper';
+* {
+  font-family: "VUper";
 }
 body::-webkit-scrollbar {
   display: none;
@@ -126,6 +126,7 @@ body {
 .card img {
   width: 4rem;
   height: 4rem;
+  margin-top: 1rem;
   margin-bottom: 0.5rem;
 }
 .card h3,
@@ -282,18 +283,18 @@ body {
   width: 25rem;
   height: auto;
 }
-.gacha-contain{
+.gacha-contain {
   position: absolute;
-  bottom:0%;
-  right:0%;
+  bottom: 0%;
+  right: 0%;
 }
-.gacha-btn:hover{
+.gacha-btn:hover {
   filter: brightness(1.2);
 }
-.redeem-contain{
+.redeem-contain {
   position: absolute;
-  bottom:0%;
-  right:25%;
+  bottom: 0%;
+  right: 25%;
 }
 .redeem-btn {
   cursor: pointer;
@@ -304,6 +305,21 @@ body {
   width: 25rem;
   height: auto;
 }
-.redeem-btn:hover{
+.redeem-btn:hover {
   filter: brightness(1.2);
+}
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0;
+  position: absolute;
+  left: 43%;
+  top: 0%;
+}
+#search-input {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1.2rem;
+  border: 2px solid #ccc;
+  border-radius: 0.5rem;
 }

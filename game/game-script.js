@@ -834,7 +834,6 @@ document
       letsplay();
     }
   });
-
 function fadeInElements() {
   const elements = document.querySelectorAll("#teamNameSelectionScreen > *");
   elements.forEach((element, index) => {
@@ -1872,7 +1871,6 @@ async function handleBothDeaths(playerAnimal, enemyAnimal, onComplete) {
 
   setTimeout(onComplete, 500);
 }
-
 async function handleBusSpawn(lineup, animal, teamType) {
   console.log(`Spawning bus for ${teamType}`, animal);
 
@@ -1892,7 +1890,6 @@ async function handleBusSpawn(lineup, animal, teamType) {
     console.error("Error in bus sound:", error);
   }
 }
-
 async function handleDeathAnimation(animal, index, teamType) {
   console.log(`Animating death for ${teamType}`, animal);
 
@@ -1903,7 +1900,6 @@ async function handleDeathAnimation(animal, index, teamType) {
     });
   });
 }
-
 async function simulateBattle() {
   // console.clear();
   let turnCount = 1;
