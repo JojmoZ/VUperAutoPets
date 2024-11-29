@@ -1,6 +1,19 @@
 document.body.classList.remove("modal-active");
 document.querySelector(".overlay").classList.add("hidden");
+ function hideCaptcha() {
+   captchaModal1.classList.add("hide");
+   captchaModal2.classList.add("hide");
 
+   document.body.classList.remove("modal-active");
+   document.querySelector(".overlay").classList.add("hidden");
+
+   setTimeout(() => {
+     captchaModal1.classList.add("hidden");
+     captchaModal1.classList.remove("show", "hide");
+     captchaModal2.classList.add("hidden");
+     captchaModal2.classList.remove("show", "hide");
+   }, 500);
+ }
 
 document.addEventListener("mousemove", (event) => {
     const {clientX, clientY} = event;
@@ -490,19 +503,6 @@ window.onload = function () {
     document.addEventListener("mousedown", playBackgroundAudio);
     document.addEventListener("mouseup", playBackgroundAudio);
 
-    function hideCaptcha() {
-        captchaModal1.classList.add("hide");
-        captchaModal2.classList.add("hide");
-
-        document.body.classList.remove("modal-active");
-        document.querySelector(".overlay").classList.add("hidden");
-
-        setTimeout(() => {
-            captchaModal1.classList.add("hidden");
-            captchaModal1.classList.remove("show", "hide");
-            captchaModal2.classList.add("hidden");
-            captchaModal2.classList.remove("show", "hide");
-        }, 500);
-    }
+   
 
 };

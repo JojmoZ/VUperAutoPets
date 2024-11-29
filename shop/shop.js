@@ -5,7 +5,18 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.setItem("ownedAnimals", JSON.stringify([]));
   }
   const username = localStorage.getItem("username");
-
+  const redeem = document.getElementById('redeem-btn')
+  redeem.addEventListener('click',function(){
+    let pendingCoins = parseInt(localStorage.getItem("pendingCoins")) || 0;
+    if (pendingCoins > 0) {
+    let currentCoins = parseInt(localStorage.getItem("coins")) || 0;
+    currentCoins += pendingCoins;
+    
+    localStorage.setItem("coins", currentCoins);
+    localStorage.setItem("pendingCoins", 0);
+    ShowModal(`You've earned ${pendingCoins} coins!`);
+  }
+  })
   const cards = document.querySelectorAll(".card");
   const modal = document.getElementById("modal");
   const modalImage = document.getElementById("modal-animal-image");

@@ -8,6 +8,13 @@
 body::-webkit-scrollbar {
   display: none;
 }
+@font-face {
+    font-family: 'VUper';
+    src: url('../assets/font/LapsusPro-Bold.otf') format('opentype');
+}
+*{
+  font-family: 'VUper';
+}
 body {
   font-family: "Lapsus Pro", sans-serif;
   background: url("../assets/background/menu-bg.png") no-repeat center center

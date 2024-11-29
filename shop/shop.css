@@ -2,6 +2,9 @@
   font-family: "VUper";
   src: url("../assets/font/LapsusPro-Bold.otf") format("opentype");
 }
+*{
+  font-family: 'VUper';
+}
 body::-webkit-scrollbar {
   display: none;
 }
@@ -28,7 +31,6 @@ html,
 body {
   margin: 0;
   height: 100%;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background-image: url(../assets/maps/].webp);
   background-repeat: repeat-x;
   background-attachment: fixed;
@@ -286,5 +288,22 @@ body {
   right:0%;
 }
 .gacha-btn:hover{
+  filter: brightness(1.2);
+}
+.redeem-contain{
+  position: absolute;
+  bottom:0%;
+  right:25%;
+}
+.redeem-btn {
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+.redeem-btn img {
+  width: 25rem;
+  height: auto;
+}
+.redeem-btn:hover{
   filter: brightness(1.2);
 }

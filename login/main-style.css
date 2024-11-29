@@ -2,7 +2,9 @@
     font-family: 'VUper';
     src: url('../assets/font/LapsusPro-Bold.otf') format('opentype');
 }
-
+*{
+  font-family: 'VUper';
+}
 body {
     margin: 0;
     font-family: 'VUper', serif;
@@ -466,7 +468,6 @@ header {
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 32px;
-    font-family: "Noto Serif", serif;
     color: #fff;
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
     letter-spacing: 6px;

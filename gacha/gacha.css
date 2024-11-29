@@ -4,6 +4,9 @@
 }
 
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&display=swap");
+*{
+  font-family: 'VUper';
+}
 .hidden {
   display: none;
 }
@@ -14,7 +17,6 @@ html,
 body {
   margin: 0;
   height: 100%;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background-size: cover;
   background-image: url(../assets/maps/heaven.png);
 }

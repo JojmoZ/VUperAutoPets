@@ -8,7 +8,7 @@ class Modal {
     this.modalBox = document.createElement("div");
     this.modalContent = document.createElement("div");
     this.modalCloseButton = document.createElement("button");
-    this.closeIcon = document.createElement("span"); 
+    this.closeIcon = document.createElement("span");
     this.modalOverlay.style.cssText = `
       position: fixed;
       top: 0;
@@ -36,12 +36,14 @@ class Modal {
     this.modalContent.style.cssText = `
       margin-bottom: 20px;
       font-size: 2.5rem;
+      font-family: 'VUper';
       color: white;
       line-height: 1.5;
     `;
     this.modalCloseButton.style.cssText = `
       padding: 15px 30px;
       font-size: 1.2rem;
+      font-family: 'VUper';
       background-color: #007bff;
       color: white;
       border: none;
@@ -54,23 +56,24 @@ class Modal {
     this.modalCloseButton.textContent = "Close";
     this.modalCloseButton.addEventListener("mouseenter", () => {
       this.modalCloseButton.style.transform = "scale(1.1)";
-      this.modalCloseButton.style.backgroundColor = "#ff4757"; 
+      this.modalCloseButton.style.backgroundColor = "#ff4757";
       this.modalCloseButton.style.color = "white";
 
-      this.closeIcon.style.opacity = "1"; 
+      this.closeIcon.style.opacity = "1";
     });
     this.modalCloseButton.addEventListener("mouseleave", () => {
       this.modalCloseButton.style.transform = "scale(1)";
       this.modalCloseButton.style.backgroundColor = "#007bff";
       this.modalCloseButton.style.color = "white";
 
-      this.closeIcon.style.opacity = "0"; 
+      this.closeIcon.style.opacity = "0";
     });
     this.closeIcon.style.cssText = `
       position: absolute;
       right: 10px;
       top: 50%;
       transform: translateY(-50%);
+      font-family:'VUper'
       font-size: 1.5rem;
       opacity: 0;
       transition: opacity 0.3s ease;
@@ -89,14 +92,14 @@ class Modal {
     setTimeout(() => {
       this.modalBox.style.transform = "scale(1)";
       this.modalBox.style.opacity = "1";
-    }, 10); 
+    }, 10);
   }
   hideModal() {
     this.modalBox.style.transform = "scale(0.8)";
     this.modalBox.style.opacity = "0";
     setTimeout(() => {
       this.modalOverlay.style.display = "none";
-    }, 300); 
+    }, 300);
   }
 }
 const modal = new Modal();

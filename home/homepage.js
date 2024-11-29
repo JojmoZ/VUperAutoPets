@@ -1,13 +1,4 @@
 window.onload = function () {
-  let pendingCoins = parseInt(localStorage.getItem("pendingCoins")) || 0;
-  if (pendingCoins > 0) {
-    let currentCoins = parseInt(localStorage.getItem("coins")) || 0;
-    currentCoins += pendingCoins;
-    
-    localStorage.setItem("coins", currentCoins);
-    localStorage.setItem("pendingCoins", 0);
-    ShowModal(`You've earned ${pendingCoins} coins!`);
-  }
   const track = document.getElementById("maps");
 
   const backbtn = document.getElementById("backArrow");
@@ -212,30 +203,9 @@ window.onload = function () {
     { threshold: 0.5 }
   );
   socialMediaObserver.observe(socialMediaSection);
-  const gotoplay = document.getElementById("play-button");
-  gotoplay.classList.add("hidden");
-  setTimeout(() => {
-    gotoplay.classList.remove("hidden");
-  }, 2000);
-  gotoplay.addEventListener("click", function (e) {
-    checkboughtanimals();
-    if (canPlay) {
-      window.location = "/loading/loading.html";
-    } else {
-      ShowModal("You need to have at least 1 animal to play the game!");
-    }
-  });
 
-  let canPlay = false;
-  function checkboughtanimals() {
-    const boughtanimals = localStorage.getItem("ownedAnimals");
-    console.log(boughtanimals.length);
-    if (boughtanimals.length == 2) {
-      canPlay = false;
-    } else {
-      canPlay = true;
-    }
-  }
+
+ 
   const audio = document.getElementById("audio");
   const visualization = document.getElementById("visualization");
   const context = new (window.AudioContext || window.webkitAudioContext)();

@@ -444,7 +444,6 @@ function playBusSound() {
     }
   });
 }
-
 function hideTeamName() {
   const teamContainer = document.getElementById("teamNameContainer");
   teamContainer.classList.add("hidden");
@@ -732,6 +731,7 @@ function letsplay() {
       generateEnemyTeam();
       generateEnemyTeamName();
       const result = computeBattleResult(battleLineup, enemyLineup);
+      console.log("AHSDIUHASUIDSAHUDIHSAUIDHASUDHASUDHSAIUDHADUSAID",result)
       localStorage.setItem("result", result);
       hideNonBattleElements();
       hideTeamName();
@@ -921,7 +921,7 @@ document
       .getElementById("teamNameSelectionScreen")
       .classList.remove("teamNameSelectionScreen");
     let fromonline = localStorage.getItem("fromOnline");
-    if (fromonline == "true") {
+    if (fromonline == true) {
       showLoadingScreen();
       sendPlayerData();
     } else {
@@ -1046,7 +1046,7 @@ function hideNonBattleElements() {
   playBattleMusic();
 }
 document.getElementById("backArrow").addEventListener("click", function () {
-  window.location.href = "/home/homepage.html";
+  window.location.href = "/menu/menu.html";
 });
 function showCanvas() {
   document.getElementById("battleCanvas").classList.remove("hidden");
@@ -1089,6 +1089,7 @@ document.addEventListener("DOMContentLoaded", function () {
     coins = 15;
     localStorage.setItem("gamecoins", coins);
     rollfirst();
+    totalcoinforbattle = coins;
   } else {
     coins = parseInt(localStorage.getItem("gamecoins"));
     updateCoinsDisplay();
@@ -1108,7 +1109,8 @@ document.addEventListener("DOMContentLoaded", function () {
         lives--;
          setTimeout(() => {
         if (lives <= 0) {
-          DefeatScreen();
+          resetGame()
+          window.location.href = 'menu/menu.html'
         }},1000)
         localStorage.setItem("lives", lives);
         localStorage.removeItem("result");
@@ -1163,34 +1165,85 @@ function generateEnemyTeamName() {
     .catch((error) => console.error("Error fetching team names:", error));
 }
 function generateEnemyTeam() {
-  const totalPlayerCoins = totalcoinforbattle;
+  const totalPlayerCoins = coins + calculateTeamCost(battleLineup);
+  console.log(totalPlayerCoins);
   const enemyTeamCost = totalPlayerCoins;
   let currentCost = 0;
   enemyLineup = [];
 
   let attempts = 0;
   const maxAttempts = 100;
+ const levelUpChance = 0.4; // 40% chance to level up an animal if budget allows.
+ const spawnBusChance = 0.2; // 20% chance to add SpawnBus specialEffect.
 
-  while (enemyLineup.length < maxSlots && currentCost < enemyTeamCost) {
-    const randomAnimal = {
-      ...shopAnimals[Math.floor(Math.random() * shopAnimals.length)],
-    };
+ // Assign random weights to animals to introduce variability.
+ const weightedAnimals = shopAnimals.map((animal) => ({
+   ...animal,
+   weight: animal.cost + Math.random() * 5, // Random factor to introduce unpredictability.
+ }));
 
-    if (currentCost + randomAnimal.cost <= enemyTeamCost) {
-      enemyLineup.push(randomAnimal);
-      currentCost += randomAnimal.cost;
-    }
+ // Sort animals by weighted cost.
+ const sortedAnimals = weightedAnimals
+   .slice()
+   .sort((a, b) => b.weight - a.weight);
 
-    attempts++;
-    if (attempts > maxAttempts) {
-      console.warn("Failed to generate full enemy lineup. Exiting loop.");
-      break;
-    }
-  }
+ while (enemyLineup.length < maxSlots && currentCost < enemyTeamCost) {
+   // Pick a random animal from the top 5 of the weighted list.
+   let randomAnimal = {
+     ...sortedAnimals[
+       Math.floor(Math.random() * Math.min(5, sortedAnimals.length))
+     ],
+   };
 
-  while (enemyLineup.length < maxSlots) {
-    enemyLineup.push(null);
-  }
+   let addedCost = randomAnimal.cost;
+
+   if (Math.random() < levelUpChance) {
+     if (enemyTeamCost - currentCost >= randomAnimal.cost * 6) {
+       randomAnimal.level = 3;
+       addedCost = randomAnimal.cost * 6;
+     } else if (enemyTeamCost - currentCost >= randomAnimal.cost * 3) {
+       randomAnimal.level = 2;
+       addedCost = randomAnimal.cost * 3;
+     } else {
+       randomAnimal.level = 1;
+       addedCost = randomAnimal.cost;
+     }
+   } else {
+     randomAnimal.level = 1; // Default level.
+     addedCost = randomAnimal.cost;
+   }
+
+   if (currentCost + addedCost > enemyTeamCost) {
+     attempts++;
+     if (attempts > maxAttempts) {
+       console.warn("Failed to generate full enemy lineup. Exiting loop.");
+       break;
+     }
+     continue; // Skip this animal and try again.
+   }
+
+   if (Math.random() < spawnBusChance && !randomAnimal.specialEffect) {
+     if (enemyTeamCost - currentCost >= addedCost + 9) {
+       randomAnimal.specialEffect = "SpawnBus";
+       addedCost += 9; // Deduct additional SpawnBus cost if budget allows.
+     }
+   }
+
+   currentCost += addedCost;
+   enemyLineup.push(randomAnimal);
+
+   attempts++;
+   if (attempts > maxAttempts) {
+     console.warn("Failed to generate full enemy lineup. Exiting loop.");
+     break;
+   }
+ }
+
+ while (enemyLineup.length < maxSlots) {
+   enemyLineup.push(null);
+ }
+
+ console.log("Generated enemy lineup:", enemyLineup);
 }
 function calculateTeamCost(team) {
   return team.reduce(
@@ -1808,7 +1861,7 @@ async function handleDeathAnimation(animal, index, teamType) {
 }
 
 async function simulateBattle() {
-  console.clear();
+  // console.clear();
   let turnCount = 1;
   const maxTurns = 10;
   renderTeams();
@@ -2374,7 +2427,7 @@ function DefeatScreen() {
         dimmerOverlay.classList.add("hidden");
         openCurtains(() => {
           resetGame();
-          window.location.href = "/home/homepage.html";
+          window.location.href = "/menu/menu.html";
         });
       }, 1000);
     }, 1000);

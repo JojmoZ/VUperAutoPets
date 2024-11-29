@@ -2,8 +2,9 @@
   font-family: "VUper";
   src: url("../assets/font/LapsusPro-Bold.otf") format("opentype");
 }
-body{
+*{
   font-family: 'VUper';
+
 }
 body::-webkit-scrollbar {
   display: none;
@@ -35,7 +36,6 @@ body {
   margin: 0;
   padding: 0;
   height: 100%;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   overflow: hidden;
 }
 
@@ -74,10 +74,10 @@ canvas {
   height: 3.125rem;
 }
 
-.restricted-area {
+/* .restricted-area {
   background-color: rgba(255, 0, 0, 0.3);
   border: 2px solid red;
-}
+} */
 
 .stat-window {
   position: absolute;
