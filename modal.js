@@ -19,7 +19,7 @@ class Modal {
       display: none;
       justify-content: center;
       align-items: center;
-      z-index: 1000;
+      z-index: 10012312678330;
     `;
     this.modalBox.style.cssText = `
       background: linear-gradient(135deg, rgba(0, 0, 255, 0.8), rgba(255, 0, 0, 0.8));
