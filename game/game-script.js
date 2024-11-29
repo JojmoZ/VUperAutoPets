@@ -919,13 +919,13 @@ document
   .getElementById("confirmTeamNameButton")
   .addEventListener("click", () => {
     teamName = `${selectedAdjective} ${selectedNoun}`;
-    localStorage.setItem("teamName", teamName);
+    localStorage.setItem("teamName", teamName);R
     document.getElementById("teamNameSelectionScreen").classList.add("hidden");
     document
       .getElementById("teamNameSelectionScreen")
       .classList.remove("teamNameSelectionScreen");
     let fromonline = localStorage.getItem("fromOnline");
-    if (fromonline == true) {
+    if (fromonline == "true") {
       showLoadingScreen();
       sendPlayerData();
     } else {
@@ -1172,13 +1172,12 @@ function generateEnemyTeamName() {
 }
 function generateEnemyTeam() {
   const totalPlayerCoins = coins + calculateTeamCost(battleLineup);
-  console.log(totalPlayerCoins);
   const enemyTeamCost = totalPlayerCoins;
   let currentCost = 0;
   enemyLineup = [];
 
   let attempts = 0;
-  const maxAttempts = 100;
+  const maxAttempts = 1000;
  const levelUpChance = 0.4; // 40% chance to level up an animal if budget allows.
  const spawnBusChance = 0.2; // 20% chance to add SpawnBus specialEffect.
 

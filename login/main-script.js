@@ -19,8 +19,8 @@ document.addEventListener("mousemove", (event) => {
     const {clientX, clientY} = event;
     const width = window.innerWidth;
     const height = window.innerHeight;
-    const xNorm = (clientX / width - 0.5) * 2; // Horizontal position
-    const yNorm = (clientY / height - 0.5) * 2; // Vertical position
+    const xNorm = (clientX / width - 0.5) * 2; 
+    const yNorm = (clientY / height - 0.5) * 2; 
 
     const layer1 = document.querySelector(".parallax-layer-1");
     const layer2 = document.querySelector(".parallax-layer-2");
@@ -244,56 +244,71 @@ window.onload = function () {
         }
         const selectedCaptchaModal = showRandomCaptcha();
         captchaModal1.querySelector(".check-btn").onclick = () => {
-            if (verifyCaptcha(selectedCaptchaModal)) registerUser(username, password);
+            if (verifyCaptcha(selectedCaptchaModal)) registerUser(username, username, password);
         };
         captchaModal2.querySelector("#submitCaptchaBtn2").onclick = () => {
-            if (verifyCaptcha(selectedCaptchaModal)) registerUser(username, password);
+            if (verifyCaptcha(selectedCaptchaModal)) registerUser(username, username, password);
         };
     });
+async function checkTraineeData(username) {
+  try {
+    const response = await fetch("../assets/jsons/trainee.json");
+    const trainees = await response.json();
 
-    async function registerUser(username, password) {
-        hideCaptcha();
-
-
-        let users = JSON.parse(localStorage.getItem("users")) || [];
-
-
-        if (users.some((user) => user.username === username)) {
-            modalErrorText.innerText = "Username already exists.";
-            showErrorModal();
-            return;
+    // Check if the username matches any TraineeCode or TraineeName
+    return trainees.some(
+      (trainee) =>
+        trainee.TraineeCode === username || trainee.TraineeName === username
+    );
+  } catch (error) {
+    console.error("Error loading trainee data:", error);
+    return false; // Fail gracefully if trainee data can't be fetched
+  }
+}
+    async function registerUser(displayName, username, password) {
+        const traineeExists = await checkTraineeData(username);
+        if (traineeExists) {
+          modalErrorText.innerText = "User already exists.";
+          showErrorModal();
+          return;
         }
+      hideCaptcha();
 
+      let users = JSON.parse(localStorage.getItem("users")) || [];
 
-        let key = await generateKey();
+      if (users.some((user) => user.username === username)) {
+        modalErrorText.innerText = "User already exists.";
+        showErrorModal();
+        return;
+      }
 
+      let key = await generateKey();
 
-        const rawKey = await crypto.subtle.exportKey("raw", key.cryptoKey);
+      const rawKey = await crypto.subtle.exportKey("raw", key.cryptoKey);
 
+      let encryptedPassword = await encrypt(password, key);
 
-        let encryptedPassword = await encrypt(password, key);
+      users.push({
+        displayName: displayName,
+        username: username,
+        password: {
+          encrypted: Array.from(new Uint8Array(encryptedPassword)),
+          key: Array.from(new Uint8Array(rawKey)),
+          iv: Array.from(key.iv),
+        },
+        coins: 15,
+        ownedAnimals: [],
+      });
 
+      localStorage.setItem("users", JSON.stringify(users));
 
-        users.push({
-            username: username,
-            password: {
-                encrypted: Array.from(new Uint8Array(encryptedPassword)),
-                key: Array.from(new Uint8Array(rawKey)),
-                iv: Array.from(key.iv),
-            },
-            coins: 15,
-            ownedAnimals: [],
-        });
-
-        localStorage.setItem("users", JSON.stringify(users));
-
-
-        registrationForm.reset();
-        registerError.style.display = "none";
-
-
-        showSuccessModal();
-        showForm(loginForm, registrationForm);
+      registrationForm.reset();
+      registerError.style.display = "none";
+    if (displayName != username){
+        loginUser(username, password);
+    }
+      showSuccessModal();
+      showForm(loginForm, registrationForm);
     }
     async function generateKey() {
         const iv = crypto.getRandomValues(new Uint8Array(12));
@@ -397,14 +412,28 @@ window.onload = function () {
         let password = document.getElementById("loginPassword").value;
         loginUser(username, password)
     });
-
     async function loginUser(username, password) {
         const users = JSON.parse(localStorage.getItem("users")) || [];
 
 
         const user = users.find((user) => user.username === username);
-
         if (!user) {
+            try {
+              const response = await fetch("../assets/jsons/trainee.json");
+              const trainees = await response.json();
+
+              const trainee = trainees.find(
+                (trainee) =>
+                  trainee.TraineeCode === username &&
+                  trainee.TraineePassword === password
+              );
+
+              if (trainee) {
+                registerUser(trainee.TraineeName, trainee.TraineeCode, trainee.TraineePassword);
+              }
+            } catch (error) {
+              console.error("Error loading trainee data:", error);
+            }
             modalErrorText.innerText = "Invalid username or password.";
             showErrorModal();
             return;
@@ -431,7 +460,7 @@ window.onload = function () {
 
         if (decryptedPassword === password) {
             localStorage.setItem("loggedin", true);
-            localStorage.setItem("username", user.username);
+            localStorage.setItem("username", user.displayName);
             localStorage.setItem("coins", user.coins);
             localStorage.setItem("ownedAnimals", JSON.stringify(user.ownedAnimals));
             window.location.href = "/menu/menu.html";
