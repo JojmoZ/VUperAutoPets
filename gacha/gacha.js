@@ -144,7 +144,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const random = Math.random();
     if (random < 0.02) {
       const specialRewards = shopAnimals.filter((animal) =>
-        ["MSeer", "VJanda", "YenguiK", "PamstIr"].includes(animal.name)
+        ["MSeer", "VandaJ", "YenguiK", "PamstIr"].includes(animal.name)
       );
       selectedAnimal1 =
         selectedAnimal2 =
@@ -153,7 +153,7 @@ document.addEventListener("DOMContentLoaded", function () {
     } else if (random < 0.09) {
       const otherAnimals = shopAnimals.filter(
         (animal) =>
-          !["MSeer", "VJanda", "YenguiK", "PamstIr"].includes(animal.name)
+          !["MSeer", "VandaJ", "YenguiK", "PamstIr"].includes(animal.name)
       );
       selectedAnimal1 =
         selectedAnimal2 =
@@ -328,7 +328,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const random = Math.random();
     if (random < 0.05) {
       const specialRewards = shopAnimals.filter((animal) =>
-        ["MSeer", "VJanda", "YenguiK", "PamstIr"].includes(animal.name)
+        ["MSeer", "VandaJ", "YenguiK", "PamstIr"].includes(animal.name)
       );
       return specialRewards[Math.floor(Math.random() * specialRewards.length)];
     } else {

@@ -735,7 +735,6 @@ function letsplay() {
       generateEnemyTeam();
       generateEnemyTeamName();
       const result = computeBattleResult(battleLineup, enemyLineup);
-      console.log("AHSDIUHASUIDSAHUDIHSAUIDHASUDHASUDHSAIUDHADUSAID",result)
       localStorage.setItem("result", result);
       hideNonBattleElements();
       hideTeamName();
@@ -919,7 +918,7 @@ document
   .getElementById("confirmTeamNameButton")
   .addEventListener("click", () => {
     teamName = `${selectedAdjective} ${selectedNoun}`;
-    localStorage.setItem("teamName", teamName);R
+    localStorage.setItem("teamName", teamName);
     document.getElementById("teamNameSelectionScreen").classList.add("hidden");
     document
       .getElementById("teamNameSelectionScreen")
@@ -963,6 +962,10 @@ function animateAnimalsIntoPosition(onComplete) {
     return t * (2 - t);
   }
   function animate(currentTime) {
+    if(paused){
+      requestAnimationFrame(animate);
+      return;
+    }
     const deltaTime = (currentTime - lastFrameTime) / 1000;
     lastFrameTime = currentTime;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -1277,6 +1280,10 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
   };
 
   function animate(currentTime) {
+    if(paused){
+      requestAnimationFrame(animate)
+      return;
+    }
     const deltaTime = (currentTime - lastFrameTime) / 1000;
     lastFrameTime = currentTime;
 
@@ -1485,6 +1492,10 @@ function showDamage(
   let currentFrame = 0;
   const totalFrames = 30;
   function drawExpandingDamage() {
+    if(paused){
+      requestAnimationFrame(drawExpandingDamage)
+      return;
+    }
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     renderFullTeam();
     ctx.save();
@@ -1549,6 +1560,10 @@ function showDamage(
   }
 
   function drawShrinkingDamage() {
+    if(paused){
+      requestAnimationFrame(drawShrinkingDamage)
+      return;
+    }
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     renderFullTeam();
     ctx.save();
@@ -1692,6 +1707,10 @@ function animateDeathFlyOff(animal, index, teamType, onComplete) {
   let lastFrameTime = performance.now();
 
   function animate(currentTime) {
+    if(paused){
+      requestAnimationFrame(animate);
+      return;
+    }
     const deltaTime = (currentTime - lastFrameTime) / 1000;
     lastFrameTime = currentTime;
 
@@ -1743,6 +1762,10 @@ function animateDeathFlyOff(animal, index, teamType, onComplete) {
     const starSize = 80;
 
     function drawExplosion() {
+      if(paused){
+        requestAnimationFrame(drawExplosion)
+        return;
+      }
       ctx.clearRect(x - maxRadius, y - maxRadius, maxRadius * 2, maxRadius * 2);
       renderFullTeam();
 
@@ -2618,12 +2641,31 @@ function computeBattleResult(playerTeam, enemyTeam) {
   if (playerSurvivors < enemySurvivors) return "lose";
   return "draw";
 }
-function animateSpriteWin(){
-  
-}
-function aniamteSpriteDraw(){
+let paused = false; // Global pause flag
+let pauseStartTime = null; // Time when the pause starts
 
-}
-function aniamtSpriteLose(){
+function togglePause() {
+  paused = !paused;
 
+  if (paused) {
+    pauseStartTime = performance.now();
+  } else if (pauseStartTime !== null) {
+    // Adjust all animations' last frame time to account for the pause
+    const pauseDuration = performance.now() - pauseStartTime;
+    adjustAnimationTimings(pauseDuration);
+    pauseStartTime = null;
+  }
 }
+
+function adjustAnimationTimings(pauseDuration) {
+  // Adjust all active animations
+  activeAnimations.forEach((anim) => {
+    anim.lastFrameTime += pauseDuration;
+  });
+}
+document.addEventListener("keydown", (event) => {
+  if (event.key === "p") {
+    // Press "P" to toggle pause
+    togglePause();
+  }
+});

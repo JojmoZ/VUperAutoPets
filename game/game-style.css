@@ -16,6 +16,8 @@ body {
   background-image: url("../assets/maps/Field.webp");
   background-size: contain;
   background-position: center;
+  
+  cursor: url("../assets/cursor/cursor1-smol.jpeg"), default;
 }
 #mainContainer {
   display: flex;
@@ -34,7 +36,7 @@ body {
   position: relative;
   background-image: url(../assets/game-asset/stone.png);
   background-repeat: no-repeat;
-  background-size: contain; 
+  background-size: contain;
   background-position: bottom;
   margin: 0.625rem;
   display: flex;
@@ -108,7 +110,7 @@ img {
   top: 0;
   left: 0;
   padding: 0;
-  margin:0;
+  margin: 0;
   border: none;
   background-color: transparent;
   cursor: pointer;
@@ -685,7 +687,7 @@ img {
   background-color: white;
   text-align: center;
   width: auto;
-  padding:0rem 1rem;
+  padding: 0rem 1rem;
   border-radius: 10px;
   z-index: 10;
   border: 4px solid black;
@@ -693,7 +695,7 @@ img {
 
 #teamNameYour {
   top: 10%;
-  color:#02B6FF;
+  color: #02b6ff;
   left: 25%;
   transform: translateX(-50%);
 }
@@ -701,7 +703,7 @@ img {
 #teamNameEnemy {
   top: 10%;
   right: 25%;
-  color:#FF6933;
+  color: #ff6933;
   transform: translateX(50%);
 }
 
@@ -710,7 +712,7 @@ img {
   top: 10%;
   left: 47.5%;
   transform: translate(-50%, -50%);
-  padding:0.2rem 1rem;
+  padding: 0.2rem 1rem;
   border-radius: 10px;
   font-size: 3rem;
   font-weight: bold;
