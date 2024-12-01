@@ -66,7 +66,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (elapsedTime >= totalGameTime) {
       triggerTransitionToGame()
-      // window.location.href = "../game/game.html";
     }
   }
  function triggerTransitionToGame() {
