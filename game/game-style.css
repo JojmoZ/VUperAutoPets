@@ -364,8 +364,8 @@ img {
 }
 #freezeButton {
   position: absolute;
-  right: 50%;
-  width: 6.875rem;
+  right: 45%;
+  /* width: 6.875rem; */
   height: 6.25rem;
   background-color: transparent;
   cursor: pointer;
