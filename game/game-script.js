@@ -1,55 +1,51 @@
-const socketUrl = "ws://localhost:8080";
 let socket;
+let isPaired = false;
 
+let pairingTimeout = null; 
+let pairingDuration = 50000; 
 function connectWebSocket() {
-  socket = new WebSocket(socketUrl);
+  socket = new WebSocket("ws://localhost:8080");
 
   socket.onopen = () => {
     console.log("Connected to server");
   };
 
-  socket.onmessage = async (event) => {
-    try {
-      const message =
-        typeof event.data === "string" ? event.data : await event.data.text();
-      const data = JSON.parse(message);
+  socket.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+    console.log("Received message from server:", data);
 
-      if (data.message === "paired") {
-        console.log("Paired with another player!");
-        isPaired = true;
+    if (data.type === "waiting") {
+      console.log("Waiting for an opponent...");
+    }
 
-        checkStartCondition();
-      } else if (data.battleLineup && data.teamName) {
-        enemyLineup = data.battleLineup;
-        enemyTeamName = data.teamName;
-        console.log("Received opponent data:", enemyLineup, enemyTeamName);
-        receivedOpponentData = true;
-        checkStartCondition();
-      } else if (data.type === "start" && !gameStarted) {
-        console.log("Starting the game!");
-        hideLoadingScreen();
-        gameStarted = true;
-        letsplayonline();
-      }
-    } catch (error) {
-      console.error("Error parsing WebSocket message:", error);
+    if (data.type === "paired") {
+      console.log("Paired with an opponent!");
+      isPaired = true;
+      sendPlayerData(); 
+    }
+
+    if (data.type === "opponentData") {
+      console.log("Received opponent data:", data);
+      enemyLineup = data.battleLineup;
+      enemyTeamName = data.teamName;
+      receivedOpponentData = true;
+      checkStartCondition();
+    }
+
+    if (data.type === "start") {
+      console.log("Both players are ready. Starting the game!");
+      hideLoadingScreen();
+      letsplayonline();
     }
   };
 
   socket.onclose = () => {
-    console.log("Connection lost, attempting to reconnect...");
-    setTimeout(connectWebSocket, 100);
-  };
-
-  socket.onerror = (error) => {
-    console.error("WebSocket error:", error);
-    socket.close();
+    console.log("Connection closed");
+    isPaired = false;
   };
 }
 
 connectWebSocket();
-
-let isPaired = false;
 let playerDataSent = false;
 let receivedOpponentData = false;
 let gameStarted = false;
@@ -818,18 +814,17 @@ function letsplayonline() {
 }
 
 function sendPlayerData() {
-  if (isPaired && !playerDataSent) {
+  if (isPaired) {
     socket.send(
       JSON.stringify({
-        type: "data",
+        type: "sendData",
         battleLineup: battleLineup,
         teamName: teamName,
       })
     );
+    console.log("Sent player data");
     playerDataSent = true;
-    console.log("Sent player data to server.");
-    socket.send(JSON.stringify({ type: "ready" }));
-    console.log("Notified server: ready");
+    checkStartCondition();
   }
 }
 function checkStartCondition() {
@@ -849,7 +844,20 @@ document
       fadeInElements();
     } else {
       showLoadingScreen();
-      sendPlayerData();
+       if (socket && socket.readyState === WebSocket.OPEN) {
+         socket.send(JSON.stringify({ type: "joinQueue" }));
+         console.log("Sent joinQueue request to the server.");
+       } else {
+         console.error("WebSocket is not connected.");
+         hideLoadingScreen();
+         location.reload();
+         return;
+       }
+
+       pairingTimeout = setTimeout(() => {
+         console.log("No opponent found. Reloading...");
+         location.reload(); 
+       }, pairingDuration);
     }
   });
 
@@ -1170,7 +1178,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     totalcoinforbattle = coins;
   }
-  let ingame = localStorage.getItem('ingame') || "true";
+  let ingame = localStorage.getItem("ingame") || "true";
   fetch("../assets/jsons/items.json")
     .then((response) => {
       if (!response.ok) {
@@ -1192,7 +1200,7 @@ document.addEventListener("DOMContentLoaded", function () {
   updateCoinsDisplay();
   playBackgroundMusic();
   document.addEventListener("dragend", hideFreezeBin);
-  localStorage.setItem('ingame',false)
+  localStorage.setItem("ingame", false);
 });
 function updateCoinsDisplay() {
   localStorage.setItem("gamecoins", coins);
@@ -1220,22 +1228,22 @@ function generateEnemyTeam() {
 
   let attempts = 0;
   const maxAttempts = 1000;
-  const levelUpChance = 0.4; // 40% chance to level up an animal if budget allows.
-  const spawnBusChance = 0.2; // 20% chance to add SpawnBus specialEffect.
+  const levelUpChance = 0.4; 
+  const spawnBusChance = 0.2; 
 
-  // Assign random weights to animals to introduce variability.
+  
   const weightedAnimals = shopAnimals.map((animal) => ({
     ...animal,
-    weight: animal.cost + Math.random() * 5, // Random factor to introduce unpredictability.
+    weight: animal.cost + Math.random() * 5, 
   }));
 
-  // Sort animals by weighted cost.
+  
   const sortedAnimals = weightedAnimals
     .slice()
     .sort((a, b) => b.weight - a.weight);
 
   while (enemyLineup.length < maxSlots && currentCost < enemyTeamCost) {
-    // Pick a random animal from the top 5 of the weighted list.
+    
     let randomAnimal = {
       ...sortedAnimals[
         Math.floor(Math.random() * Math.min(5, sortedAnimals.length))
@@ -1256,7 +1264,7 @@ function generateEnemyTeam() {
         addedCost = randomAnimal.cost;
       }
     } else {
-      randomAnimal.level = 1; // Default level.
+      randomAnimal.level = 1; 
       addedCost = randomAnimal.cost;
     }
 
@@ -1266,13 +1274,13 @@ function generateEnemyTeam() {
         console.warn("Failed to generate full enemy lineup. Exiting loop.");
         break;
       }
-      continue; // Skip this animal and try again.
+      continue; 
     }
 
     if (Math.random() < spawnBusChance && !randomAnimal.specialEffect) {
       if (enemyTeamCost - currentCost >= addedCost + 9) {
         randomAnimal.specialEffect = "SpawnBus";
-        addedCost += 9; // Deduct additional SpawnBus cost if budget allows.
+        addedCost += 9; 
       }
     }
 
@@ -1422,13 +1430,13 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
     let pauseStartTime = null;
     function animateBack(currentTime) {
       if (paused) {
-        if (!pauseStartTime) pauseStartTime = currentTime; // Record when pause started
+        if (!pauseStartTime) pauseStartTime = currentTime; 
         requestAnimationFrame(animateBack);
         return;
       }
 
       if (pauseStartTime) {
-        // Adjust last frame time to account for pause duration
+        
         lastReturnFrameTime += currentTime - pauseStartTime;
         pauseStartTime = null;
       }
@@ -1761,10 +1769,10 @@ function animateDeathFlyOff(animal, index, teamType, onComplete) {
   const controlPointX = (startX + endX) / 2;
   const controlPointY = startY - 400;
   let lastFrameTime = performance.now();
- let pauseStartTime = null;
+  let pauseStartTime = null;
   function animate(currentTime) {
     if (paused) {
-      if (!pauseStartTime) pauseStartTime = currentTime; // Record pause start
+      if (!pauseStartTime) pauseStartTime = currentTime; 
       requestAnimationFrame(animate);
       return;
     }
@@ -1943,8 +1951,8 @@ async function handleDeathAnimation(animal, index, teamType) {
   });
 }
 async function simulateBattle() {
-  // console.clear();
-  localStorage.setItem('ingame',true);
+  
+  localStorage.setItem("ingame", true);
   let turnCount = 1;
   const maxTurns = 10;
   renderTeams();
@@ -2705,8 +2713,8 @@ function computeBattleResult(playerTeam, enemyTeam) {
   if (playerSurvivors < enemySurvivors) return "lose";
   return "draw";
 }
-let paused = false; // Global pause flag
-let pauseStartTime = null; // Time when the pause starts
+let paused = false; 
+let pauseStartTime = null; 
 const pauseButton = document.getElementById("pause-btn");
 function togglePause() {
   paused = !paused;
@@ -2719,7 +2727,7 @@ function togglePause() {
       "../assets/home-asset/pause.png";
     const pauseDuration = performance.now() - pauseStartTime;
     activeAnimations.forEach((anim) => {
-      anim.lastFrameTime += pauseDuration; // Compensate for time spent paused
+      anim.lastFrameTime += pauseDuration; 
     });
     pauseStartTime = null;
   }
