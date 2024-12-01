@@ -255,7 +255,7 @@ function renderRandomAnimals() {
     const healthContainer = document.createElement("div");
     healthContainer.classList.add("stat-icon");
     const healthIcon = document.createElement("img");
-    healthIcon.src = "../assets/game-asset/heart.png";
+    healthIcon.src = "../assets/game-asset/stat-heart.png";
     const healthText = document.createElement("span");
     healthText.textContent = animal.health;
     healthText.classList.add("stat-text");
@@ -506,7 +506,7 @@ function renderBattleSlots() {
       const healthContainer = document.createElement("div");
       healthContainer.classList.add("stat-icon");
       const healthIcon = document.createElement("img");
-      healthIcon.src = "../assets/game-asset/heart.png";
+      healthIcon.src = "../assets/game-asset/stat-heart.png";
       healthIcon.draggable = false;
       const healthText = document.createElement("span");
       healthText.textContent = animal.health;

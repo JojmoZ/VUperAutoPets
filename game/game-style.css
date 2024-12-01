@@ -161,10 +161,9 @@ img {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 0.75rem;
+  font-size: 0.9rem;
   font-weight: bold;
   color: white;
-  text-shadow: 1px 1px 2px black;
 }
 .hidden {
   display: none;
