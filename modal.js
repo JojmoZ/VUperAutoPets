@@ -36,14 +36,12 @@ class Modal {
     this.modalContent.style.cssText = `
       margin-bottom: 20px;
       font-size: 2.5rem;
-      font-family: 'VUper';
       color: white;
       line-height: 1.5;
     `;
     this.modalCloseButton.style.cssText = `
       padding: 15px 30px;
       font-size: 1.2rem;
-      font-family: 'VUper';
       background-color: #007bff;
       color: white;
       border: none;
@@ -73,7 +71,6 @@ class Modal {
       right: 10px;
       top: 50%;
       transform: translateY(-50%);
-      font-family:'VUper'
       font-size: 1.5rem;
       opacity: 0;
       transition: opacity 0.3s ease;

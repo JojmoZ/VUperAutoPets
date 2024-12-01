@@ -1,3 +1,7 @@
+@font-face {
+    font-family: 'VUper';
+    src: url('../assets/font/LapsusPro-Bold.otf') format('opentype');
+}
 *, *::before, *::after {
     margin: 0;
     padding: 0;
@@ -5,7 +9,7 @@
 }
 
 body {
-    font-family: 'Lapsus Pro', sans-serif;
+    font-family: 'VUper', sans-serif;
     background: url("../assets/background/menu-bg.png") no-repeat center center fixed;
     height: 100vh;
 }
