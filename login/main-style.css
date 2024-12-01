@@ -18,7 +18,22 @@ body {
 .hide-scrollbar::-webkit-scrollbar {
     display: none;
 }
+.error-message {
+    color: red;
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+    opacity: 0;
+    height: 0;
+    overflow: hidden; 
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease, height 0.3s ease;
+}
 
+.error-message.show {
+    opacity: 1;
+    height: 1rem;
+    transform: translateY(0);
+}
 .hide-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -769,6 +784,8 @@ body.modal-active {
 
 .input-group {
     position: relative;
+     margin-bottom: 1rem; /* Add space for potential error messages */
+  transition: all 0.3s ease;
     font-size: 1.25rem;
     --primary: #cbac24;
 }

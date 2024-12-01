@@ -212,16 +212,63 @@ window.onload = function () {
         const username = document.getElementById("registerUsername").value;
         const password = document.getElementById("registerPassword").value;
         const confirmPassword = document.getElementById("confirmPassword").value;
-        if (username === "" || password === "" || confirmPassword === "") {
-            modalErrorText.innerHTML = "Please fill all fields";
-            showErrorModal();
-            return;
-        }
-        if (password !== confirmPassword) {
-            modalErrorText.innerText = "Passwords do not match.";
-            showErrorModal();
-            return;
-        }
+        document.querySelectorAll(".error-message").forEach((error) => {
+          error.classList.remove("show");
+        });
+    const prohibitedUsernames = ["admin", "trainer", "recsel"];
+    const isUsernameValid = (username) => {
+        return (
+            username.length >= 5 &&
+            username.length <= 20 &&
+            !prohibitedUsernames.includes(username.toLowerCase())
+        );
+    };
+
+    const isPasswordValid = (password) => {
+        const hasUppercase = /[A-Z]/.test(password);
+        const hasLowercase = /[a-z]/.test(password);
+        const noRepeatedChars = !/(.)\1{1,}/.test(password); 
+        return hasUppercase && hasLowercase && noRepeatedChars;
+    };
+
+    if (username === "" || password === "" || confirmPassword === "") {
+        modalErrorText.innerHTML = "Please fill all fields";
+        showErrorModal();
+        return;
+    }
+
+    if (!isUsernameValid(username)) {
+        showError(
+          "username",
+          "Username must be between 5-20 characters long"
+        );
+
+        return;
+    }
+
+    if (!isPasswordValid(password)) {
+           showError(
+             "password",
+             "Password must have at least one uppercase, one lowercase letter, no 2 repeated characters in a row, and cannot match the username."
+           );
+
+        return;
+    }
+
+    if (password === username) {
+         showError(
+           "password",
+           "Password Must not be the same as the username"
+         );
+
+        return;
+    }
+
+    if (password !== confirmPassword) {
+        showError("confirmPassword", "Passwords do not match");
+        return;
+    }
+
         const selectedCaptchaModal = showRandomCaptcha();
         captchaModal1.querySelector(".check-btn").onclick = () => {
             if (verifyCaptcha(selectedCaptchaModal)) registerUser(username, username, password);
@@ -244,6 +291,22 @@ window.onload = function () {
             return false; 
         }
     }
+function showError(inputId, message) {
+  const errorElement = document.getElementById(`${inputId}Error`);
+  if (errorElement) {
+    errorElement.textContent = message;
+    errorElement.classList.add("show");
+    setTimeout(() => {
+      hideError(inputId);
+    }, 5000);
+  }
+}
+function hideError(inputId) {
+  const errorElement = document.getElementById(`${inputId}Error`);
+  if (errorElement) {
+    errorElement.classList.remove("show");
+  }
+}
 
     async function registerTrainee(displayName, username, password) {
       hideCaptcha();

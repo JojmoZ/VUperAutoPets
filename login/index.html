@@ -37,6 +37,7 @@
           <div class="input-group">
             <input class="input" type="text" id="registerUsername" name="username" required autocomplete="off">
             <label class="label" for="registerUsername">Username</label>
+            <p class="error-message" id="usernameError"></p>
           </div>
           <div class="input-group">
             <input class="input" type="password" id="registerPassword" name="password" required autocomplete="off">
@@ -44,6 +45,7 @@
             <button type="button" class="toggle-password" data-target="registerPassword">
               <img src="../assets/login/eye.png" alt="Toggle Visibility">
             </button>
+            <p class="error-message" id="passwordError"></p>
           </div>
           <div class="input-group">
             <input class="input" type="password" id="confirmPassword" name="confirmPassword" required
@@ -52,6 +54,7 @@
             <button type="button" class="toggle-password" data-target="confirmPassword">
               <img src="../assets/login/eye.png" alt="Toggle Visibility">
             </button>
+            <p class="error-message" id="confirmPasswordError"></p>
           </div>
           <p id="registerError" class="error"></p>
           <button class="btn" type="submit">
