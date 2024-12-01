@@ -369,7 +369,7 @@ function createFood(event) {
   foodElement.style.height = "1.75rem";
   foodElement.style.backgroundImage = "url('../assets/items/Pizza.webp')";
   foodElement.style.backgroundSize = "cover";
-  foodElement.style.borderRadius = "50%";
+  // foodElement.style.borderRadius = "50%";
   foodElement.style.left = `${foodX}px`;
   foodElement.style.top = `${foodY}px`;
   animalContainer.appendChild(foodElement);
