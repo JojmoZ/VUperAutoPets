@@ -70,28 +70,28 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
  function triggerTransitionToGame() {
-   if (document.querySelector(".overlay")) return; // Prevent multiple overlays
+   if (document.querySelector(".overlay")) return; 
 
-   // Create a black screen overlay
+   
    const blackOverlay = document.createElement("div");
    blackOverlay.classList.add("overlay");
    document.body.appendChild(blackOverlay);
 
-   // Add the logo to the overlay
+   
    const logo = document.createElement("img");
    logo.src = "../assets/title-logo.png";
    logo.classList.add("logo");
    blackOverlay.appendChild(logo);
 
-   // Add the "fade-in" class after a slight delay to trigger the transitions
+   
    setTimeout(() => {
      blackOverlay.classList.add("fade-in-overlay");
      logo.classList.add("fade-in-logo");
 
-     // Redirect after the animation completes
+     
      setTimeout(() => {
        window.location.href = "/game/game.html";
-     }, 5000); // Adjust timing to match the fade-in duration
+     }, 5000); 
    }, 100);
  }
 
