@@ -1164,12 +1164,13 @@ document.addEventListener("DOMContentLoaded", function () {
       console.log("No previous result stored.");
     }
     if (randomAnimals.length === 0) {
-      rollShopAnimals();
+      renderRandomAnimals();
     } else {
       renderRandomAnimals();
     }
     totalcoinforbattle = coins;
   }
+  let ingame = localStorage.getItem('ingame') || "true";
   fetch("../assets/jsons/items.json")
     .then((response) => {
       if (!response.ok) {
@@ -1180,13 +1181,18 @@ document.addEventListener("DOMContentLoaded", function () {
     .then((data) => {
       console.log("Fetched items:", data);
       items = data;
-      refreshItems();
+      if (ingame == "true") {
+        refreshItems();
+      } else {
+        loadRandomItems();
+      }
     })
     .catch((error) => console.error("Error loading items:", error));
 
   updateCoinsDisplay();
   playBackgroundMusic();
   document.addEventListener("dragend", hideFreezeBin);
+  localStorage.setItem('ingame',false)
 });
 function updateCoinsDisplay() {
   localStorage.setItem("gamecoins", coins);
@@ -1755,12 +1761,19 @@ function animateDeathFlyOff(animal, index, teamType, onComplete) {
   const controlPointX = (startX + endX) / 2;
   const controlPointY = startY - 400;
   let lastFrameTime = performance.now();
-
+ let pauseStartTime = null;
   function animate(currentTime) {
     if (paused) {
+      if (!pauseStartTime) pauseStartTime = currentTime; // Record pause start
       requestAnimationFrame(animate);
       return;
     }
+
+    if (pauseStartTime) {
+      lastFrameTime += currentTime - pauseStartTime;
+      pauseStartTime = null;
+    }
+
     const deltaTime = (currentTime - lastFrameTime) / 1000;
     lastFrameTime = currentTime;
 
@@ -1931,6 +1944,7 @@ async function handleDeathAnimation(animal, index, teamType) {
 }
 async function simulateBattle() {
   // console.clear();
+  localStorage.setItem('ingame',true);
   let turnCount = 1;
   const maxTurns = 10;
   renderTeams();
@@ -2120,11 +2134,7 @@ function loadRandomItems() {
   const savedItems = JSON.parse(localStorage.getItem("currentItems")) || [];
   currentItem1 = savedItems[0] ? { ...savedItems[0] } : null;
   currentItem2 = savedItems[1] ? { ...savedItems[1] } : null;
-  if (!currentItem1 && !currentItem2) {
-    refreshItems();
-  } else {
-    renderItem();
-  }
+  renderItem();
 }
 function refreshItems() {
   if (items.length === 0) {
@@ -2595,8 +2605,8 @@ function updateBattleText(onComplete) {
   const yourTeamNameElement = document.getElementById("teamNameEnemy");
   const enemyTeamNameElement = document.getElementById("teamNameYour");
   const vsLabelElement = document.getElementById("vsLabel");
-  yourTeamNameElement.textContent = teamName;
-  enemyTeamNameElement.textContent = enemyTeamName;
+  yourTeamNameElement.textContent = enemyTeamName;
+  enemyTeamNameElement.textContent = teamName;
   yourTeamNameElement.style.opacity = 0;
   enemyTeamNameElement.style.opacity = 0;
   vsLabelElement.style.opacity = 0;

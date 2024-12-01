@@ -246,71 +246,89 @@ window.onload = function () {
         }
     }
 
-    async function registerUser(displayName, username, password, isTrainee = false) {
-        // Hide captcha
-        hideCaptcha();
-
-        // Check for existing user (including trainee check if needed)
-        if (isTrainee) {
-            const traineeExists = await checkTraineeData(username);
-            if (traineeExists) {
-                modalErrorText.innerText = "User already exists.";
-                showErrorModal();
-                return;
-            }
-        }
-
-        // Get current users list
-        let users = JSON.parse(localStorage.getItem("users")) || [];
-
-        // Check if username already exists in local storage
-        if (users.some((user) => user.username === username)) {
-            modalErrorText.innerText = "User already exists.";
-            showErrorModal();
-            return;
-        }
-
-        // Generate encryption key
-        let key = await generateKey();
-
-        // Export raw key
-        const rawKey = await crypto.subtle.exportKey("raw", key.cryptoKey);
-
-        // Encrypt password
-        let encryptedPassword = await encrypt(password, key);
-
-        // Create new user object
-        users.push({
-            displayName: displayName,
-            username: username,
-            password: {
-                encrypted: Array.from(new Uint8Array(encryptedPassword)),
-                key: Array.from(new Uint8Array(rawKey)),
-                iv: Array.from(key.iv),
-            },
-            coins: 15,
-            ownedAnimals: [],
-        });
-
-        // Save updated users list
-        localStorage.setItem("users", JSON.stringify(users));
-
-        // Reset form and hide error
-        registrationForm.reset();
-        registerError.style.display = "none";
-
-        // Login if display name is different from username
-        if (displayName !== username) {
-            await loginUser(username, password);
-        }
-
-        // Show success and switch forms
-        showSuccessModal();
-        showForm(loginForm, registrationForm);
-    }
-
     async function registerTrainee(displayName, username, password) {
-        await registerUser(displayName, username, password, true);
+      hideCaptcha();
+
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+
+      if (users.some((user) => user.username === username)) {
+        modalErrorText.innerText = "User already exists.";
+        showErrorModal();
+        return;
+      }
+
+      let key = await generateKey();
+
+      const rawKey = await crypto.subtle.exportKey("raw", key.cryptoKey);
+
+      let encryptedPassword = await encrypt(password, key);
+
+      users.push({
+        displayName: displayName,
+        username: username,
+        password: {
+          encrypted: Array.from(new Uint8Array(encryptedPassword)),
+          key: Array.from(new Uint8Array(rawKey)),
+          iv: Array.from(key.iv),
+        },
+        coins: 15,
+        ownedAnimals: [],
+      });
+
+      localStorage.setItem("users", JSON.stringify(users));
+
+      registrationForm.reset();
+      registerError.style.display = "none";
+      if (displayName != username) {
+        loginUser(username, password);
+      }
+      showSuccessModal();
+      showForm(loginForm, registrationForm);
+    }
+    async function registerUser(displayName, username, password) {
+      const traineeExists = await checkTraineeData(username);
+      if (traineeExists) {
+        modalErrorText.innerText = "User already exists.";
+        showErrorModal();
+        return;
+      }
+      hideCaptcha();
+
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+
+      if (users.some((user) => user.username === username)) {
+        modalErrorText.innerText = "User already exists.";
+        showErrorModal();
+        return;
+      }
+
+      let key = await generateKey();
+
+      const rawKey = await crypto.subtle.exportKey("raw", key.cryptoKey);
+
+      let encryptedPassword = await encrypt(password, key);
+
+      users.push({
+        displayName: displayName,
+        username: username,
+        password: {
+          encrypted: Array.from(new Uint8Array(encryptedPassword)),
+          key: Array.from(new Uint8Array(rawKey)),
+          iv: Array.from(key.iv),
+        },
+        coins: 15,
+        ownedAnimals: [],
+      });
+
+      localStorage.setItem("users", JSON.stringify(users));
+
+      registrationForm.reset();
+      registerError.style.display = "none";
+      if (displayName != username) {
+        loginUser(username, password);
+      }
+      showSuccessModal();
+      showForm(loginForm, registrationForm);
     }
 
     async function generateKey() {
