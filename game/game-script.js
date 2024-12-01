@@ -334,6 +334,9 @@ function handleDrop(event) {
       saveRandomAnimals();
       renderBattleSlots();
     } else {
+      console.log(selectedAnimal.cost);
+      console.log(battleLineup[reversedSlotIndex]);
+      console.log(currentAnimal);
       const randomAnimalElement = document.querySelector(
         `#random-animals .animal[data-index="${animalIndex}"] img`
       );
@@ -755,11 +758,11 @@ function letsplay() {
       showCurtains();
       playing = true;
       closeCurtains();
-      setTimeout(() => {
+      setTimeout(async () => {
         backupLineup();
         shiftAnimalsToFront();
-        //generateBossTeam();
-        //generateBossTeamName();
+        await generateBossTeam();
+        generateBossTeamName();
         const result = computeBattleResult(battleLineup, enemyLineup);
         localStorage.setItem("result", result);
         hideNonBattleElements();
@@ -780,6 +783,34 @@ function letsplay() {
       }, 1000);
     }
   }
+}
+async function generateBossTeam() {
+  try {
+    
+    const response = await fetch("../assets/jsons/Boss.json");
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const bossData = await response.json();
+
+    
+    const shuffledBosses = bossData.sort(() => Math.random() - 0.5);
+
+    
+    enemyLineup = shuffledBosses.map((boss) => ({ ...boss }));
+
+    
+    while (enemyLineup.length < maxSlots) {
+      enemyLineup.push(null);
+    }
+
+    console.log("Generated Boss Team:", enemyLineup);
+  } catch (error) {
+    console.error("Error loading boss team:", error);
+  }
+}
+function generateBossTeamName(){
+   enemyTeamName = 'RECSEL SQUAD';
 }
 function letsplayonline() {
   if (playing) return;
@@ -1128,7 +1159,6 @@ function playBattleMusic() {
 }
 document.addEventListener("DOMContentLoaded", function () {
   hideRightSide();
-  // randomizeRightHalfMap()
   const teamName = localStorage.getItem("teamName") || "No Team Name";
   BossBattle = false;
   hideBattleText();
@@ -2680,7 +2710,8 @@ function computeBattleResult(playerTeam, enemyTeam) {
   const enemyTeamCopy = enemyTeam.map((animal) =>
     animal ? { ...animal } : null
   );
-
+  console.log(enemyTeam)
+  console.log(enemyTeamCopy)
   let playerIndex = 0;
   let enemyIndex = 0;
 
@@ -2691,26 +2722,37 @@ function computeBattleResult(playerTeam, enemyTeam) {
     let playerAnimal = playerTeamCopy[playerIndex];
     let enemyAnimal = enemyTeamCopy[enemyIndex];
 
-    if (!playerAnimal) {
+    console.log(
+      `Turn Start - Player Animal: ${playerAnimal?.name || "None"}, Attack: ${
+        playerAnimal?.attack || 0
+      }, Health: ${playerAnimal?.health || 0}`
+    );
+    console.log(
+      `Enemy Animal: ${enemyAnimal?.name || "None"}, Attack: ${
+        enemyAnimal?.attack || 0
+      }, Health: ${enemyAnimal?.health || 0}`
+    );
+
+    if (!playerAnimal || playerAnimal.health <= 0) {
       playerIndex++;
       continue;
     }
-    if (!enemyAnimal) {
+    if (!enemyAnimal || enemyAnimal.health <= 0) {
       enemyIndex++;
       continue;
     }
 
     enemyAnimal.health -= playerAnimal.attack;
-    if (enemyAnimal.health <= 0) {
-      enemyIndex++;
-      continue;
-    }
-
     playerAnimal.health -= enemyAnimal.attack;
-    if (playerAnimal.health <= 0) {
-      playerIndex++;
-    }
+
+    console.log(
+      `Turn End - Player Animal Health: ${playerAnimal.health}, Enemy Animal Health: ${enemyAnimal.health}`
+    );
+
+    if (enemyAnimal.health <= 0) enemyIndex++;
+    if (playerAnimal.health <= 0) playerIndex++;
   }
+
 
   const playerSurvivors = playerTeamCopy.filter(
     (animal) => animal && animal.health > 0
@@ -2718,11 +2760,19 @@ function computeBattleResult(playerTeam, enemyTeam) {
   const enemySurvivors = enemyTeamCopy.filter(
     (animal) => animal && animal.health > 0
   ).length;
-
+console.log(
+  "Player Survivors:",
+  playerTeamCopy.filter((animal) => animal && animal.health > 0).length
+);
+console.log(
+  "Enemy Survivors:",
+  enemyTeamCopy.filter((animal) => animal && animal.health > 0).length
+);
   if (playerSurvivors > enemySurvivors) return "win";
   if (playerSurvivors < enemySurvivors) return "lose";
   return "draw";
 }
+
 let paused = false; 
 let pauseStartTime = null; 
 const pauseButton = document.getElementById("pause-btn");
@@ -2759,7 +2809,6 @@ function randomizeRightHalfMap() {
     "childroom.png",
     "Desert.webp",
     "pineforest.png",
-    // "Field.webp",
   ];
 
   const randomMap = maps[Math.floor(Math.random() * maps.length)];

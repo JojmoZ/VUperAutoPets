@@ -1,0 +1,23 @@
+[
+  {
+    "name": "VT",
+    "attack": 50,
+    "health": 50,
+    "cost": 50,
+    "img": "../assets/Animals/recsel1.png"
+  },
+  {
+    "name": "GM",
+    "attack": 50,
+    "health": 50,
+    "cost": 50,
+    "img": "../assets/Animals/recsel2.png"
+  },
+  {
+    "name": "RG",
+    "attack": 50,
+    "health": 50,
+    "cost": 50,
+    "img": "../assets/Animals/recsel3.png"
+  }
+]
