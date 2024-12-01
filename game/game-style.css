@@ -18,14 +18,14 @@ body {
   background-position: center;
   /* cursor: url("../assets/cursor/cursor1-smol.jpeg"), default; */
 }
-.pause-btn{
+.pause-btn {
   border-radius: 15px;
   position: absolute;
   padding: 0.5rem;
-  left:47.7%;
+  left: 47.7%;
   background-color: black;
   border: none;
-  cursor:pointer
+  cursor: pointer;
 }
 #mainContainer {
   display: flex;
@@ -277,7 +277,7 @@ img {
   animation: bounceIn 0.8s ease-out;
 }
 .trash-bin {
-  width: 3rem;
+  width: auto;
   height: 3rem;
   margin-right: 1rem;
   cursor: pointer;
@@ -301,7 +301,6 @@ img {
 .trash-bin {
   position: absolute;
   right: 60%;
-  width: 6.875rem;
   height: 6.25rem;
   cursor: pointer;
   transition: opacity 0.3s ease;
@@ -365,8 +364,8 @@ img {
 }
 #freezeButton {
   position: absolute;
-  right: 50%;
-  width: 6.875rem;
+  right: 45%;
+  /* width: 6.875rem; */
   height: 6.25rem;
   background-color: transparent;
   cursor: pointer;
@@ -795,4 +794,15 @@ img {
 }
 #rightHalf {
   background-repeat: no-repeat;
+}
+.refund-amount-text {
+  position: absolute;
+  top: 50%;
+  left: 30%;
+  transform: translate(-50%, -50%);
+  color: #5D1A0B;
+  font-size: 3rem;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px black;
+  pointer-events: none;
 }

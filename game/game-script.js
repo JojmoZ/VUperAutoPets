@@ -595,7 +595,11 @@ function renderBattleSlots() {
         event.dataTransfer.setData("text/plain", maxSlots - 1 - index);
         event.dataTransfer.setData("source", "battle");
 
+        const refundAmount = Math.floor(animal.cost / 2);
+        const refundAmountText = document.getElementById("refundAmountText");
+        refundAmountText.textContent = `Sell (${refundAmount})`;
         showTrashBin();
+
       });
 
       animalImg.addEventListener("dragend", hideBins);
