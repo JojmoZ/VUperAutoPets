@@ -161,3 +161,42 @@ body {
 .mirror {
   transform: scaleX(-1);
 }
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  z-index: 100; /* Ensure it's on top of other elements */
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0; /* Start fully transparent */
+  transition: opacity 2s ease-in-out;
+}
+
+/* Trigger the fade-in transitions */
+.overlay {
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.logo {
+  opacity: 0;
+  transition: opacity 3s ease-in-out;
+}
+
+.fade-in-overlay {
+  opacity: 1;
+}
+
+.fade-in-logo {
+  opacity: 1;
+}
