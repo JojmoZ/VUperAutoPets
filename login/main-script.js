@@ -21,7 +21,6 @@ document.addEventListener("mousemove", (event) => {
     layer4Right.style.transform = `translate(${xNorm * 60}px, ${yNorm * 60}px)`;
 });
 
-
 window.onload = function () {
     const captchaChallenge = document.getElementById("captchaChallenge");
     const captchaInput = document.getElementById("captchaInput");

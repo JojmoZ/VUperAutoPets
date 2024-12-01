@@ -3,7 +3,7 @@
   src: url("../assets/font/LapsusPro-Bold.otf") format("opentype");
 }
 * {
-  font-family: "VUper";
+  font-family: "VUper", serif;
 }
 body::-webkit-scrollbar {
   display: none;

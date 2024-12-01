@@ -10,14 +10,17 @@ body::-webkit-scrollbar {
   font-family: "VUper";
   src: url("../assets/font/LapsusPro-Bold.otf") format("opentype");
 }
+
 @property --angle {
   syntax: "<angle>";
   initial-value: 0deg;
   inherits: false;
 }
-*{
-  font-family: 'VUper';
+
+* {
+  font-family: 'VUper', serif;
 }
+
 .back-arrow {
   position: absolute;
   top: 0;
@@ -29,13 +32,16 @@ body::-webkit-scrollbar {
   cursor: pointer;
   transition: transform 0.3s ease;
 }
+
 .back-arrow img {
   width: 8rem;
   height: auto;
 }
+
 .back-arrow:hover {
   transform: scale(1.1);
 }
+
 html,
 body {
   margin: 0;
@@ -81,6 +87,7 @@ text {
   font-size: 3rem;
   fill: #febd01;
 }
+
 @keyframes stampEffect {
   0% {
     transform: scale(3);
@@ -91,18 +98,25 @@ text {
     opacity: 1;
   }
 }
+
 .big-photo {
   animation: stampEffect 1s ease forwards;
-  width: 50rem;
+  width: 60vw;
   height: auto;
 }
+
 .hidden {
   display: none;
 }
+
 .jumbotron p {
   font-weight: bold;
   font-size: 2rem;
   color: black;
+}
+
+#user-greeting {
+  background-image: url("");
 }
 
 .play-button {
