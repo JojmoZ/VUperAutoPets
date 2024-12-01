@@ -7,7 +7,7 @@ window.onload = function () {
   })
   track.dataset.percentage = "-30"; 
   track.style.transform = `translate(-30%, -50%)`; 
-  console.log("Script Loaded");
+
   const username = localStorage.getItem("username");
   const logged = localStorage.getItem("loggedin");
   const el = document.querySelector("#typewriter");

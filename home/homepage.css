@@ -115,10 +115,6 @@ text {
   color: black;
 }
 
-#user-greeting {
-  background-image: url("");
-}
-
 .play-button {
   border: 0;
   cursor: pointer;
@@ -917,18 +913,27 @@ body > .image {
 }
 
 #typewriter {
-  color: black;
+  color: #57291A;
+  letter-spacing: 0.125rem;
 }
 
 .username {
-  color: hsl(50 70% 47%);
+  color: #fff;
 }
-
 #cursor {
-  color: hsl(30, 70%, 30%);
+  color: #57291A;
   font-weight: bold;
   animation: blink 1s linear infinite;
 }
+
+#user-greeting {
+  background: url("../assets/buttons/empty-btn.png") no-repeat center;
+  background-size: cover;
+  padding-block: 1.5rem 2rem;
+  width: 30rem;
+  height: auto;
+}
+
 
 @keyframes blink {
   100% {
