@@ -296,28 +296,28 @@ function showError(inputId, message) {
   if (errorElement) {
     errorElement.textContent = message;
 
-    // Get the full height of the error message
+    // 
     const fullHeight = errorElement.scrollHeight;
 
-    // Temporarily set height to 0, then to full height for a smooth transition
+    
     errorElement.style.height = "0";
     errorElement.style.opacity = "0";
     errorElement.style.transform = "translateY(-10px)";
 
-    // Trigger reflow to apply the new height
+    
     void errorElement.offsetHeight;
 
-    // Expand the error message
+    
     errorElement.style.height = `${fullHeight}px`;
     errorElement.style.opacity = "1";
     errorElement.style.transform = "translateY(0)";
 
-    // Remove the explicit height after the transition for flexibility
+    
     setTimeout(() => {
       errorElement.style.height = "auto";
-    }, 300); // Match the CSS transition duration
+    }, 300); 
 
-    // Hide the error after 5 seconds
+    
     setTimeout(() => {
       hideError(inputId);
     }, 5000);
@@ -327,24 +327,24 @@ function showError(inputId, message) {
 function hideError(inputId) {
   const errorElement = document.getElementById(`${inputId}Error`);
   if (errorElement) {
-    // Get the current height of the element
+    
     const currentHeight = errorElement.scrollHeight;
 
-    // Set the height explicitly to its current value for a smooth transition
+    
     errorElement.style.height = `${currentHeight}px`;
 
-    // Trigger reflow to apply the new height
+    
     void errorElement.offsetHeight;
 
-    // Collapse the error message
+    
     errorElement.style.height = "0";
     errorElement.style.opacity = "0";
     errorElement.style.transform = "translateY(-10px)";
 
-    // Reset the height after the transition
+    
     setTimeout(() => {
-      errorElement.style.height = "0"; // Ensure it stays at 0
-    }, 300); // Match the CSS transition duration
+      errorElement.style.height = "0"; 
+    }, 300); 
   }
 }
 

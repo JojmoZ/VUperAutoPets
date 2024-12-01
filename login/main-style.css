@@ -23,8 +23,8 @@ body {
     font-size: 0.85rem;
     margin-top: 0.25rem;
     opacity: 0;
-    height: 0; /* Default height is 0 when hidden */
-    overflow: hidden; /* Prevent cropped content */
+    height: 0; 
+    overflow: hidden; 
     transform: translateY(-10px);
     transition: opacity 0.3s ease, transform 0.3s ease, height 0.3s ease;
 }
@@ -32,7 +32,7 @@ body {
 .error-message.show {
     opacity: 1;
     transform: translateY(0);
-    white-space: normal; /* Ensure text wraps if needed */
+    white-space: normal; 
 }
 
 .hide-scrollbar {
@@ -785,7 +785,7 @@ body.modal-active {
 
 .input-group {
     position: relative;
-     margin-bottom: 1rem; /* Add space for potential error messages */
+     margin-bottom: 1rem;
   transition: all 0.3s ease;
     font-size: 1.25rem;
     --primary: #cbac24;
@@ -816,7 +816,7 @@ body.modal-active {
     position: absolute;
     top: 50%;
     right: 1rem;
-    transform: translateY(-90%);
+    transform: translateY(-100%);
     background: none;
     border: none;
     cursor: pointer;
