@@ -7,11 +7,15 @@
     padding: 0;
     box-sizing: border-box;
 }
+body::-webkit-scrollbar {
+  display: none;
+}
 
 body {
     font-family: 'VUper', sans-serif;
     background: url("../assets/background/menu-bg.png") no-repeat center center fixed;
     height: 100vh;
+    overflow: hidden;
 }
 
 button {
