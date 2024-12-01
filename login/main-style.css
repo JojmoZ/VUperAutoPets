@@ -23,17 +23,18 @@ body {
     font-size: 0.85rem;
     margin-top: 0.25rem;
     opacity: 0;
-    height: 0;
-    overflow: hidden; 
+    height: 0; /* Default height is 0 when hidden */
+    overflow: hidden; /* Prevent cropped content */
     transform: translateY(-10px);
     transition: opacity 0.3s ease, transform 0.3s ease, height 0.3s ease;
 }
 
 .error-message.show {
     opacity: 1;
-    height: 1rem;
     transform: translateY(0);
+    white-space: normal; /* Ensure text wraps if needed */
 }
+
 .hide-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
