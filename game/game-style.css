@@ -783,3 +783,16 @@ img {
   margin-top: 10px;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
+#rightHalf {
+  position: absolute;
+  right: 0;
+  width: 50%; /* Cover the right half of the screen */
+  height: 102%; /* Full screen height */
+  background-size: cover; /* Ensure the map image covers the div */
+  background-position: center;
+  pointer-events: none; /* Allow clicks to pass through */
+  z-index: -1; /* Ensure it stays in the background */
+}
+#rightHalf {
+  background-repeat: no-repeat;
+}

@@ -737,6 +737,7 @@ function letsplay() {
         hideNonBattleElements();
         hideTeamName();
         hideCanvas();
+        randomizeRightHalfMap();
         openCurtains(() => {
           showPauseButton();
           showCanvas();
@@ -764,6 +765,7 @@ function letsplay() {
         hideNonBattleElements();
         hideTeamName();
         hideCanvas();
+        randomizeRightHalfMap();
         openCurtains(() => {
           showPauseButton();
           showCanvas();
@@ -796,6 +798,7 @@ function letsplayonline() {
       hideNonBattleElements();
       hideTeamName();
       hideCanvas();
+      randomizeRightHalfMap();
       openCurtains(() => {
         showCanvas();
         showPauseButton();
@@ -1124,6 +1127,8 @@ function playBattleMusic() {
   battleMusic.play();
 }
 document.addEventListener("DOMContentLoaded", function () {
+  hideRightSide();
+  // randomizeRightHalfMap()
   const teamName = localStorage.getItem("teamName") || "No Team Name";
   BossBattle = false;
   hideBattleText();
@@ -2056,6 +2061,7 @@ function resetGame() {
   showNonBattleElements();
 }
 function checkGameOver(playerSurvivors, enemySurvivors) {
+  
   if (playerSurvivors > enemySurvivors) {
     showWinScreen();
   } else if (playerSurvivors < enemySurvivors) {
@@ -2316,6 +2322,7 @@ function loseLife() {
             coins += 10;
             localStorage.removeItem("result");
             dimmerOverlay.classList.add("hidden");
+            hideRightSide();
             openCurtains(() => {
               rollfirst();
               updateCoinsDisplay();
@@ -2460,6 +2467,7 @@ function showDrawScreen() {
         coins += 10;
         localStorage.removeItem("result");
         dimmerOverlay.classList.add("hidden");
+        hideRightSide();
         openCurtains(() => {
           rollfirst();
           updateCoinsDisplay();
@@ -2524,6 +2532,7 @@ function DefeatScreen() {
         coins += 10;
         localStorage.removeItem("result");
         dimmerOverlay.classList.add("hidden");
+        hideRightSide()
         openCurtains(() => {
           resetGame();
           window.location.href = "/menu/menu.html";
@@ -2600,6 +2609,7 @@ function showWinScreen() {
         coins += 10;
         localStorage.removeItem("result");
         dimmerOverlay.classList.add("hidden");
+        hideRightSide();
         openCurtains(() => {
           updateCoinsDisplay();
           rollfirst();
@@ -2740,3 +2750,26 @@ function hidePauseButton() {
 }
 
 pauseButton.addEventListener("click", togglePause);
+function randomizeRightHalfMap() {
+  const maps = [
+    "japan.png",
+    "wildrown.png",
+    "cornfield.png",
+    "Autumn_Forest.webp",
+    "childroom.png",
+    "Desert.webp",
+    "pineforest.png",
+    // "Field.webp",
+  ];
+
+  const randomMap = maps[Math.floor(Math.random() * maps.length)];
+
+  const rightHalf = document.getElementById("rightHalf");
+  rightHalf.style.display = "block";
+  rightHalf.style.backgroundImage = `url("../assets/maps/${randomMap}")`;
+}
+function hideRightSide(){
+  const rightHalf = document.getElementById("rightHalf");
+  rightHalf.style.display = "none";
+}
+
