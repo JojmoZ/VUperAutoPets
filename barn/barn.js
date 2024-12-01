@@ -4,13 +4,14 @@ const frameDuration = 1000 / 60;
 const gridSize = 10;
 let animationId;
 let foodElement = null;
+let foodElements = [];
 let scaleX, scaleY;
 const restrictedZones = [
   { x: 0, y: 0, width: 50, height: 1080 },
   { x: 0, y: 0, width: 320, height: 230 },
   { x: 1850, y: 0, width: 70, height: 1080 },
-  { x: 915 - 5, y: 90, width: 25, height: 130  }, 
-  { x: 915 - 5, y: 170, width: 50, height: 60  }, 
+  { x: 915 - 5, y: 90, width: 25, height: 130 },
+  { x: 915 - 5, y: 170, width: 50, height: 60 },
   { x: 1410, y: 0, width: 220, height: 120 },
   { x: 1630, y: 60, width: 25, height: 50 },
   { x: 1680, y: 0, width: 90, height: 55 },
@@ -28,7 +29,7 @@ const restrictedZones = [
   { x: 1635, y: 140 + 90, width: 1920 - 1635, height: 50 },
   { x: 1169, y: 140 + 90, width: 245, height: 50 },
   { x: 1169 + 225, y: 160, width: 16, height: 100 },
-  { x: 410, y: 0, width: 20, height: 230 }, 
+  { x: 410, y: 0, width: 20, height: 230 },
   { x: 430, y: 90, width: 30, height: 50 },
   { x: 795, y: 100, width: 20, height: 90 },
   { x: 605, y: 0, width: 150, height: 80 },
@@ -352,9 +353,6 @@ function roamAnimal(animal) {
 }
 
 function createFood(event) {
-  if (foodElement) {
-    return;
-  }
   const foodX = event.clientX - 10;
   const foodY = event.clientY - 10;
   const foodWidth = 20;
@@ -364,7 +362,7 @@ function createFood(event) {
     return;
   }
 
-  foodElement = document.createElement("div");
+  const foodElement = document.createElement("div");
   foodElement.className = "food";
   foodElement.style.position = "absolute";
   foodElement.style.width = "1.75rem";
@@ -375,12 +373,17 @@ function createFood(event) {
   foodElement.style.left = `${foodX}px`;
   foodElement.style.top = `${foodY}px`;
   animalContainer.appendChild(foodElement);
+  foodElements.push(foodElement);
+
   const foodRow = Math.floor(event.clientY / gridSize);
   const foodCol = Math.floor(event.clientX / gridSize);
   const animals = document.querySelectorAll(".animal");
   let closestAnimal = null;
   let minDistance = Infinity;
+
   animals.forEach((animal) => {
+    if (animal.dataset.isMovingToFood === "true") return;
+
     const animalRow = Math.floor(
       (parseFloat(animal.style.top) + animal.offsetHeight / 2) / gridSize
     );
@@ -390,6 +393,7 @@ function createFood(event) {
 
     const distance =
       Math.abs(animalRow - foodRow) + Math.abs(animalCol - foodCol);
+
     if (distance < minDistance) {
       minDistance = distance;
       closestAnimal = animal;
@@ -418,7 +422,7 @@ function createFood(event) {
       if (path) {
         followPath(closestAnimal, path, () => {
           foodElement.remove();
-          foodElement = null;
+          foodElements = foodElements.filter((el) => el !== foodElement);
           if (
             isInRestrictedZone(
               parseFloat(closestAnimal.style.left),
@@ -467,9 +471,7 @@ function followPath(animal, path, callback) {
     }
   }
   moveStep();
-  setTimeout(() => {
-    
-  }, 500);
+  setTimeout(() => {}, 500);
 }
 function drawRestrictedZones() {
   const existingZones = document.querySelectorAll(".restricted-area");
@@ -661,7 +663,7 @@ resetGrid();
 drawRestrictedZones();
 
 document.addEventListener("DOMContentLoaded", () => {
-   hideStatWindow();
+  hideStatWindow();
   const userAnimals = getUserAnimals();
   userAnimals.forEach((animal) => {
     const animalElement = createAnimal(animal);

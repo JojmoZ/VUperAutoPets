@@ -235,14 +235,13 @@ window.onload = function () {
         try {
             const response = await fetch("../assets/jsons/trainee.json");
             const trainees = await response.json();
-            // Check if the username matches any TraineeCode or TraineeName
             return trainees.some(
                 (trainee) =>
                     trainee.TraineeCode === username || trainee.TraineeName === username
             );
         } catch (error) {
             console.error("Error loading trainee data:", error);
-            return false; // Fail gracefully if trainee data can't be fetched
+            return false; 
         }
     }
 
