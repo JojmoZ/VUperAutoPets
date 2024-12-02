@@ -16,7 +16,6 @@ body {
   background-image: url("../assets/maps/Field.webp");
   background-size: contain;
   background-position: center;
-  /* cursor: url("../assets/cursor/cursor1-smol.jpeg"), default; */
 }
 .pause-btn {
   border-radius: 15px;
@@ -566,8 +565,10 @@ img {
   top: -5%;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 2rem;
+  font-size: 3rem;
+  padding: 0.1rem 0.5rem;
   color: white;
+  background-color: hsl( 185, 27%, 43%);
   margin: 0;
 }
 .team-row {
@@ -590,13 +591,13 @@ img {
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: transform 0.1s ease, box-shadow 0.1s ease, border-color 0.2s ease;
+  transition: transform 0.1s ease, box-shadow 0.1s ease, border-color 0.2s ease;  
   border-width: 4;
   border-color: white;
 }
 .adjective-button,
 .noun-button {
-  background-color: #2978b5;
+  background-color: #02379F;
   box-shadow: 0px 6px 0px #1e5b87;
 }
 .adjective-button:hover,
@@ -605,7 +606,7 @@ img {
   box-shadow: 0px 8px 0px #1e5b87;
 }
 .noun-button {
-  background-color: #4caf50;
+  background-color: #01963A;
   box-shadow: 0px 4px 0px #388e3c;
 }
 .noun-button:hover {
@@ -646,31 +647,27 @@ img {
   gap: 1rem;
 }
 #confirmTeamNameButton {
-  width: 200px;
-  height: 80px;
+  width: 21rem;
+  height: 6.25rem;
   position: absolute;
   bottom: -30px;
   right: -350px;
-  padding: 0.8rem 2rem;
-  font-size: 1rem;
-  background-color: #fe6a00;
-  color: white;
-  border: none;
-  border-radius: 5px;
+  background-image: url(../assets/game-asset/button/confirm-btn.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-color: transparent;
   cursor: pointer;
-  box-shadow: 0px 4px 0px rgba(0, 0, 0, 0.3);
-  transition: background-color 0.2s ease, transform 0.1s ease;
-  border-width: 4;
-  border-color: white;
-  border-radius: 15px;
+  border: none;
+  transition: transform 0.1s ease;
 }
 #confirmTeamNameButton:disabled {
-  background-color: #555;
   cursor: not-allowed;
 }
-#confirmTeamNameButton:hover:not(:disabled) {
-  transform: translateY(-3px);
-  box-shadow: 0px 6px 0px rgba(0, 0, 0, 0.3);
+#confirmTeamNameButton:active:not(:disabled) {
+  transform: translateY(3%);
+}
+#confirmTeamNameButton:hover{
+  filter: brightness(1.2);
 }
 .teamNameContainer {
   position: absolute;
