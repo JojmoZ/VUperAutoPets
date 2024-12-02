@@ -65,6 +65,8 @@ function handlePlayerData(socket, room, data) {
   room.data[socket.id] = {
     battleLineup: data.battleLineup,
     teamName: data.teamName,
+    username: data.username,
+    lives: data.lives,
   };
 
   console.log(`Data stored for player: ${socket.id}`, room.data);

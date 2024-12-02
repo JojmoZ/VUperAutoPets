@@ -1,6 +1,8 @@
 let socket;
 let isPaired = false;
-
+let enemyOnlineName;
+let enemyOnlineLives;
+let username;
 let pairingTimeout = null; 
 let pairingDuration = 50000; 
 function connectWebSocket() {
@@ -28,6 +30,8 @@ function connectWebSocket() {
       console.log("Received opponent data:", data);
       enemyLineup = data.battleLineup;
       enemyTeamName = data.teamName;
+      enemyOnlineName = data.username;
+      enemyOnlineLives = data.lives;
       receivedOpponentData = true;
       checkStartCondition();
     }
@@ -739,6 +743,7 @@ function letsplay() {
         shiftAnimalsToFront();
         generateEnemyTeam();
         generateEnemyTeamName();
+        generaateMyInfo();
         const result = computeBattleResult(battleLineup, enemyLineup);
         localStorage.setItem("result", result);
         hideNonBattleElements();
@@ -746,9 +751,11 @@ function letsplay() {
         hideCanvas();
         randomizeRightHalfMap();
         openCurtains(() => {
+          ShowBottomInfo();
           showPauseButton();
           showCanvas();
           playBattleMusic();
+          generateEnemyInfo();
           animateAnimalsIntoPosition(() => {
             showBattleText();
             updateBattleText(() => {
@@ -770,13 +777,16 @@ function letsplay() {
         const result = computeBattleResult(battleLineup, enemyLineup);
         localStorage.setItem("result", result);
         hideNonBattleElements();
-        hideTeamName();
-        hideCanvas();
-        randomizeRightHalfMap();
-        openCurtains(() => {
-          showPauseButton();
+       generaateMyInfo();
+       hideTeamName();
+       hideCanvas();
+       randomizeRightHalfMap();
+       openCurtains(() => {
+         ShowBottomInfo()
+         showPauseButton();
           showCanvas();
           playBattleMusic();
+          generateEnemyInfo(true);
           animateAnimalsIntoPosition(() => {
             showBattleText();
             updateBattleText(() => {
@@ -834,7 +844,10 @@ function letsplayonline() {
       hideTeamName();
       hideCanvas();
       randomizeRightHalfMap();
+      generaateMyInfo();
+      generateEnemyInfo();
       openCurtains(() => {
+        ShowBottomInfo()
         showCanvas();
         showPauseButton();
         playBattleMusic();
@@ -858,6 +871,8 @@ function sendPlayerData() {
         type: "sendData",
         battleLineup: battleLineup,
         teamName: teamName,
+        username: username,
+        lives: lives
       })
     );
     console.log("Sent player data");
@@ -1044,7 +1059,23 @@ document
     let fromonline = localStorage.getItem("fromOnline");
     if (fromonline == "true") {
       showLoadingScreen();
-      sendPlayerData();
+        if (socket && socket.readyState === WebSocket.OPEN) {
+         socket.send(JSON.stringify({ type: "joinQueue" }));
+         console.log("Sent joinQueue request to the server.");
+       } else {
+         console.error("WebSocket is not connected.");
+         hideLoadingScreen();
+         ShowModal('Server is Not Connected, Exiting')
+         setTimeout(() => {
+           location.reload();
+         },1000)
+         return;
+       }
+
+       pairingTimeout = setTimeout(() => {
+         console.log("No opponent found. Reloading...");
+         location.reload(); 
+       }, pairingDuration);
     } else {
       letsplay();
     }
@@ -1204,7 +1235,9 @@ function playBattleMusic() {
   battleMusic.play();
 }
 document.addEventListener("DOMContentLoaded", function () {
+  username = localStorage.getItem("username");
   hideRightSide();
+  hideBottomInfo();
   const teamName = localStorage.getItem("teamName") || "No Team Name";
   BossBattle = false;
   hideBattleText();
@@ -2748,7 +2781,6 @@ function showLoadingScreen() {
   const waveText = document.querySelector(".wave-text");
   const text = "Looking For Opponents";
 
-  // Generate the wave animation text
   waveText.innerHTML = text
     .split("")
     .map(
@@ -2757,7 +2789,6 @@ function showLoadingScreen() {
     )
     .join("");
 
-  // Show the loading screen
   loadingScreen.classList.add("active");
   loadingScreen.classList.remove("hidden");
 }
@@ -2885,3 +2916,85 @@ function hideRightSide(){
   rightHalf.style.display = "none";
 }
 
+function generaateMyInfo(){
+  const myTeamInfo = document.getElementById("myTeamInfo");
+  myTeamInfo.innerHTML = "";
+  let username = localStorage.getItem("username") || "";
+  const myName = document.createElement("p");
+  myName.textContent = username;
+  const myLives = document.createElement("p");
+  myLives.textContent = `Lives: ${lives}`;
+  const heart = document.createElement("img");
+  heart.src = "../assets/game-asset/stat-heart.png";
+  heart.style.width = "1.5rem";
+  heart.style.height = "1.5rem";
+  const RightDiv = document.createElement("div");
+  const LeftDiv = document.createElement("div");
+  LeftDiv.style.display = "flex";
+  LeftDiv.style.flexDirection = "column"; 
+  let MyteamName = document.createElement("p");
+  MyteamName.style.margin = "0";
+  myName.style.margin = "0"
+  LeftDiv.style.textAlign = "left";
+  LeftDiv.style.justifyContent = "space-between";
+  MyteamName.textContent = teamName;
+  LeftDiv.appendChild(myName);
+  LeftDiv.appendChild(MyteamName);
+  RightDiv.appendChild(myLives);
+  RightDiv.appendChild(heart);
+  RightDiv.style.display = "flex";
+  RightDiv.style.alignItems = "center";
+  RightDiv.style.gap = "0.5rem";
+  myTeamInfo.style.display = "flex";
+  myTeamInfo.appendChild(LeftDiv);
+  myTeamInfo.appendChild(RightDiv)
+}
+function generateEnemyInfo(bossBattle = false){
+  const enemyTeamInfo = document.getElementById('enemyTeamInfo');
+   const heart = document.createElement("img");
+   heart.src = "../assets/game-asset/stat-heart.png";
+   heart.style.width = "1.5rem";
+   heart.style.height = "1.5rem";
+  enemyTeamInfo.innerHTML = "";
+  const fromOnline = localStorage.getItem("fromOnline");
+  let enemyLives = document.createElement("p");
+  const enemyName = document.createElement("p");
+  if(fromOnline == "false" && bossBattle == false){
+    enemyName.textContent = "Hard Bot";
+    enemyLives.textContent = "Lives: 1";
+  }else if (bossBattle ==true) {
+    enemyName.textContent = "ADMIN";
+    enemyLives.textContent = "Lives: 1";
+  }else{
+    enemyName.textContent = enemyOnlineName;
+    enemyLives.textContent = "Lives: " +  enemyOnlineLives;
+  }
+  const leftDiv = document.createElement("div");
+  const rightDiv = document.createElement("div")
+  rightDiv.style.display = "flex";
+  rightDiv.style.flexDirection = "column";
+  let MyteamName = document.createElement("p");
+  MyteamName.style.margin = "0";
+  enemyName.style.margin = "0";
+  rightDiv.style.textAlign = "right";
+  rightDiv.style.justifyContent = "space-between";
+  MyteamName.textContent = enemyTeamName;
+  rightDiv.appendChild(enemyName);
+  rightDiv.appendChild(MyteamName);
+  leftDiv.appendChild(enemyLives);
+  leftDiv.appendChild(heart);
+  leftDiv.style.display = "flex";
+  leftDiv.style.alignItems = "center";
+  leftDiv.style.gap = "0.5rem";
+  enemyTeamInfo.style.display = "flex";
+  enemyTeamInfo.appendChild(leftDiv)
+  enemyTeamInfo.appendChild(rightDiv);
+}
+function ShowBottomInfo(){
+  document.getElementById("myTeamInfo").classList.remove("hidden");
+  document.getElementById("enemyTeamInfo").classList.remove("hidden");
+}
+function hideBottomInfo(){
+ document.getElementById("myTeamInfo").classList.add("hidden");
+  document.getElementById("enemyTeamInfo").classList.add("hidden");
+}

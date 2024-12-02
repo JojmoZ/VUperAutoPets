@@ -49,7 +49,6 @@ body {
     align-items: center;
     height: 100vh;
 }
-
 .parallax-layer-1, .parallax-layer-2, .parallax-layer-3 {
     position: absolute;
     height: 120vh;
@@ -90,7 +89,7 @@ body {
 img#logo {
     transition: transform 1s ease, left 1s ease, width 1s ease;
     z-index: 1;
-    width: 64vw;
+    width: 56vw;
     position: absolute;
     top: 10%;
     left: 50%;
