@@ -1,5 +1,8 @@
+const overlay = document.getElementById("overlay");
+
 document.getElementById("burger-btn").addEventListener("click", function () {
   const menu = document.getElementById("menu");
+  overlay.classList.toggle("hidden");
   menu.classList.toggle("hidden");
 });
 
@@ -27,6 +30,13 @@ window.onload = () => {
   shopbtn.addEventListener("click", function () {
     window.location.href = "/shop/shoppage.html";
   });
+
+  overlay.addEventListener("click", function () {
+    const menu = document.getElementById("menu");
+    overlay.classList.toggle("hidden");
+    menu.classList.toggle("hidden");
+  });
+
   document.getElementById("logout-btn").addEventListener("click", function () {
     localStorage.removeItem("username");
     localStorage.removeItem("loggedin");
