@@ -951,6 +951,15 @@ function populateTeamRow(rowId, items, type) {
   row.innerHTML = "";
 
   items.forEach((item) => {
+    // Create a container for the stone and button
+    const container = document.createElement("div");
+    container.classList.add("button-container");
+
+    // Create the stone element
+    const stone = document.createElement("div");
+    stone.classList.add("stone");
+
+    // Create the button
     const button = document.createElement("button");
     button.textContent = item;
     if (type === "adjective") {
@@ -960,9 +969,16 @@ function populateTeamRow(rowId, items, type) {
     }
 
     button.addEventListener("click", () => handleTeamNameSelection(type, item));
-    row.appendChild(button);
+
+    // Append the stone and button to the container
+    container.appendChild(stone);
+    container.appendChild(button);
+
+    // Append the container to the row
+    row.appendChild(container);
   });
 }
+
 function handleTeamNameSelection(type, value) {
   if (type === "adjective") {
     selectedAdjective = value;
