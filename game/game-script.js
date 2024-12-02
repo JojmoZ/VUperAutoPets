@@ -888,7 +888,10 @@ document
        } else {
          console.error("WebSocket is not connected.");
          hideLoadingScreen();
-         location.reload();
+         ShowModal('Server is Not Connected, Exiting')
+         setTimeout(() => {
+           location.reload();
+         },1000)
          return;
        }
 
@@ -2742,6 +2745,19 @@ function hideBattleText() {
 }
 function showLoadingScreen() {
   const loadingScreen = document.getElementById("loadingScreen");
+  const waveText = document.querySelector(".wave-text");
+  const text = "Looking For Opponents";
+
+  // Generate the wave animation text
+  waveText.innerHTML = text
+    .split("")
+    .map(
+      (char, i) =>
+        `<span style="--i: ${i}">${char === " " ? "&nbsp;" : char}</span>`
+    )
+    .join("");
+
+  // Show the loading screen
   loadingScreen.classList.add("active");
   loadingScreen.classList.remove("hidden");
 }
