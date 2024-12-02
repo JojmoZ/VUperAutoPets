@@ -41,12 +41,9 @@ button:active {
     position: fixed;
     top: 1rem;
     left: 1rem;
-    width: 16rem;
+    width: 24rem;
     height: auto;
 }
-
-
-
 
 main {
     display: flex;
@@ -64,32 +61,34 @@ main {
     width: 40%;
     height: auto;
 }
+
 header {
     width: 100%;
     display: flex;
     justify-content: flex-end;
     padding: 1rem;
 }
+
 .sub-btn {
     width: 4rem;
     height: 4rem;
     z-index: 10;
 
 }
+
 .menu {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-end;
     position: fixed;
+    width: 24%;
     top: 0.75rem;
     right: 0.5rem;
     background: white;
     border: 0.5rem solid black;
     border-radius: 1rem;
-    width: 20rem;
-    height: 10.5rem;
-    z-index: 0;
+    z-index: 10;
 }
 
 .logout-button {
