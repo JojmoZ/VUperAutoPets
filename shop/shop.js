@@ -29,15 +29,15 @@ document.addEventListener("DOMContentLoaded", function () {
   coinImg.style.width = "3rem";
   coinImg.style.height = "3rem";
   coinImg.style.position = "fixed";
-  coinImg.style.top = "1.5rem";
-  coinImg.style.right = "5.5rem";
+  coinImg.style.top = "25px";
+  coinImg.style.right = "8rem";
   coinImg.style.zIndex = "9999";
   document.body.appendChild(coinImg);
   coinsDisplay.id = "coinsDisplay";
   coinsDisplay.style.fontFamily = "VUper";
   coinsDisplay.style.position = "fixed";
-  coinsDisplay.style.top = "1.75rem";
-  coinsDisplay.style.right = "9.375rem";
+  coinsDisplay.style.top = "30px";
+  coinsDisplay.style.right = "14rem";
   coinsDisplay.style.color = "white";
   coinsDisplay.style.fontSize = "2rem";
   coinsDisplay.style.zIndex = "9999";
@@ -47,6 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
     window.location = "/menu/menu.html";
   });
   const shopContainer = document.querySelector(".shop-container");
+  const scrollBar = document.getElementById("scroll-bar");
 
   function arrangeCardsInAlternatingPattern() {
     const cards = Array.from(
@@ -100,6 +101,18 @@ document.addEventListener("DOMContentLoaded", function () {
       isScrolling = false;
     }
   }
+
+  shopContainer.addEventListener("scroll", function () {
+    const maxScrollLeft = shopContainer.scrollWidth - shopContainer.clientWidth;
+    const scrollPercentage = (shopContainer.scrollLeft / maxScrollLeft) * 100;
+    scrollBar.value = scrollPercentage;
+  });
+
+  scrollBar.addEventListener("input", function () {
+    const maxScrollLeft = shopContainer.scrollWidth - shopContainer.clientWidth;
+    const scrollLeft = (scrollBar.value / 100) * maxScrollLeft;
+    shopContainer.scrollLeft = scrollLeft;
+  });
 
   let shopAnimals = [];
 
