@@ -90,7 +90,7 @@ body {
 img#logo {
     transition: transform 1s ease, left 1s ease, width 1s ease;
     z-index: 1;
-    width: 55vw;
+    width: 64vw;
     position: absolute;
     top: 10%;
     left: 50%;
