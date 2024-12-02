@@ -2,12 +2,15 @@
   font-family: "VUper";
   src: url("../assets/font/LapsusPro-Bold.otf") format("opentype");
 }
+
 * {
   font-family: "VUper", serif;
 }
+
 body::-webkit-scrollbar {
   display: none;
 }
+
 .back-arrow {
   position: absolute;
   top: 0;
@@ -19,6 +22,7 @@ body::-webkit-scrollbar {
   cursor: pointer;
   transition: transform 0.3s ease;
 }
+
 .back-arrow img {
   width: 8rem;
   height: auto;
@@ -37,17 +41,19 @@ body {
   background-position: top left;
   background-size: cover;
 }
+
 .shop-wrapper {
   display: flex;
   height: 100vh;
   align-items: center;
 }
+
 .shop-container {
   display: grid;
   grid-auto-flow: column;
-  grid-template-columns: repeat(auto-fit, 15rem);
+  grid-template-columns: (auto-fit, 20rem);
   grid-template-rows: repeat(2, 12rem);
-  gap: 10rem;
+  gap: 8rem;
   overflow-x: auto;
   padding: 2%;
   box-sizing: border-box;
@@ -56,34 +62,35 @@ body {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
+
 .shop-container::-webkit-scrollbar {
   display: none;
 }
+
 .card {
-  user-select: none;
-  width: 12rem;
-  border-radius: 1rem;
-  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
-  overflow: hidden;
-  text-align: center;
-  padding: 2%;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  cursor: pointer;
-  height: auto;
-  clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(
-    135deg,
-    var(--animal-color, #ffffff) 0%,
-    #ffffff 100%
-  );
-  background-size: 300% 300%;
-  background-position: 50% 50%;
+ user-select: none;
+ width: 12rem;
+ background-image: url("../assets/shop/sign.png");
+ background-size: contain;
+ background-repeat: no-repeat;
+ background-position-x: center;
+ background-position-y: center ;
+ transition: transform 0.3s ease, box-shadow 0.3s ease;
+ cursor: pointer;
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+ align-items: center;
+/*  !*background: linear-gradient(*!*/
+/*  !*  135deg,*!*/
+/*  !*  var(--animal-color, #ffffff) 0%,*!*/
+/*  !*  #ffffff 100%*!*/
+/*  !*);*!*/
+/*  !*background-size: 300% 300%;*!*/
+/*  !*background-position: 50% 50%;*!*/
 }
-@keyframes rainbow {f
+
+@keyframes rainbow {
   0% {
     background-position: 0% 50%;
   }
@@ -94,12 +101,14 @@ body {
     background-position: 0% 50%;
   }
 }
+
 .gradient-hover:hover {
   transform: scale(1.05);
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.3);
   animation: rainbow 3s ease infinite;
   background-size: 400% 400%;
 }
+
 .sold-out-overlay {
   position: absolute;
   top: 0;
@@ -116,12 +125,13 @@ body {
   pointer-events: none;
   border-radius: 1rem;
 }
+
 .card {
   position: relative;
 }
+
 .card.sold-out {
   pointer-events: none;
-  background-color: #d3d3d3;
 }
 .card img {
   width: 4rem;
@@ -291,11 +301,13 @@ body {
 .gacha-btn:hover {
   filter: brightness(1.2);
 }
+
 .redeem-contain {
   position: absolute;
-  bottom: 0%;
+  bottom: 0;
   right: 25%;
 }
+
 .redeem-btn {
   cursor: pointer;
   background: none;

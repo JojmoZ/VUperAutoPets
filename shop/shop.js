@@ -114,20 +114,23 @@ document.addEventListener("DOMContentLoaded", function () {
     shopContainer.scrollLeft = scrollLeft;
   });
 
-  let shopAnimals = [];
+ let shopAnimals = [];
 
-  fetch("../assets/jsons/shopAnimals.json")
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then((data) => {
-      shopAnimals = data;
-      generateCards(shopAnimals);
-    })
-    .catch((error) => console.error("Error loading shopAnimals:", error));
+ async function loadShopAnimals() {
+   try {
+     const response = await fetch("../assets/jsons/shopAnimals.json");
+     if (!response.ok) {
+       throw new Error(`HTTP error! status: ${response.status}`);
+     }
+     shopAnimals = await response.json();
+     generateCards(shopAnimals);
+   } catch (error) {
+     console.error("Error loading shopAnimals:", error);
+   }
+ }
+
+ // Call the function to load shop animals
+ loadShopAnimals();5
 
   function generateCards(animals) {
     const shopContainer = document.getElementById("shopContainer");
