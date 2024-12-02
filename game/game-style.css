@@ -21,11 +21,15 @@ body {
   border-radius: 15px;
   position: absolute;
   padding: 0.5rem;
-  left: 47.7%;
-  background-color: black;
+  left: 47.35%;
+  /* background-color: black; */
+  background-color: transparent;
+  width: 5rem;
+top:0%;
   border: none;
   cursor: pointer;
 }
+
 #mainContainer {
   display: flex;
   flex-direction: column;

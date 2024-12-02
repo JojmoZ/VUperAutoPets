@@ -2843,11 +2843,11 @@ function togglePause() {
   paused = !paused;
   if (paused) {
     document.getElementById("pauseasset").src =
-      "../assets/home-asset/playmusic.png";
+      "../assets/game-asset/button/resume-btn.png";
     pauseStartTime = performance.now();
   } else if (pauseStartTime !== null) {
     document.getElementById("pauseasset").src =
-      "../assets/home-asset/pause.png";
+      "../assets/game-asset/button/pause-btn.png";
     const pauseDuration = performance.now() - pauseStartTime;
     activeAnimations.forEach((anim) => {
       anim.lastFrameTime += pauseDuration; 
