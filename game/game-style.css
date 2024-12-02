@@ -682,6 +682,10 @@ img {
   font-weight: bold;
 }
 .teamName {
+  background-color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 15px;
+  border: 4px solid black;
   font-size: 2rem;
   font-weight: bold;
 }
@@ -784,24 +788,23 @@ img {
 #rightHalf {
   position: absolute;
   right: 0;
-  width: 50%; /* Cover the right half of the screen */
-  height: 102%; /* Full screen height */
-  background-size: cover; /* Ensure the map image covers the div */
+  width: 50%; 
+  height: 102%; 
+  background-size: cover; 
   background-position: center;
-  pointer-events: none; /* Allow clicks to pass through */
-  z-index: -1; /* Ensure it stays in the background */
+  pointer-events: none; 
+  z-index: -1; 
 }
 #rightHalf {
   background-repeat: no-repeat;
 }
 .refund-amount-text {
   position: absolute;
-  top: 50%;
+  top: 45%;
   left: 30%;
   transform: translate(-50%, -50%);
   color: #5D1A0B;
-  font-size: 3rem;
+  font-size: 3.2rem;
   font-weight: bold;
-  text-shadow: 1px 1px 2px black;
   pointer-events: none;
 }

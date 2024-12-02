@@ -7,8 +7,6 @@ const gameRooms = [];
 
 server.on("connection", (socket) => {
   console.log("New connection established");
-
-  
   socket.id = uuidv4();
 
   socket.on("message", (message) => {
