@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
+  localStorage.removeItem("ingame");
   const specialAnimals = ["VandaJ", "MSeer", "eagSVle", "PamstIr", "YenguiK"];
   if (!localStorage.getItem("coins")) {
     localStorage.setItem("coins", "15");

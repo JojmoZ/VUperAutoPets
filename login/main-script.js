@@ -22,6 +22,7 @@ document.addEventListener("mousemove", (event) => {
 });
 
 window.onload = function () {
+    localStorage.removeItem("ingame");
     const captchaChallenge = document.getElementById("captchaChallenge");
     const captchaInput = document.getElementById("captchaInput");
     const captchaText = captchaModal1.querySelector(".captcha");

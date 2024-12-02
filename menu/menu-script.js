@@ -4,6 +4,7 @@ document.getElementById("burger-btn").addEventListener("click", function () {
 });
 
 window.onload = () => {
+  localStorage.removeItem("ingame");
   let canPlay = false;
   const playbtn = document.getElementById("play-btn");
   playbtn.addEventListener("click", function () {

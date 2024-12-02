@@ -1131,6 +1131,7 @@ function hideNonBattleElements() {
   playBattleMusic();
 }
 document.getElementById("backArrow").addEventListener("click", function () {
+  localStorage.removeItem('ingame')
   window.location.href = "/menu/menu.html";
 });
 function showCanvas() {

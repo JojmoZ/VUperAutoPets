@@ -1,4 +1,5 @@
 window.onload = function () {
+  localStorage.removeItem("ingame");
   const track = document.getElementById("maps");
 
   const backbtn = document.getElementById("backArrow");

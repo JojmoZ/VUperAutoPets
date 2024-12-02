@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const layers = document.querySelectorAll(".parallax-layer");
   const loadingFill = document.getElementById("loading-fill");
   const totalGameTime = 20 * 1000;
+  localStorage.removeItem("ingame");
   const startTime = Date.now();
   const tips = [
     "Kalau melawan tantangan yang tinggi, jangan menyerah!",

@@ -1,6 +1,7 @@
 const animalContainer = document.getElementById("animals");
 const walkingSpeed = 50;
 const frameDuration = 1000 / 60;
+localStorage.removeItem("ingame");
 const gridSize = 10;
 let animationId;
 let foodElement = null;

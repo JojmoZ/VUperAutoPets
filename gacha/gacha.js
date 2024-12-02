@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
+  localStorage.removeItem("ingame");
   const lever = document.getElementById("lever");
   const gachaResult = document.getElementById("gachaResult");
   const slot1 = document.getElementById("slot1");
