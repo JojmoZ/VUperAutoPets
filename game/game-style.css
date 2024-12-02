@@ -363,7 +363,6 @@ img {
 #freezeButton {
   position: absolute;
   right: 45%;
-  /* width: 6.875rem; */
   height: 6.25rem;
   background-color: transparent;
   cursor: pointer;
@@ -568,16 +567,33 @@ img {
   font-size: 3rem;
   padding: 0.1rem 0.5rem;
   color: white;
-  background-color: hsl( 185, 27%, 43%);
+  background-color: rgba(0, 0, 0, 0.5);
   margin: 0;
 }
 .team-row {
   display: flex;
   justify-content: center;
   gap: 1rem;
-  margin: 1rem 0;
+}
+.button-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.stone {
+  position: absolute;
+  bottom: -10px; 
+  width: 6.25rem; 
+  height: 6.25rem;
+  background-image: url(../assets/game-asset/stone.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  z-index: 1; 
 }
 .team-row button {
+  position: relative; 
   color: white;
   border: 3px solid transparent;
   padding: 1.5rem 4rem;
@@ -585,49 +601,41 @@ img {
   cursor: pointer;
   font-size: 1.5rem;
   margin: 1rem;
-  box-shadow: 0px 6px 0px rgba(0, 0, 0, 0.4);
   width: 14rem;
   height: 5rem;
   display: flex;
   justify-content: center;
+  border:2px solid white;
   align-items: center;
-  transition: transform 0.1s ease, box-shadow 0.1s ease, border-color 0.2s ease;  
-  border-width: 4;
-  border-color: white;
+  transition: transform 0.1s ease, box-shadow 0.1s ease, border-color 0.2s ease;
+  z-index: 2; 
 }
 .adjective-button,
 .noun-button {
   background-color: #02379F;
-  box-shadow: 0px 6px 0px #1e5b87;
 }
 .adjective-button:hover,
 .noun-button:hover {
   transform: translateY(-3px);
-  box-shadow: 0px 8px 0px #1e5b87;
 }
 .noun-button {
   background-color: #01963A;
-  box-shadow: 0px 4px 0px #388e3c;
 }
 .noun-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0px 6px 0px #388e3c;
 }
 .selected-button {
   position: relative;
   transform: translateY(-3px);
-  box-shadow: 0px 8px 0px rgba(0, 0, 0, 0.5);
   transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
 .selected-button::after {
   content: "";
   position: absolute;
-  top: -5%;
-  left: -2.7%;
-  width: 105.5%;
-  height: 105%;
+  width: 14rem;
+  height: 5rem;
   background-color: rgba(255, 255, 255, 0.5);
-  border-radius: 20px;
+  border-radius: 15px;
   pointer-events: none;
 }
 #adjectiveRow {

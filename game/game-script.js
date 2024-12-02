@@ -951,6 +951,12 @@ function populateTeamRow(rowId, items, type) {
   row.innerHTML = "";
 
   items.forEach((item) => {
+    const container = document.createElement("div");
+    container.classList.add("button-container");
+
+    const stone = document.createElement("div");
+    stone.classList.add("stone");
+
     const button = document.createElement("button");
     button.textContent = item;
     if (type === "adjective") {
@@ -960,9 +966,29 @@ function populateTeamRow(rowId, items, type) {
     }
 
     button.addEventListener("click", () => handleTeamNameSelection(type, item));
-    row.appendChild(button);
+
+    container.appendChild(stone);
+    container.appendChild(button);
+    const teamNamePreview = document.createElement("div");
+    teamNamePreview.id = "teamNamePreview";
+    teamNamePreview.style.position = "absolute";
+    teamNamePreview.style.bottom = "10px";
+    teamNamePreview.style.left = "10px";  
+    teamNamePreview.style.fontSize = "4rem";
+    teamNamePreview.style.fontWeight = "bold";
+    teamNamePreview.style.color = "white";
+    teamNamePreview.style.backgroundColor = "rgba(0,0,0,0.5)";
+    teamNamePreview.style.padding = "5px 10px";
+    teamNamePreview.style.borderRadius = "5px";
+    teamNamePreview.textContent = "The ... ...";
+    teamNamePreview.style.transition = "all 0.3s ease";
+    if (!document.getElementById("teamNamePreview")) {
+      document.body.appendChild(teamNamePreview);
+    }
+    row.appendChild(container);
   });
 }
+
 function handleTeamNameSelection(type, value) {
   if (type === "adjective") {
     selectedAdjective = value;
@@ -988,13 +1014,25 @@ function handleTeamNameSelection(type, value) {
       selectedButton.classList.add("selected-button");
     }
   }
+  const teamNamePreview = document.getElementById("teamNamePreview");
+  teamNamePreview.textContent = ``;
+  if (!selectedAdjective && !selectedNoun) {
+    teamNamePreview.textContent = "The ... ...";
+  } else if (!selectedAdjective) {
+    teamNamePreview.textContent = `The ... ${selectedNoun}`;
+  } else if (!selectedNoun) {
+    teamNamePreview.textContent = `The ${selectedAdjective} ...`;
+  } else {
+    teamNamePreview.textContent = `The ${selectedAdjective} ${selectedNoun}`;
+  }
   const confirmButton = document.getElementById("confirmTeamNameButton");
   confirmButton.disabled = !(selectedAdjective && selectedNoun);
 }
 document
   .getElementById("confirmTeamNameButton")
   .addEventListener("click", () => {
-    teamName = `${selectedAdjective} ${selectedNoun}`;
+    document.body.removeChild(teamNamePreview)
+    teamName = `The ${selectedAdjective} ${selectedNoun}`;
     localStorage.setItem("teamName", teamName);
     document.getElementById("teamNameSelectionScreen").classList.add("hidden");
     document
@@ -1167,7 +1205,11 @@ document.addEventListener("DOMContentLoaded", function () {
   const teamName = localStorage.getItem("teamName") || "No Team Name";
   BossBattle = false;
   hideBattleText();
-  document.getElementById("teamNameDisplay").textContent = teamName;
+  if(teamName == "No Team Name"){
+  document.getElementById("teamNameDisplay").style.display ="none"
+  }else{
+    document.getElementById("teamNameDisplay").textContent = teamName;
+  }
   loadassets();
   hideCurtains();
   adjustCanvasSize();
