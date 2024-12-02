@@ -363,7 +363,6 @@ img {
 #freezeButton {
   position: absolute;
   right: 45%;
-  /* width: 6.875rem; */
   height: 6.25rem;
   background-color: transparent;
   cursor: pointer;
@@ -568,7 +567,7 @@ img {
   font-size: 3rem;
   padding: 0.1rem 0.5rem;
   color: white;
-  background-color: hsl( 185, 27%, 43%);
+  background-color: rgba(0, 0, 0, 0.5);
   margin: 0;
 }
 .team-row {
@@ -584,17 +583,17 @@ img {
 }
 .stone {
   position: absolute;
-  bottom: -10px; /* Adjust the stone's position */
-  width: 6.25rem; /* Adjust stone size */
+  bottom: -10px; 
+  width: 6.25rem; 
   height: 6.25rem;
   background-image: url(../assets/game-asset/stone.png);
   background-size: contain;
   background-repeat: no-repeat;
   background-position: bottom;
-  z-index: 1; /* Stone is below the button */
+  z-index: 1; 
 }
 .team-row button {
-  position: relative; /* Button's own context */
+  position: relative; 
   color: white;
   border: 3px solid transparent;
   padding: 1.5rem 4rem;
@@ -609,7 +608,7 @@ img {
   border:2px solid white;
   align-items: center;
   transition: transform 0.1s ease, box-shadow 0.1s ease, border-color 0.2s ease;
-  z-index: 2; /* Ensures button is above the stone */
+  z-index: 2; 
 }
 .adjective-button,
 .noun-button {
