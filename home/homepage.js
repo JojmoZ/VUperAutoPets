@@ -59,7 +59,6 @@ window.onload = function () {
         currWordIndex = nextWordIndex;
       }
     };
-
     effect();
   } else {
     window.location.href = "/login/index.html";

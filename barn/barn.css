@@ -142,3 +142,18 @@ canvas {
 .center-text {
   text-align: center;
 }
+.leftside{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.1rem;
+}
+.abovePic{
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+#animalStatPicture{
+  width: 2rem;
+  height: auto;
+}

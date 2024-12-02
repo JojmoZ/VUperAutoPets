@@ -700,6 +700,9 @@ function resetGrid() {
 let currentAnimal = null;
 
 function showStatWindow(animal) {
+  const pic = document.getElementById("animalStatPicture");
+  pic.src = animal.src;
+  
   const statWindow = document.getElementById("statWindow");
   const animalName = document.getElementById("animalName");
   const animalAttack = document.getElementById("animalAttack");
