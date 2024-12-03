@@ -5,9 +5,9 @@ window.onload = function () {
   const backbtn = document.getElementById("backArrow");
   backbtn.addEventListener("click", function () {
     window.location = "/menu/menu.html";
-  })
-  track.dataset.percentage = "-30"; 
-  track.style.transform = `translate(-30%, -50%)`; 
+  });
+  track.dataset.percentage = "-30";
+  track.style.transform = `translate(-30%, -50%)`;
 
   const username = localStorage.getItem("username");
   const logged = localStorage.getItem("loggedin");
@@ -181,7 +181,7 @@ window.onload = function () {
   );
   carouselObserver.observe(carouselSection);
   const socialMediaSection = document.querySelector(".social-media");
-  const contact = document.querySelector(".contact-us");
+  // const contact = document.querySelector(".contact-us");
   const instagram = document.querySelector(".instagram");
   const twitter = document.querySelector(".twitter");
   const steam = document.querySelector(".steam");
@@ -189,13 +189,13 @@ window.onload = function () {
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          contact.classList.add("visible");
+          // contact.classList.add("visible");
           instagram.classList.add("walk");
           twitter.classList.add("walk");
           steam.classList.add("walk");
           console.log("Social Media is visible");
         } else {
-            contact.classList.remove("visible");
+          // contact.classList.remove("visible");
           instagram.classList.remove("walk");
           twitter.classList.remove("walk");
           steam.classList.remove("walk");
@@ -207,8 +207,6 @@ window.onload = function () {
   );
   socialMediaObserver.observe(socialMediaSection);
 
-
- 
   const audio = document.getElementById("audio");
   const visualization = document.getElementById("visualization");
   const context = new (window.AudioContext || window.webkitAudioContext)();
@@ -416,14 +414,12 @@ window.onload = function () {
   window.onmousemove = (e) => handleOnMove(e);
   window.ontouchmove = (e) => handleOnMove(e.touches[0]);
 
-  
   const backgroundAudio = new Audio(
     "../assets/sound/Super Auto Pets  - Menu Theme.mp3"
   );
   backgroundAudio.volume = 0.09;
   backgroundAudio.loop = true;
 
-  
   const savedTime = localStorage.getItem("backgroundAudioTime");
   if (savedTime) {
     backgroundAudio.currentTime = parseFloat(savedTime);
@@ -450,9 +446,89 @@ window.onload = function () {
   document.addEventListener("mousedown", playBackgroundAudio);
   document.addEventListener("mouseup", playBackgroundAudio);
 
-  
   window.addEventListener("beforeunload", () => {
     localStorage.setItem("backgroundAudioTime", backgroundAudio.currentTime);
   });
 
+  // Hat configurations for dynamic positioning
+  const hatConfigurations = {
+    "abandon-hat": {
+      top: "-40%",
+      left: "15%",
+      transform: "rotate(10deg)",
+    },
+    crown: {
+      top: "-30%",
+      left: "10%",
+      width: "11rem",
+      transform: "rotate(10deg)",
+    },
+    foil: {
+      top: "-35%",
+      left: "14%",
+      transform: "rotate(5deg)",
+    },
+    paper: {
+      top: "-23%",
+      left: "15%",
+      transform: "rotate(8deg) scaleX(-1)",
+    },
+    santa: {
+      top: "-25%",
+      left: "18%",
+      transform: "rotate(5deg)",
+    },
+    trophy: {
+      top: "-35%",
+      left: "16%",
+      transform: "rotate(15deg)",
+    },
+  };
+
+  const hatImages = [
+    "../assets/hats/abandon-hat.png",
+    "../assets/hats/crown.png",
+    "../assets/hats/foil.png",
+    "../assets/hats/paper.png",
+    "../assets/hats/santa.png",
+    "../assets/hats/trophy.png",
+  ];
+  let currentHatIndex = 0;
+
+  const hatImage = document.querySelector(".Hats img");
+
+  // Function to update the hat image and its position dynamically
+  function updateHatCarousel() {
+    const hatPath = hatImages[currentHatIndex];
+    const hatName = hatPath.split("/").pop().replace(".png", ""); // Extract the hat name
+    const config = hatConfigurations[hatName];
+
+    // Update the hat image source
+    hatImage.src = hatPath;
+
+    // Apply dynamic positioning styles
+    if (config) {
+      const hatElement = document.querySelector(".Hats");
+      hatElement.style.top = config.top;
+      hatElement.style.left = config.left;
+      hatImage.style.width = config.width || "11rem";
+      hatElement.style.transform = config.transform || "none";
+    }
+  }
+
+  // Left arrow click handler
+  document.getElementById("hat-left-arrow").addEventListener("click", () => {
+    currentHatIndex =
+      (currentHatIndex - 1 + hatImages.length) % hatImages.length;
+    updateHatCarousel();
+  });
+
+  // Right arrow click handler
+  document.getElementById("hat-right-arrow").addEventListener("click", () => {
+    currentHatIndex = (currentHatIndex + 1) % hatImages.length;
+    updateHatCarousel();
+  });
+
+  // Initialize the carousel with the first hat
+  updateHatCarousel();
 };

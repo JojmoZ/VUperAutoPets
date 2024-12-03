@@ -1005,3 +1005,47 @@ body > .image {
     opacity: 1;
   }
 }
+.hat-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 600px; 
+  margin: 0 auto;
+}
+.ArrowContainer{
+  display: flex;
+  justify-content: space-around;
+  max-width: max-content;
+  
+}
+.Animal-Non-Hat {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+.Hats {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.carousel-arrow {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.carousel-arrow:hover {
+  color: #febd01;
+}
+.Hats{
+  position: absolute;
+}
+.hat-container{
+  position:relative;
+}
