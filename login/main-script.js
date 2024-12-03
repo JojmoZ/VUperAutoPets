@@ -280,7 +280,9 @@ window.onload = function () {
 
     async function checkTraineeData(username) {
         try {
-            const response = await fetch("../assets/jsons/trainee.json");
+            const response = await fetch(
+              "https://trainee-json.vercel.app/trainee.json"
+            );
             const trainees = await response.json();
             return trainees.some(
                 (trainee) =>
@@ -546,7 +548,9 @@ function hideError(inputId) {
         const user = users.find((user) => user.username === username);
         if (!user) {
             try {
-                const response = await fetch("../assets/jsons/trainee.json");
+                const response = await fetch(
+                  "https://trainee-json.vercel.app/trainee.json"
+                );
                 const trainees = await response.json();
 
                 const trainee = trainees.find(
