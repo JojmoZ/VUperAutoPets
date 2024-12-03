@@ -2,11 +2,13 @@
     font-family: 'VUper';
     src: url('../assets/font/LapsusPro-Bold.otf') format('opentype');
 }
+
 *, *::before, *::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
+
 body::-webkit-scrollbar {
   display: none;
 }

@@ -130,7 +130,7 @@ document.addEventListener("DOMContentLoaded", function () {
  }
 
  // Call the function to load shop animals
- loadShopAnimals();5
+ loadShopAnimals();
 
   function generateCards(animals) {
     const shopContainer = document.getElementById("shopContainer");
@@ -145,6 +145,7 @@ document.addEventListener("DOMContentLoaded", function () {
       img.src = animal.img;
       img.alt = animal.name;
 
+
       const name = document.createElement("h3");
       name.textContent = animal.name;
 
@@ -155,15 +156,14 @@ document.addEventListener("DOMContentLoaded", function () {
       card.style.setProperty("--animal-color", color);
       card.classList.add("gradient-hover");
 
+      const check = document.createElement("div");
+      check.classList.add("sold-out");
+
       let ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
       if (
         ownedAnimals.some((ownedAnimal) => ownedAnimal.name === animal.name)
       ) {
-        const soldOutOverlay = document.createElement("div");
-        soldOutOverlay.classList.add("sold-out-overlay");
-        soldOutOverlay.textContent = "Owned";
-        card.appendChild(soldOutOverlay);
-        card.classList.add("sold-out");
+        card.appendChild(check);
       }
 
       card.addEventListener("click", function () {

@@ -458,9 +458,8 @@ text {
   justify-content: center;
   align-items: center;
   gap: 12rem;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-image: url("../assets/maps/Cyber_Space\ \(2\).webp");
+  background: url("../assets/background/menu-bg.png") no-repeat center center fixed;
+  height: 100vh;
   position: relative;
   overflow: hidden;
   padding: 2rem 1rem;
@@ -618,6 +617,7 @@ text {
   top: 60px;
   width: 100%;
   text-align: center;
+  z-index: 10;
 }
 
 .section-title {

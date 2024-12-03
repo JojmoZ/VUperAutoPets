@@ -181,6 +181,7 @@ window.onload = function () {
   );
   carouselObserver.observe(carouselSection);
   const socialMediaSection = document.querySelector(".social-media");
+  const contact = document.querySelector(".contact-us");
   const instagram = document.querySelector(".instagram");
   const twitter = document.querySelector(".twitter");
   const steam = document.querySelector(".steam");
@@ -188,11 +189,13 @@ window.onload = function () {
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
+          contact.classList.add("visible");
           instagram.classList.add("walk");
           twitter.classList.add("walk");
           steam.classList.add("walk");
           console.log("Social Media is visible");
         } else {
+            contact.classList.remove("visible");
           instagram.classList.remove("walk");
           twitter.classList.remove("walk");
           steam.classList.remove("walk");
