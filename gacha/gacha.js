@@ -130,6 +130,17 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
+    // Get the current user's pity count
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+    const userIndex = users.findIndex((user) => user.username === username);
+    if (userIndex !== -1) {
+      if (!users[userIndex].pity) {
+        users[userIndex].pity = 0;
+      }
+      users[userIndex].pity += 1;
+      localStorage.setItem("users", JSON.stringify(users));
+    }
+
     if (handleCheatActivation()) {
       localStorage.setItem("coins", (coins - 5).toString());
       updateCoinsDisplay();
@@ -141,9 +152,8 @@ document.addEventListener("DOMContentLoaded", function () {
     slot3.innerHTML = "";
 
     let selectedAnimal1, selectedAnimal2, selectedAnimal3;
-
     const random = Math.random();
-    if (random < 0.02) {
+    if (random < 0.02 || users[userIndex].pity >= 50) {
       const specialRewards = shopAnimals.filter((animal) =>
         ["MSeer", "VandaJ", "YenguiK", "PamstIr"].includes(animal.name)
       );
@@ -151,6 +161,8 @@ document.addEventListener("DOMContentLoaded", function () {
         selectedAnimal2 =
         selectedAnimal3 =
           specialRewards[Math.floor(Math.random() * specialRewards.length)];
+      users[userIndex].pity = 0; // Reset pity count after a special reward
+      localStorage.setItem("users", JSON.stringify(users));
     } else if (random < 0.09) {
       const otherAnimals = shopAnimals.filter(
         (animal) =>
