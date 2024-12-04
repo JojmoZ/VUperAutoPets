@@ -458,8 +458,9 @@ text {
   justify-content: center;
   align-items: center;
   gap: 12rem;
-  background: url("../assets/background/menu-bg.png") no-repeat center center fixed;
-  height: 100vh;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url("../assets/background/menu-bg.png");
   position: relative;
   overflow: hidden;
   padding: 2rem 1rem;

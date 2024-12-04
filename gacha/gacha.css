@@ -23,7 +23,8 @@ body {
   width: 100vw;
   background-size: contain;
   background-position: center;
-  background-image: url(../assets/gacha/gacha-bg.jpg);
+  backdrop-filter: blur(30px);
+  background-image: url(../assets/gacha/gacha.png);
 }
 
 .back-arrow {
