@@ -342,17 +342,29 @@ body {
     filter: brightness(1.2);
 }
 
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    /* background-color: #333; */
+    color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
 .search-container {
+    flex: 1;
     display: flex;
     justify-content: center;
-    margin: 1rem 0;
-    position: absolute;
-    left: 7%;
-    top: 0%;
 }
 
 #search-input {
-    width: 100%;
+    width: 40%; /* Adjust to fit your design */
+    max-width: 300px; /* Limit the maximum width */
     padding: 1rem;
     font-size: 1.5rem;
     border: 5px solid black;
@@ -360,17 +372,12 @@ body {
 }
 
 .scroll-bar-container {
-    display: flex;
-    justify-content: center;
-    margin: 1rem 0;
-    position: absolute;
-    width: 55%;
-    left: 26%;
-    top: -0.2%;
+    flex: 2.5;
+    padding: 0 0.5rem; /* Reduce padding for more space */
 }
 
 #scroll-bar {
-    width: 100%;
+    width: 80%;
     -webkit-appearance: none;
     appearance: none;
     height: 3.75rem;
@@ -401,4 +408,23 @@ body {
     background: #FF6900;
     border-radius: 50%;
     cursor: pointer;
+}
+
+.coins-container {
+    flex:0.5;
+    display: flex;
+    align-items: center;
+}
+
+#coinsDisplay {
+  
+    font-family: "VUper";
+    color: white;
+    font-size: 2rem;
+    margin-right: 1rem;
+}
+
+#coinImg {
+    width: 3rem;
+    height: 3rem;
 }

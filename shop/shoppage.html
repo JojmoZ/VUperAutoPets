@@ -12,6 +12,18 @@
 </head>
 
 <body>
+    <div class="header-container">
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Search for animals...">
+        </div>
+        <div class="scroll-bar-container">
+            <input type="range" id="scroll-bar" min="0" max="100" value="0">
+        </div>
+        <div class="coins-container">
+            <div id="coinsDisplay"></div>
+            <img id="coinImg" src="../assets/game-asset/Gold.png" alt="Coins">
+        </div>
+    </div>
     <button class="back-arrow" id="backArrow">
         <img src="../assets/game-asset/button/back-button.png" alt="Back">
     </button>
@@ -28,12 +40,6 @@
         <button id="gacha-btn" class="gacha-btn">
             <img src="../assets/buttons/gacha-btn.png" alt="barn">
         </button>
-    </div>
-    <div class="scroll-bar-container">
-        <input type="range" id="scroll-bar" min="0" max="100" value="0">
-    </div>
-    <div class="search-container">
-        <input type="text" id="search-input" placeholder="Search for animals...">
     </div>
     <div id="modal" class="modal">
         <div class="modal-bg"></div>

@@ -23,25 +23,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const modalImage = document.getElementById("modal-animal-image");
   const confirmButton = document.getElementById("confirm-buy");
   const cancelButton = document.getElementById("cancel-buy");
-  const coinsDisplay = document.createElement("div");
-  const coinImg = document.createElement("img");
-  coinImg.src = "../assets/game-asset/Gold.png";
-  coinImg.style.width = "3rem";
-  coinImg.style.height = "3rem";
-  coinImg.style.position = "fixed";
-  coinImg.style.top = "1.563rem";
-  coinImg.style.right = "8rem";
-  coinImg.style.zIndex = "9999";
-  document.body.appendChild(coinImg);
-  coinsDisplay.id = "coinsDisplay";
-  coinsDisplay.style.fontFamily = "VUper";
-  coinsDisplay.style.position = "fixed";
-  coinsDisplay.style.top = "1.875rem";
-  coinsDisplay.style.right = "14rem";
-  coinsDisplay.style.color = "white";
-  coinsDisplay.style.fontSize = "2rem";
-  coinsDisplay.style.zIndex = "9999";
-  document.body.appendChild(coinsDisplay);
+  const coinsDisplay = document.getElementById("coinsDisplay");
+  const coinImg = document.getElementById("coinImg");
   const backbtn = document.getElementById("backArrow");
   backbtn.addEventListener("click", function () {
     window.location = "/menu/menu.html";
