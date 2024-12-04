@@ -97,112 +97,117 @@ document.addEventListener("DOMContentLoaded", function () {
     shopContainer.scrollLeft = scrollLeft;
   });
 
- let shopAnimals = [];
+  let shopAnimals = [];
 
- async function loadShopAnimals() {
-   try {
-     const response = await fetch("../assets/jsons/shopAnimals.json");
-     if (!response.ok) {
-       throw new Error(`HTTP error! status: ${response.status}`);
-     }
-     shopAnimals = await response.json();
-     generateCards(shopAnimals);
-   } catch (error) {
-     console.error("Error loading shopAnimals:", error);
-   }
- }
+  async function loadShopAnimals() {
+    try {
+      const response = await fetch("../assets/jsons/shopAnimals.json");
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      shopAnimals = await response.json();
+      generateCards(shopAnimals);
+    } catch (error) {
+      console.error("Error loading shopAnimals:", error);
+    }
+  }
 
- // Call the function to load shop animals
- loadShopAnimals();
+  // Call the function to load shop animals
+  loadShopAnimals();
 
- function generateCards(animals) {
-   const shopContainer = document.getElementById("shopContainer");
+  function generateCards(animals) {
+    const shopContainer = document.getElementById("shopContainer");
 
-   animals.forEach((animal) => {
-     const card = document.createElement("div");
-     card.classList.add("card");
-     card.setAttribute("data-animal", animal.name);
-     card.setAttribute("data-color", animal.color);
+    animals.forEach((animal) => {
+      const card = document.createElement("div");
+      card.classList.add("card");
+      card.setAttribute("data-animal", animal.name);
+      card.setAttribute("data-color", animal.color);
 
-     const img = document.createElement("img");
-     img.src = animal.img;
-     img.alt = animal.name;
+      const img = document.createElement("img");
+      img.src = animal.img;
+      img.alt = animal.name;
 
-     const name = document.createElement("h3");
-     name.textContent = animal.name;
-     name.style.backgroundImage = `linear-gradient(135deg, ${
-       animal.color
-     }, ${getNearColor(animal.color)})`;
-     name.style.backgroundClip = "text";
-     name.style.webkitBackgroundClip = "text";
-     name.style.color = "transparent";
-     name.style.webkitTextStroke = "3px black"; // Apply black border outline
+      const name = document.createElement("h3");
+      name.textContent = animal.name;
+      name.style.backgroundImage = `linear-gradient(135deg, ${
+        animal.color
+      }, ${getNearColor(animal.color)})`;
+      name.style.backgroundClip = "text";
+      name.style.webkitBackgroundClip = "text";
+      name.style.width = "100%";
+      name.style.textAlign = "center";
+      name.style.color = "transparent";
+      name.style.letterSpacing = "0.2rem";
+      name.style.webkitTextStroke = "0.1rem black"; // Apply black border outline
 
-     card.appendChild(img);
-     card.appendChild(name);
+      card.appendChild(img);
+      card.appendChild(name);
 
-     const color = animal.color;
-     card.style.setProperty("--animal-color", color);
-     card.classList.add("gradient-hover");
+      const color = animal.color;
+      card.style.setProperty("--animal-color", color);
+      card.classList.add("gradient-hover");
 
-     const check = document.createElement("div");
-     check.classList.add("sold-out");
+      const check = document.createElement("div");
+      check.classList.add("sold-out");
 
-     let ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
-     if (ownedAnimals.some((ownedAnimal) => ownedAnimal.name === animal.name)) {
-       card.appendChild(check);
-     }
+      let ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
+      if (
+        ownedAnimals.some((ownedAnimal) => ownedAnimal.name === animal.name)
+      ) {
+        card.appendChild(check);
+      }
 
-     card.addEventListener("click", function () {
-       const animalName = this.querySelector("h3").textContent;
-       const animalImage = this.querySelector("img").src;
-       let ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
-       if (ownedAnimals.some((animal) => animal.name === animalName)) {
-         ShowModal("You already own this animal!");
-         return;
-       }
+      card.addEventListener("click", function () {
+        const animalName = this.querySelector("h3").textContent;
+        const animalImage = this.querySelector("img").src;
+        let ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
+        if (ownedAnimals.some((animal) => animal.name === animalName)) {
+          ShowModal("You already own this animal!");
+          return;
+        }
 
-       const h3 = document.getElementById("textext");
-       h3.innerHTML = "Are you sure you want to buy this?";
-       confirmButton.style.display = "inline-block";
-       h3.style.textAlign = "center";
-       cancelButton.innerHTML = "Close";
+        const h3 = document.getElementById("textext");
+        h3.innerHTML = "Are you sure you want to buy this?";
+        confirmButton.style.display = "inline-block";
+        h3.style.textAlign = "center";
+        cancelButton.innerHTML = "Close";
 
-       modalImage.src = animalImage;
-       modal.setAttribute("data-animal", animalName);
+        modalImage.src = animalImage;
+        modal.setAttribute("data-animal", animalName);
 
-       const animal = shopAnimals.find((a) => a.name === animalName);
-       modal.setAttribute("data-price", animal.cost);
-       document.getElementById(
-         "modal-animal-price"
-       ).textContent = `Price: ${animal.cost} Coins`;
-       document.getElementById(
-         "modal-animal-stats"
-       ).textContent = `Attack: ${animal.attack}, Health: ${animal.health}`;
+        const animal = shopAnimals.find((a) => a.name === animalName);
+        modal.setAttribute("data-price", animal.cost);
+        document.getElementById(
+          "modal-animal-price"
+        ).textContent = `Price: ${animal.cost} Coins`;
+        document.getElementById(
+          "modal-animal-stats"
+        ).textContent = `Attack: ${animal.attack}, Health: ${animal.health}`;
 
-       const modalContent = document.querySelector(".modal-content");
-       const nearColor = getNearColor(animal.color);
-       modalContent.style.background = `linear-gradient(135deg, ${animal.color} 0%, ${nearColor} 100%)`;
+        const modalContent = document.querySelector(".modal-content");
+        const nearColor = getNearColor(animal.color);
+        modalContent.style.background = `linear-gradient(135deg, ${animal.color} 0%, ${nearColor} 100%)`;
 
-       const imageContainer = document.querySelector(".image-container");
-       const darkerColor = getDarkerColor(animal.color);
-       imageContainer.style.setProperty("--animal-border-color", darkerColor);
+        const imageContainer = document.querySelector(".image-container");
+        const darkerColor = getDarkerColor(animal.color);
+        imageContainer.style.setProperty("--animal-border-color", darkerColor);
 
-       if (specialAnimals.includes(animalName)) {
-         h3.innerHTML =
-           "You cannot buy this animal. You can only get this animal through gacha.";
-         confirmButton.style.display = "none";
-         h3.style.textAlign = "center";
-         cancelButton.innerHTML = "Close";
-       }
+        if (specialAnimals.includes(animalName)) {
+          h3.innerHTML =
+            "You cannot buy this animal. You can only get this animal through gacha.";
+          confirmButton.style.display = "none";
+          h3.style.textAlign = "center";
+          cancelButton.innerHTML = "Close";
+        }
 
-       modal.style.display = "flex";
-       modal.classList.add("show");
-     });
+        modal.style.display = "flex";
+        modal.classList.add("show");
+      });
 
-     shopContainer.appendChild(card);
-   });
- }
+      shopContainer.appendChild(card);
+    });
+  }
 
   function getNearColor(color) {
     const colorMap = {
@@ -420,5 +425,4 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   });
-
 });
