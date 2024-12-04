@@ -84,7 +84,7 @@ body {
 
 .jumbotron-box {
   width: 80%;
-  max-width: 800px;
+  max-width: 50rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -148,8 +148,8 @@ text {
   align-items: center;
   overflow: hidden;
   padding: 0;
-  width: 200px;
-  height: 60px;
+  width: 12.5rem;
+  height: 3.75rem;
   transition: opacity 1s ease;
 }
 
@@ -234,16 +234,16 @@ text {
 
 .img-desc {
   width: 100%;
-  max-width: 600px;
+  max-width: 37.5rem;
   margin: 1rem 0;
 }
 
 .description-card {
   background: white;
-  padding: 20px;
+  padding: 1.25rem;
   position: relative;
   width: 100%;
-  max-width: 600px;
+  max-width: 37.5rem;
   box-sizing: border-box;
   z-index: 1;
   margin: 1rem 0;
@@ -262,7 +262,7 @@ text {
 
 .game-maker .text {
   width: 100%;
-  max-width: 600px;
+  max-width: 37.5rem;
   font-size: 1.2rem;
   padding: 1rem;
 }
@@ -270,7 +270,7 @@ text {
 .carousel {
   position: relative;
   width: 100%;
-  max-width: 600px;
+  max-width: 37.5rem;
   height: auto;
   display: flex;
   flex-direction: column;
@@ -279,10 +279,10 @@ text {
 
 .carousel img {
   width: 100%;
-  max-width: 300px;
-  border-radius: 10px;
+  max-width: 18.75rem;
+  border-radius: 0.625rem;
   transition: opacity 1s ease-in-out;
-  margin-bottom: 10px;
+  margin-bottom: 0.625rem;
   opacity: 1;
 }
 
@@ -295,11 +295,11 @@ text {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-top: 10px;
+  margin-top: 0.625rem;
 }
 
 .carousel-controls button {
-  padding: 10px 20px;
+  padding: 0.625rem 1.25rem;
   font-size: 16px;
   cursor: pointer;
   margin-top: 5px;
@@ -308,12 +308,12 @@ text {
 .carousel-indicators {
   display: flex;
   justify-content: center;
-  margin-top: 10px;
+  margin-top: 0.625rem;
 }
 
 .indicator {
-  width: 40px;
-  height: 10px;
+  width: 2.5rem;
+  height: 0.625rem;
   background-color: gray;
   margin: 0 5px;
   cursor: pointer;
@@ -359,7 +359,7 @@ text {
 }
 
 .description-card p {
-  margin-top: 10px;
+  margin-top: 0.625rem;
   font-size: 1.2em;
 }
 
@@ -439,7 +439,7 @@ text {
 
 .fade-in-element {
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(1.25rem);
   transition: opacity 1s ease, transform 1s ease;
 }
 
@@ -468,7 +468,7 @@ text {
 
 .social-media a {
   position: relative;
-  width: 100px;
+  width: 6.25rem;
   display: flex;
   justify-content: center;
   margin: 1rem 0;
@@ -481,13 +481,13 @@ text {
   left: 50%;
   background-color: rgba(0, 0, 0, 0.8);
   color: #fff;
-  padding: 5px 10px;
+  padding: 5px 0.625rem;
   border-radius: 5px;
   opacity: 0;
   white-space: nowrap;
   transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
   pointer-events: none;
-  transform: translateX(-50%) translateY(10px);
+  transform: translateX(-50%) translateY(0.625rem);
 }
 
 .tooltip:hover::after {
@@ -496,8 +496,8 @@ text {
 }
 
 .social-media img {
-  width: 100px;
-  height: 100px;
+  width: 6.25rem;
+  height: 6.25rem;
   opacity: 0;
   transition: opacity 1s, transform 1s;
 }
@@ -572,11 +572,11 @@ text {
 
 .fancy-card {
   background: white;
-  border-radius: 20px;
-  padding: 20px;
+  border-radius: 1.25rem;
+  padding: 1.25rem;
   width: 100%;
   max-width: 500px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 1.25rem rgba(0, 0, 0, 0.2);
   position: relative;
   overflow: hidden;
   transition: transform 0.3s ease;
@@ -588,7 +588,7 @@ text {
 }
 
 .fancy-card p {
-  margin-top: 10px;
+  margin-top: 0.625rem;
   font-size: 1.2rem;
   line-height: 1.5;
   color: #333;
@@ -601,7 +601,7 @@ text {
   left: 0;
   right: 0;
   bottom: 0;
-  border-radius: 20px;
+  border-radius: 1.25rem;
   background: linear-gradient(145deg, #292743, #292743);
   z-index: -1;
   opacity: 0.2;
@@ -615,7 +615,7 @@ text {
 
 .title-wrapper {
   position: absolute;
-  top: 60px;
+  top: 3.75rem;
   width: 100%;
   text-align: center;
   z-index: 10;
@@ -623,7 +623,7 @@ text {
 
 .section-title {
   font-size: 2rem;
-  margin-bottom: 50px;
+  margin-bottom: 3.125rem;
   color: #333;
   font-family: "VUper", serif;
   opacity: 0;
@@ -635,10 +635,10 @@ text {
 .section-title::after {
   content: "";
   position: absolute;
-  bottom: -10px;
+  bottom: -0.625rem;
   left: 0;
   width: 0;
-  height: 3px;
+  height: 0.188rem;
   background-color: #febd01;
   transition: width 1s ease;
 }
@@ -699,7 +699,7 @@ section {
 
 .visualizer-container {
   width: 100%;
-  max-width: 600px;
+  max-width: 37.5rem;
 }
 
 #visualization {
@@ -708,7 +708,7 @@ section {
 }
 
 .ost-card:hover {
-  transform: translateY(-10px);
+  transform: translateY(-0.625rem);
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
 }
 
@@ -720,13 +720,13 @@ section {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 60px;
-  height: 60px;
+  width: 3.75rem;
+  height: 3.75rem;
 }
 
 .play-ost-button img {
-  width: 40px;
-  height: 40px;
+  width: 2.5rem;
+  height: 2.5rem;
   transition: transform 0.3s ease;
 }
 
@@ -787,8 +787,8 @@ section {
 #trailer-video {
   width: 100%;
   height: auto;
-  border-radius: 10px;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 0.625rem;
+  box-shadow: 0 5px 0.625rem rgba(0, 0, 0, 0.2);
 }
 
 .map-section {
@@ -801,7 +801,7 @@ section {
   align-items: center;
   justify-content: flex-start;
   text-align: center;
-  gap: 10px;
+  gap: 0.625rem;
   position: relative;
 }
 
@@ -819,7 +819,7 @@ section {
   font-size: 3rem;
   color: white;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-  margin-top: -10px;
+  margin-top: -0.625rem;
 }
 
 .map-item > .image,
@@ -847,9 +847,9 @@ body > .image {
   color: white;
   text-transform: uppercase;
   position: relative;
-  border-radius: 50px;
+  border-radius: 3.125rem;
   cursor: pointer;
-  padding: 18px 60px;
+  padding: 1.125rem 3.75rem;
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -871,7 +871,7 @@ body > .image {
   position: relative;
   z-index: 11;
   transition: color 0.25s ease;
-  gap: 10px;
+  gap: 0.625rem;
 }
 
 .btn:hover > span {
@@ -916,7 +916,7 @@ body > .image {
   position: absolute;
   inset: 0;
   background: radial-gradient(
-    100px circle at var(--mouseX) var(--mouseY),
+    6.25rem circle at var(--mouseX) var(--mouseY),
     hsl(var(--primary) / 0.3),
     transparent 50%
   );
@@ -986,7 +986,7 @@ body > .image {
 .animalWalk {
   position: absolute;
   bottom: 10%;
-  height: 100px;
+  height: 6.25rem;
   z-index: 10;
   transition: transform 10s linear, bottom 1s ease-in-out;
 }
@@ -1013,7 +1013,7 @@ body > .image {
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  max-width: 600px; 
+  max-width: 37.5rem; 
   margin: 0 auto;
 }
 .ArrowContainer{
