@@ -1,200 +1,210 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&display=swap");
 
 @font-face {
-  font-family: "VUper";
-  src: url("../assets/font/LapsusPro-Bold.otf") format("opentype");
+    font-family: "VUper";
+    src: url("../assets/font/LapsusPro-Bold.otf") format("opentype");
 }
 
 * {
-  font-family: 'VUper', serif;
+    font-family: 'VUper', serif;
 }
 
 .hidden {
-  display: none;
+    display: none;
 }
 
 body::-webkit-scrollbar {
-  display: none;
+    display: none;
 }
 
 html,
 body {
-  margin: 0;
-  width: 100vw;
-  background-size: contain;
-  background-position: center;
-  backdrop-filter: blur(30px);
-  background-image: url(../assets/gacha/gacha.png);
+    margin: 0;
+    width: 100vw;
+    background-size: contain;
+    background-position: center;
+    backdrop-filter: blur(30px);
+    background-image: url(../assets/gacha/gacha.png);
+
 }
 
 .back-arrow {
-  position: absolute;
-  top: 0;
-  left: 0;
-  padding: 0;
-  z-index: 2421241241241;
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-  transition: transform 0.3s ease;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 0;
+    z-index: 2421241241241;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    transition: transform 0.3s ease;
 }
+
 .back-arrow img {
-  width: 8rem;
-  height: auto;
+    width: 8rem;
+    height: auto;
 }
 
 .back-arrow:hover {
-  transform: scale(1.1);
+    transform: scale(1.1);
 }
+
 .gacha-wrapper {
-  display: flex;
-  height: 100vh;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
+    display: flex;
+    height: 100vh;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .gacha-container {
-  text-align: center;
-  background-color: rgba(255, 255, 255, 0.1);
-  padding: 2rem;
-  border-radius: 1rem;
-  display: flex;
-  align-items: center;
-  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(10px);
-  border-top: 1px solid rgba(255, 255, 255, 0.5);
-  border-left: 1px solid rgba(255, 255, 255, 0.5);
+    /*text-align: center;*/
+    /*background-color: rgba(255, 255, 255, 0.1);*/
+    /*padding: 2rem;*/
+    /*border-radius: 1rem;*/
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /*box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);*/
+    /*backdrop-filter: blur(10px);*/
+    /*border-top: 1px solid rgba(255, 255, 255, 0.5);*/
+    /*border-left: 1px solid rgba(255, 255, 255, 0.5);*/
+    width: 65vw;
+    height: 60vh;
+    background-image: url("../assets/gacha/board-alt.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+
 }
 
 .slot-machine {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .slot-column {
-  width: 100px;
-  height: 100px;
-  user-select: none;
-  overflow: hidden;
-  position: relative;
-  border: 2px solid #000;
-  margin: 0 10px;
+    width: 100px;
+    height: 100px;
+    user-select: none;
+    overflow: hidden;
+    position: relative;
+    border: 2px solid #000;
+    margin: 0 10px;
 }
 
 .slot-item {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  transition: transform 0.3s ease-in;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.3s ease-in;
 }
 
 .slot-column img {
-  width: 80px;
-  height: 80px;
+    width: 80px;
+    height: 80px;
 }
 
 .lever-container {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 1rem;
-  position: relative;
-  top: -30%;
-  left: -105%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+    position: relative;
+    top: -30%;
+    left: -105%;
 }
 
 .lever {
-  width: 20px;
-  height: 100px;
-  background-color: red;
-  cursor: pointer;
-  position: relative;
-  transition: transform 0.5s ease;
+    width: 20px;
+    height: 100px;
+    background-color: red;
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.5s ease;
 }
 
 .lever::before {
-  content: "";
-  width: 40px;
-  height: 40px;
-  background-color: red;
-  border-radius: 50%;
-  position: absolute;
-  top: -30px;
-  left: -10px;
-  transition: top 0.5s ease;
+    content: "";
+    width: 40px;
+    height: 40px;
+    background-color: red;
+    border-radius: 50%;
+    position: absolute;
+    top: -30px;
+    left: -10px;
+    transition: top 0.5s ease;
 }
 
 .lever[style*="translateY(100px)"]::before {
-  top: 70px;
+    top: 70px;
 }
 
 #gachaResult {
-  margin-top: 1rem;
+    margin-top: 1rem;
 }
 
 #gachaResult img {
-  width: 100px;
-  height: 100px;
+    width: 100px;
+    height: 100px;
 }
 
 h1 {
-  font-size: 88px;
-  font-weight: 800;
-  letter-spacing: 8px;
-  text-transform: uppercase;
-  text-decoration: none;
-  color: transparent;
-  -webkit-text-stroke-width: 1px;
-  -webkit-text-stroke-color: black;
-  text-align: center;
-  position: relative;
+    font-size: 88px;
+    font-weight: 800;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: transparent;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+    text-align: center;
+    position: relative;
 }
 
 h1::before,
 h1::after {
-  content: attr(data-text);
-  position: absolute;
-  top: 0;
-  left: 0;
-  transition: 0.3s ease-out;
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: 0.3s ease-out;
 }
 
 h1:hover::before {
-  color: #e6d3e6;
-  transform: translate(12px, -12px);
-  -webkit-text-stroke-width: 1px;
-  -webkit-text-stroke-color: black;
+    color: #e6d3e6;
+    transform: translate(12px, -12px);
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
 }
 
 h1:hover::after {
-  color: #eee7e6;
-  transform: translate(24px, -24px);
-  -webkit-text-stroke-width: 1px;
-  -webkit-text-stroke-color: black;
+    color: #eee7e6;
+    transform: translate(24px, -24px);
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
 }
 
 h1.hover::before {
-  color: #e6d3e6;
-  transform: translate(12px, -12px);
-  -webkit-text-stroke-width: 1px;
-  -webkit-text-stroke-color: black;
+    color: #e6d3e6;
+    transform: translate(12px, -12px);
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
 }
 
 h1.hover::after {
-  color: #eee7e6;
-  transform: translate(24px, -24px);
-  -webkit-text-stroke-width: 1px;
-  -webkit-text-stroke-color: black;
+    color: #eee7e6;
+    transform: translate(24px, -24px);
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
 }
 
 .fireworks-container {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 1000;
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1000;
 }
