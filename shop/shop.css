@@ -390,7 +390,7 @@ body {
     appearance: none;
     width: 3.125rem;
     height: 3.75rem;
-    background: hsl(50 70% 47%);
+    background: #FF6900;
     border-radius: 20%;
     cursor: pointer;
 }
@@ -398,7 +398,7 @@ body {
 #scroll-bar::-moz-range-thumb {
     width: 1rem;
     height: 1rem;
-    background: hsl(50 70% 47%);
+    background: #FF6900;
     border-radius: 50%;
     cursor: pointer;
 }
