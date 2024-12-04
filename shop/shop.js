@@ -422,7 +422,7 @@ document.addEventListener("DOMContentLoaded", function () {
     cards.forEach((card) => {
       const animalName = card.getAttribute("data-animal").toLowerCase();
       if (animalName.includes(searchTerm)) {
-        card.style.display = "block";
+        // card.style.display = "block";
       } else {
         card.style.display = "none";
       }

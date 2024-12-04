@@ -104,7 +104,7 @@
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(-20px);
+    transform: translateY(-1.25rem);
   }
   to {
     opacity: 1;
@@ -118,7 +118,7 @@
   }
   to {
     opacity: 0;
-    transform: translateY(-20px);
+    transform: translateY(-1.25rem);
   }
 }
 
@@ -160,7 +160,7 @@
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(-20px);
+    transform: translateY(-1.25rem);
   }
   to {
     opacity: 1;
@@ -175,7 +175,7 @@
   }
   to {
     opacity: 0;
-    transform: translateY(-20px);
+    transform: translateY(-1.25rem);
   }
 }
 .modal-text h2 {

@@ -11,8 +11,8 @@
 
 .firework {
     position: absolute;
-    width: 8px;
-    height: 8px;
+    width: 0.5rem;
+    height: 0.5rem;
     border-radius: 50%;
     opacity: 1;
 }
@@ -30,8 +30,8 @@
 
 .firework-particle {
     position: absolute;
-    width: 5px;
-    height: 5px;
+    width: 0.313rem;
+    height: 0.313rem;
     border-radius: 50%;
     opacity: 1;
     animation: explodeParticle 1.5s ease-out;
