@@ -72,7 +72,7 @@ window.onload = function () {
             .map(() => chars[Math.floor(Math.random() * chars.length)])
             .join("");
 
-        ctx.font = "30px Arial";
+        ctx.font = "1.875rem Arial";
         ctx.fillStyle = "#000";
         for (let i = 0; i < generatedCaptcha2.length; i++) {
             ctx.save();

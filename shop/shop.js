@@ -29,14 +29,14 @@ document.addEventListener("DOMContentLoaded", function () {
   coinImg.style.width = "3rem";
   coinImg.style.height = "3rem";
   coinImg.style.position = "fixed";
-  coinImg.style.top = "25px";
+  coinImg.style.top = "1.563rem";
   coinImg.style.right = "8rem";
   coinImg.style.zIndex = "9999";
   document.body.appendChild(coinImg);
   coinsDisplay.id = "coinsDisplay";
   coinsDisplay.style.fontFamily = "VUper";
   coinsDisplay.style.position = "fixed";
-  coinsDisplay.style.top = "30px";
+  coinsDisplay.style.top = "1.875rem";
   coinsDisplay.style.right = "14rem";
   coinsDisplay.style.color = "white";
   coinsDisplay.style.fontSize = "2rem";
