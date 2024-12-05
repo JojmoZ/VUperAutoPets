@@ -1,4 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
+   const logged = localStorage.getItem("loggedin");
+   if(!logged){
+     window.location.href = "/login/index.html";
+   }
   localStorage.removeItem("ingame");
   const specialAnimals = ["VandaJ", "MSeer", "eagSVle", "PamstIr", "YenguiK"];
   if (!localStorage.getItem("coins")) {
@@ -423,4 +427,5 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   });
+  
 });

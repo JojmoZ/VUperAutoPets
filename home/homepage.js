@@ -529,6 +529,5 @@ window.onload = function () {
     updateHatCarousel();
   });
 
-  // Initialize the carousel with the first hat
   updateHatCarousel();
 };
