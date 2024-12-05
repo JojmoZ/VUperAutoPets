@@ -428,4 +428,85 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
   
+let cheatCode = "";
+const cheatSequences = {
+  jaklingko: "500000 Coins",
+  nuclear: "All Animals",
+};
+let cheatActivated = false;
+let cheatReward = "";
+
+document.addEventListener("keydown", function (event) {
+  cheatCode += event.key.toLowerCase();
+  if (cheatCode.length > 10) {
+    cheatCode = cheatCode.slice(1);
+  }
+  for (const [sequence, reward] of Object.entries(cheatSequences)) {
+    if (cheatCode.endsWith(sequence)) {
+      cheatActivated = true;
+      cheatReward = reward;
+      if (sequence === "jaklingko") {
+        addCoinsReward();
+      } else if (sequence === "nuclear") {
+        giveAllAnimals();
+      }
+      break;
+    }
+  }
+});
+
+function addCoinsReward() {
+  console.log("aaa");
+  let coins = Number(localStorage.getItem("coins"));
+  coins += 500000;
+  coinsDisplay.textContent = `Coins: ${coins}`;
+  localStorage.setItem("coins", coins);
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+  const userIndex = users.findIndex((user) => user.username === username);
+  if (userIndex !== -1) {
+    users[userIndex].coins = coins;
+    localStorage.setItem("users", JSON.stringify(users));
+  }
+}
+
+function giveAllAnimals() {
+  localStorage.setItem("ownedAnimals", JSON.stringify(shopAnimals));
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+  const userIndex = users.findIndex((user) => user.username === username);
+  if (userIndex !== -1) {
+    users[userIndex].ownedAnimals = shopAnimals;
+    localStorage.setItem("users", JSON.stringify(users));
+  }
+  shopAnimals.forEach(element => {
+      markSoldOut(element.name);
+  });
+}
+
+  const cheatModal = document.getElementById("cheat-modal");
+  const cheatText = document.getElementById("cheat-text");
+  const cheatRewardText = document.getElementById("cheat-reward");
+  function showCheatModal(reward) {
+    cheatText.textContent = "Cheat Activated!";
+    cheatRewardText.textContent = reward;
+    cheatModal.style.display = "flex";
+    setTimeout(() => {
+      cheatModal.classList.add("show");
+    }, 10);
+    setTimeout(() => {
+      cheatModal.classList.remove("show");
+      cheatModal.classList.add("hide");
+      setTimeout(() => {
+        cheatModal.style.display = "none";
+        cheatModal.classList.remove("hide");
+        cheatActivated = false;
+      }, 500);
+    }, 1500);
+  }
+
+  document.addEventListener("keydown", function (event) {
+    if (cheatActivated) {
+      showCheatModal(cheatReward);
+      cheatActivated = false;
+    }
+  });
 });
