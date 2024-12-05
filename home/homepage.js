@@ -450,7 +450,6 @@ window.onload = function () {
     localStorage.setItem("backgroundAudioTime", backgroundAudio.currentTime);
   });
 
-  // Hat configurations for dynamic positioning
   const hatConfigurations = {
     "abandon-hat": {
       top: "-40%",
