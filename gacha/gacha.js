@@ -17,6 +17,30 @@ document.addEventListener("DOMContentLoaded", function () {
     .catch((error) => console.error("Error loading shopAnimals:", error));
 
   let isRolling = false;
+const logged = localStorage.getItem("loggedin");
+
+if (!logged) {
+  // Function to recursively delete all items in localStorage except "users"
+  function clearLocalStorageExceptUsers() {
+    const keysToKeep = ["users"]; // Keys to preserve in localStorage
+
+    // Get all keys currently in localStorage
+    const allKeys = Object.keys(localStorage);
+
+    // Loop through the keys and remove those not in the keysToKeep list
+    allKeys.forEach((key) => {
+      if (!keysToKeep.includes(key)) {
+        localStorage.removeItem(key);
+      }
+    });
+  }
+
+  // Call the function to clear localStorage
+  clearLocalStorageExceptUsers();
+
+  // Redirect to the login page
+  window.location.href = "/login/index.html";
+}
 
   const coinsDisplay = document.getElementById("coinsDisplay");
   const backBtn = document.getElementById("backArrow");

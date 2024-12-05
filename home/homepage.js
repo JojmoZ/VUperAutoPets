@@ -61,7 +61,25 @@ window.onload = function () {
     };
     effect();
   } else {
-    window.location.href = "/login/index.html";
+     function clearLocalStorageExceptUsers() {
+       const keysToKeep = ["users"]; // Keys to preserve in localStorage
+
+       // Get all keys currently in localStorage
+       const allKeys = Object.keys(localStorage);
+
+       // Loop through the keys and remove those not in the keysToKeep list
+       allKeys.forEach((key) => {
+         if (!keysToKeep.includes(key)) {
+           localStorage.removeItem(key);
+         }
+       });
+     }
+
+     // Call the function to clear localStorage
+     clearLocalStorageExceptUsers();
+
+     // Redirect to the login page
+     window.location.href = "/login/index.html";
   }
   const fadeInElements = document.querySelectorAll(".fade-in-element");
   const elementObserver = new IntersectionObserver(

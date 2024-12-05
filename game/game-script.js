@@ -123,9 +123,30 @@ const eatSound = document.getElementById("eatSound");
 const rollSound = document.getElementById("rollSound");
 const sellSound = document.getElementById("sellSound");
 const logged = localStorage.getItem("loggedin");
+
 if (!logged) {
+  // Function to recursively delete all items in localStorage except "users"
+  function clearLocalStorageExceptUsers() {
+    const keysToKeep = ["users"]; // Keys to preserve in localStorage
+
+    // Get all keys currently in localStorage
+    const allKeys = Object.keys(localStorage);
+
+    // Loop through the keys and remove those not in the keysToKeep list
+    allKeys.forEach((key) => {
+      if (!keysToKeep.includes(key)) {
+        localStorage.removeItem(key);
+      }
+    });
+  }
+
+  // Call the function to clear localStorage
+  clearLocalStorageExceptUsers();
+
+  // Redirect to the login page
   window.location.href = "/login/index.html";
 }
+
 function saveRandomAnimals() {
   localStorage.setItem("randomAnimals", JSON.stringify(randomAnimals));
 }
@@ -1268,9 +1289,18 @@ document.addEventListener("DOMContentLoaded", function () {
       coins += 10;
       updateCoinsDisplay();
       if (result === "win") {
-        let pendingCoins = parseInt(localStorage.getItem("pendingCoins")) || 0;
-        pendingCoins += 5;
-        localStorage.setItem("pendingCoins", pendingCoins);
+         let users = JSON.parse(localStorage.getItem("users")) || [];
+         const userIndex = users.findIndex(
+           (user) => user.username === username
+         );
+
+         if (userIndex !== -1) {
+           users[userIndex].pendingCoins =
+             (users[userIndex].pendingCoins || 0) + 5;
+           localStorage.setItem("users", JSON.stringify(users));
+         } else {
+           console.error(`User with username "${username}" not found.`);
+         }
         localStorage.removeItem("result");
       } else if (result === "lose") {
         hearts[lives - 1].src = "../assets/game-asset/broken heart.png";
@@ -2704,9 +2734,16 @@ function showWinScreen() {
   winContainer.appendChild(sunray);
   winContainer.appendChild(winImage);
   document.body.appendChild(winContainer);
-  let pendingCoins = parseInt(localStorage.getItem("pendingCoins")) || 0;
-  pendingCoins += 5;
-  localStorage.setItem("pendingCoins", pendingCoins);
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+  const userIndex = users.findIndex((user) => user.username === username);
+
+  if (userIndex !== -1) {
+    users[userIndex].pendingCoins = (users[userIndex].pendingCoins || 0) + 5;
+    localStorage.setItem("users", JSON.stringify(users));
+  } else {
+    console.error(`User with username "${username}" not found.`);
+  }
+
   setTimeout(() => {
     winContainer.style.transition = "opacity 1s ease-in-out";
     winContainer.style.opacity = "0";

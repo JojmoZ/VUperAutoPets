@@ -1,8 +1,24 @@
 document.addEventListener("DOMContentLoaded", function () {
    const logged = localStorage.getItem("loggedin");
-   if(!logged){
+
+   if (!logged) {
+     function clearLocalStorageExceptUsers() {
+       const keysToKeep = ["users"]; // Keys to preserve in localStorage
+
+       const allKeys = Object.keys(localStorage);
+
+       allKeys.forEach((key) => {
+         if (!keysToKeep.includes(key)) {
+           localStorage.removeItem(key);
+         }
+       });
+     }
+
+     clearLocalStorageExceptUsers();
+
      window.location.href = "/login/index.html";
    }
+
   localStorage.removeItem("ingame");
   const specialAnimals = ["VandaJ", "MSeer", "eagSVle", "PamstIr", "YenguiK"];
   if (!localStorage.getItem("coins")) {
@@ -11,17 +27,28 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   const username = localStorage.getItem("username");
   const redeem = document.getElementById("redeem-btn");
-  redeem.addEventListener("click", function () {
-    let pendingCoins = parseInt(localStorage.getItem("pendingCoins")) || 0;
-    if (pendingCoins > 0) {
-      let currentCoins = parseInt(localStorage.getItem("coins")) || 0;
-      currentCoins += pendingCoins;
+ redeem.addEventListener("click", function () {
+   let users = JSON.parse(localStorage.getItem("users")) || [];
+   const userIndex = users.findIndex((user) => user.username === username);
 
-      localStorage.setItem("coins", currentCoins);
-      localStorage.setItem("pendingCoins", 0);
-      ShowModal(`You've earned ${pendingCoins} coins!`);
-    }
-  });
+   if (userIndex !== -1) {
+     let pendingCoins = users[userIndex].pendingCoins || 0;
+     if (pendingCoins > 0) {
+       users[userIndex].coins = (users[userIndex].coins || 0) + pendingCoins;
+
+       users[userIndex].pendingCoins = 0;
+
+       localStorage.setItem("users", JSON.stringify(users));
+
+       ShowModal(`You've earned ${pendingCoins} coins!`);
+     } else {
+       ShowModal("No coins to redeem!");
+     }
+   } else {
+     console.error(`User with username "${username}" not found.`);
+   }
+ });
+
   const cards = document.querySelectorAll(".card");
   const modal = document.getElementById("modal");
   const modalImage = document.getElementById("modal-animal-image");
