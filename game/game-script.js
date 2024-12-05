@@ -1291,7 +1291,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (result === "win") {
          let users = JSON.parse(localStorage.getItem("users")) || [];
          const userIndex = users.findIndex(
-           (user) => user.username === username
+           (user) => user.displayName === username
          );
 
          if (userIndex !== -1) {
@@ -2735,7 +2735,7 @@ function showWinScreen() {
   winContainer.appendChild(winImage);
   document.body.appendChild(winContainer);
   let users = JSON.parse(localStorage.getItem("users")) || [];
-  const userIndex = users.findIndex((user) => user.username === username);
+  const userIndex = users.findIndex((user) => user.displayName === username);
 
   if (userIndex !== -1) {
     users[userIndex].pendingCoins = (users[userIndex].pendingCoins || 0) + 5;

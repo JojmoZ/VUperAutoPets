@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const redeem = document.getElementById("redeem-btn");
  redeem.addEventListener("click", function () {
    let users = JSON.parse(localStorage.getItem("users")) || [];
-   const userIndex = users.findIndex((user) => user.username === username);
+   const userIndex = users.findIndex((user) => user.displayName === username);
 
    if (userIndex !== -1) {
      let pendingCoins = users[userIndex].pendingCoins || 0;
@@ -317,7 +317,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const coins = localStorage.getItem("coins");
     coinsDisplay.textContent = `Coins: ${coins}`;
     let users = JSON.parse(localStorage.getItem("users")) || [];
-    const userIndex = users.findIndex((user) => user.username === username);
+    const userIndex = users.findIndex((user) => user.displayName === username);
     if (userIndex !== -1) {
       users[userIndex].coins = parseInt(coins, 10);
       localStorage.setItem("users", JSON.stringify(users));
@@ -380,7 +380,9 @@ document.addEventListener("DOMContentLoaded", function () {
       localStorage.setItem("coins", coins.toString());
       localStorage.setItem("ownedAnimals", JSON.stringify(ownedAnimals));
       let users = JSON.parse(localStorage.getItem("users")) || [];
-      const userIndex = users.findIndex((user) => user.username === username);
+      const userIndex = users.findIndex(
+        (user) => user.displayName === username
+      );
 
       if (userIndex !== -1) {
         users[userIndex].coins = coins;
@@ -489,7 +491,7 @@ function addCoinsReward() {
   coinsDisplay.textContent = `Coins: ${coins}`;
   localStorage.setItem("coins", coins);
   let users = JSON.parse(localStorage.getItem("users")) || [];
-  const userIndex = users.findIndex((user) => user.username === username);
+  const userIndex = users.findIndex((user) => user.displayName === username);
   if (userIndex !== -1) {
     users[userIndex].coins = coins;
     localStorage.setItem("users", JSON.stringify(users));
@@ -499,7 +501,7 @@ function addCoinsReward() {
 function giveAllAnimals() {
   localStorage.setItem("ownedAnimals", JSON.stringify(shopAnimals));
   let users = JSON.parse(localStorage.getItem("users")) || [];
-  const userIndex = users.findIndex((user) => user.username === username);
+  const userIndex = users.findIndex((user) => user.displayName === username);
   if (userIndex !== -1) {
     users[userIndex].ownedAnimals = shopAnimals;
     localStorage.setItem("users", JSON.stringify(users));

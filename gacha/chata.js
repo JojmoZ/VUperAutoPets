@@ -68,7 +68,7 @@ function showCheatModal(reward) {
   if(reward == "500000 Coins"){
      let users = JSON.parse(localStorage.getItem("users")) || [];
      let coins = Number(localStorage.getItem("coins"));
-     const userIndex = users.findIndex((user) => user.username === username);
+     const userIndex = users.findIndex((user) => user.displayName === username);
     if (userIndex !== -1) {
       users[userIndex].coins = coins;
       localStorage.setItem("users", JSON.stringify(users));

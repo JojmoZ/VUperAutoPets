@@ -87,22 +87,22 @@ body {
     width: 100px;
     height: 100px;
     user-select: none;
-    overflow: hidden;
+  overflow: hidden;
     position: relative;
-    border: 2px solid #000;
-    margin: 0 10px;
+  border: 2px solid #000;
+  margin: 0 10px;
 }
 
 .slot-item {
-    position: absolute;
-    width: 100%;
+  position: absolute;
+  width: 100%;
     height: 100%;
     transition: transform 0.3s ease-in;
 }
 
 .slot-column img {
-    width: 80px;
-    height: 80px;
+  width: 80px;
+  height: 80px;
 }
 
 .lever-container {
@@ -110,8 +110,6 @@ body {
     justify-content: center;
     margin-bottom: 1rem;
     position: relative;
-    top: -30%;
-    left: -105%;
 }
 
 .lever {

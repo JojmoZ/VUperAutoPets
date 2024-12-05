@@ -67,7 +67,7 @@ if (!logged) {
      coinsDisplay.style.zIndex = "9999";
     coinsDisplay.textContent = `Coins: ${coins}`;
     let users = JSON.parse(localStorage.getItem("users")) || [];
-    const userIndex = users.findIndex((user) => user.username === username);
+    const userIndex = users.findIndex((user) => user.displayName === username);
     if (userIndex !== -1) {
       users[userIndex].coins = coins;
       localStorage.setItem("users", JSON.stringify(users));
@@ -132,7 +132,7 @@ if (!logged) {
         localStorage.setItem("ownedAnimals", JSON.stringify(ownedAnimals));
       }
       let users = JSON.parse(localStorage.getItem("users")) || [];
-      const userIndex = users.findIndex((user) => user.username === username);
+      const userIndex = users.findIndex((user) => user.displayName === username);
       if (userIndex !== -1) {
         if (!users[userIndex].ownedAnimals) {
           users[userIndex].ownedAnimals = [];
@@ -153,16 +153,16 @@ if (!logged) {
       ShowModal("You need at least 5 coins to play the Gacha!");
       return;
     }
-
-    // Get the current user's pity count
     let users = JSON.parse(localStorage.getItem("users")) || [];
-    const userIndex = users.findIndex((user) => user.username === username);
+    const userIndex = users.findIndex((user) => user.displayName === username);
     if (userIndex !== -1) {
+      
       if (!users[userIndex].pity) {
         users[userIndex].pity = 0;
       }
       users[userIndex].pity += 1;
       localStorage.setItem("users", JSON.stringify(users));
+      console.log('aaa')
     }
 
     if (handleCheatActivation()) {
@@ -373,15 +373,15 @@ if (!logged) {
     }
   }
 
-  function animateSlot(slot, selectedAnimal, callback) {
+ function animateSlot(slot, selectedAnimal, callback) {
     let index = 0;
     let speed = 50;
     const maxSpeed = 500;
     const slowdownRate = 1.05;
     const stopTime = 3000 + Math.random() * 1000;
-    const startTime = Date.now();
+   const startTime = Date.now();
 
-    function spin() {
+   function spin() {
       const slotItem = document.createElement("div");
       slotItem.classList.add("slot-item");
       slotItem.style.transform = "translateY(-100%)";
@@ -401,14 +401,14 @@ if (!logged) {
 
       if (Date.now() - startTime >= stopTime) {
         slot.innerHTML = `<img src="${selectedAnimal.img}" alt="${selectedAnimal.name}" style="width: 80px; height: 80px;">`;
-        if (callback) callback();
+       if (callback) callback();
       } else {
-        setTimeout(spin, speed);
+     setTimeout(spin, speed);
       }
-    }
+   }
 
-    spin();
-  }
+   spin();
+ }
   const backgroundAudio = new Audio(
     "../assets/sound/Super Auto Pets  - Menu Theme.mp3"
   );
