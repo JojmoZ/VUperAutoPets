@@ -5,6 +5,9 @@
 
 * {
     font-family: "VUper", serif;
+    padding: 0;
+    margin: 0;
+    letter-spacing: 0.1rem;
 }
 
 body::-webkit-scrollbar {
@@ -50,7 +53,7 @@ body {
     grid-auto-flow: column;
     grid-template-columns: repeat(auto-fit, 24rem);
     grid-template-rows: repeat(2, 22rem);
-    column-gap: 2%;
+    column-gap: 2rem;
     overflow-x: auto;
     padding-inline: 2rem;
     padding-top: 2rem;
@@ -81,19 +84,6 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
-}
-
-.sold-out {
-    width: 7rem;
-    height: 7rem;
-    position: absolute;
-    top: -1rem;
-    left: 0;
-    background-image: url("../assets/shop/check.png");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
 }
 
 /*@keyframes rainbow {*/
@@ -116,11 +106,22 @@ body {
 /*}*/
 
 
-.card.sold-out {
+.sold-out {
     pointer-events: none;
+    width: 7rem;
+    height: 7rem;
+    position: absolute;
+    top: -1rem;
+    left: 0;
+    background-image: url("../assets/shop/check.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .card img {
+    pointer-events: none;
+
     height: 8rem;
     width: auto;
     margin-top: 1rem
@@ -343,45 +344,77 @@ body {
 }
 
 .header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem;
-   
-    color: white;
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    z-index: 1000;
+    right: 0;
+
+    padding: 1rem;
+
+    display: flex;
+    justify-content: space-between;
+    margin-left: 8rem;
+    gap: 2rem;
+
+    height: 3.75rem;
 }
 
 .search-container {
-    flex: 1;
+    flex: 0.3;
     display: flex;
     justify-content: center;
 }
 
+.input-icon-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
 #search-input {
-    width: 40%;
-    max-width: 300px;
-    padding: 1rem;
-    font-size: 1.5rem;
+    width: 100%;
+    height: calc(3.75rem - 10px);
+    padding-inline: 3.5rem 1rem;
+    font-size: 1.75rem;
     border: 5px solid black;
     border-radius: 0.5rem;
+    font-style: italic;
+}
+
+.input-icon {
+    position: absolute;
+    left: 1rem;
+    font-size: 1.5rem;
+    pointer-events: none;
+
+}
+
+.input-icon img {
+    width: 2rem;
+    height: 2rem;
+}
+
+#search-input:focus {
+    outline: none;
+}
+
+#search-input::placeholder {
+    color: black;
+    font-style: italic;
 }
 
 .scroll-bar-container {
-    flex: 2.5;
-    padding: 0 0.5rem;
+    flex: 0.7;
+    display: flex;
 }
 
 #scroll-bar {
-    width: 80%;
+    width: 100%;
+    height: calc(3.75rem - 10px);
+
     -webkit-appearance: none;
     appearance: none;
-    height: 3.75rem;
-    border-radius: 16px;
+    border-radius: 0.5rem;
     border: 5px solid black;
     outline: none;
     transition: background 0.2s;
@@ -398,7 +431,8 @@ body {
     width: 3.125rem;
     height: 3.75rem;
     background: #FF6900;
-    border-radius: 20%;
+    border: 5px solid black;
+    border-radius: 0.5rem;
     cursor: pointer;
 }
 
@@ -411,14 +445,15 @@ body {
 }
 
 .coins-container {
-    flex:0.5;
+    width: fit-content;
     display: flex;
+    justify-content: end;
     align-items: center;
 }
 
 #coinsDisplay {
   
-    font-family: "VUper";
+    font-family: "VUper", serif;
     color: white;
     font-size: 2rem;
     margin-right: 1rem;

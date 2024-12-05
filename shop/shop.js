@@ -139,7 +139,7 @@ document.addEventListener("DOMContentLoaded", function () {
       name.style.textAlign = "center";
       name.style.color = "transparent";
       name.style.letterSpacing = "0.2rem";
-      name.style.webkitTextStroke = "0.1rem black"; // Apply black border outline
+      name.style.webkitTextStroke = "0.1rem black";
 
       card.appendChild(img);
       card.appendChild(name);
@@ -305,11 +305,9 @@ document.addEventListener("DOMContentLoaded", function () {
       (card) => card.querySelector("h3").textContent === animalName
     );
     if (animalCard) {
-      const soldOutOverlay = document.createElement("div");
-      soldOutOverlay.classList.add("sold-out-overlay");
-      soldOutOverlay.textContent = "Owned";
-      animalCard.appendChild(soldOutOverlay);
-      animalCard.classList.add("sold-out");
+      const check = document.createElement("div");
+      check.classList.add("sold-out");
+      animalCard.appendChild(check);  
     }
   }
   const gotoGacha = document.getElementById("gacha-btn");

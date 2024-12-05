@@ -6,7 +6,7 @@
     "cost": 2,
     "img": "../assets/Animals/VUnt.webp",
     "color": "#636363",
-    "level":1,
+    "level": 1,
     "bar": 0,
     "sound": "../assets/animalsounds/VUnt.wav"
   },
@@ -17,9 +17,9 @@
     "cost": 5,
     "img": "../assets/Animals/fiCM.webp",
     "color": "#0594DB",
-    "level":1,
+    "level": 1,
     "bar": 0,
-    "sound": "../assets/animalsounds/fiCM.wav" 
+    "sound": "../assets/animalsounds/fiCM.wav"
   },
   {
     "name": "KAon",
@@ -28,9 +28,9 @@
     "cost": 7,
     "img": "../assets/Animals/KAon.webp",
     "color": "#AB7B62",
-    "level":1,
+    "level": 1,
     "bar": 0,
-    "sound": "../assets/animalsounds/KAon.wav" 
+    "sound": "../assets/animalsounds/KAon.wav"
   },
   {
     "name": "DJig",
@@ -39,9 +39,9 @@
     "cost": 3,
     "img": "../assets/Animals/DJig.webp",
     "color": "#FF938F",
-    "level":1,
+    "level": 1,
     "bar": 0,
-    "sound": "../assets/animalsounds/DJig.wav" 
+    "sound": "../assets/animalsounds/DJig.wav"
   },
   {
     "name": "GoaT",
@@ -50,9 +50,9 @@
     "cost": 4,
     "img": "../assets/Animals/GoaT.webp",
     "color": "#B7895A",
-    "level":1,
+    "level": 1,
     "bar": 0,
-    "sound": "../assets/animalsounds/GoaT.wav" 
+    "sound": "../assets/animalsounds/GoaT.wav"
   },
   {
     "name": "eLOphant",
@@ -61,9 +61,9 @@
     "cost": 5,
     "img": "../assets/Animals/eLOphant.webp",
     "color": "#B4BCBF",
-    "level":1,
+    "level": 1,
     "bar": 0,
-    "sound": "../assets/animalsounds/eLOphant.wav" 
+    "sound": "../assets/animalsounds/eLOphant.wav"
   },
   {
     "name": "aCFolotl",
@@ -72,20 +72,20 @@
     "cost": 2,
     "img": "../assets/Animals/aCFolotl.webp",
     "color": "#FF819E",
-    "level":1,
+    "level": 1,
     "bar": 0,
-    "sound": "../assets/animalsounds/aCFolotl.m4a" 
+    "sound": "../assets/animalsounds/aCFolotl.m4a"
   },
   {
-    "name": "caKRbara",
+    "name": "capybaKaR",
     "attack": 4,
     "health": 6,
     "cost": 3,
     "img": "../assets/Animals/caKRbara.webp",
     "color": "#F09D61",
-    "level":1,
+    "level": 1,
     "bar": 0,
-    "sound": "../assets/animalsounds/caKRbara.wav" 
+    "sound": "../assets/animalsounds/caKRbara.wav"
   },
   {
     "name": "CWinchilla",
@@ -94,9 +94,9 @@
     "cost": 3,
     "img": "../assets/Animals/CWinchilla.webp",
     "color": "#8F999E",
-    "level":1,
+    "level": 1,
     "bar": 0,
-    "sound": "../assets/animalsounds/CWinchilla.wav" 
+    "sound": "../assets/animalsounds/CWinchilla.wav"
   },
   {
     "name": "eagSVle",
@@ -105,9 +105,9 @@
     "cost": 10,
     "img": "../assets/Animals/eagSVle.webp",
     "color": "#A3735E",
-    "level":1,
+    "level": 1,
     "bar": 0,
-    "sound": "../assets/animalsounds/eagSVle.m4a" 
+    "sound": "../assets/animalsounds/eagSVle.m4a"
   },
   {
     "name": "monKKey",
@@ -116,9 +116,9 @@
     "cost": 8,
     "img": "../assets/Animals/monKKey.webp",
     "color": "#D6A16F",
-    "level":1,
+    "level": 1,
     "bar": 0,
-    "sound": "../assets/animalsounds/monKKey.m4a" 
+    "sound": "../assets/animalsounds/monKKey.m4a"
   },
   {
     "name": "MSeer",
@@ -127,9 +127,9 @@
     "cost": 4,
     "img": "../assets/Animals/MSeer.webp",
     "color": "#EB8760",
-    "level":1,
+    "level": 1,
     "bar": 0,
-    "sound": "../assets/animalsounds/MSeer.m4a" 
+    "sound": "../assets/animalsounds/MSeer.m4a"
   },
   {
     "name": "octoSFus",
@@ -138,9 +138,9 @@
     "cost": 15,
     "img": "../assets/Animals/octoSFus.webp",
     "color": "#CF4F4B",
-    "level":1,
+    "level": 1,
     "bar": 0,
-    "sound": "../assets/animalsounds/octoSFus.mp3" 
+    "sound": "../assets/animalsounds/octoSFus.mp3"
   },
   {
     "name": "owLF",
@@ -149,9 +149,9 @@
     "cost": 7,
     "img": "../assets/Animals/owLF.webp",
     "color": "#99593D",
-    "level":1,
+    "level": 1,
     "bar": 0,
-    "sound": "../assets/animalsounds/owLF.wav" 
+    "sound": "../assets/animalsounds/owLF.wav"
   },
   {
     "name": "PamstIr",
@@ -160,9 +160,9 @@
     "cost": 2,
     "img": "../assets/Animals/PamstIr.webp",
     "color": "#D9A46F",
-    "level":1,
+    "level": 1,
     "bar": 0,
-    "sound": "../assets/animalsounds/PamstIr.wav" 
+    "sound": "../assets/animalsounds/PamstIr.wav"
   },
   {
     "name": "VandaJ",
@@ -171,9 +171,9 @@
     "cost": 6,
     "img": "../assets/Animals/VandaJ.webp",
     "color": "#707070",
-    "level":1,
+    "level": 1,
     "bar": 0,
-    "sound": "../assets/animalsounds/VJanda.wav" 
+    "sound": "../assets/animalsounds/VJanda.wav"
   },
   {
     "name": "YenguiK",
@@ -182,9 +182,9 @@
     "cost": 6,
     "img": "../assets/Animals/YenguiK.webp",
     "color": "#676880",
-    "level":1,
+    "level": 1,
     "bar": 0,
-    "sound": "../assets/animalsounds/YenguiK.wav" 
+    "sound": "../assets/animalsounds/YenguiK.wav"
   },
   {
     "name": "PPat",
@@ -193,9 +193,9 @@
     "cost": 4,
     "img": "../assets/Animals/PPat.webp",
     "color": "#868A91",
-    "level":1,
+    "level": 1,
     "bar": 0,
-    "sound": "../assets/animalsounds/PPat.wav" 
+    "sound": "../assets/animalsounds/PPat.wav"
   },
   {
     "name": "ZKug",
@@ -204,9 +204,9 @@
     "cost": 5,
     "img": "../assets/Animals/ZKug.webp",
     "color": "#FADDA9",
-    "level":1,
+    "level": 1,
     "bar": 0,
-    "sound": "../assets/animalsounds/ZKug.wav" 
+    "sound": "../assets/animalsounds/ZKug.wav"
   },
   {
     "name": "t-reXY",
@@ -215,20 +215,20 @@
     "cost": 20,
     "img": "../assets/Animals/t-reXY.webp",
     "color": "#A4C400",
-    "level":1,
+    "level": 1,
     "bar": 0,
-    "sound": "../assets/animalsounds/t-reXY.mp3" 
+    "sound": "../assets/animalsounds/t-reXY.mp3"
   },
   {
-    "name": "VrocodiLe",
+    "name": "crocoViLe",
     "attack": 11,
     "health": 15,
     "cost": 12,
     "img": "../assets/Animals/VrocodiLe.webp",
     "color": "#8EA848",
-    "level":1,
+    "level": 1,
     "bar": 0,
-    "sound": "../assets/animalsounds/VrocodiLe.m4a" 
+    "sound": "../assets/animalsounds/VrocodiLe.m4a"
   },
   {
     "name": "WLeopard",
@@ -237,20 +237,20 @@
     "cost": 9,
     "img": "../assets/Animals/WLeopard.webp",
     "color": "#FFDE59",
-    "level":1,
+    "level": 1,
     "bar": 0,
-    "sound": "../assets/animalsounds/WLeopard.wav" 
+    "sound": "../assets/animalsounds/WLeopard.wav"
   },
   {
-    "name": "Liberian_Husky",
+    "name": "LHusky",
     "attack": 9,
     "health": 7,
     "cost": 11,
     "img": "../assets/Animals/Liberian_Husky.webp",
     "color": "#766D78",
-    "level":1,
+    "level": 1,
     "bar": 0,
-    "sound": "../assets/animalsounds/Liberian_Husky.wav" 
+    "sound": "../assets/animalsounds/Liberian_Husky.wav"
   },
   {
     "name": "LabbiK",
@@ -259,8 +259,8 @@
     "cost": 8,
     "img": "../assets/Animals/LabbiK.webp",
     "color": "#B4D7E3",
-    "level":1,
+    "level": 1,
     "bar": 0,
-    "sound": "../assets/animalsounds/LKabbit.wav" 
+    "sound": "../assets/animalsounds/LKabbit.wav"
   }
 ]
