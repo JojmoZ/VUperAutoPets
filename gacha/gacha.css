@@ -78,27 +78,32 @@ body {
 }
 
 .slot-machine {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  gap: 20px; /* Space between columns */
+  position: relative;
+  overflow: hidden;
+  height: 300px; /* Set height to fit 3 rows */
+  width: 360px; /* Adjust to fit column widths */
 }
 
 .slot-column {
-    width: 100px;
-    height: 100px;
-    user-select: none;
+  width: 100px;
+  height: 100%; /* Full height of the container */
   overflow: hidden;
-    position: relative;
+  position: relative;
   border: 2px solid #000;
-  margin: 0 10px;
 }
 
 .slot-item {
-  position: absolute;
   width: 100%;
-    height: 100%;
-    transition: transform 0.3s ease-in;
+  height: 100px; /* Height of a single row */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
 }
+
 
 .slot-column img {
   width: 80px;

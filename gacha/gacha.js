@@ -2,9 +2,6 @@ document.addEventListener("DOMContentLoaded", function () {
   localStorage.removeItem("ingame");
   const lever = document.getElementById("lever");
   const gachaResult = document.getElementById("gachaResult");
-  const slot1 = document.getElementById("slot1");
-  const slot2 = document.getElementById("slot2");
-  const slot3 = document.getElementById("slot3");
   const h1Element = document.querySelector("h1[data-text='Try Your Luck!']");
   let shopAnimals = [];
   const username = localStorage.getItem("username");
@@ -17,36 +14,36 @@ document.addEventListener("DOMContentLoaded", function () {
     .catch((error) => console.error("Error loading shopAnimals:", error));
 
   let isRolling = false;
-const logged = localStorage.getItem("loggedin");
+  const logged = localStorage.getItem("loggedin");
 
-if (!logged) {
-  // Function to recursively delete all items in localStorage except "users"
-  function clearLocalStorageExceptUsers() {
-    const keysToKeep = ["users"]; // Keys to preserve in localStorage
+  if (!logged) {
+    // Function to recursively delete all items in localStorage except "users"
+    function clearLocalStorageExceptUsers() {
+      const keysToKeep = ["users"]; // Keys to preserve in localStorage
 
-    // Get all keys currently in localStorage
-    const allKeys = Object.keys(localStorage);
+      // Get all keys currently in localStorage
+      const allKeys = Object.keys(localStorage);
 
-    // Loop through the keys and remove those not in the keysToKeep list
-    allKeys.forEach((key) => {
-      if (!keysToKeep.includes(key)) {
-        localStorage.removeItem(key);
-      }
-    });
+      // Loop through the keys and remove those not in the keysToKeep list
+      allKeys.forEach((key) => {
+        if (!keysToKeep.includes(key)) {
+          localStorage.removeItem(key);
+        }
+      });
+    }
+
+    // Call the function to clear localStorage
+    clearLocalStorageExceptUsers();
+
+    // Redirect to the login page
+    window.location.href = "/login/index.html";
   }
-
-  // Call the function to clear localStorage
-  clearLocalStorageExceptUsers();
-
-  // Redirect to the login page
-  window.location.href = "/login/index.html";
-}
 
   const coinsDisplay = document.getElementById("coinsDisplay");
   const backBtn = document.getElementById("backArrow");
   backBtn.addEventListener("click", function () {
     window.location.href = "/shop/shoppage.html";
-  })
+  });
   const coinImg = document.createElement("img");
   coinImg.src = "../assets/game-asset/Gold.png";
   coinImg.style.width = "3rem";
@@ -58,13 +55,13 @@ if (!logged) {
   document.body.appendChild(coinImg);
   function updateCoinsDisplay() {
     const coins = localStorage.getItem("coins");
-     coinsDisplay.style.fontFamily = "VUper";
-     coinsDisplay.style.position = "fixed";
-     coinsDisplay.style.top = "1.75rem";
-     coinsDisplay.style.right = "9.375rem";
-     coinsDisplay.style.color = "black";
-     coinsDisplay.style.fontSize = "2rem";
-     coinsDisplay.style.zIndex = "9999";
+    coinsDisplay.style.fontFamily = "VUper";
+    coinsDisplay.style.position = "fixed";
+    coinsDisplay.style.top = "1.75rem";
+    coinsDisplay.style.right = "9.375rem";
+    coinsDisplay.style.color = "black";
+    coinsDisplay.style.fontSize = "2rem";
+    coinsDisplay.style.zIndex = "9999";
     coinsDisplay.textContent = `Coins: ${coins}`;
     let users = JSON.parse(localStorage.getItem("users")) || [];
     const userIndex = users.findIndex((user) => user.displayName === username);
@@ -132,7 +129,9 @@ if (!logged) {
         localStorage.setItem("ownedAnimals", JSON.stringify(ownedAnimals));
       }
       let users = JSON.parse(localStorage.getItem("users")) || [];
-      const userIndex = users.findIndex((user) => user.displayName === username);
+      const userIndex = users.findIndex(
+        (user) => user.displayName === username
+      );
       if (userIndex !== -1) {
         if (!users[userIndex].ownedAnimals) {
           users[userIndex].ownedAnimals = [];
@@ -153,16 +152,15 @@ if (!logged) {
       ShowModal("You need at least 5 coins to play the Gacha!");
       return;
     }
+
     let users = JSON.parse(localStorage.getItem("users")) || [];
     const userIndex = users.findIndex((user) => user.displayName === username);
     if (userIndex !== -1) {
-      
       if (!users[userIndex].pity) {
         users[userIndex].pity = 0;
       }
       users[userIndex].pity += 1;
       localStorage.setItem("users", JSON.stringify(users));
-      console.log('aaa')
     }
 
     if (handleCheatActivation()) {
@@ -171,64 +169,72 @@ if (!logged) {
       return;
     }
 
-    slot1.innerHTML = "";
-    slot2.innerHTML = "";
-    slot3.innerHTML = "";
+    // Get the columns (reels)
+    const column1 = document.getElementById("column1");
+    const column2 = document.getElementById("column2");
+    const column3 = document.getElementById("column3");
 
-    let selectedAnimal1, selectedAnimal2, selectedAnimal3;
+    const selectedAnimals = [];
     const random = Math.random();
-    if (random < 0.02 || users[userIndex].pity >= 50) {
+
+    // Handle rare rewards based on probability or pity count
+    if (random < 0.02 || (users[userIndex] && users[userIndex].pity >= 50)) {
       const specialRewards = shopAnimals.filter((animal) =>
         ["MSeer", "VandaJ", "YenguiK", "PamstIr"].includes(animal.name)
       );
-      selectedAnimal1 =
-        selectedAnimal2 =
-        selectedAnimal3 =
-          specialRewards[Math.floor(Math.random() * specialRewards.length)];
-      users[userIndex].pity = 0; // Reset pity count after a special reward
-      localStorage.setItem("users", JSON.stringify(users));
-    } else if (random < 0.09) {
-      const otherAnimals = shopAnimals.filter(
-        (animal) =>
-          !["MSeer", "VandaJ", "YenguiK", "PamstIr"].includes(animal.name)
-      );
-      selectedAnimal1 =
-        selectedAnimal2 =
-        selectedAnimal3 =
-          otherAnimals[Math.floor(Math.random() * otherAnimals.length)];
+      const rareAnimal =
+        specialRewards[Math.floor(Math.random() * specialRewards.length)];
+      for (let i = 0; i < 3; i++) {
+        selectedAnimals.push(rareAnimal); // One selected animal per column
+      }
+      if (userIndex !== -1) {
+        users[userIndex].pity = 0; // Reset pity after a rare reward
+        localStorage.setItem("users", JSON.stringify(users));
+      }
     } else {
-      selectedAnimal1 = getRandomAnimal();
-      selectedAnimal2 = getRandomAnimal();
-      selectedAnimal3 = getRandomAnimal();
+      // Generate random animals for each column
+      for (let i = 0; i < 3; i++) {
+        selectedAnimals.push(getRandomAnimal());
+      }
     }
 
-    animateSlot(slot1, selectedAnimal1, () => {
-      animateSlot(slot2, selectedAnimal2, () => {
-        animateSlot(slot3, selectedAnimal3, () => {
+    // Deduct coins and update display
+    localStorage.setItem("coins", (coins - 5).toString());
+    updateCoinsDisplay();
+
+    // Animate each column with a slight delay
+    const columns = [column1, column2, column3];
+    columns.forEach((column, index) => {
+      spinColumn(column, selectedAnimals[index], () => {
+        // Check for winning conditions after the last column stops
+        if (index === columns.length - 1) {
           isRolling = false;
           gachaSound.pause();
           gachaSound.currentTime = 0;
-          setTimeout(() => {
-            checkThreeOfAKind(
-              selectedAnimal1,
-              selectedAnimal2,
-              selectedAnimal3
-            );
-          }, 100);
-        });
+          checkThreeOfAKind(selectedAnimals);
+        }
       });
     });
-
-    localStorage.setItem("coins", (coins - 5).toString());
-    updateCoinsDisplay();
   }
 
-  function checkThreeOfAKind(animal1, animal2, animal3) {
-    if (animal1.name === animal2.name && animal2.name === animal3.name) {
-      addToOwnedAnimals(animal1);
+
+  function checkThreeOfAKind(selectedAnimals) {
+    // Convert selectedAnimals to a 3x3 array
+    const grid = [
+      selectedAnimals.slice(0, 3),
+      selectedAnimals.slice(3, 6), // Middle row
+      selectedAnimals.slice(6, 9),
+    ];
+
+    // Check the middle row for three of a kind
+    const middleRow = grid[1]; // Index 1 is the middle row
+    if (
+      middleRow[0].name === middleRow[1].name &&
+      middleRow[1].name === middleRow[2].name
+    ) {
+      // Trigger win event for middle row match
+      addToOwnedAnimals(middleRow[0]); // Add the winning animal to owned
       showFireworks();
-      gachaSound.pause();
-      gachaSound.currentTime = 0;
       winSound.play();
     }
   }
@@ -372,43 +378,72 @@ if (!logged) {
       return shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
     }
   }
+  function animateSlot(slot, selectedAnimal, callback) {
+    const spinningDuration = 3000 + Math.random() * 1000; // Random spinning duration (3-4 seconds)
+    const spinSpeed = 50; // Initial speed of spinning
+    const slowdownRate = 1.05; // Slowdown multiplier
 
- function animateSlot(slot, selectedAnimal, callback) {
-    let index = 0;
-    let speed = 50;
-    const maxSpeed = 500;
-    const slowdownRate = 1.05;
-    const stopTime = 3000 + Math.random() * 1000;
-   const startTime = Date.now();
+    let currentSpeed = spinSpeed;
+    let startTime = Date.now();
 
-   function spin() {
+    // Create a container to hold all spinning items
+    const reel = document.createElement("div");
+    reel.style.position = "relative";
+    reel.style.top = "0";
+    reel.style.transition = "top 0.1s linear";
+    slot.appendChild(reel);
+
+    // Add initial spinning items to the reel
+    for (let i = 0; i < 20; i++) {
       const slotItem = document.createElement("div");
       slotItem.classList.add("slot-item");
-      slotItem.style.transform = "translateY(-100%)";
-      slotItem.innerHTML = `<img src="${shopAnimals[index].img}" alt="${shopAnimals[index].name}" style="width: 80px; height: 80px;">`;
-      slot.appendChild(slotItem);
+      const randomAnimal =
+        shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
+      slotItem.innerHTML = `<img src="${randomAnimal.img}" alt="${randomAnimal.name}" style="width: 80px; height: 80px;">`;
+      reel.appendChild(slotItem);
+    }
 
-      setTimeout(() => {
-        slotItem.style.transform = "translateY(100%)";
-      }, 10);
+    function spin() {
+      const elapsedTime = Date.now() - startTime;
 
-      setTimeout(() => {
-        if (slotItem.parentNode) slotItem.parentNode.removeChild(slotItem);
-      }, speed + 200);
-
-      index = (index + 1) % shopAnimals.length;
-      speed *= slowdownRate;
-
-      if (Date.now() - startTime >= stopTime) {
-        slot.innerHTML = `<img src="${selectedAnimal.img}" alt="${selectedAnimal.name}" style="width: 80px; height: 80px;">`;
-       if (callback) callback();
-      } else {
-     setTimeout(spin, speed);
+      // If the spinning duration is over, stop and show the selected animal
+      if (elapsedTime >= spinningDuration) {
+        // Stop the reel and display the selected animal
+        reel.innerHTML = ""; // Clear spinning items
+        const finalItem = document.createElement("div");
+        finalItem.classList.add("slot-item");
+        finalItem.innerHTML = `<img src="${selectedAnimal.img}" alt="${selectedAnimal.name}" style="width: 80px; height: 80px;">`;
+        slot.appendChild(finalItem);
+        if (callback) callback();
+        return;
       }
-   }
 
-   spin();
- }
+      // Simulate spinning by moving the reel upwards
+      reel.style.top = `${parseInt(reel.style.top) - 100}px`;
+
+      // Reset the reel's position and add new random animals when it scrolls too far
+      if (parseInt(reel.style.top) <= -2000) {
+        reel.style.top = "0";
+        for (let i = 0; i < 5; i++) {
+          const slotItem = document.createElement("div");
+          slotItem.classList.add("slot-item");
+          const randomAnimal =
+            shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
+          slotItem.innerHTML = `<img src="${randomAnimal.img}" alt="${randomAnimal.name}" style="width: 80px; height: 80px;">`;
+          reel.appendChild(slotItem);
+        }
+      }
+
+      // Gradually increase the time between spins to simulate slowing down
+      currentSpeed *= slowdownRate;
+
+      // Schedule the next spin
+      setTimeout(spin, currentSpeed);
+    }
+
+    spin();
+  }
+
   const backgroundAudio = new Audio(
     "../assets/sound/Super Auto Pets  - Menu Theme.mp3"
   );
@@ -417,6 +452,43 @@ if (!logged) {
   const savedTime = localStorage.getItem("backgroundAudioTime");
   if (savedTime) {
     backgroundAudio.currentTime = parseFloat(savedTime);
+  }
+  function spinColumn(column, finalAnimal, callback) {
+    const reel = document.createElement("div");
+    reel.style.position = "absolute";
+    reel.style.top = "0";
+    column.innerHTML = ""; // Clear the column
+    column.appendChild(reel);
+
+    // Add initial spinning items to the reel
+    for (let i = 0; i < 20; i++) {
+      const slotItem = document.createElement("div");
+      slotItem.classList.add("slot-item");
+      const randomAnimal =
+        shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
+      slotItem.innerHTML = `<img src="${randomAnimal.img}" alt="${randomAnimal.name}" style="width: 80px; height: 80px;">`;
+      reel.appendChild(slotItem);
+    }
+
+    // Final item (the one that will be visible when spinning stops)
+    const finalSlotItem = document.createElement("div");
+    finalSlotItem.classList.add("slot-item");
+    finalSlotItem.innerHTML = `<img src="${finalAnimal.img}" alt="${finalAnimal.name}" style="width: 80px; height: 80px;">`;
+    reel.appendChild(finalSlotItem);
+
+    // Animate the spinning reel
+    let position = 0;
+    const spinInterval = setInterval(() => {
+      position -= 100; // Move reel upwards
+      reel.style.transform = `translateY(${position}px)`;
+
+      // Stop spinning after reaching the final item
+      if (position <= -2000) {
+        clearInterval(spinInterval);
+        reel.style.transform = `translateY(-200px)`; // Show the final item
+        callback(); // Notify that spinning is complete
+      }
+    }, 50);
   }
 
   const playBackgroundAudio = () => {
