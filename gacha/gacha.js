@@ -146,76 +146,140 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  function pullHandle() {
-    const coins = parseInt(localStorage.getItem("coins"), 10);
-    if (coins < 5) {
-      ShowModal("You need at least 5 coins to play the Gacha!");
-      return;
-    }
+ function pullHandle() {
+   const coins = parseInt(localStorage.getItem("coins"), 10);
+   if (coins < 5) {
+     ShowModal("You need at least 5 coins to play the Gacha!");
+     return;
+   }
 
-    let users = JSON.parse(localStorage.getItem("users")) || [];
-    const userIndex = users.findIndex((user) => user.displayName === username);
-    if (userIndex !== -1) {
-      if (!users[userIndex].pity) {
-        users[userIndex].pity = 0;
-      }
-      users[userIndex].pity += 1;
-      localStorage.setItem("users", JSON.stringify(users));
-    }
+   let users = JSON.parse(localStorage.getItem("users")) || [];
+   const userIndex = users.findIndex((user) => user.displayName === username);
+   if (userIndex !== -1) {
+     if (!users[userIndex].pity) {
+       users[userIndex].pity = 0;
+     }
+     users[userIndex].pity += 1;
+     localStorage.setItem("users", JSON.stringify(users));
+   }
 
-    if (handleCheatActivation()) {
-      localStorage.setItem("coins", (coins - 5).toString());
-      updateCoinsDisplay();
-      return;
-    }
+   if (handleCheatActivation()) {
+     localStorage.setItem("coins", (coins - 5).toString());
+     updateCoinsDisplay();
+     return;
+   }
 
-    // Get the columns (reels)
-    const column1 = document.getElementById("column1");
-    const column2 = document.getElementById("column2");
-    const column3 = document.getElementById("column3");
+   // Get the columns (reels)
+   const column1 = document.getElementById("column1");
+   const column2 = document.getElementById("column2");
+   const column3 = document.getElementById("column3");
 
-    const selectedAnimals = [];
-    const random = Math.random();
+   const selectedAnimals = [];
+   const random = Math.random();
 
-    // Handle rare rewards based on probability or pity count
-    if (random < 0.02 || (users[userIndex] && users[userIndex].pity >= 50)) {
-      const specialRewards = shopAnimals.filter((animal) =>
-        ["MSeer", "VandaJ", "YenguiK", "PamstIr"].includes(animal.name)
-      );
-      const rareAnimal =
-        specialRewards[Math.floor(Math.random() * specialRewards.length)];
-      for (let i = 0; i < 3; i++) {
-        selectedAnimals.push(rareAnimal); // One selected animal per column
-      }
-      if (userIndex !== -1) {
-        users[userIndex].pity = 0; // Reset pity after a rare reward
-        localStorage.setItem("users", JSON.stringify(users));
-      }
-    } else {
-      // Generate random animals for each column
-      for (let i = 0; i < 3; i++) {
-        selectedAnimals.push(getRandomAnimal());
-      }
-    }
+   // Handle rare rewards based on probability or pity count
+   if (random < 0.02 || (users[userIndex] && users[userIndex].pity >= 50)) {
+     const specialRewards = shopAnimals.filter((animal) =>
+       ["MSeer", "VandaJ", "YenguiK", "PamstIr"].includes(animal.name)
+     );
+     const rareAnimal =
+       specialRewards[Math.floor(Math.random() * specialRewards.length)];
+     for (let i = 0; i < 3; i++) {
+       selectedAnimals.push(rareAnimal); // One selected animal per column
+     }
+     if (userIndex !== -1) {
+       users[userIndex].pity = 0; // Reset pity after a rare reward
+       localStorage.setItem("users", JSON.stringify(users));
+     }
+   } else {
+     // Generate random animals for each column
+     for (let i = 0; i < 3; i++) {
+       selectedAnimals.push(getRandomAnimal());
+     }
+   }
 
-    // Deduct coins and update display
-    localStorage.setItem("coins", (coins - 5).toString());
-    updateCoinsDisplay();
+   // Deduct coins and update display
+   localStorage.setItem("coins", (coins - 5).toString());
+   updateCoinsDisplay();
 
-    // Animate each column with a slight delay
-    const columns = [column1, column2, column3];
-    columns.forEach((column, index) => {
-      spinColumn(column, selectedAnimals[index], () => {
-        // Check for winning conditions after the last column stops
-        if (index === columns.length - 1) {
-          isRolling = false;
-          gachaSound.pause();
-          gachaSound.currentTime = 0;
-          checkThreeOfAKind(selectedAnimals);
-        }
-      });
-    });
-  }
+   // Animate each column with a delay between spins
+   const columns = [column1, column2, column3];
+   columns.forEach((column, index) => {
+     setTimeout(() => { 
+       spinColumn(column, selectedAnimals[index], () => {
+         // Check for winning conditions after the last column stops
+         if (index === columns.length - 1) {
+           isRolling = false;
+           gachaSound.pause();
+           gachaSound.currentTime = 0;
+           checkThreeOfAKind(selectedAnimals);
+         }
+       });
+     }, index * 1000); // Delay of 1 second between each column
+   });
+ }
+ function spinColumn(column, finalAnimal, callback) {
+   column.innerHTML = "";
+   const reel = document.createElement("div");
+   reel.style.position = "absolute";
+   reel.style.top = "0px";
+   reel.style.transition = "none";
+   column.appendChild(reel);
+
+   for (let i = 0; i < 20; i++) {
+     const slotItem = document.createElement("div");
+     slotItem.classList.add("slot-item");
+     const randomAnimal =
+       shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
+     slotItem.innerHTML = `<img src="${randomAnimal.img}" alt="${randomAnimal.name}" style="width: 80px; height: 80px;">`;
+     reel.appendChild(slotItem);
+   }
+
+   // Add the final item at the end of the reel
+   const finalSlotItem = document.createElement("div");
+   finalSlotItem.classList.add("slot-item");
+   finalSlotItem.innerHTML = `<img src="${finalAnimal.img}" alt="${finalAnimal.name}" style="width: 80px; height: 80px;">`;
+   reel.appendChild(finalSlotItem);
+
+   const itemHeight = 100; // Height of each slot item (in px)
+   const totalItems = reel.children.length; // Total number of items in the reel
+   const maxSpinDistance = itemHeight * totalItems; // Total distance the reel spins
+
+   let currentTop = 0; // Current position of the reel
+   const spinSpeed = 20; // Initial speed of the spin (pixels per frame)
+   const slowdownRate = 1.03; // Gradual slowdown factor
+   const stopTime = Date.now() + 3000; // Spin duration (3 seconds)
+
+   function spin() {
+     // Move the reel upwards
+     currentTop -= spinSpeed;
+     reel.style.top = `${currentTop}px`;
+
+     // Loop the reel when it reaches the end
+     if (currentTop <= -maxSpinDistance) {
+       currentTop = 0; // Reset position to the top
+       reel.style.transition = "none"; // Reset the transition
+     }
+
+     // Gradual slowdown and stopping logic
+     if (Date.now() >= stopTime) {
+       // Stop the reel at the final item
+       const finalPosition = -((totalItems - 1) * itemHeight);
+       reel.style.transition = "top 0.5s ease-out";
+       reel.style.top = `${finalPosition}px`;
+       setTimeout(() => {
+         callback(); // Notify that spinning is complete
+       }, 500);
+       return;
+     }
+
+     // Slow down the spin
+     setTimeout(spin, spinSpeed);
+   }
+
+   spin(); // Start spinning
+ }
+
 
 
   function checkThreeOfAKind(selectedAnimals) {
@@ -453,43 +517,9 @@ document.addEventListener("DOMContentLoaded", function () {
   if (savedTime) {
     backgroundAudio.currentTime = parseFloat(savedTime);
   }
-  function spinColumn(column, finalAnimal, callback) {
-    const reel = document.createElement("div");
-    reel.style.position = "absolute";
-    reel.style.top = "0";
-    column.innerHTML = ""; // Clear the column
-    column.appendChild(reel);
 
-    // Add initial spinning items to the reel
-    for (let i = 0; i < 20; i++) {
-      const slotItem = document.createElement("div");
-      slotItem.classList.add("slot-item");
-      const randomAnimal =
-        shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
-      slotItem.innerHTML = `<img src="${randomAnimal.img}" alt="${randomAnimal.name}" style="width: 80px; height: 80px;">`;
-      reel.appendChild(slotItem);
-    }
 
-    // Final item (the one that will be visible when spinning stops)
-    const finalSlotItem = document.createElement("div");
-    finalSlotItem.classList.add("slot-item");
-    finalSlotItem.innerHTML = `<img src="${finalAnimal.img}" alt="${finalAnimal.name}" style="width: 80px; height: 80px;">`;
-    reel.appendChild(finalSlotItem);
 
-    // Animate the spinning reel
-    let position = 0;
-    const spinInterval = setInterval(() => {
-      position -= 100; // Move reel upwards
-      reel.style.transform = `translateY(${position}px)`;
-
-      // Stop spinning after reaching the final item
-      if (position <= -2000) {
-        clearInterval(spinInterval);
-        reel.style.transform = `translateY(-200px)`; // Show the final item
-        callback(); // Notify that spinning is complete
-      }
-    }, 50);
-  }
 
   const playBackgroundAudio = () => {
     backgroundAudio.play();
