@@ -10,9 +10,37 @@ document.addEventListener("DOMContentLoaded", function () {
     .then((data) => {
       shopAnimals = data;
       console.log("shopAnimals loaded:", shopAnimals);
+      populateInitialColumns();
     })
     .catch((error) => console.error("Error loading shopAnimals:", error));
+function populateInitialColumns() {
+  const columns = [
+    document.getElementById("column1"),
+    document.getElementById("column2"),
+    document.getElementById("column3"),
+  ];
 
+  const itemHeight = 100; // Height of each slot item
+  const totalItems = 20; // Number of items per column
+
+  columns.forEach((column) => {
+    column.innerHTML = ""; // Clear the column
+    const reel = document.createElement("div");
+    reel.style.position = "relative";
+    reel.style.top = "0";
+    column.appendChild(reel);
+
+    // Add random animals to the column
+    for (let i = 0; i < totalItems; i++) {
+      const randomAnimal =
+        shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
+      const slotItem = document.createElement("div");
+      slotItem.classList.add("slot-item");
+      slotItem.innerHTML = `<img src="${randomAnimal.img}" alt="${randomAnimal.name}" style="width: 10rem; height: 10rem;">`;
+      reel.appendChild(slotItem);
+    }
+  });
+}
   let isRolling = false;
   const logged = localStorage.getItem("loggedin");
 
@@ -89,36 +117,39 @@ document.addEventListener("DOMContentLoaded", function () {
     lever.style.transform = "translateY(0)";
   });
 
-  function handleCheatActivation() {
-    if (cheatAnimal) {
-      const selectedAnimal = shopAnimals.find(
-        (animal) => animal.name === cheatAnimal
-      );
-      if (selectedAnimal) {
-         const column1 = document.getElementById("column1");
-         const column2 = document.getElementById("column2");
-         const column3 = document.getElementById("column3");
-        animateSlot(slot1, selectedAnimal, () => {
-          animateSlot(slot2, selectedAnimal, () => {
-            animateSlot(slot3, selectedAnimal, () => {
-              isRolling = false;
-              setTimeout(() => {
-                checkThreeOfAKind(
-                  selectedAnimal,
-                  selectedAnimal,
-                  selectedAnimal
-                );
-                addCheatAnimalToUser(selectedAnimal.name);
-              }, 100);
-            });
-          });
-        });
-        cheatAnimal = "";
-        return true;
-      }
-    }
-    return false;
-  }
+ function handleCheatActivation() {
+   if (cheatAnimal) {
+     const selectedAnimal = shopAnimals.find(
+       (animal) => animal.name === cheatAnimal
+     );
+     if (selectedAnimal) {
+       const column1 = document.getElementById("column1");
+       const column2 = document.getElementById("column2");
+       const column3 = document.getElementById("column3");
+
+       const columns = [column1, column2, column3];
+       const selectedAnimals = [selectedAnimal, selectedAnimal, selectedAnimal];
+
+       columns.forEach((column, index) => {
+         setTimeout(() => {
+           spinColumn(column, selectedAnimals[index], () => {
+             if (index === columns.length - 1) {
+               isRolling = false;
+               checkThreeOfAKind(selectedAnimals);
+               addCheatAnimalToUser(selectedAnimal.name);
+             }
+           });
+         }, index * 1000);
+       });
+
+       localStorage.setItem("coins", (coins - 5).toString());
+       updateCoinsDisplay();
+       cheatAnimal = ""; // Reset the cheat animal
+       return true;
+     }
+   }
+   return false;
+ }
 
   function addCheatAnimalToUser(animalName) {
     const animal = shopAnimals.find((a) => a.name === animalName);
@@ -164,8 +195,6 @@ document.addEventListener("DOMContentLoaded", function () {
    }
 
    if (handleCheatActivation()) {
-     localStorage.setItem("coins", (coins - 5).toString());
-     updateCoinsDisplay();
      return;
    }
 
@@ -236,14 +265,14 @@ function spinColumn(column, finalAnimal, callback) {
     slotItem.classList.add("slot-item");
     const randomAnimal =
       shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
-    slotItem.innerHTML = `<img src="${randomAnimal.img}" alt="${randomAnimal.name}" style="width: 80px; height: 80px;">`;
+    slotItem.innerHTML = `<img src="${randomAnimal.img}" alt="${randomAnimal.name}" style="width: 10rem; height: 10rem;">`;
     reel.appendChild(slotItem);
   }
 
   // Add the final animal in the middle slot
   const finalSlotItem = document.createElement("div");
   finalSlotItem.classList.add("slot-item");
-  finalSlotItem.innerHTML = `<img src="${finalAnimal.img}" alt="${finalAnimal.name}" style="width: 80px; height: 80px;">`;
+  finalSlotItem.innerHTML = `<img src="${finalAnimal.img}" alt="${finalAnimal.name}" style="width: 10rem; height: 10rem;">`;
   reel.appendChild(finalSlotItem);
 
   // Add buffer slots below
@@ -252,7 +281,7 @@ function spinColumn(column, finalAnimal, callback) {
     slotItem.classList.add("slot-item");
     const randomAnimal =
       shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
-    slotItem.innerHTML = `<img src="${randomAnimal.img}" alt="${randomAnimal.name}" style="width: 80px; height: 80px;">`;
+    slotItem.innerHTML = `<img src="${randomAnimal.img}" alt="${randomAnimal.name}" style="width: 10rem; height: 10rem;">`;
     reel.appendChild(slotItem);
   }
 
@@ -295,19 +324,11 @@ function spinColumn(column, finalAnimal, callback) {
 
   function checkThreeOfAKind(selectedAnimals) {
     
-    const grid = [
-      selectedAnimals.slice(0, 3),
-      selectedAnimals.slice(3, 6), 
-      selectedAnimals.slice(6, 9),
-    ];
 
-    
-    const middleRow = grid[1]; 
     if (
-      middleRow[0].name === middleRow[1].name &&
-      middleRow[1].name === middleRow[2].name
+      selectedAnimals[0].name === selectedAnimals[1].name &&
+      selectedAnimals[1].name === selectedAnimals[2].name
     ) {
-      
       addToOwnedAnimals(middleRow[0]); 
       showFireworks();
       winSound.play();

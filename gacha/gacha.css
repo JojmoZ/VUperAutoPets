@@ -69,10 +69,11 @@ body {
     /*backdrop-filter: blur(10px);*/
     /*border-top: 1px solid rgba(255, 255, 255, 0.5);*/
     /*border-left: 1px solid rgba(255, 255, 255, 0.5);*/
-    width: 65vw;
-    height: 60vh;
+    width: 70vw;
+    height:70vh;
+    aspect-ratio: 1/1;
     background-image: url("../assets/gacha/board-alt.png");
-    background-size: contain;
+    background-size: 100% 100%;
     background-repeat: no-repeat;
 
 }
@@ -80,24 +81,26 @@ body {
 .slot-machine {
   display: flex;
   justify-content: center;
-  gap: 20px; /* Space between columns */
+  gap: 20px; 
   position: relative;
   overflow: hidden;
-  height: 300px; /* Set height to fit 3 rows */
-  width: 360px; /* Adjust to fit column widths */
+  height: 90%; 
+  width: 100%;
 }
 
 .slot-column {
-  width: 100px;
-  height: 100%; /* Full height of the container */
+  width: 30%;
+  height: 100%; 
   overflow: hidden;
   position: relative;
-  border: 2px solid #000;
 }
-
+.slot-column:nth-child(2) {
+  border-left: 2px solid #000;
+  border-right: 2px solid #000;
+}
 .slot-item {
   width: 100%;
-  height: 100px; /* Height of a single row */
+ height: calc(100% / 3);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -106,8 +109,8 @@ body {
 
 
 .slot-column img {
-  width: 80px;
-  height: 80px;
+  width: 10rem;
+  height: 10rem;
 }
 
 .lever-container {
