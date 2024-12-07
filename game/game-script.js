@@ -1750,6 +1750,18 @@ function showDamage(
     ctx.font = `${fontSize}rem VUper`;
     ctx.fillStyle = "red";
     ctx.globalAlpha = alpha;
+    ctx.lineWidth = 7;
+    ctx.strokeStyle = "black";
+    ctx.strokeText(
+      `${enemyDamage}`,
+      playerX + playerDamageOffsetX,
+      commonY + playerDamageOffsetY
+    );
+    ctx.strokeText(
+      `${playerDamage}`,
+      enemyX + enemyDamageOffsetX,
+      commonY + enemyDamageOffsetY
+    );
     ctx.fillText(
       `${enemyDamage}`,
       playerX + playerDamageOffsetX,
@@ -1813,6 +1825,18 @@ function showDamage(
     ctx.font = `${fontSize}rem VUper`;
     ctx.fillStyle = "red";
     ctx.globalAlpha = alpha;
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = "black";
+    ctx.strokeText(
+      `${enemyDamage}`,
+      playerX + playerDamageOffsetX,
+      commonY + playerDamageOffsetY
+    );
+    ctx.strokeText(
+      `${playerDamage}`,
+      enemyX + enemyDamageOffsetX,
+      commonY + enemyDamageOffsetY
+    );
     ctx.fillText(
       `${enemyDamage}`,
       playerX + playerDamageOffsetX,
