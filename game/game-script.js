@@ -1694,8 +1694,8 @@ function showDamage(
   let alpha = 1.0;
   const fadeDuration = 50;
   const displayDuration = 50;
-  const maxFontSize = 2.5;
-  const minFontSize = 0.625;
+  const maxFontSize = 3.5;
+  const minFontSize = 1;
   const commonY = 210;
   const playerDamageOffsetX = -25;
   const playerDamageOffsetY = -1;

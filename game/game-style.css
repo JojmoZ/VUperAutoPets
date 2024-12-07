@@ -162,7 +162,7 @@ img {
 .stat-text {
   position: absolute;
   top: 50%;
-  left: 50%;
+  left: 53%;
   transform: translate(-50%, -50%);
   font-size: 0.9rem;
   font-weight: bold;
