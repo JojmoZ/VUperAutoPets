@@ -21,8 +21,8 @@ html,
 body {
     margin: 0;
     width: 100vw;
-    background-size: contain;
-    background-position: center;
+    background-size: cover;
+    background-position: top;
     backdrop-filter: blur(30px);
     background-image: url(../assets/gacha/gacha.png);
 
@@ -57,6 +57,19 @@ body {
     justify-content: center;
 }
 
+@keyframes altBg {
+
+    0% {
+        background-image: url(../assets/gacha/board.png);
+    }
+    50% {
+        background-image: url(../assets/gacha/board-alt.png);
+    }
+    100% {
+        background-image: url(../assets/gacha/board.png);
+    }
+}
+
 .gacha-container {
     /*text-align: center;*/
     /*background-color: rgba(255, 255, 255, 0.1);*/
@@ -70,13 +83,16 @@ body {
     /*border-top: 1px solid rgba(255, 255, 255, 0.5);*/
     /*border-left: 1px solid rgba(255, 255, 255, 0.5);*/
     width: 70vw;
-    height:70vh;
+    height:60vh;
     aspect-ratio: 1/1;
     background-image: url("../assets/gacha/board-alt.png");
     background-size: 100% 100%;
     background-repeat: no-repeat;
-
+    transition: all 0.3s ease;
+    animation: altBg 1s linear infinite;
 }
+
+
 
 .slot-machine {
   display: flex;
