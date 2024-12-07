@@ -20,8 +20,7 @@ function populateInitialColumns() {
     document.getElementById("column3"),
   ];
 
-  const itemHeight = 100; // Height of each slot item
-  const totalItems = 20; // Number of items per column
+  const totalItems = 20;
 
   columns.forEach((column) => {
     column.innerHTML = ""; // Clear the column
@@ -30,17 +29,26 @@ function populateInitialColumns() {
     reel.style.top = "0";
     column.appendChild(reel);
 
-    // Add random animals to the column
     for (let i = 0; i < totalItems; i++) {
       const randomAnimal =
         shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
       const slotItem = document.createElement("div");
       slotItem.classList.add("slot-item");
+
+      if (i === Math.floor(totalItems / 2) - 1) {
+        slotItem.classList.add("top-row");
+      } else if (i === Math.floor(totalItems / 2)) {
+        slotItem.classList.add("middle-row");
+      } else if (i === Math.floor(totalItems / 2) + 1) {
+        slotItem.classList.add("bottom-row");
+      }
+
       slotItem.innerHTML = `<img src="${randomAnimal.img}" alt="${randomAnimal.name}" style="width: 10rem; height: 10rem;">`;
       reel.appendChild(slotItem);
     }
   });
 }
+
   let isRolling = false;
   const logged = localStorage.getItem("loggedin");
 
@@ -142,7 +150,7 @@ function populateInitialColumns() {
          }, index * 1000);
        });
 
-       localStorage.setItem("coins", (coins - 5).toString());
+       localStorage.setItem("coins", (localStorage.getItem('coins') - 5).toString());
        updateCoinsDisplay();
        cheatAnimal = ""; // Reset the cheat animal
        return true;
@@ -240,7 +248,7 @@ function populateInitialColumns() {
          if (index === columns.length - 1) {
            isRolling = false;
            gachaSound.pause();
-           gachaSound.currentTime = 0;
+           gachaSound.currentTime = 0;  
            checkThreeOfAKind(selectedAnimals);
          }
        });
@@ -269,11 +277,15 @@ function spinColumn(column, finalAnimal, callback) {
     reel.appendChild(slotItem);
   }
 
-  // Add the final animal in the middle slot
-  const finalSlotItem = document.createElement("div");
-  finalSlotItem.classList.add("slot-item");
-  finalSlotItem.innerHTML = `<img src="${finalAnimal.img}" alt="${finalAnimal.name}" style="width: 10rem; height: 10rem;">`;
-  reel.appendChild(finalSlotItem);
+  // Add visible rows
+  const rows = ["top-row", "middle-row", "bottom-row"];
+  rows.forEach((rowClass, index) => {
+    const slotItem = document.createElement("div");
+    slotItem.classList.add("slot-item", rowClass);
+    const animal = index === 1 ? finalAnimal : getRandomAnimal(); // Ensure middle row has finalAnimal
+    slotItem.innerHTML = `<img src="${animal.img}" alt="${animal.name}" style="width: 10rem; height: 10rem;">`;
+    reel.appendChild(slotItem);
+  });
 
   // Add buffer slots below
   for (let i = 0; i < bufferSlots; i++) {
@@ -285,39 +297,39 @@ function spinColumn(column, finalAnimal, callback) {
     reel.appendChild(slotItem);
   }
 
-  const totalHeight = reel.children.length * itemHeight; // Total height of the reel
+  // Adjust the reel's stop position for the middle row
+  const totalHeight = reel.children.length * itemHeight;
   const stopPosition =
-    -(bufferSlots * itemHeight) + itemHeight * Math.floor(visibleSlots / 2); // Middle row position
+    -(bufferSlots * itemHeight) + itemHeight * Math.floor(visibleSlots / 2);
 
-  let currentTop = 0; // Start position
-  const spinSpeed = 20; // Initial speed
-  const slowdownRate = 1.03; // Slowdown rate
-  const stopTime = Date.now() + 3000; // Time to stop spinning
+  let currentTop = 0;
+  const spinSpeed = 20;
+  const slowdownRate = 1.03;
+  const stopTime = Date.now() + 3000;
 
   function spin() {
-    currentTop -= spinSpeed; // Move the reel upwards
+    currentTop -= spinSpeed;
     reel.style.top = `${currentTop}px`;
 
-    // Reset position when exceeding total height
     if (currentTop <= -totalHeight) {
       currentTop = 0;
       reel.style.transition = "none";
     }
 
-    // Slow down and stop at the middle row position
     if (Date.now() >= stopTime) {
       reel.style.transition = "top 0.5s ease-out";
-      reel.style.top = `${stopPosition}px`; // Align with the middle row
-      setTimeout(callback, 500); // Trigger callback after animation
+      reel.style.top = `${stopPosition}px`;
+      setTimeout(callback, 500);
       return;
     }
 
-    // Continue spinning with adjusted speed
     setTimeout(spin, spinSpeed);
   }
 
-  spin(); // Start spinning
+  spin();
 }
+
+
 
 
 
@@ -329,7 +341,7 @@ function spinColumn(column, finalAnimal, callback) {
       selectedAnimals[0].name === selectedAnimals[1].name &&
       selectedAnimals[1].name === selectedAnimals[2].name
     ) {
-      addToOwnedAnimals(middleRow[0]); 
+      addToOwnedAnimals(selectedAnimals[0]); 
       showFireworks();
       winSound.play();
     }

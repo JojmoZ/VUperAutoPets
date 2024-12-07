@@ -103,6 +103,18 @@ body {
   height: 90%; 
   width: 100%;
 }
+.top-row {
+    background-color: rgba(255, 255, 0, 0.5); /* Yellow for top row */
+}
+
+.middle-row {
+    background-color: rgba(0, 255, 0, 0.5); /* Green for middle row */
+}
+
+.bottom-row {
+    background-color: rgba(0, 0, 255, 0.5); /* Blue for bottom row */
+}
+
 
 .slot-column {
   width: 30%;
