@@ -265,6 +265,8 @@ function renderRandomAnimals() {
       const iceOverlay = document.createElement("div");
       iceOverlay.classList.add("ice-overlay");
       animalDiv.appendChild(iceOverlay);
+      animalImage.style.width = "5.8rem";
+      animalImage.style.height = "5.8rem";
     }
     const statContainer = document.createElement("div");
     statContainer.classList.add("stat-container");
@@ -2354,6 +2356,8 @@ function renderItem() {
       const iceOverlay = document.createElement("div");
       iceOverlay.classList.add("ice-overlay");
       itemWrapper.appendChild(iceOverlay);
+      itemImg.style.width = "5.8rem";
+      itemImg.style.height = "5.8rem";
     }
     itemWrapper.appendChild(itemImg);
     slot.appendChild(itemWrapper);
