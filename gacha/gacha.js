@@ -23,7 +23,7 @@ function populateInitialColumns() {
   const totalItems = 20;
 
   columns.forEach((column) => {
-    column.innerHTML = ""; // Clear the column
+    column.innerHTML = ""; 
     const reel = document.createElement("div");
     reel.style.position = "relative";
     reel.style.top = "0";
@@ -152,7 +152,7 @@ function populateInitialColumns() {
 
        localStorage.setItem("coins", (localStorage.getItem('coins') - 5).toString());
        updateCoinsDisplay();
-       cheatAnimal = ""; // Reset the cheat animal
+       cheatAnimal = ""; 
        return true;
      }
    }
@@ -256,18 +256,18 @@ function populateInitialColumns() {
    });
  }
 function spinColumn(column, finalAnimal, callback) {
-  column.innerHTML = ""; // Clear the column
+  column.innerHTML = ""; 
   const reel = document.createElement("div");
   reel.style.position = "relative";
   reel.style.top = "0";
   reel.style.transition = "none";
   column.appendChild(reel);
 
-  const itemHeight = 100; // Height of each slot item
-  const visibleSlots = 3; // Number of visible rows
-  const bufferSlots = 10; // Extra slots above and below for the spinning effect
+  const itemHeight = 100; 
+  const visibleSlots = 3; 
+  const bufferSlots = 10; 
 
-  // Add buffer slots above
+  
   for (let i = 0; i < bufferSlots; i++) {
     const slotItem = document.createElement("div");
     slotItem.classList.add("slot-item");
@@ -277,17 +277,17 @@ function spinColumn(column, finalAnimal, callback) {
     reel.appendChild(slotItem);
   }
 
-  // Add visible rows
+  
   const rows = ["top-row", "middle-row", "bottom-row"];
   rows.forEach((rowClass, index) => {
     const slotItem = document.createElement("div");
     slotItem.classList.add("slot-item", rowClass);
-    const animal = index === 1 ? finalAnimal : getRandomAnimal(); // Ensure middle row has finalAnimal
+    const animal = index === 1 ? finalAnimal : getRandomAnimal(); 
     slotItem.innerHTML = `<img src="${animal.img}" alt="${animal.name}" style="width: 10rem; height: 10rem;">`;
     reel.appendChild(slotItem);
   });
 
-  // Add buffer slots below
+  
   for (let i = 0; i < bufferSlots; i++) {
     const slotItem = document.createElement("div");
     slotItem.classList.add("slot-item");
@@ -297,7 +297,7 @@ function spinColumn(column, finalAnimal, callback) {
     reel.appendChild(slotItem);
   }
 
-  // Adjust the reel's stop position for the middle row
+  
   const totalHeight = reel.children.length * itemHeight;
   const stopPosition =
     -(bufferSlots * itemHeight) + itemHeight * Math.floor(visibleSlots / 2);
