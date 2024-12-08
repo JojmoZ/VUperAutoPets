@@ -55,7 +55,7 @@ body {
   width: 6.25rem;
   height: 6.25rem;
   position: relative;
-  background-image: url(../assets/game-asset/stone.png);
+  /* background-image: url(../assets/game-asset/stone.png); */
   background-repeat: no-repeat;
   background-size: contain;
   background-position: bottom;
@@ -605,7 +605,7 @@ img {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: bottom;
-  z-index: 1;
+  z-index: -21;
 }
 .team-row button {
   position: relative;

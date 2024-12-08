@@ -206,90 +206,109 @@ function rollShopAnimals() {
 function renderRandomAnimals() {
   const randomAnimalsContainer = document.getElementById("random-animals");
   randomAnimalsContainer.innerHTML = "";
-  randomAnimals.forEach((animal, index) => {
+
+  // Ensure a fixed number of slots are rendered, even if randomAnimals array is smaller
+  for (let i = 0; i < maxShopAnimals; i++) {
+    const animal = randomAnimals[i] || null; // Handle missing animals with null
     const animalDiv = document.createElement("div");
     animalDiv.classList.add("animal");
-    animalDiv.setAttribute("data-index", index);
-    const animalImage = document.createElement("img");
-    animalImage.src = animal.img;
-    animalImage.alt = animal.name;
-    animalImage.style.aspectRatio = "1/1";
-    animalImage.style.transform = "scaleX(-1)";
-    animalImage.setAttribute("draggable", true);
-    animalImage.addEventListener("dragstart", (event) => {
-      hideHoverInfo();
-      const imageWidth = animalImage.offsetWidth;
-      const imageHeight = animalImage.offsetHeight;
-      const tempCanvas = document.createElement("canvas");
-      tempCanvas.width = imageWidth;
-      tempCanvas.height = imageHeight;
-      const ctx = tempCanvas.getContext("2d");
-      ctx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
-      ctx.scale(-1, 1);
-      ctx.drawImage(animalImage, -imageWidth, 0, imageWidth, imageHeight);
-      tempCanvas.style.position = "absolute";
-      tempCanvas.style.top = "-1000px";
-      tempCanvas.style.left = "-1000px";
-      tempCanvas.style.pointerEvents = "none";
-      document.body.appendChild(tempCanvas);
-      event.dataTransfer.setDragImage(
-        tempCanvas,
-        tempCanvas.width / 2,
-        tempCanvas.height / 2
-      );
+    animalDiv.setAttribute("data-index", i);
 
-      setTimeout(() => {
-        tempCanvas.remove();
-      }, 0);
+    // Add stone background
+    const stone = document.createElement("div");
+    stone.classList.add("stone");
+    animalDiv.appendChild(stone);
 
-      event.dataTransfer.setData("text/plain", index);
-      event.dataTransfer.setData("source", "shop");
+    // Add animal image if it exists
+    if (animal) {
+      const animalImage = document.createElement("img");
+      animalImage.src = animal.img;
+      animalImage.alt = animal.name;
+      animalImage.style.aspectRatio = "1/1";
+      animalImage.style.transform = "scaleX(-1)";
+      animalImage.setAttribute("draggable", true);
 
-      showFreezeBin();
-    });
+      animalImage.addEventListener("dragstart", (event) => {
+        hideHoverInfo();
+        const imageWidth = animalImage.offsetWidth;
+        const imageHeight = animalImage.offsetHeight;
+        const tempCanvas = document.createElement("canvas");
+        tempCanvas.width = imageWidth;
+        tempCanvas.height = imageHeight;
+        const ctx = tempCanvas.getContext("2d");
+        ctx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
+        ctx.scale(-1, 1);
+        ctx.drawImage(animalImage, -imageWidth, 0, imageWidth, imageHeight);
+        tempCanvas.style.position = "absolute";
+        tempCanvas.style.top = "-1000px";
+        tempCanvas.style.left = "-1000px";
+        tempCanvas.style.pointerEvents = "none";
+        document.body.appendChild(tempCanvas);
+        event.dataTransfer.setDragImage(
+          tempCanvas,
+          tempCanvas.width / 2,
+          tempCanvas.height / 2
+        );
 
-    animalImage.addEventListener("dragend", hideBins);
-    animalImage.addEventListener("mouseover", (event) => {
-      showHoverInfo(`${animal.name} - Cost: ${animal.cost}`, event);
-    });
-    animalImage.addEventListener("mousemove", (event) => {
-      showHoverInfo(`${animal.name} - Cost: ${animal.cost}`, event);
-    });
-    animalImage.addEventListener("mouseout", hideHoverInfo);
-    if (animal.frozen) {
-      const iceOverlay = document.createElement("div");
-      iceOverlay.classList.add("ice-overlay");
-      animalDiv.appendChild(iceOverlay);
-      animalImage.style.width = "5.8rem";
-      animalImage.style.height = "5.8rem";
+        setTimeout(() => {
+          tempCanvas.remove();
+        }, 0);
+
+        event.dataTransfer.setData("text/plain", i);
+        event.dataTransfer.setData("source", "shop");
+
+        showFreezeBin();
+      });
+
+      animalImage.addEventListener("dragend", hideBins);
+      animalImage.addEventListener("mouseover", (event) => {
+        showHoverInfo(`${animal.name} - Cost: ${animal.cost}`, event);
+      });
+      animalImage.addEventListener("mousemove", (event) => {
+        showHoverInfo(`${animal.name} - Cost: ${animal.cost}`, event);
+      });
+      animalImage.addEventListener("mouseout", hideHoverInfo);
+
+      if (animal.frozen) {
+        const iceOverlay = document.createElement("div");
+        iceOverlay.classList.add("ice-overlay");
+        animalDiv.appendChild(iceOverlay);
+        animalImage.style.width = "5.8rem";
+        animalImage.style.height = "5.8rem";
+      }
+
+      animalDiv.appendChild(animalImage);
+
+      const statContainer = document.createElement("div");
+      statContainer.classList.add("stat-container");
+      const attackContainer = document.createElement("div");
+      attackContainer.classList.add("stat-icon");
+      const attackIcon = document.createElement("img");
+      attackIcon.src = "../assets/game-asset/fist.png";
+      const attackText = document.createElement("span");
+      attackText.textContent = animal.attack;
+      attackText.classList.add("stat-text");
+      attackContainer.appendChild(attackIcon);
+      attackContainer.appendChild(attackText);
+      const healthContainer = document.createElement("div");
+      healthContainer.classList.add("stat-icon");
+      const healthIcon = document.createElement("img");
+      healthIcon.src = "../assets/game-asset/stat-heart.png";
+      const healthText = document.createElement("span");
+      healthText.textContent = animal.health;
+      healthText.classList.add("stat-text");
+      healthContainer.appendChild(healthIcon);
+      healthContainer.appendChild(healthText);
+      statContainer.appendChild(attackContainer);
+      statContainer.appendChild(healthContainer);
+      animalDiv.appendChild(statContainer);
     }
-    const statContainer = document.createElement("div");
-    statContainer.classList.add("stat-container");
-    const attackContainer = document.createElement("div");
-    attackContainer.classList.add("stat-icon");
-    const attackIcon = document.createElement("img");
-    attackIcon.src = "../assets/game-asset/fist.png";
-    const attackText = document.createElement("span");
-    attackText.textContent = animal.attack;
-    attackText.classList.add("stat-text");
-    attackContainer.appendChild(attackIcon);
-    attackContainer.appendChild(attackText);
-    const healthContainer = document.createElement("div");
-    healthContainer.classList.add("stat-icon");
-    const healthIcon = document.createElement("img");
-    healthIcon.src = "../assets/game-asset/stat-heart.png";
-    const healthText = document.createElement("span");
-    healthText.textContent = animal.health;
-    healthText.classList.add("stat-text");
-    healthContainer.appendChild(healthIcon);
-    healthContainer.appendChild(healthText);
-    statContainer.appendChild(attackContainer);
-    statContainer.appendChild(healthContainer);
-    animalDiv.appendChild(animalImage);
-    animalDiv.appendChild(statContainer);
+
     randomAnimalsContainer.appendChild(animalDiv);
-  });
+  }
 }
+
+
 function saveBattleLineup() {
   localStorage.setItem("battleLineup", JSON.stringify(battleLineup));
 }
