@@ -3,8 +3,8 @@ let isPaired = false;
 let enemyOnlineName;
 let enemyOnlineLives;
 let username;
-let pairingTimeout = null; 
-let pairingDuration = 50000; 
+let pairingTimeout = null;
+let pairingDuration = 50000;
 function connectWebSocket() {
   socket = new WebSocket("https://nova-dolomite-mink.glitch.me");
 
@@ -23,7 +23,7 @@ function connectWebSocket() {
     if (data.type === "paired") {
       console.log("Paired with an opponent!");
       isPaired = true;
-      sendPlayerData(); 
+      sendPlayerData();
     }
 
     if (data.type === "opponentData") {
@@ -125,14 +125,11 @@ const sellSound = document.getElementById("sellSound");
 const logged = localStorage.getItem("loggedin");
 
 if (!logged) {
-  
   function clearLocalStorageExceptUsers() {
-    const keysToKeep = ["users"]; 
+    const keysToKeep = ["users"];
 
-    
     const allKeys = Object.keys(localStorage);
 
-    
     allKeys.forEach((key) => {
       if (!keysToKeep.includes(key)) {
         localStorage.removeItem(key);
@@ -140,10 +137,8 @@ if (!logged) {
     });
   }
 
-  
   clearLocalStorageExceptUsers();
 
-  
   window.location.href = "/login/index.html";
 }
 
@@ -626,7 +621,6 @@ function renderBattleSlots() {
         const refundAmountText = document.getElementById("refundAmountText");
         refundAmountText.textContent = `Sell (${refundAmount})`;
         showTrashBin();
-
       });
 
       animalImg.addEventListener("dragend", hideBins);
@@ -800,13 +794,13 @@ function letsplay() {
         const result = computeBattleResult(battleLineup, enemyLineup);
         localStorage.setItem("result", result);
         hideNonBattleElements();
-       generaateMyInfo();
-       hideTeamName();
-       hideCanvas();
-       randomizeRightHalfMap();
-       openCurtains(() => {
-         ShowBottomInfo()
-         showPauseButton();
+        generaateMyInfo();
+        hideTeamName();
+        hideCanvas();
+        randomizeRightHalfMap();
+        openCurtains(() => {
+          ShowBottomInfo();
+          showPauseButton();
           showCanvas();
           playBattleMusic();
           generateEnemyInfo(true);
@@ -823,20 +817,16 @@ function letsplay() {
 }
 async function generateBossTeam() {
   try {
-    
     const response = await fetch("../assets/jsons/Boss.json");
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const bossData = await response.json();
 
-    
     const shuffledBosses = bossData.sort(() => Math.random() - 0.5);
 
-    
     enemyLineup = shuffledBosses.map((boss) => ({ ...boss }));
 
-    
     while (enemyLineup.length < maxSlots) {
       enemyLineup.push(null);
     }
@@ -846,8 +836,8 @@ async function generateBossTeam() {
     console.error("Error loading boss team:", error);
   }
 }
-function generateBossTeamName(){
-   enemyTeamName = 'RECSEL SQUAD';
+function generateBossTeamName() {
+  enemyTeamName = "RECSEL SQUAD";
 }
 function letsplayonline() {
   if (playing) return;
@@ -870,7 +860,7 @@ function letsplayonline() {
       generaateMyInfo();
       generateEnemyInfo();
       openCurtains(() => {
-        ShowBottomInfo()
+        ShowBottomInfo();
         showCanvas();
         showPauseButton();
         playBattleMusic();
@@ -895,7 +885,7 @@ function sendPlayerData() {
         battleLineup: battleLineup,
         teamName: teamName,
         username: username,
-        lives: lives
+        lives: lives,
       })
     );
     console.log("Sent player data");
@@ -920,23 +910,23 @@ document
       fadeInElements();
     } else {
       showLoadingScreen();
-       if (socket && socket.readyState === WebSocket.OPEN) {
-         socket.send(JSON.stringify({ type: "joinQueue" }));
-         console.log("Sent joinQueue request to the server.");
-       } else {
-         console.error("WebSocket is not connected.");
-         hideLoadingScreen();
-         ShowModal('Server is Not Connected, Exiting')
-         setTimeout(() => {
-           location.reload();
-         },1000)
-         return;
-       }
+      if (socket && socket.readyState === WebSocket.OPEN) {
+        socket.send(JSON.stringify({ type: "joinQueue" }));
+        console.log("Sent joinQueue request to the server.");
+      } else {
+        console.error("WebSocket is not connected.");
+        hideLoadingScreen();
+        ShowModal("Server is Not Connected, Exiting");
+        setTimeout(() => {
+          location.reload();
+        }, 1000);
+        return;
+      }
 
-       pairingTimeout = setTimeout(() => {
-         console.log("No opponent found. Reloading...");
-         location.reload(); 
-       }, pairingDuration);
+      pairingTimeout = setTimeout(() => {
+        console.log("No opponent found. Reloading...");
+        location.reload();
+      }, pairingDuration);
     }
   });
 
@@ -1014,7 +1004,7 @@ function populateTeamRow(rowId, items, type) {
     teamNamePreview.id = "teamNamePreview";
     teamNamePreview.style.position = "absolute";
     teamNamePreview.style.bottom = "10px";
-    teamNamePreview.style.left = "10px";  
+    teamNamePreview.style.left = "10px";
     teamNamePreview.style.fontSize = "4rem";
     teamNamePreview.style.fontWeight = "bold";
     teamNamePreview.style.color = "white";
@@ -1072,7 +1062,7 @@ function handleTeamNameSelection(type, value) {
 document
   .getElementById("confirmTeamNameButton")
   .addEventListener("click", () => {
-    document.body.removeChild(teamNamePreview)
+    document.body.removeChild(teamNamePreview);
     teamName = `The ${selectedAdjective} ${selectedNoun}`;
     localStorage.setItem("teamName", teamName);
     document.getElementById("teamNameSelectionScreen").classList.add("hidden");
@@ -1082,23 +1072,23 @@ document
     let fromonline = localStorage.getItem("fromOnline");
     if (fromonline == "true") {
       showLoadingScreen();
-        if (socket && socket.readyState === WebSocket.OPEN) {
-         socket.send(JSON.stringify({ type: "joinQueue" }));
-         console.log("Sent joinQueue request to the server.");
-       } else {
-         console.error("WebSocket is not connected.");
-         hideLoadingScreen();
-         ShowModal('Server is Not Connected, Exiting')
-         setTimeout(() => {
-           location.reload();
-         },1000)
-         return;
-       }
+      if (socket && socket.readyState === WebSocket.OPEN) {
+        socket.send(JSON.stringify({ type: "joinQueue" }));
+        console.log("Sent joinQueue request to the server.");
+      } else {
+        console.error("WebSocket is not connected.");
+        hideLoadingScreen();
+        ShowModal("Server is Not Connected, Exiting");
+        setTimeout(() => {
+          location.reload();
+        }, 1000);
+        return;
+      }
 
-       pairingTimeout = setTimeout(() => {
-         console.log("No opponent found. Reloading...");
-         location.reload(); 
-       }, pairingDuration);
+      pairingTimeout = setTimeout(() => {
+        console.log("No opponent found. Reloading...");
+        location.reload();
+      }, pairingDuration);
     } else {
       letsplay();
     }
@@ -1226,7 +1216,7 @@ function hideNonBattleElements() {
   playBattleMusic();
 }
 document.getElementById("backArrow").addEventListener("click", function () {
-  localStorage.removeItem('ingame')
+  localStorage.removeItem("ingame");
   window.location.href = "/menu/menu.html";
 });
 function showCanvas() {
@@ -1264,9 +1254,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const teamName = localStorage.getItem("teamName") || "No Team Name";
   BossBattle = false;
   hideBattleText();
-  if(teamName == "No Team Name"){
-  document.getElementById("teamNameDisplay").style.display ="none"
-  }else{
+  if (teamName == "No Team Name") {
+    document.getElementById("teamNameDisplay").style.display = "none";
+  } else {
     document.getElementById("teamNameDisplay").textContent = teamName;
   }
   loadassets();
@@ -1291,18 +1281,18 @@ document.addEventListener("DOMContentLoaded", function () {
       coins += 10;
       updateCoinsDisplay();
       if (result === "win") {
-         let users = JSON.parse(localStorage.getItem("users")) || [];
-         const userIndex = users.findIndex(
-           (user) => user.displayName === username
-         );
+        let users = JSON.parse(localStorage.getItem("users")) || [];
+        const userIndex = users.findIndex(
+          (user) => user.displayName === username
+        );
 
-         if (userIndex !== -1) {
-           users[userIndex].pendingCoins =
-             (users[userIndex].pendingCoins || 0) + 5;
-           localStorage.setItem("users", JSON.stringify(users));
-         } else {
-           console.error(`User with username "${username}" not found.`);
-         }
+        if (userIndex !== -1) {
+          users[userIndex].pendingCoins =
+            (users[userIndex].pendingCoins || 0) + 5;
+          localStorage.setItem("users", JSON.stringify(users));
+        } else {
+          console.error(`User with username "${username}" not found.`);
+        }
         localStorage.removeItem("result");
       } else if (result === "lose") {
         hearts[lives - 1].src = "../assets/game-asset/broken heart.png";
@@ -1378,22 +1368,19 @@ function generateEnemyTeam() {
 
   let attempts = 0;
   const maxAttempts = 1000;
-  const levelUpChance = 0.4; 
-  const spawnBusChance = 0.2; 
+  const levelUpChance = 0.4;
+  const spawnBusChance = 0.2;
 
-  
   const weightedAnimals = shopAnimals.map((animal) => ({
     ...animal,
-    weight: animal.cost + Math.random() * 5, 
+    weight: animal.cost + Math.random() * 5,
   }));
 
-  
   const sortedAnimals = weightedAnimals
     .slice()
     .sort((a, b) => b.weight - a.weight);
 
   while (enemyLineup.length < maxSlots && currentCost < enemyTeamCost) {
-    
     let randomAnimal = {
       ...sortedAnimals[
         Math.floor(Math.random() * Math.min(5, sortedAnimals.length))
@@ -1414,7 +1401,7 @@ function generateEnemyTeam() {
         addedCost = randomAnimal.cost;
       }
     } else {
-      randomAnimal.level = 1; 
+      randomAnimal.level = 1;
       addedCost = randomAnimal.cost;
     }
 
@@ -1424,13 +1411,13 @@ function generateEnemyTeam() {
         console.warn("Failed to generate full enemy lineup. Exiting loop.");
         break;
       }
-      continue; 
+      continue;
     }
 
     if (Math.random() < spawnBusChance && !randomAnimal.specialEffect) {
       if (enemyTeamCost - currentCost >= addedCost + 9) {
         randomAnimal.specialEffect = "SpawnBus";
-        addedCost += 9; 
+        addedCost += 9;
       }
     }
 
@@ -1580,13 +1567,12 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
     let pauseStartTime = null;
     function animateBack(currentTime) {
       if (paused) {
-        if (!pauseStartTime) pauseStartTime = currentTime; 
+        if (!pauseStartTime) pauseStartTime = currentTime;
         requestAnimationFrame(animateBack);
         return;
       }
 
       if (pauseStartTime) {
-        
         lastReturnFrameTime += currentTime - pauseStartTime;
         pauseStartTime = null;
       }
@@ -1946,7 +1932,7 @@ function animateDeathFlyOff(animal, index, teamType, onComplete) {
   let pauseStartTime = null;
   function animate(currentTime) {
     if (paused) {
-      if (!pauseStartTime) pauseStartTime = currentTime; 
+      if (!pauseStartTime) pauseStartTime = currentTime;
       requestAnimationFrame(animate);
       return;
     }
@@ -2125,7 +2111,6 @@ async function handleDeathAnimation(animal, index, teamType) {
   });
 }
 async function simulateBattle() {
-  
   localStorage.setItem("ingame", true);
   let turnCount = 1;
   const maxTurns = 10;
@@ -2230,7 +2215,6 @@ function resetGame() {
   showNonBattleElements();
 }
 function checkGameOver(playerSurvivors, enemySurvivors) {
-  
   if (playerSurvivors > enemySurvivors) {
     showWinScreen();
   } else if (playerSurvivors < enemySurvivors) {
@@ -2703,7 +2687,7 @@ function DefeatScreen() {
         coins += 10;
         localStorage.removeItem("result");
         dimmerOverlay.classList.add("hidden");
-        hideRightSide()
+        hideRightSide();
         openCurtains(() => {
           resetGame();
           window.location.href = "/menu/menu.html";
@@ -2869,8 +2853,8 @@ function computeBattleResult(playerTeam, enemyTeam) {
   const enemyTeamCopy = enemyTeam.map((animal) =>
     animal ? { ...animal } : null
   );
-  console.log(enemyTeam)
-  console.log(enemyTeamCopy)
+  console.log(enemyTeam);
+  console.log(enemyTeamCopy);
   let playerIndex = 0;
   let enemyIndex = 0;
 
@@ -2912,28 +2896,27 @@ function computeBattleResult(playerTeam, enemyTeam) {
     if (playerAnimal.health <= 0) playerIndex++;
   }
 
-
   const playerSurvivors = playerTeamCopy.filter(
     (animal) => animal && animal.health > 0
   ).length;
   const enemySurvivors = enemyTeamCopy.filter(
     (animal) => animal && animal.health > 0
   ).length;
-console.log(
-  "Player Survivors:",
-  playerTeamCopy.filter((animal) => animal && animal.health > 0).length
-);
-console.log(
-  "Enemy Survivors:",
-  enemyTeamCopy.filter((animal) => animal && animal.health > 0).length
-);
+  console.log(
+    "Player Survivors:",
+    playerTeamCopy.filter((animal) => animal && animal.health > 0).length
+  );
+  console.log(
+    "Enemy Survivors:",
+    enemyTeamCopy.filter((animal) => animal && animal.health > 0).length
+  );
   if (playerSurvivors > enemySurvivors) return "win";
   if (playerSurvivors < enemySurvivors) return "lose";
   return "draw";
 }
 
-let paused = false; 
-let pauseStartTime = null; 
+let paused = false;
+let pauseStartTime = null;
 const pauseButton = document.getElementById("pause-btn");
 function togglePause() {
   paused = !paused;
@@ -2946,7 +2929,7 @@ function togglePause() {
       "../assets/game-asset/button/pause-btn.png";
     const pauseDuration = performance.now() - pauseStartTime;
     activeAnimations.forEach((anim) => {
-      anim.lastFrameTime += pauseDuration; 
+      anim.lastFrameTime += pauseDuration;
     });
     pauseStartTime = null;
   }
@@ -2959,6 +2942,22 @@ function hidePauseButton() {
 }
 
 pauseButton.addEventListener("click", togglePause);
+pauseButton.addEventListener("mouseover", () => {
+  pauseButton.style.transform = "translateY(-5px)";
+});
+
+pauseButton.addEventListener("mouseout", () => {
+  pauseButton.style.transform = "translateY(0)";
+  pauseButton.style.boxShadow = "none";
+});
+
+pauseButton.addEventListener("mousedown", () => {
+  pauseButton.style.transform = "translateY(-2px)";
+});
+
+pauseButton.addEventListener("mouseup", () => {
+  pauseButton.style.transform = "translateY(-5px)";
+});
 function randomizeRightHalfMap() {
   const maps = [
     "japan.png",
@@ -2976,12 +2975,12 @@ function randomizeRightHalfMap() {
   rightHalf.style.display = "block";
   rightHalf.style.backgroundImage = `url("../assets/maps/${randomMap}")`;
 }
-function hideRightSide(){
+function hideRightSide() {
   const rightHalf = document.getElementById("rightHalf");
   rightHalf.style.display = "none";
 }
 
-function generaateMyInfo(){
+function generaateMyInfo() {
   const myTeamInfo = document.getElementById("myTeamInfo");
   myTeamInfo.innerHTML = "";
   let username = localStorage.getItem("username") || "";
@@ -2996,10 +2995,10 @@ function generaateMyInfo(){
   const RightDiv = document.createElement("div");
   const LeftDiv = document.createElement("div");
   LeftDiv.style.display = "flex";
-  LeftDiv.style.flexDirection = "column"; 
+  LeftDiv.style.flexDirection = "column";
   let MyteamName = document.createElement("p");
   MyteamName.style.margin = "0";
-  myName.style.margin = "0"
+  myName.style.margin = "0";
   LeftDiv.style.textAlign = "left";
   LeftDiv.style.justifyContent = "space-between";
   MyteamName.textContent = teamName;
@@ -3012,30 +3011,30 @@ function generaateMyInfo(){
   RightDiv.style.gap = "0.5rem";
   myTeamInfo.style.display = "flex";
   myTeamInfo.appendChild(LeftDiv);
-  myTeamInfo.appendChild(RightDiv)
+  myTeamInfo.appendChild(RightDiv);
 }
-function generateEnemyInfo(bossBattle = false){
-  const enemyTeamInfo = document.getElementById('enemyTeamInfo');
-   const heart = document.createElement("img");
-   heart.src = "../assets/game-asset/stat-heart.png";
-   heart.style.width = "1.5rem";
-   heart.style.height = "1.5rem";
+function generateEnemyInfo(bossBattle = false) {
+  const enemyTeamInfo = document.getElementById("enemyTeamInfo");
+  const heart = document.createElement("img");
+  heart.src = "../assets/game-asset/stat-heart.png";
+  heart.style.width = "1.5rem";
+  heart.style.height = "1.5rem";
   enemyTeamInfo.innerHTML = "";
   const fromOnline = localStorage.getItem("fromOnline");
   let enemyLives = document.createElement("p");
   const enemyName = document.createElement("p");
-  if(fromOnline == "false" && bossBattle == false){
+  if (fromOnline == "false" && bossBattle == false) {
     enemyName.textContent = "Hard Bot";
     enemyLives.textContent = "Lives: 1";
-  }else if (bossBattle ==true) {
+  } else if (bossBattle == true) {
     enemyName.textContent = "ADMIN";
     enemyLives.textContent = "Lives: 1";
-  }else{
+  } else {
     enemyName.textContent = enemyOnlineName;
-    enemyLives.textContent = "Lives: " +  enemyOnlineLives;
+    enemyLives.textContent = "Lives: " + enemyOnlineLives;
   }
   const leftDiv = document.createElement("div");
-  const rightDiv = document.createElement("div")
+  const rightDiv = document.createElement("div");
   rightDiv.style.display = "flex";
   rightDiv.style.flexDirection = "column";
   let MyteamName = document.createElement("p");
@@ -3052,14 +3051,14 @@ function generateEnemyInfo(bossBattle = false){
   leftDiv.style.alignItems = "center";
   leftDiv.style.gap = "0.5rem";
   enemyTeamInfo.style.display = "flex";
-  enemyTeamInfo.appendChild(leftDiv)
+  enemyTeamInfo.appendChild(leftDiv);
   enemyTeamInfo.appendChild(rightDiv);
 }
-function ShowBottomInfo(){
+function ShowBottomInfo() {
   document.getElementById("myTeamInfo").classList.remove("hidden");
   document.getElementById("enemyTeamInfo").classList.remove("hidden");
 }
-function hideBottomInfo(){
- document.getElementById("myTeamInfo").classList.add("hidden");
+function hideBottomInfo() {
+  document.getElementById("myTeamInfo").classList.add("hidden");
   document.getElementById("enemyTeamInfo").classList.add("hidden");
 }

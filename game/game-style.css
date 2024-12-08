@@ -25,9 +25,19 @@ body {
   /* background-color: black; */
   background-color: transparent;
   width: 5rem;
-top:2%;
+  top: 2%;
   border: none;
   cursor: pointer;
+}
+
+.pause-btn:hover {
+  transform: translateY(-5px);
+  /* box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); */
+}
+
+.pause-btn:active {
+  transform: translateY(-2px);
+  /* box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); */
 }
 
 #mainContainer {
@@ -588,17 +598,17 @@ img {
 }
 .stone {
   position: absolute;
-  bottom: -10px; 
-  width: 6.25rem; 
+  bottom: -10px;
+  width: 6.25rem;
   height: 6.25rem;
   background-image: url(../assets/game-asset/stone.png);
   background-size: contain;
   background-repeat: no-repeat;
   background-position: bottom;
-  z-index: 1; 
+  z-index: 1;
 }
 .team-row button {
-  position: relative; 
+  position: relative;
   color: white;
   border: 3px solid transparent;
   padding: 1.5rem 4rem;
@@ -610,21 +620,21 @@ img {
   height: 5rem;
   display: flex;
   justify-content: center;
-  border:2px solid white;
+  border: 2px solid white;
   align-items: center;
   transition: transform 0.1s ease, box-shadow 0.1s ease, border-color 0.2s ease;
-  z-index: 2; 
+  z-index: 2;
 }
 .adjective-button,
 .noun-button {
-  background-color: #02379F;
+  background-color: #02379f;
 }
 .adjective-button:hover,
 .noun-button:hover {
   transform: translateY(-3px);
 }
 .noun-button {
-  background-color: #01963A;
+  background-color: #01963a;
 }
 .noun-button:hover {
   transform: translateY(-2px);
@@ -679,7 +689,7 @@ img {
 #confirmTeamNameButton:active:not(:disabled) {
   transform: translateY(3%);
 }
-#confirmTeamNameButton:hover{
+#confirmTeamNameButton:hover {
   filter: brightness(1.2);
 }
 .teamNameContainer {
@@ -778,17 +788,26 @@ img {
   animation: wave 1.5s infinite;
   animation-delay: calc(var(--i) * 0.1s);
 }
-.wave-text{
+.wave-text {
   padding: 1rem 2.5rem;
 }
-.wave-text span:nth-child(1) { --i: 0; }
-.wave-text span:nth-child(2) { --i: 1; }
-.wave-text span:nth-child(3) { --i: 2; }
+.wave-text span:nth-child(1) {
+  --i: 0;
+}
+.wave-text span:nth-child(2) {
+  --i: 1;
+}
+.wave-text span:nth-child(3) {
+  --i: 2;
+}
 /* Add the same for the rest of the spans, incrementing --i */
-.wave-text span:nth-child(21) { --i: 20; }
+.wave-text span:nth-child(21) {
+  --i: 20;
+}
 
 @keyframes wave {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
   50% {
@@ -820,12 +839,12 @@ img {
 #rightHalf {
   position: absolute;
   right: 0;
-  width: 50%; 
-  height: 102%; 
-  background-size: cover; 
+  width: 50%;
+  height: 102%;
+  background-size: cover;
   background-position: center;
-  pointer-events: none; 
-  z-index: -1; 
+  pointer-events: none;
+  z-index: -1;
 }
 #rightHalf {
   background-repeat: no-repeat;
@@ -835,31 +854,31 @@ img {
   top: 45%;
   left: 30%;
   transform: translate(-50%, -50%);
-  color: #5D1A0B;
+  color: #5d1a0b;
   font-size: 3.2rem;
   font-weight: bold;
   pointer-events: none;
 }
-.myTeamInfo{
+.myTeamInfo {
   position: absolute;
   color: white;
   width: auto;
-  padding:1rem;
-  font-size:1.5rem;
+  padding: 1rem;
+  font-size: 1.5rem;
   border-radius: 20px;
-  gap:3rem;
+  gap: 3rem;
   left: 5%;
   bottom: 5%;
   background-color: rgba(0, 0, 0, 0.5);
 }
-.enemyTeamInfo{
+.enemyTeamInfo {
   position: absolute;
-  color:white;
+  color: white;
   width: auto;
-  padding:1rem;
-  font-size:1.5rem;
+  padding: 1rem;
+  font-size: 1.5rem;
   border-radius: 20px;
-  gap:3rem;
+  gap: 3rem;
   right: 5%;
   bottom: 5%;
   background-color: rgba(0, 0, 0, 0.5);
