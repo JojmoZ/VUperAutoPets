@@ -701,6 +701,7 @@ img {
   color: black;
   font-weight: bold;
 }
+
 .teamName {
   background-color: white;
   padding: 0.5rem 1rem;
@@ -709,7 +710,7 @@ img {
   font-size: 2rem;
   font-weight: bold;
 }
-.team-name {
+/* .team-name {
   position: absolute;
   font-size: 2.2rem;
   font-weight: bold;
@@ -721,36 +722,71 @@ img {
   border-radius: 10px;
   z-index: 10;
   border: 4px solid black;
-}
+} */
 
-#teamNameYour {
-  top: 15%;
-  color: #02b6ff;
-  left: 25%;
-  transform: translateX(-50%);
-}
+    #teamNameYour {
+      color: #02b6ff;
+    }
 
-#teamNameEnemy {
-  top: 15%;
-  right: 29.3%;
-  color: #ff6933;
-  transform: translateX(50%);
-}
+    #teamNameEnemy {
+      color: #ff6933;
+    }
 
-.vs-label {
+
+/* Center the VS label */
+#vsLabel {
   position: absolute;
   top: 14%;
-  left: 47.5%;
-  transform: translate(-50%, -50%);
-  padding: 0.2rem 1rem;
-  border-radius: 10px;
+  left: 47.6%;
+  transform: translateX(-50%);
   font-size: 3rem;
   font-weight: bold;
   color: black;
   background-color: white;
+  padding: 0.2rem 1rem;
+  border-radius: 10px;
   border: 4px solid black;
   z-index: 10;
 }
+
+/* Position teamNameYour 5rem to the left of the VS label */
+#teamNameYour {
+  position: absolute;
+  top: 14%;
+  right: calc(50% + 5rem);
+  transform: translateX(-100%);
+  font-size: 2.2rem;
+  font-weight: bold;
+  background-color: white;
+  text-align: center;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  border: 4px solid black;
+  color: #02b6ff;
+  z-index: 10;
+  max-width: 20%;
+  box-sizing: border-box;
+}
+
+/* Position teamNameEnemy 5rem to the right of the VS label */
+#teamNameEnemy {
+  position: absolute;
+  top: 14%;
+  left: calc(50% + 5rem);
+  font-size: 2.2rem;
+  font-weight: bold;
+  background-color: white;
+  text-align: center;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  border: 4px solid black;
+  color: #ff6933;
+  z-index: 10;
+  max-width: 20%;
+  box-sizing: border-box;
+}
+
+
 #teamNameYour,
 #teamNameEnemy,
 #vsLabel {
