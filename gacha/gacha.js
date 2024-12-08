@@ -13,54 +13,63 @@ document.addEventListener("DOMContentLoaded", function () {
       populateInitialColumns();
     })
     .catch((error) => console.error("Error loading shopAnimals:", error));
-function populateInitialColumns() {
-  const columns = [
-    document.getElementById("column1"),
-    document.getElementById("column2"),
-    document.getElementById("column3"),
-  ];
-
-  const totalItems = 20;
-
-  columns.forEach((column) => {
+  function populateColumn(column, selectedAnimal = null) {
     column.innerHTML = ""; 
     const reel = document.createElement("div");
     reel.style.position = "relative";
     reel.style.top = "0";
     column.appendChild(reel);
 
-    for (let i = 0; i < totalItems; i++) {
-      const randomAnimal =
-        shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
+    const itemHeight = 100; 
+    const visibleSlots = 3; 
+    const rowsAbove = 9; 
+    const rowsBelow = 3; 
+    const totalRows = rowsAbove + visibleSlots + rowsBelow;
+
+    
+    function getRowColor(rowIndex) {
+      if (rowIndex < 3) return "red";
+      if (rowIndex < 6) return "blue";
+      if (rowIndex < 9) return "green";
+      if (rowIndex < 12) return "yellow";
+      return "pink";
+    }
+
+    for (let i = 0; i < totalRows; i++) {
       const slotItem = document.createElement("div");
       slotItem.classList.add("slot-item");
 
-      if (i === Math.floor(totalItems / 2) - 1) {
-        slotItem.classList.add("top-row");
-      } else if (i === Math.floor(totalItems / 2)) {
-        slotItem.classList.add("middle-row");
-      } else if (i === Math.floor(totalItems / 2) + 1) {
-        slotItem.classList.add("bottom-row");
-      }
+      
+      const animal =
+        i === rowsAbove + Math.floor(visibleSlots / 2) && selectedAnimal
+          ? selectedAnimal
+          : shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
 
-      slotItem.innerHTML = `<img src="${randomAnimal.img}" alt="${randomAnimal.name}" style="width: 10rem; height: 10rem;">`;
+      slotItem.innerHTML = `<img src="${animal.img}" alt="${animal.name}" style="width: 100px; height: 100px;">`;
+      slotItem.style.backgroundColor = getRowColor(i); 
       reel.appendChild(slotItem);
     }
-  });
-}
+  }
+
+  
+  function populateInitialColumns() {
+    const columns = [
+      document.getElementById("column1"),
+      document.getElementById("column2"),
+      document.getElementById("column3"),
+    ];
+    columns.forEach((column) => populateColumn(column));
+  }
 
   let isRolling = false;
   const logged = localStorage.getItem("loggedin");
 
   if (!logged) {
-    
     function clearLocalStorageExceptUsers() {
-      const keysToKeep = ["users"]; 
+      const keysToKeep = ["users"];
 
-      
       const allKeys = Object.keys(localStorage);
 
-      
       allKeys.forEach((key) => {
         if (!keysToKeep.includes(key)) {
           localStorage.removeItem(key);
@@ -68,10 +77,8 @@ function populateInitialColumns() {
       });
     }
 
-    
     clearLocalStorageExceptUsers();
 
-    
     window.location.href = "/login/index.html";
   }
 
@@ -125,39 +132,46 @@ function populateInitialColumns() {
     lever.style.transform = "translateY(0)";
   });
 
- function handleCheatActivation() {
-   if (cheatAnimal) {
-     const selectedAnimal = shopAnimals.find(
-       (animal) => animal.name === cheatAnimal
-     );
-     if (selectedAnimal) {
-       const column1 = document.getElementById("column1");
-       const column2 = document.getElementById("column2");
-       const column3 = document.getElementById("column3");
+  function handleCheatActivation() {
+    if (cheatAnimal) {
+      const selectedAnimal = shopAnimals.find(
+        (animal) => animal.name === cheatAnimal
+      );
+      if (selectedAnimal) {
+        const column1 = document.getElementById("column1");
+        const column2 = document.getElementById("column2");
+        const column3 = document.getElementById("column3");
 
-       const columns = [column1, column2, column3];
-       const selectedAnimals = [selectedAnimal, selectedAnimal, selectedAnimal];
+        const columns = [column1, column2, column3];
+        const selectedAnimals = [
+          selectedAnimal,
+          selectedAnimal,
+          selectedAnimal,
+        ];
 
-       columns.forEach((column, index) => {
-         setTimeout(() => {
-           spinColumn(column, selectedAnimals[index], () => {
-             if (index === columns.length - 1) {
-               isRolling = false;
-               checkThreeOfAKind(selectedAnimals);
-               addCheatAnimalToUser(selectedAnimal.name);
-             }
-           });
-         }, index * 1000);
-       });
+        columns.forEach((column, index) => {
+          setTimeout(() => {
+            spinColumn(column, selectedAnimals[index], () => {
+              if (index === columns.length - 1) {
+                isRolling = false;
+                checkThreeOfAKind(selectedAnimals);
+                addCheatAnimalToUser(selectedAnimal.name);
+              }
+            });
+          }, index * 1000);
+        });
 
-       localStorage.setItem("coins", (localStorage.getItem('coins') - 5).toString());
-       updateCoinsDisplay();
-       cheatAnimal = ""; 
-       return true;
-     }
-   }
-   return false;
- }
+        localStorage.setItem(
+          "coins",
+          (localStorage.getItem("coins") - 5).toString()
+        );
+        updateCoinsDisplay();
+        cheatAnimal = "";
+        return true;
+      }
+    }
+    return false;
+  }
 
   function addCheatAnimalToUser(animalName) {
     const animal = shopAnimals.find((a) => a.name === animalName);
@@ -185,163 +199,133 @@ function populateInitialColumns() {
     }
   }
 
- function pullHandle() {
-   const coins = parseInt(localStorage.getItem("coins"), 10);
-   if (coins < 5) {
-     ShowModal("You need at least 5 coins to play the Gacha!");
-     return;
-   }
-
-   let users = JSON.parse(localStorage.getItem("users")) || [];
-   const userIndex = users.findIndex((user) => user.displayName === username);
-   if (userIndex !== -1) {
-     if (!users[userIndex].pity) {
-       users[userIndex].pity = 0;
-     }
-     users[userIndex].pity += 1;
-     localStorage.setItem("users", JSON.stringify(users));
-   }
-
-   if (handleCheatActivation()) {
-     return;
-   }
-
-   
-   const column1 = document.getElementById("column1");
-   const column2 = document.getElementById("column2");
-   const column3 = document.getElementById("column3");
-
-   const selectedAnimals = [];
-   const random = Math.random();
-
-   
-   if (random < 0.02 || (users[userIndex] && users[userIndex].pity >= 50)) {
-     const specialRewards = shopAnimals.filter((animal) =>
-       ["MSeer", "VandaJ", "YenguiK", "PamstIr"].includes(animal.name)
-     );
-     const rareAnimal =
-       specialRewards[Math.floor(Math.random() * specialRewards.length)];
-     for (let i = 0; i < 3; i++) {
-       selectedAnimals.push(rareAnimal); 
-     }
-     if (userIndex !== -1) {
-       users[userIndex].pity = 0; 
-       localStorage.setItem("users", JSON.stringify(users));
-     }
-   } else {
-     
-     for (let i = 0; i < 3; i++) {
-       selectedAnimals.push(getRandomAnimal());
-     }
-   }
-
-   
-   localStorage.setItem("coins", (coins - 5).toString());
-   updateCoinsDisplay();
-
-   
-   const columns = [column1, column2, column3];
-   columns.forEach((column, index) => {
-     setTimeout(() => { 
-       spinColumn(column, selectedAnimals[index], () => {
-         
-         if (index === columns.length - 1) {
-           isRolling = false;
-           gachaSound.pause();
-           gachaSound.currentTime = 0;  
-           checkThreeOfAKind(selectedAnimals);
-         }
-       });
-     }, index * 1000); 
-   });
- }
-function spinColumn(column, finalAnimal, callback) {
-  column.innerHTML = ""; 
-  const reel = document.createElement("div");
-  reel.style.position = "relative";
-  reel.style.top = "0";
-  reel.style.transition = "none";
-  column.appendChild(reel);
-
-  const itemHeight = 100; 
-  const visibleSlots = 3; 
-  const bufferSlots = 10; 
-
-  
-  for (let i = 0; i < bufferSlots; i++) {
-    const slotItem = document.createElement("div");
-    slotItem.classList.add("slot-item");
-    const randomAnimal =
-      shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
-    slotItem.innerHTML = `<img src="${randomAnimal.img}" alt="${randomAnimal.name}" style="width: 10rem; height: 10rem;">`;
-    reel.appendChild(slotItem);
-  }
-
-  
-  const rows = ["top-row", "middle-row", "bottom-row"];
-  rows.forEach((rowClass, index) => {
-    const slotItem = document.createElement("div");
-    slotItem.classList.add("slot-item", rowClass);
-    const animal = index === 1 ? finalAnimal : getRandomAnimal(); 
-    slotItem.innerHTML = `<img src="${animal.img}" alt="${animal.name}" style="width: 10rem; height: 10rem;">`;
-    reel.appendChild(slotItem);
-  });
-
-  
-  for (let i = 0; i < bufferSlots; i++) {
-    const slotItem = document.createElement("div");
-    slotItem.classList.add("slot-item");
-    const randomAnimal =
-      shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
-    slotItem.innerHTML = `<img src="${randomAnimal.img}" alt="${randomAnimal.name}" style="width: 10rem; height: 10rem;">`;
-    reel.appendChild(slotItem);
-  }
-
-  
-  const totalHeight = reel.children.length * itemHeight;
-  const stopPosition =
-    -(bufferSlots * itemHeight) + itemHeight * Math.floor(visibleSlots / 2);
-
-  let currentTop = 0;
-  const spinSpeed = 20;
-  const slowdownRate = 1.03;
-  const stopTime = Date.now() + 3000;
-
-  function spin() {
-    currentTop -= spinSpeed;
-    reel.style.top = `${currentTop}px`;
-
-    if (currentTop <= -totalHeight) {
-      currentTop = 0;
-      reel.style.transition = "none";
-    }
-
-    if (Date.now() >= stopTime) {
-      reel.style.transition = "top 0.5s ease-out";
-      reel.style.top = `${stopPosition}px`;
-      setTimeout(callback, 500);
+  function pullHandle() {
+    const coins = parseInt(localStorage.getItem("coins"), 10);
+    if (coins < 5) {
+      ShowModal("You need at least 5 coins to play the Gacha!");
       return;
     }
 
-    setTimeout(spin, spinSpeed);
+    localStorage.setItem("coins", coins - 5);
+    updateCoinsDisplay();
+
+    const columns = [
+      document.getElementById("column1"),
+      document.getElementById("column2"),
+      document.getElementById("column3"),
+    ];
+
+    const selectedAnimals = [];
+    const random = Math.random();
+
+    if (random < 0.02) {
+      
+      const specialRewards = shopAnimals.filter((animal) =>
+        ["MSeer", "VandaJ", "YenguiK", "PamstIr"].includes(animal.name)
+      );
+      const rareAnimal =
+        specialRewards[Math.floor(Math.random() * specialRewards.length)];
+      for (let i = 0; i < 3; i++) {
+        selectedAnimals.push(rareAnimal);
+      }
+    } else {
+      
+      for (let i = 0; i < 3; i++) {
+        selectedAnimals.push(
+          shopAnimals[Math.floor(Math.random() * shopAnimals.length)]
+        );
+      }
+    }
+
+    
+    columns.forEach((column, index) => {
+      populateColumn(column, selectedAnimals[index]);
+      setTimeout(() => {
+        spinColumn(column, selectedAnimals[index], () => {
+          if (index === columns.length - 1) {
+            isRolling = false;
+            checkThreeOfAKind(selectedAnimals);
+          }
+        });
+      }, index * 1000); 
+    });
   }
 
-  spin();
-}
+  function spinColumn(column, finalAnimal, callback) {
+    column.innerHTML = "";
+    const reel = document.createElement("div");
+    reel.style.position = "relative";
+    reel.style.top = "0px";
+    column.appendChild(reel);
 
+    const itemHeight = 100; 
+    const visibleSlots = 3; 
+    const rowsAbove = 9; 
+    const rowsBelow = 3; 
+    const totalRows = rowsAbove + visibleSlots + rowsBelow;
 
+    
+    function getRowColor(rowIndex) {
+      if (rowIndex < 3) return "red"; 
+      if (rowIndex < 6) return "blue";
+      if (rowIndex < 9) return "green";
+      if (rowIndex < 12) return "yellow"; 
+      return "pink"; 
+    }
 
+    
+    for (let i = 0; i < totalRows; i++) {
+      const slotItem = document.createElement("div");
+      slotItem.classList.add("slot-item");
 
+      
+      const animal =
+        i === rowsAbove + Math.floor(visibleSlots / 2)
+          ? finalAnimal
+          : shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
 
+      slotItem.innerHTML = `<img src="${animal.img}" alt="${animal.name}" style="width: 100px; height: 100px;">`;
+      slotItem.style.backgroundColor = getRowColor(i);
+      reel.appendChild(slotItem);
+    }
+
+    const stopPosition = -(rowsAbove * itemHeight); 
+    let currentTop = 0;
+    let spinSpeed = 20; 
+    const slowDownRate = 1.03; 
+    const spinDuration = Date.now() + 3000; 
+
+    function spin() {
+      currentTop -= spinSpeed;
+      reel.style.top = `${currentTop}px`;
+
+      
+      if (currentTop <= -totalRows * itemHeight) {
+        currentTop = 0;
+      }
+
+      
+      if (Date.now() >= spinDuration) {
+        reel.style.transition = "top 0.5s ease-out";
+        reel.style.top = `${stopPosition}px`; 
+        setTimeout(callback, 500);
+        return;
+      }
+
+      
+      spinSpeed *= slowDownRate;
+      setTimeout(spin, 20);
+    }
+
+    spin();
+  }
 
   function checkThreeOfAKind(selectedAnimals) {
-    
-
     if (
       selectedAnimals[0].name === selectedAnimals[1].name &&
       selectedAnimals[1].name === selectedAnimals[2].name
     ) {
-      addToOwnedAnimals(selectedAnimals[0]); 
+      addToOwnedAnimals(selectedAnimals[0]);
       showFireworks();
       winSound.play();
     }
@@ -487,21 +471,19 @@ function spinColumn(column, finalAnimal, callback) {
     }
   }
   function animateSlot(slot, selectedAnimal, callback) {
-    const spinningDuration = 3000 + Math.random() * 1000; 
-    const spinSpeed = 50; 
-    const slowdownRate = 1.05; 
+    const spinningDuration = 3000 + Math.random() * 1000;
+    const spinSpeed = 50;
+    const slowdownRate = 1.05;
 
     let currentSpeed = spinSpeed;
     let startTime = Date.now();
 
-    
     const reel = document.createElement("div");
     reel.style.position = "relative";
     reel.style.top = "0";
     reel.style.transition = "top 0.1s linear";
     slot.appendChild(reel);
 
-    
     for (let i = 0; i < 20; i++) {
       const slotItem = document.createElement("div");
       slotItem.classList.add("slot-item");
@@ -514,10 +496,8 @@ function spinColumn(column, finalAnimal, callback) {
     function spin() {
       const elapsedTime = Date.now() - startTime;
 
-      
       if (elapsedTime >= spinningDuration) {
-        
-        reel.innerHTML = ""; 
+        reel.innerHTML = "";
         const finalItem = document.createElement("div");
         finalItem.classList.add("slot-item");
         finalItem.innerHTML = `<img src="${selectedAnimal.img}" alt="${selectedAnimal.name}" style="width: 80px; height: 80px;">`;
@@ -526,10 +506,8 @@ function spinColumn(column, finalAnimal, callback) {
         return;
       }
 
-      
       reel.style.top = `${parseInt(reel.style.top) - 100}px`;
 
-      
       if (parseInt(reel.style.top) <= -2000) {
         reel.style.top = "0";
         for (let i = 0; i < 5; i++) {
@@ -542,10 +520,8 @@ function spinColumn(column, finalAnimal, callback) {
         }
       }
 
-      
       currentSpeed *= slowdownRate;
 
-      
       setTimeout(spin, currentSpeed);
     }
 
@@ -561,9 +537,6 @@ function spinColumn(column, finalAnimal, callback) {
   if (savedTime) {
     backgroundAudio.currentTime = parseFloat(savedTime);
   }
-
-
-
 
   const playBackgroundAudio = () => {
     backgroundAudio.play();
