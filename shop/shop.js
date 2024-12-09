@@ -315,7 +315,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function updateCoinsDisplay() {
     const coins = localStorage.getItem("coins");
-    coinsDisplay.textContent = `Coins: ${coins}`;
+    coinsDisplay.textContent = `${coins}`;
     let users = JSON.parse(localStorage.getItem("users")) || [];
     const userIndex = users.findIndex((user) => user.displayName === username);
     if (userIndex !== -1) {
@@ -488,7 +488,7 @@ function addCoinsReward() {
   console.log("aaa");
   let coins = Number(localStorage.getItem("coins"));
   coins += 500000;
-  coinsDisplay.textContent = `Coins: ${coins}`;
+  coinsDisplay.textContent = `${coins}`;
   localStorage.setItem("coins", coins);
   let users = JSON.parse(localStorage.getItem("users")) || [];
   const userIndex = users.findIndex((user) => user.displayName === username);
