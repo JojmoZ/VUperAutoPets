@@ -5,9 +5,9 @@
   "author": "PI & VU",
   "main": "index.js",
   "scripts": {
-    "start": "electron .",
+    "start": "electronmon .",
     "dist": "electron-builder",
-     "minify-all": "node minify-all.js"
+    "minify-all": "node minify-all.js"
   },
   "build": {
     "appId": "com.vuperautopets.app",
@@ -24,6 +24,8 @@
   "devDependencies": {
     "electron": "33.3.0",
     "electron-builder": "^25.1.8",
+    "electron-reload": "^2.0.0-alpha.1",
+    "electronmon": "^2.0.3",
     "terser": "^5.37.0"
   }
 }
