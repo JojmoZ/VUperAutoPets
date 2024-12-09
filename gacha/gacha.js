@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
      const animal = shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
      initialAnimals.push(animal);
-     slotItem.innerHTML = `<img src="${animal.img}" alt="${animal.name}" style="width: 100px; height: 100px;">`;
+     slotItem.innerHTML = `<img src="${animal.img}" alt="${animal.name}" style="width 167px; height 167px;">`;
      reel.appendChild(slotItem);
    }
 
@@ -240,12 +240,14 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
 function spinColumn(column, finalAnimal, callback) {
+  console.log(finalAnimal);
   column.innerHTML = "";
   const reel = document.createElement("div");
   reel.style.position = "relative";
   reel.style.top = "0px";
   column.appendChild(reel);
-  const itemHeight = 100; 
+
+  const itemHeight = 167; 
   const visibleSlots = 3; 
   const rowsAbove = 24; 
   const rowsBelow = 6; 
@@ -258,14 +260,15 @@ function spinColumn(column, finalAnimal, callback) {
 
     const animal =
       i === rowsAbove + Math.floor(visibleSlots / 2)
-        ? finalAnimal
+        ? finalAnimal 
         : shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
 
-    slotItem.innerHTML = `<img src="${animal.img}" alt="${animal.name}" style="width: 100px; height: 100px;">`;
+    slotItem.innerHTML = `<img src="${animal.img}" alt="${animal.name}" style="width: 167px; height: 167px;">`;
     reel.appendChild(slotItem);
   }
 
-  const stopPosition = -(rowsAbove * itemHeight); 
+  
+  const stopPosition = -(rowsAbove * itemHeight) + 167; 
   let currentTop = 0; 
   let spinSpeed = 60; 
   const slowDownRate = 1.01; 
@@ -318,6 +321,7 @@ function spinColumn(column, finalAnimal, callback) {
 
   spin();
 }
+
 
 
 
@@ -472,63 +476,7 @@ function spinColumn(column, finalAnimal, callback) {
       return shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
     }
   }
-  function animateSlot(slot, selectedAnimal, callback) {
-    const spinningDuration = 3000 + Math.random() * 1000;
-    const spinSpeed = 50;
-    const slowdownRate = 1.05;
 
-    let currentSpeed = spinSpeed;
-    let startTime = Date.now();
-
-    const reel = document.createElement("div");
-    reel.style.position = "relative";
-    reel.style.top = "0";
-    reel.style.transition = "top 0.1s linear";
-    slot.appendChild(reel);
-
-    for (let i = 0; i < 20; i++) {
-      const slotItem = document.createElement("div");
-      slotItem.classList.add("slot-item");
-      const randomAnimal =
-        shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
-      slotItem.innerHTML = `<img src="${randomAnimal.img}" alt="${randomAnimal.name}" style="width: 80px; height: 80px;">`;
-      reel.appendChild(slotItem);
-    }
-
-    function spin() {
-      const elapsedTime = Date.now() - startTime;
-
-      if (elapsedTime >= spinningDuration) {
-        reel.innerHTML = "";
-        const finalItem = document.createElement("div");
-        finalItem.classList.add("slot-item");
-        finalItem.innerHTML = `<img src="${selectedAnimal.img}" alt="${selectedAnimal.name}" style="width: 80px; height: 80px;">`;
-        slot.appendChild(finalItem);
-        if (callback) callback();
-        return;
-      }
-
-      reel.style.top = `${parseInt(reel.style.top) - 100}px`;
-
-      if (parseInt(reel.style.top) <= -2000) {
-        reel.style.top = "0";
-        for (let i = 0; i < 5; i++) {
-          const slotItem = document.createElement("div");
-          slotItem.classList.add("slot-item");
-          const randomAnimal =
-            shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
-          slotItem.innerHTML = `<img src="${randomAnimal.img}" alt="${randomAnimal.name}" style="width: 80px; height: 80px;">`;
-          reel.appendChild(slotItem);
-        }
-      }
-
-      currentSpeed *= slowdownRate;
-
-      setTimeout(spin, currentSpeed);
-    }
-
-    spin();
-  }
 
   const backgroundAudio = new Audio(
     "../assets/sound/Super Auto Pets  - Menu Theme.mp3"
