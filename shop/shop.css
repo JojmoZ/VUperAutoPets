@@ -500,17 +500,6 @@ body {
 
 @media screen and (max-height: 900px) {
     .shop-container {
-        /*display: grid;*/
-        /*grid-auto-flow: column;*/
-        /*grid-template-columns: repeat(auto-fit, 24rem);*/
         grid-template-rows: repeat(1, 22rem);
-        /*column-gap: 2rem;*/
-        /*overflow-x: auto;*/
-        /*padding-inline: 2rem;*/
-        /*box-sizing: border-box;*/
-        /*white-space: nowrap;*/
-        /*-webkit-overflow-scrolling: touch;*/
-        /*scrollbar-width: none;*/
-        /*-ms-overflow-style: none;*/
     }
 }
