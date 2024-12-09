@@ -6,7 +6,8 @@
   "main": "index.js",
   "scripts": {
     "start": "electron .",
-    "dist": "electron-builder"
+    "dist": "electron-builder",
+     "minify-all": "node minify-all.js"
   },
   "build": {
     "appId": "com.vuperautopets.app",
@@ -22,6 +23,7 @@
   },
   "devDependencies": {
     "electron": "33.3.0",
-    "electron-builder": "^25.1.8"
+    "electron-builder": "^25.1.8",
+    "terser": "^5.37.0"
   }
 }
