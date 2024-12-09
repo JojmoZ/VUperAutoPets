@@ -1,6 +1,5 @@
 const overlay = document.getElementById("overlay");
-const path = window.electron.path;
-const appDir = window.electron.__dirname;
+
 document.getElementById("burger-btn").addEventListener("click", function () {
   const menu = document.getElementById("menu");
   overlay.classList.toggle("hidden");
@@ -25,8 +24,7 @@ window.onload = () => {
 
     clearLocalStorageExceptUsers();
 
-    const loginPath = path.join(appDir, "login/index.html"); // Build the correct file path
-    window.location.href = `file://${loginPath}`; // Redirect using the file:// protocol
+    window.location.href = "/login/index.html";
   }
 
   localStorage.removeItem("ingame");
@@ -34,27 +32,23 @@ window.onload = () => {
   const playbtn = document.getElementById("play-btn");
   playbtn.addEventListener("click", function () {
     checkboughtanimals();
-      if (canPlay) {
-        const loadingPath = path.join(appDir, "loading/loading.html"); // Build the correct file path
-        window.location.href = `file://${loadingPath}`; // Redirect using the file:// protocol
-      } else {
-        ShowModal("You need to have at least 1 animal to play the game!");
-      }
+    if (canPlay) {
+      window.location = "/loading/loading.html";
+    } else {
+      ShowModal("You need to have at least 1 animal to play the game!");
+    }
   });
   const homebtn = document.getElementById("home-btn");
   homebtn.addEventListener("click", function () {
-    const homePath = path.join(appDir, "home/homepage.html"); // Build the correct file path
-    window.location.href = `file://${homePath}`; // Redirect using the file:// protocol
+    window.location.href = "/home/homepage.html";
   });
   const barnbtn = document.getElementById("barn-btn");
   barnbtn.addEventListener("click", function () {
-    const barnPath = path.join(appDir, "barn/barnpage.html"); // Build the correct file path
-    window.location.href = `file://${barnPath}`; // Redirect using the file:// protocol
+    window.location.href = "/barn/barnpage.html";
   });
   const shopbtn = document.getElementById("shop-btn");
   shopbtn.addEventListener("click", function () {
-    const shopPath = path.join(appDir, "shop/shoppage.html"); // Build the correct file path
-    window.location.href = `file://${shopPath}`; // Redirect using the file:// protocol
+    window.location.href = "/shop/shoppage.html";
   });
 
   overlay.addEventListener("click", function () {
@@ -77,8 +71,7 @@ window.onload = () => {
     localStorage.removeItem("firstTime");
     localStorage.removeItem("teamName");
     localStorage.removeItem("fromOnline");
-    const loginPath = path.join(appDir, "login/index.html"); // Build the correct file path
-    window.location.href = `file://${loginPath}`; // Redirect using the file:// protocol
+    window.location.href = "/login/index.html";
   });
   function checkboughtanimals() {
     const boughtanimals = localStorage.getItem("ownedAnimals");
@@ -89,35 +82,35 @@ window.onload = () => {
       canPlay = true;
     }
   }
- const backgroundAudio = new Audio(
-   "../assets/sound/Super Auto Pets  - Menu Theme.mp3"
- );
- backgroundAudio.volume = 0.09;
- backgroundAudio.loop = true;
+  const backgroundAudio = new Audio(
+    "../assets/sound/Super Auto Pets  - Menu Theme.mp3"
+  );
+  backgroundAudio.volume = 0.09;
+  backgroundAudio.loop = true;
 
- const savedTime = localStorage.getItem("backgroundAudioTime");
- if (savedTime) {
-   backgroundAudio.currentTime = parseFloat(savedTime);
- }
+  const savedTime = localStorage.getItem("backgroundAudioTime");
+  if (savedTime) {
+    backgroundAudio.currentTime = parseFloat(savedTime);
+  }
 
- const playBackgroundAudio = () => {
-   backgroundAudio.play();
-   document.removeEventListener("click", playBackgroundAudio);
-   document.removeEventListener("keydown", playBackgroundAudio);
-   document.removeEventListener("mousemove", playBackgroundAudio);
-   document.removeEventListener("scroll", playBackgroundAudio);
-   document.removeEventListener("touchstart", playBackgroundAudio);
-   document.removeEventListener("focus", playBackgroundAudio);
-   document.removeEventListener("mousedown", playBackgroundAudio);
-   document.removeEventListener("mouseup", playBackgroundAudio);
- };
+  const playBackgroundAudio = () => {
+    backgroundAudio.play();
+    document.removeEventListener("click", playBackgroundAudio);
+    document.removeEventListener("keydown", playBackgroundAudio);
+    document.removeEventListener("mousemove", playBackgroundAudio);
+    document.removeEventListener("scroll", playBackgroundAudio);
+    document.removeEventListener("touchstart", playBackgroundAudio);
+    document.removeEventListener("focus", playBackgroundAudio);
+    document.removeEventListener("mousedown", playBackgroundAudio);
+    document.removeEventListener("mouseup", playBackgroundAudio);
+  };
 
- document.addEventListener("click", playBackgroundAudio);
- document.addEventListener("keydown", playBackgroundAudio);
- document.addEventListener("mousemove", playBackgroundAudio);
- document.addEventListener("scroll", playBackgroundAudio);
- document.addEventListener("touchstart", playBackgroundAudio);
- document.addEventListener("focus", playBackgroundAudio);
- document.addEventListener("mousedown", playBackgroundAudio);
- document.addEventListener("mouseup", playBackgroundAudio);
+  document.addEventListener("click", playBackgroundAudio);
+  document.addEventListener("keydown", playBackgroundAudio);
+  document.addEventListener("mousemove", playBackgroundAudio);
+  document.addEventListener("scroll", playBackgroundAudio);
+  document.addEventListener("touchstart", playBackgroundAudio);
+  document.addEventListener("focus", playBackgroundAudio);
+  document.addEventListener("mousedown", playBackgroundAudio);
+  document.addEventListener("mouseup", playBackgroundAudio);
 };

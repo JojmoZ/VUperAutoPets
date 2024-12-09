@@ -1,13 +1,10 @@
 window.onload = function () {
-  const path = window.electron.path;
-  const appDir = window.electron.__dirname;
   localStorage.removeItem("ingame");
   const track = document.getElementById("maps");
 
   const backbtn = document.getElementById("backArrow");
   backbtn.addEventListener("click", function () {
-    const menuPath = path.join(appDir, "menu/menu.html"); // Build the correct file path
-    window.location.href = `file://${menuPath}`; // Redirect using the file:// protocol
+    window.location = "/menu/menu.html";
   });
   track.dataset.percentage = "-30";
   track.style.transform = `translate(-30%, -50%)`;
@@ -78,8 +75,7 @@ window.onload = function () {
 
     clearLocalStorageExceptUsers();
 
-    const loginPath = path.join(appDir, "login/index.html"); // Build the correct file path
-    window.location.href = `file://${loginPath}`; // Redirect using the file:// protocol
+    window.location.href = "/login/index.html";
   }
   const fadeInElements = document.querySelectorAll(".fade-in-element");
   const elementObserver = new IntersectionObserver(
@@ -199,7 +195,7 @@ window.onload = function () {
   );
   carouselObserver.observe(carouselSection);
   const socialMediaSection = document.querySelector(".social-media");
-  
+
   const instagram = document.querySelector(".instagram");
   const twitter = document.querySelector(".twitter");
   const steam = document.querySelector(".steam");
@@ -207,13 +203,11 @@ window.onload = function () {
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          
           instagram.classList.add("walk");
           twitter.classList.add("walk");
           steam.classList.add("walk");
           console.log("Social Media is visible");
         } else {
-          
           instagram.classList.remove("walk");
           twitter.classList.remove("walk");
           steam.classList.remove("walk");
@@ -514,16 +508,13 @@ window.onload = function () {
 
   const hatImage = document.querySelector(".Hats img");
 
-  
   function updateHatCarousel() {
     const hatPath = hatImages[currentHatIndex];
-    const hatName = hatPath.split("/").pop().replace(".png", ""); 
+    const hatName = hatPath.split("/").pop().replace(".png", "");
     const config = hatConfigurations[hatName];
 
-    
     hatImage.src = hatPath;
 
-    
     if (config) {
       const hatElement = document.querySelector(".Hats");
       hatElement.style.top = config.top;
@@ -533,14 +524,12 @@ window.onload = function () {
     }
   }
 
-  
   document.getElementById("hat-left-arrow").addEventListener("click", () => {
     currentHatIndex =
       (currentHatIndex - 1 + hatImages.length) % hatImages.length;
     updateHatCarousel();
   });
 
-  
   document.getElementById("hat-right-arrow").addEventListener("click", () => {
     currentHatIndex = (currentHatIndex + 1) % hatImages.length;
     updateHatCarousel();
