@@ -1,7 +1,9 @@
-document.addEventListener("DOMContentLoaded", () => {
+// document.addEventListener("DOMContentLoaded", () => {
   const layers = document.querySelectorAll(".parallax-layer");
   const loadingFill = document.getElementById("loading-fill");
   const totalGameTime = 20 * 1000;
+  const path = window.electron.path;
+  const appDir = window.electron.__dirname;
   localStorage.removeItem("ingame");
   const startTime = Date.now();
   const tips = [
@@ -90,7 +92,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
      
      setTimeout(() => {
-       window.location.href = "/game/game.html";
+       const gamePath = path.join(appDir, "game/game.html"); // Build the correct file path
+       window.location.href = `file://${gamePath}`; // Redirect using the file:// protocol
      }, 5000); 
    }, 100);
  }
@@ -181,7 +184,8 @@ document.addEventListener("DOMContentLoaded", () => {
         clearLocalStorageExceptUsers();
 
         
-        window.location.href = "/login/index.html";
+        const loginPath = path.join(appDir, "login/index.html"); // Build the correct file path
+    window.location.href = `file://${loginPath}`; // Redirect using the file:// protocol
       }
 
       
@@ -316,4 +320,4 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("focus", playBackgroundAudio);
   document.addEventListener("mousedown", playBackgroundAudio);
   document.addEventListener("mouseup", playBackgroundAudio);
-});
+// });

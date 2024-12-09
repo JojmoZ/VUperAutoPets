@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   localStorage.removeItem("ingame");
+  const path = window.electron.path;
+  const appDir = window.electron.__dirname;
   const lever = document.getElementById("lever");
   const columns = [
     document.getElementById("column1"),
@@ -67,13 +69,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     clearLocalStorageExceptUsers();
 
-    window.location.href = "/login/index.html";
+    const loginPath = path.join(appDir, "login/index.html"); // Build the correct file path
+    window.location.href = `file://${loginPath}`; // Redirect using the file:// protocol
   }
 
   const coinsDisplay = document.getElementById("coinsDisplay");
   const backBtn = document.getElementById("backArrow");
   backBtn.addEventListener("click", function () {
-    window.location.href = "/shop/shoppage.html";
+    const shoppage = path.join(appDir, "shop/shoppage.html"); // Build the correct file path
+    window.location.href = `file://${shoppage}`; // Redirect using the file:// protocol
   });
   const coinImg = document.createElement("img");
   coinImg.src = "../assets/game-asset/Gold.png";

@@ -82,7 +82,7 @@ body {
 .battle-slots {
   user-select: none;
   display: flex;
-  margin-top: 13rem;
+  margin-top: 14rem;
   justify-content: center;
   margin-bottom: 2vh;
 }
@@ -97,7 +97,7 @@ body {
   position: relative;
 }
 .selection-area {
-  margin-top: 5vh;
+  margin-top: 8vh;
   display: flex;
   height: 8.75rem;
   justify-content: space-between;

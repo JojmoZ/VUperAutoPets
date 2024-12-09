@@ -1,5 +1,7 @@
 const animalContainer = document.getElementById("animals");
 const walkingSpeed = 50;
+const path = window.electron.path;
+const appDir = window.electron.__dirname;
 const frameDuration = 1000 / 60;
 localStorage.removeItem("ingame");
 const gridSize = 10;
@@ -94,7 +96,8 @@ if (!logged) {
   clearLocalStorageExceptUsers();
 
   
-  window.location.href = "/login/index.html";
+  const loginPath = path.join(appDir, "login/index.html"); // Build the correct file path
+    window.location.href = `file://${loginPath}`; // Redirect using the file:// protocol
 }
 
 function isInRestrictedZone(animalX, animalY, animalWidth, animalHeight) {
@@ -249,7 +252,8 @@ function isValidCell(row, col) {
 }
 const backbtn = document.getElementById("backArrow");
 backbtn.addEventListener("click", function () {
-  window.location = "/menu/menu.html";
+  const menuPath = path.join(appDir, "menu/menu.html"); // Build the correct file path
+  window.location.href = `file://${menuPath}`; // Redirect using the file:// protocol
 });
 function moveOutOfRestrictedZone(animal) {
   const directions = [

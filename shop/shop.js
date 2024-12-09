@@ -1,9 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
    const logged = localStorage.getItem("loggedin");
-
+const path = window.electron.path;
+const appDir = window.electron.__dirname;
    if (!logged) {
      function clearLocalStorageExceptUsers() {
-       const keysToKeep = ["users"]; 
+       const keysToKeep = ["users"];
 
        const allKeys = Object.keys(localStorage);
 
@@ -16,7 +17,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
      clearLocalStorageExceptUsers();
 
-     window.location.href = "/login/index.html";
+     const loginPath = path.join(appDir, "login/index.html"); // Build the correct file path
+     window.location.href = `file://${loginPath}`; // Redirect using the file:// protocol
    }
 
   localStorage.removeItem("ingame");
@@ -58,7 +60,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const coinImg = document.getElementById("coinImg");
   const backbtn = document.getElementById("backArrow");
   backbtn.addEventListener("click", function () {
-    window.location = "/menu/menu.html";
+    const menuPath = path.join(appDir, "menu/menu.html"); // Build the correct file path
+    window.location.href = `file://${menuPath}`; // Redirect using the file:// protocol
   });
   const shopContainer = document.querySelector(".shop-container");
   const scrollBar = document.getElementById("scroll-bar");
@@ -361,7 +364,8 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   const gotoGacha = document.getElementById("gacha-btn");
   gotoGacha.addEventListener("click", function () {
-    window.location = "/gacha/gachapage.html";
+    const gachaPath = path.join(appDir, "gacha/gachapage.html"); // Build the correct file path
+    window.location.href = `file://${gachaPath}`; // Redirect using the file:// protocol
   });
   const ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals")) || [];
   ownedAnimals.forEach((animal) => {

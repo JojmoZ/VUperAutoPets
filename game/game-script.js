@@ -1,6 +1,8 @@
 let socket;
 let isPaired = false;
 let enemyOnlineName;
+const path = window.electron.path;
+const appDir = window.electron.__dirname;
 let enemyOnlineLives;
 let username;
 let pairingTimeout = null;
@@ -139,7 +141,8 @@ if (!logged) {
 
   clearLocalStorageExceptUsers();
 
-  window.location.href = "/login/index.html";
+  const loginPath = path.join(appDir, "login/index.html"); // Build the correct file path
+    window.location.href = `file://${loginPath}`; // Redirect using the file:// protocol
 }
 
 function saveRandomAnimals() {
@@ -149,7 +152,8 @@ function rollfirst() {
   const ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
   if (!ownedAnimals || ownedAnimals.length === 0) {
     setTimeout(() => {
-      window.location.href = "/home/homepage.html";
+      const homePath = path.join(appDir, "home/homepage.html"); // Build the correct file path
+    window.location.href = `file://${homePath}`; // Redirect using the file:// protocol
     }, 3000);
     return;
   }
@@ -1236,7 +1240,8 @@ function hideNonBattleElements() {
 }
 document.getElementById("backArrow").addEventListener("click", function () {
   localStorage.removeItem("ingame");
-  window.location.href = "/menu/menu.html";
+  const menuPath = path.join(appDir, "menu/menu.html"); // Build the correct file path
+  window.location.href = `file://${menuPath}`; // Redirect using the file:// protocol
 });
 function showCanvas() {
   document.getElementById("battleCanvas").classList.remove("hidden");
@@ -1319,7 +1324,8 @@ document.addEventListener("DOMContentLoaded", function () {
         setTimeout(() => {
           if (lives <= 0) {
             resetGame();
-            window.location.href = "/menu/menu.html";
+            const menuPath = path.join(appDir, "menu/menu.html"); // Build the correct file path
+            window.location.href = `file://${menuPath}`; // Redirect using the file:// protocol
           }
         }, 1000);
         localStorage.setItem("lives", lives);
@@ -2709,7 +2715,8 @@ function DefeatScreen() {
         hideRightSide();
         openCurtains(() => {
           resetGame();
-          window.location.href = "/menu/menu.html";
+          const menuPath = path.join(appDir, "menu/menu.html"); // Build the correct file path
+          window.location.href = `file://${menuPath}`; // Redirect using the file:// protocol
         });
       }, 1000);
     }, 1000);
