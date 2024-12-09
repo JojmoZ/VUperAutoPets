@@ -1,6 +1,9 @@
 const captchaModal1 = document.getElementById("captchaModal1");
 const captchaModal2 = document.getElementById("captchaModal2");
-const path = require("path"); // Import Node.js path module
+
+
+const path = window.electron.path;
+const appDir = window.electron.__dirname;
 document.addEventListener("mousemove", (event) => {
   const { clientX, clientY } = event;
   const width = window.innerWidth;
@@ -182,7 +185,7 @@ window.onload = function () {
   let isLoginCardVisible = false;
   const logged = localStorage.getItem("loggedin");
   if (logged) {
-    const homePath = path.join(__dirname, "../home/homepage.html"); // Build the correct file path
+    const homePath = path.join(appDir, "home/homepage.html"); // Build the correct file path
     window.location.href = `file://${homePath}`; // Redirect using the file:// protocol
   }
   registerTab.classList.add("active");
@@ -580,7 +583,7 @@ window.onload = function () {
       localStorage.setItem("username", user.displayName);
       localStorage.setItem("coins", user.coins);
       localStorage.setItem("ownedAnimals", JSON.stringify(user.ownedAnimals));
-      const menuPath = path.join(__dirname, "../menu/menu.html"); // Build the correct file path
+      const menuPath = path.join(appDir, "menu/menu.html"); // Build the correct file path
       window.location.href = `file://${menuPath}`; // Redirect using the file:// protocol
     } else {
       modalErrorText.innerText = "Invalid username or password.";

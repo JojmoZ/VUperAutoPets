@@ -1,10 +1,13 @@
 window.onload = function () {
+  const path = window.electron.path;
+  const appDir = window.electron.__dirname;
   localStorage.removeItem("ingame");
   const track = document.getElementById("maps");
 
   const backbtn = document.getElementById("backArrow");
   backbtn.addEventListener("click", function () {
-    window.location = "/menu/menu.html";
+    const menuPath = path.join(appDir, "menu/menu.html"); // Build the correct file path
+    window.location.href = `file://${menuPath}`; // Redirect using the file:// protocol
   });
   track.dataset.percentage = "-30";
   track.style.transform = `translate(-30%, -50%)`;
@@ -61,25 +64,22 @@ window.onload = function () {
     };
     effect();
   } else {
-     function clearLocalStorageExceptUsers() {
-       const keysToKeep = ["users"]; 
+    function clearLocalStorageExceptUsers() {
+      const keysToKeep = ["users"];
 
-       
-       const allKeys = Object.keys(localStorage);
+      const allKeys = Object.keys(localStorage);
 
-       
-       allKeys.forEach((key) => {
-         if (!keysToKeep.includes(key)) {
-           localStorage.removeItem(key);
-         }
-       });
-     }
+      allKeys.forEach((key) => {
+        if (!keysToKeep.includes(key)) {
+          localStorage.removeItem(key);
+        }
+      });
+    }
 
-     
-     clearLocalStorageExceptUsers();
+    clearLocalStorageExceptUsers();
 
-     
-     window.location.href = "/login/index.html";
+    const loginPath = path.join(appDir, "login/index.html"); // Build the correct file path
+    window.location.href = `file://${loginPath}`; // Redirect using the file:// protocol
   }
   const fadeInElements = document.querySelectorAll(".fade-in-element");
   const elementObserver = new IntersectionObserver(

@@ -1,5 +1,6 @@
 const overlay = document.getElementById("overlay");
-
+const path = window.electron.path;
+const appDir = window.electron.__dirname;
 document.getElementById("burger-btn").addEventListener("click", function () {
   const menu = document.getElementById("menu");
   overlay.classList.toggle("hidden");
@@ -10,14 +11,11 @@ window.onload = () => {
   const logged = localStorage.getItem("loggedin");
 
   if (!logged) {
-    
     function clearLocalStorageExceptUsers() {
-      const keysToKeep = ["users"]; 
+      const keysToKeep = ["users"];
 
-      
       const allKeys = Object.keys(localStorage);
 
-      
       allKeys.forEach((key) => {
         if (!keysToKeep.includes(key)) {
           localStorage.removeItem(key);
@@ -25,11 +23,10 @@ window.onload = () => {
       });
     }
 
-    
     clearLocalStorageExceptUsers();
 
-    
-    window.location.href = "/login/index.html";
+    const loginPath = path.join(appDir, "login/index.html"); // Build the correct file path
+    window.location.href = `file://${loginPath}`; // Redirect using the file:// protocol
   }
 
   localStorage.removeItem("ingame");
@@ -38,22 +35,26 @@ window.onload = () => {
   playbtn.addEventListener("click", function () {
     checkboughtanimals();
       if (canPlay) {
-        window.location = "/loading/loading.html";
+        const loadingPath = path.join(appDir, "loading/loading.html"); // Build the correct file path
+        window.location.href = `file://${loadingPath}`; // Redirect using the file:// protocol
       } else {
         ShowModal("You need to have at least 1 animal to play the game!");
       }
   });
   const homebtn = document.getElementById("home-btn");
   homebtn.addEventListener("click", function () {
-    window.location.href = "/home/homepage.html";
+    const homePath = path.join(appDir, "home/homepage.html"); // Build the correct file path
+    window.location.href = `file://${homePath}`; // Redirect using the file:// protocol
   });
   const barnbtn = document.getElementById("barn-btn");
   barnbtn.addEventListener("click", function () {
-    window.location.href = "/barn/barnpage.html";
+    const barnPath = path.join(appDir, "barn/barnpage.html"); // Build the correct file path
+    window.location.href = `file://${barnPath}`; // Redirect using the file:// protocol
   });
   const shopbtn = document.getElementById("shop-btn");
   shopbtn.addEventListener("click", function () {
-    window.location.href = "/shop/shoppage.html";
+    const shopPath = path.join(appDir, "shop/shoppage.html"); // Build the correct file path
+    window.location.href = `file://${shopPath}`; // Redirect using the file:// protocol
   });
 
   overlay.addEventListener("click", function () {
@@ -76,7 +77,8 @@ window.onload = () => {
     localStorage.removeItem("firstTime");
     localStorage.removeItem("teamName");
     localStorage.removeItem("fromOnline");
-    window.location.href = "/login/index.html";
+    const loginPath = path.join(appDir, "login/index.html"); // Build the correct file path
+    window.location.href = `file://${loginPath}`; // Redirect using the file:// protocol
   });
   function checkboughtanimals() {
     const boughtanimals = localStorage.getItem("ownedAnimals");
