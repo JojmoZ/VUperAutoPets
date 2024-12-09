@@ -146,14 +146,12 @@ function handleCheatActivation() {
         }, index * 1000);
       });
 
-      // Deduct coins for cheat spin
       localStorage.setItem(
         "coins",
         (localStorage.getItem("coins") - 5).toString()
       );
       updateCoinsDisplay();
 
-      // Reset cheatAnimal
       cheatAnimal = "";
       return true;
     }
