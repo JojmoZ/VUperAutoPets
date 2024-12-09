@@ -56,7 +56,6 @@ body {
     column-gap: 2rem;
     overflow-x: auto;
     padding-inline: 2rem;
-    padding-top: 2rem;
     box-sizing: border-box;
     white-space: nowrap;
     -webkit-overflow-scrolling: touch;
@@ -302,47 +301,70 @@ body {
     }
 }
 
-.gacha-btn {
-    cursor: pointer;
-    background: none;
-    border: none;
-}
-
-.gacha-btn img {
-    width: 25rem;
-    height: auto;
-}
-
-.gacha-contain {
-    position: absolute;
-    bottom: 0%;
-    right: 0%;
-}
-
-.gacha-btn:hover {
-    filter: brightness(1.2);
-}
-
-.redeem-contain {
+.footer-container {
     position: absolute;
     bottom: 0;
-    right: 25%;
+    left: 0;
+    right: 0;
+
+    padding: 1rem;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.redeem-btn {
-    cursor: pointer;
+.footer-container button {
     background: none;
     border: none;
 }
 
-.redeem-btn img {
-    width: 25rem;
-    height: auto;
+.footer-container button img {
+    width: auto;
+    height: 6rem;
 }
 
-.redeem-btn:hover {
-    filter: brightness(1.2);
-}
+/*.gacha-btn {*/
+/*    cursor: pointer;*/
+/*    background: none;*/
+/*    border: none;*/
+/*}*/
+
+/*.gacha-btn img {*/
+/*    width: 25rem;*/
+/*    height: auto;*/
+/*}*/
+
+/*.gacha-contain {*/
+/*    position: absolute;*/
+/*    bottom: 0%;*/
+/*    right: 0%;*/
+/*}*/
+
+/*.gacha-btn:hover {*/
+/*    filter: brightness(1.2);*/
+/*}*/
+
+/*.redeem-contain {*/
+/*    position: absolute;*/
+/*    bottom: 0;*/
+/*    right: 25%;*/
+/*}*/
+
+/*.redeem-btn {*/
+/*    cursor: pointer;*/
+/*    background: none;*/
+/*    border: none;*/
+/*}*/
+
+/*.redeem-btn img {*/
+/*    width: 25rem;*/
+/*    height: auto;*/
+/*}*/
+
+/*.redeem-btn:hover {*/
+/*    filter: brightness(1.2);*/
+/*}*/
 
 .header-container {
     position: fixed;
@@ -472,4 +494,21 @@ body {
     left: -2rem;
     width: 4rem;
     height: 4rem;
+}
+
+@media screen and (max-height: 900px) {
+    .shop-container {
+        /*display: grid;*/
+        /*grid-auto-flow: column;*/
+        /*grid-template-columns: repeat(auto-fit, 24rem);*/
+        grid-template-rows: repeat(1, 22rem);
+        /*column-gap: 2rem;*/
+        /*overflow-x: auto;*/
+        /*padding-inline: 2rem;*/
+        /*box-sizing: border-box;*/
+        /*white-space: nowrap;*/
+        /*-webkit-overflow-scrolling: touch;*/
+        /*scrollbar-width: none;*/
+        /*-ms-overflow-style: none;*/
+    }
 }
