@@ -362,16 +362,14 @@ body {
 
     display: flex;
     justify-content: space-between;
-    margin-left: 8rem;
+    margin-inline: 8rem 1rem;
     gap: 2rem;
 
     height: 3.75rem;
 }
 
 .search-container {
-    flex: 0.3;
-    display: flex;
-    justify-content: center;
+    flex: 0.25;
 }
 
 .input-icon-wrapper {
@@ -413,7 +411,7 @@ body {
 }
 
 .scroll-bar-container {
-    flex: 0.7;
+    flex: 0.6;
     display: flex;
 }
 
@@ -454,16 +452,22 @@ body {
 }
 
 .coins-container {
-    width: fit-content;
+    flex: 0.15;
     display: flex;
-    justify-content: end;
+    justify-content: space-between;
     align-items: center;
+
+    background: white;
+    border: 5px solid black;
+    border-radius: 0.5rem;
+
+    padding: 1rem;
+
 }
 
 #coinsDisplay {
-  
     font-family: "VUper", serif;
-    color: white;
+    color: black;
     font-size: 2rem;
     margin-right: 1rem;
 }
