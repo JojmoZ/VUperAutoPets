@@ -120,46 +120,47 @@ document.addEventListener("DOMContentLoaded", function () {
     lever.style.transform = "translateY(0)";
   });
 
-  function handleCheatActivation() {
-    if (cheatAnimal) {
-      const selectedAnimal = shopAnimals.find(
-        (animal) => animal.name === cheatAnimal
+function handleCheatActivation() {
+  if (cheatAnimal) {
+    const selectedAnimal = shopAnimals.find(
+      (animal) => animal.name === cheatAnimal
+    );
+    if (selectedAnimal) {
+      const columns = [
+        document.getElementById("column1"),
+        document.getElementById("column2"),
+        document.getElementById("column3"),
+      ];
+      columns.forEach((column, index) => {
+        setTimeout(() => {
+          spinColumn(column, selectedAnimal, () => {
+            if (index === columns.length - 1) {
+              isRolling = false;
+              checkThreeOfAKind([
+                selectedAnimal,
+                selectedAnimal,
+                selectedAnimal,
+              ]);
+            }
+          });
+        }, index * 1000);
+      });
+
+      // Deduct coins for cheat spin
+      localStorage.setItem(
+        "coins",
+        (localStorage.getItem("coins") - 5).toString()
       );
-      if (selectedAnimal) {
-        const column1 = document.getElementById("column1");
-        const column2 = document.getElementById("column2");
-        const column3 = document.getElementById("column3");
+      updateCoinsDisplay();
 
-        const columns = [column1, column2, column3];
-        const selectedAnimals = [
-          selectedAnimal,
-          selectedAnimal,
-          selectedAnimal,
-        ];
-
-        columns.forEach((column, index) => {
-          setTimeout(() => {
-            spinColumn(column, selectedAnimals[index], () => {
-              if (index === columns.length - 1) {
-                isRolling = false;
-                checkThreeOfAKind(selectedAnimals);
-                addCheatAnimalToUser(selectedAnimal.name);
-              }
-            });
-          }, index * 1000);
-        });
-
-        localStorage.setItem(
-          "coins",
-          (localStorage.getItem("coins") - 5).toString()
-        );
-        updateCoinsDisplay();
-        cheatAnimal = "";
-        return true;
-      }
+      // Reset cheatAnimal
+      cheatAnimal = "";
+      return true;
     }
-    return false;
   }
+  return false;
+}
+
 
   function addCheatAnimalToUser(animalName) {
     const animal = shopAnimals.find((a) => a.name === animalName);
@@ -196,7 +197,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     localStorage.setItem("coins", coins - 5);
     updateCoinsDisplay();
-
+  if (handleCheatActivation()) {
+    return; // Cheat handled, no need to continue normal spin
+  }
     const columns = [
       document.getElementById("column1"),
       document.getElementById("column2"),
