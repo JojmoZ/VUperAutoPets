@@ -207,19 +207,19 @@ function renderRandomAnimals() {
   const randomAnimalsContainer = document.getElementById("random-animals");
   randomAnimalsContainer.innerHTML = "";
 
-  // Ensure a fixed number of slots are rendered, even if randomAnimals array is smaller
+  
   for (let i = 0; i < maxShopAnimals; i++) {
-    const animal = randomAnimals[i] || null; // Handle missing animals with null
+    const animal = randomAnimals[i] || null; 
     const animalDiv = document.createElement("div");
     animalDiv.classList.add("animal");
     animalDiv.setAttribute("data-index", i);
 
-    // Add stone background
+    
     const stone = document.createElement("div");
     stone.classList.add("stone");
     animalDiv.appendChild(stone);
 
-    // Add animal image if it exists
+    
     if (animal) {
       const animalImage = document.createElement("img");
       animalImage.src = animal.img;

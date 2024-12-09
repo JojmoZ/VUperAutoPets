@@ -134,7 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
       tipElement.style.left = `${leftPosition}%`;
       tipElement.style.right = "auto";
       tipElement.style.transform = "none";
-      // tipElement.style.border = "2px solid red";
+      
 
       animalElement.style.position = "absolute";
       animalElement.style.top = "60%";
@@ -162,14 +162,14 @@ document.addEventListener("DOMContentLoaded", () => {
       const logged = localStorage.getItem("loggedin");
 
       if (!logged) {
-        // Function to recursively delete all items in localStorage except "users"
+        
         function clearLocalStorageExceptUsers() {
-          const keysToKeep = ["users"]; // Keys to preserve in localStorage
+          const keysToKeep = ["users"]; 
 
-          // Get all keys currently in localStorage
+          
           const allKeys = Object.keys(localStorage);
 
-          // Loop through the keys and remove those not in the keysToKeep list
+          
           allKeys.forEach((key) => {
             if (!keysToKeep.includes(key)) {
               localStorage.removeItem(key);
@@ -177,23 +177,23 @@ document.addEventListener("DOMContentLoaded", () => {
           });
         }
 
-        // Call the function to clear localStorage
+        
         clearLocalStorageExceptUsers();
 
-        // Redirect to the login page
+        
         window.location.href = "/login/index.html";
       }
 
-      // const debugPaddingBox = document.createElement("div");
-      // debugPaddingBox.style.position = "absolute";
-      // debugPaddingBox.style.border = "1px dashed red"; // Dashed red border for padding area
-      // debugPaddingBox.style.top = `${tipBox.top - padding}px`;
-      // debugPaddingBox.style.left = `${tipBox.left - padding}px`;
-      // debugPaddingBox.style.width = `${tipBox.width + 2 * padding}px`;
-      // debugPaddingBox.style.height = `${tipBox.height + 2 * padding}px`;
-      // debugPaddingBox.style.pointerEvents = "none"; // Make sure it doesn’t interfere with anything
-      // debugPaddingBox.className = "debug-padding-box";
-      // mainContent.appendChild(debugPaddingBox);
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
 
       const overlap = activeTips.some((activeTip) =>
         isOverlappingWithPadding(activeTip, tipBox, padding)
@@ -204,7 +204,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       attempts++;
-      //  mainContent.removeChild(debugPaddingBox);
+      
       console.log(`Attempt ${attempts}: Overlap detected, retrying...`);
     } while (attempts < maxAttempts);
 

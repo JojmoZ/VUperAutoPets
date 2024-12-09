@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
    if (!logged) {
      function clearLocalStorageExceptUsers() {
-       const keysToKeep = ["users"]; // Keys to preserve in localStorage
+       const keysToKeep = ["users"]; 
 
        const allKeys = Object.keys(localStorage);
 
@@ -143,7 +143,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Call the function to load shop animals
+  
   loadShopAnimals();
 
   function generateCards(animals) {
@@ -236,7 +236,7 @@ document.addEventListener("DOMContentLoaded", function () {
           cancelButton.innerHTML = "Close";
         }
       
-        // Play animal sound
+        
       
       
         modal.style.display = "flex";
@@ -463,14 +463,14 @@ document.addEventListener("DOMContentLoaded", function () {
     const searchTerm = searchInput.value.toLowerCase().trim();
     const cards = document.querySelectorAll(".card");
 
-    // Loop through all cards and toggle visibility based on the search term
+    
     cards.forEach((card) => {
       const animalName = card.getAttribute("data-animal").toLowerCase();
 
       if (animalName.includes(searchTerm)) {
-        card.style.display = "flex"; // Show matching cards
+        card.style.display = "flex"; 
       } else {
-        card.style.display = "none"; // Hide non-matching cards
+        card.style.display = "none"; 
       }
     });
   });

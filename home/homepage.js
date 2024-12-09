@@ -62,12 +62,12 @@ window.onload = function () {
     effect();
   } else {
      function clearLocalStorageExceptUsers() {
-       const keysToKeep = ["users"]; // Keys to preserve in localStorage
+       const keysToKeep = ["users"]; 
 
-       // Get all keys currently in localStorage
+       
        const allKeys = Object.keys(localStorage);
 
-       // Loop through the keys and remove those not in the keysToKeep list
+       
        allKeys.forEach((key) => {
          if (!keysToKeep.includes(key)) {
            localStorage.removeItem(key);
@@ -75,10 +75,10 @@ window.onload = function () {
        });
      }
 
-     // Call the function to clear localStorage
+     
      clearLocalStorageExceptUsers();
 
-     // Redirect to the login page
+     
      window.location.href = "/login/index.html";
   }
   const fadeInElements = document.querySelectorAll(".fade-in-element");
@@ -199,7 +199,7 @@ window.onload = function () {
   );
   carouselObserver.observe(carouselSection);
   const socialMediaSection = document.querySelector(".social-media");
-  // const contact = document.querySelector(".contact-us");
+  
   const instagram = document.querySelector(".instagram");
   const twitter = document.querySelector(".twitter");
   const steam = document.querySelector(".steam");
@@ -207,13 +207,13 @@ window.onload = function () {
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          // contact.classList.add("visible");
+          
           instagram.classList.add("walk");
           twitter.classList.add("walk");
           steam.classList.add("walk");
           console.log("Social Media is visible");
         } else {
-          // contact.classList.remove("visible");
+          
           instagram.classList.remove("walk");
           twitter.classList.remove("walk");
           steam.classList.remove("walk");
@@ -514,16 +514,16 @@ window.onload = function () {
 
   const hatImage = document.querySelector(".Hats img");
 
-  // Function to update the hat image and its position dynamically
+  
   function updateHatCarousel() {
     const hatPath = hatImages[currentHatIndex];
-    const hatName = hatPath.split("/").pop().replace(".png", ""); // Extract the hat name
+    const hatName = hatPath.split("/").pop().replace(".png", ""); 
     const config = hatConfigurations[hatName];
 
-    // Update the hat image source
+    
     hatImage.src = hatPath;
 
-    // Apply dynamic positioning styles
+    
     if (config) {
       const hatElement = document.querySelector(".Hats");
       hatElement.style.top = config.top;
@@ -533,14 +533,14 @@ window.onload = function () {
     }
   }
 
-  // Left arrow click handler
+  
   document.getElementById("hat-left-arrow").addEventListener("click", () => {
     currentHatIndex =
       (currentHatIndex - 1 + hatImages.length) % hatImages.length;
     updateHatCarousel();
   });
 
-  // Right arrow click handler
+  
   document.getElementById("hat-right-arrow").addEventListener("click", () => {
     currentHatIndex = (currentHatIndex + 1) % hatImages.length;
     updateHatCarousel();

@@ -196,7 +196,7 @@ function handleCheatActivation() {
     localStorage.setItem("coins", coins - 5);
     updateCoinsDisplay();
   if (handleCheatActivation()) {
-    return; // Cheat handled, no need to continue normal spin
+    return; 
   }
     const columns = [
       document.getElementById("column1"),

@@ -298,7 +298,6 @@ function showError(inputId, message) {
   if (errorElement) {
     errorElement.textContent = message;
 
-    // 
     const fullHeight = errorElement.scrollHeight;
 
     
