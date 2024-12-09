@@ -1,6 +1,11 @@
 document.addEventListener("DOMContentLoaded", function () {
   localStorage.removeItem("ingame");
   const lever = document.getElementById("lever");
+  const columns = [
+    document.getElementById("column1"),
+    document.getElementById("column2"),
+    document.getElementById("column3"),
+  ];
   const gachaResult = document.getElementById("gachaResult");
   const h1Element = document.querySelector("h1[data-text='Try Your Luck!']");
   let shopAnimals = [];
@@ -9,60 +14,43 @@ document.addEventListener("DOMContentLoaded", function () {
     .then((response) => response.json())
     .then((data) => {
       shopAnimals = data;
-      console.log("shopAnimals loaded:", shopAnimals);
       populateInitialColumns();
+      console.log("shopAnimals loaded:", shopAnimals);
     })
     .catch((error) => console.error("Error loading shopAnimals:", error));
-  function populateColumn(column, selectedAnimal = null) {
-    column.innerHTML = ""; 
-    const reel = document.createElement("div");
-    reel.style.position = "relative";
-    reel.style.top = "0";
-    column.appendChild(reel);
-
-    const itemHeight = 100; 
-    const visibleSlots = 3; 
-    const rowsAbove = 9; 
-    const rowsBelow = 3; 
-    const totalRows = rowsAbove + visibleSlots + rowsBelow;
-
-    
-    function getRowColor(rowIndex) {
-      if (rowIndex < 3) return "red";
-      if (rowIndex < 6) return "blue";
-      if (rowIndex < 9) return "green";
-      if (rowIndex < 12) return "yellow";
-      return "pink";
-    }
-
-    for (let i = 0; i < totalRows; i++) {
-      const slotItem = document.createElement("div");
-      slotItem.classList.add("slot-item");
-
-      
-      const animal =
-        i === rowsAbove + Math.floor(visibleSlots / 2) && selectedAnimal
-          ? selectedAnimal
-          : shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
-
-      slotItem.innerHTML = `<img src="${animal.img}" alt="${animal.name}" style="width: 100px; height: 100px;">`;
-      slotItem.style.backgroundColor = getRowColor(i); 
-      reel.appendChild(slotItem);
-    }
-  }
-
-  
-  function populateInitialColumns() {
-    const columns = [
-      document.getElementById("column1"),
-      document.getElementById("column2"),
-      document.getElementById("column3"),
-    ];
-    columns.forEach((column) => populateColumn(column));
-  }
 
   let isRolling = false;
   const logged = localStorage.getItem("loggedin");
+ function populateColumn(column) {
+   const reel = document.createElement("div");
+   reel.style.position = "relative";
+   reel.style.top = "0px";
+   column.appendChild(reel);
+
+   const visibleSlots = 3; 
+   const rowsAbove = 12; 
+   const rowsBelow = 6; 
+   const totalRows = rowsAbove + visibleSlots + rowsBelow;
+
+   column.dataset.initialAnimals = JSON.stringify([]); 
+   const initialAnimals = [];
+
+   for (let i = 0; i < totalRows; i++) {
+     const slotItem = document.createElement("div");
+     slotItem.classList.add("slot-item");
+
+     const animal = shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
+     initialAnimals.push(animal);
+     slotItem.innerHTML = `<img src="${animal.img}" alt="${animal.name}" style="width: 100px; height: 100px;">`;
+     reel.appendChild(slotItem);
+   }
+
+   column.dataset.initialAnimals = JSON.stringify(initialAnimals); 
+ }
+
+ function populateInitialColumns() {
+   columns.forEach((column) => populateColumn(column));
+ }
 
   if (!logged) {
     function clearLocalStorageExceptUsers() {
@@ -251,74 +239,88 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  function spinColumn(column, finalAnimal, callback) {
-    column.innerHTML = "";
-    const reel = document.createElement("div");
-    reel.style.position = "relative";
-    reel.style.top = "0px";
-    column.appendChild(reel);
+function spinColumn(column, finalAnimal, callback) {
+  column.innerHTML = "";
+  const reel = document.createElement("div");
+  reel.style.position = "relative";
+  reel.style.top = "0px";
+  column.appendChild(reel);
+  const itemHeight = 100; 
+  const visibleSlots = 3; 
+  const rowsAbove = 24; 
+  const rowsBelow = 6; 
+  const totalRows = rowsAbove + visibleSlots + rowsBelow;
 
-    const itemHeight = 100; 
-    const visibleSlots = 3; 
-    const rowsAbove = 9; 
-    const rowsBelow = 3; 
-    const totalRows = rowsAbove + visibleSlots + rowsBelow;
+  
+  for (let i = 0; i < totalRows; i++) {
+    const slotItem = document.createElement("div");
+    slotItem.classList.add("slot-item");
 
-    
-    function getRowColor(rowIndex) {
-      if (rowIndex < 3) return "red"; 
-      if (rowIndex < 6) return "blue";
-      if (rowIndex < 9) return "green";
-      if (rowIndex < 12) return "yellow"; 
-      return "pink"; 
-    }
+    const animal =
+      i === rowsAbove + Math.floor(visibleSlots / 2)
+        ? finalAnimal
+        : shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
 
-    
-    for (let i = 0; i < totalRows; i++) {
-      const slotItem = document.createElement("div");
-      slotItem.classList.add("slot-item");
-
-      
-      const animal =
-        i === rowsAbove + Math.floor(visibleSlots / 2)
-          ? finalAnimal
-          : shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
-
-      slotItem.innerHTML = `<img src="${animal.img}" alt="${animal.name}" style="width: 100px; height: 100px;">`;
-      slotItem.style.backgroundColor = getRowColor(i);
-      reel.appendChild(slotItem);
-    }
-
-    const stopPosition = -(rowsAbove * itemHeight); 
-    let currentTop = 0;
-    let spinSpeed = 20; 
-    const slowDownRate = 1.03; 
-    const spinDuration = Date.now() + 3000; 
-
-    function spin() {
-      currentTop -= spinSpeed;
-      reel.style.top = `${currentTop}px`;
-
-      
-      if (currentTop <= -totalRows * itemHeight) {
-        currentTop = 0;
-      }
-
-      
-      if (Date.now() >= spinDuration) {
-        reel.style.transition = "top 0.5s ease-out";
-        reel.style.top = `${stopPosition}px`; 
-        setTimeout(callback, 500);
-        return;
-      }
-
-      
-      spinSpeed *= slowDownRate;
-      setTimeout(spin, 20);
-    }
-
-    spin();
+    slotItem.innerHTML = `<img src="${animal.img}" alt="${animal.name}" style="width: 100px; height: 100px;">`;
+    reel.appendChild(slotItem);
   }
+
+  const stopPosition = -(rowsAbove * itemHeight); 
+  let currentTop = 0; 
+  let spinSpeed = 60; 
+  const slowDownRate = 1.01; 
+  const stopThreshold = 200; 
+
+  const easingDuration = 500; 
+  let easingStart = false;
+
+  function spin() {
+    if (!easingStart && Math.abs(currentTop - stopPosition) <= stopThreshold) {
+      
+      easingStart = true;
+      const startPosition = currentTop;
+      const startTime = Date.now();
+
+      function easeToStop() {
+        const elapsedTime = Date.now() - startTime;
+        if (elapsedTime >= easingDuration) {
+          reel.style.top = `${stopPosition}px`; 
+          setTimeout(callback, 500); 
+        } else {
+          const easingProgress = elapsedTime / easingDuration;
+          const easedTop =
+            startPosition + (stopPosition - startPosition) * easingProgress;
+          reel.style.top = `${easedTop}px`;
+          requestAnimationFrame(easeToStop);
+        }
+      }
+
+      easeToStop();
+      return;
+    }
+
+    
+    currentTop -= spinSpeed;
+    reel.style.top = `${currentTop}px`;
+
+    
+    if (currentTop <= -(totalRows * itemHeight)) {
+      currentTop = 0;
+    }
+
+    
+    if (!easingStart) {
+      spinSpeed = Math.max(2, spinSpeed * slowDownRate); 
+    }
+
+    requestAnimationFrame(spin);
+  }
+
+  spin();
+}
+
+
+
 
   function checkThreeOfAKind(selectedAnimals) {
     if (
