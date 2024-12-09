@@ -191,23 +191,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
       card.addEventListener("click", function () {
         const animalName = this.querySelector("h3").textContent;
+        const animal = shopAnimals.find((a) => a.name === animalName);
+        const animalSound = new Audio(animal.sound);
+        animalSound.volume = 0.2;
+        animalSound.play();
         const animalImage = this.querySelector("img").src;
         let ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
         if (ownedAnimals.some((animal) => animal.name === animalName)) {
           ShowModal("You already own this animal!");
           return;
         }
-
+      
         const h3 = document.getElementById("textext");
         h3.innerHTML = "Are you sure you want to buy this?";
         confirmButton.style.display = "inline-block";
         h3.style.textAlign = "center";
         cancelButton.innerHTML = "Close";
-
+      
         modalImage.src = animalImage;
         modal.setAttribute("data-animal", animalName);
-
-        const animal = shopAnimals.find((a) => a.name === animalName);
+      
+        
         modal.setAttribute("data-price", animal.cost);
         document.getElementById(
           "modal-animal-price"
@@ -215,15 +219,15 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById(
           "modal-animal-stats"
         ).textContent = `Attack: ${animal.attack}, Health: ${animal.health}`;
-
+      
         const modalContent = document.querySelector(".modal-content");
         const nearColor = getNearColor(animal.color);
         modalContent.style.background = `linear-gradient(135deg, ${animal.color} 0%, ${nearColor} 100%)`;
-
+      
         const imageContainer = document.querySelector(".image-container");
         const darkerColor = getDarkerColor(animal.color);
         imageContainer.style.setProperty("--animal-border-color", darkerColor);
-
+      
         if (specialAnimals.includes(animalName)) {
           h3.innerHTML =
             "You cannot buy this animal. You can only get this animal through gacha.";
@@ -231,10 +235,14 @@ document.addEventListener("DOMContentLoaded", function () {
           h3.style.textAlign = "center";
           cancelButton.innerHTML = "Close";
         }
-
+      
+        // Play animal sound
+      
+      
         modal.style.display = "flex";
         modal.classList.add("show");
       });
+      
 
       shopContainer.appendChild(card);
     });
@@ -313,13 +321,23 @@ document.addEventListener("DOMContentLoaded", function () {
     return colorMap[color] || "#000000";
   }
 
+  function formatCoins(coins) {
+    if (coins >= 1000000) {
+      return (coins / 1000000).toFixed(1) + 'M';
+    } else if (coins >= 1000) {
+      return (coins / 1000).toFixed(1) + 'K';
+    } else {
+      return coins.toString();
+    }
+  }
+
   function updateCoinsDisplay() {
-    const coins = localStorage.getItem("coins");
-    coinsDisplay.textContent = `${coins}`;
+    const coins = parseInt(localStorage.getItem("coins"), 10);
+    coinsDisplay.textContent = formatCoins(coins);
     let users = JSON.parse(localStorage.getItem("users")) || [];
     const userIndex = users.findIndex((user) => user.displayName === username);
     if (userIndex !== -1) {
-      users[userIndex].coins = parseInt(coins, 10);
+      users[userIndex].coins = coins;
       localStorage.setItem("users", JSON.stringify(users));
     }
   }
@@ -485,17 +503,16 @@ document.addEventListener("keydown", function (event) {
 });
 
 function addCoinsReward() {
-  console.log("aaa");
   let coins = Number(localStorage.getItem("coins"));
   coins += 500000;
-  coinsDisplay.textContent = `${coins}`;
-  localStorage.setItem("coins", coins);
+  localStorage.setItem("coins", coins.toString());
   let users = JSON.parse(localStorage.getItem("users")) || [];
   const userIndex = users.findIndex((user) => user.displayName === username);
   if (userIndex !== -1) {
     users[userIndex].coins = coins;
     localStorage.setItem("users", JSON.stringify(users));
   }
+  updateCoinsDisplay();
 }
 
 function giveAllAnimals() {
