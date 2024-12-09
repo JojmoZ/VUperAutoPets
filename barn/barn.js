@@ -138,11 +138,9 @@ function getUserAnimals() {
 
 function createAnimal(animal) {
   const animalElement = document.createElement("img");
-  animalElement.src = `../assets/Animals/${animal.name}.webp`;
+  animalElement.src = animal.img
   animalElement.className = "animal";
   animalElement.style.position = "absolute";
-  animalElement.style.width = "3.125rem";
-  animalElement.style.height = "3.125rem";
   animalElement.dataset.name = animal.name;
   animalElement.dataset.attack = animal.attack;
   animalElement.dataset.health = animal.health;
