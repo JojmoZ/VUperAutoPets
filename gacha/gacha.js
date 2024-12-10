@@ -245,87 +245,72 @@ function handleCheatActivation() {
   }
 
 function spinColumn(column, finalAnimal, callback) {
-  console.log(finalAnimal);
+  console.log("Final Animal:", finalAnimal);
   column.innerHTML = "";
   const reel = document.createElement("div");
   reel.style.position = "relative";
   reel.style.top = "0px";
   column.appendChild(reel);
 
-  const itemHeight = 167; 
-  const visibleSlots = 3; 
-  const rowsAbove = 24; 
-  const rowsBelow = 6; 
+  const itemHeight = 167; // Height of each slot item
+  const visibleSlots = 3;
+  const rowsAbove = 24;
+  const rowsBelow = 6;
   const totalRows = rowsAbove + visibleSlots + rowsBelow;
 
-  
+  // Populate the reel with animals
   for (let i = 0; i < totalRows; i++) {
     const slotItem = document.createElement("div");
     slotItem.classList.add("slot-item");
 
     const animal =
       i === rowsAbove + Math.floor(visibleSlots / 2)
-        ? finalAnimal 
+        ? finalAnimal // Place the final animal in the center visible slot
         : shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
 
     slotItem.innerHTML = `<img src="${animal.img}" alt="${animal.name}" style="width: 167px; height: 167px;">`;
     reel.appendChild(slotItem);
   }
 
-  
-  const stopPosition = -(rowsAbove * itemHeight) + 167; 
-  let currentTop = 0; 
-  let spinSpeed = 60; 
-  const slowDownRate = 1.01; 
-  const stopThreshold = 200; 
-
-  const easingDuration = 500; 
-  let easingStart = false;
+  const stopPosition = -(rowsAbove * itemHeight) +167; // Final stopping position
+  let currentTop = 0; // Current position of the reel
+  let spinSpeed = 30; // Initial spin speed
+  let slowingDown = false; // Whether the reel is in the slow-down phase
 
   function spin() {
-    if (!easingStart && Math.abs(currentTop - stopPosition) <= stopThreshold) {
-      
-      easingStart = true;
-      const startPosition = currentTop;
-      const startTime = Date.now();
+    // Start slowing down when near the stop position
+    if (!slowingDown && Math.abs(currentTop - stopPosition) <= itemHeight * 5) {
+      slowingDown = true;
+    }
 
-      function easeToStop() {
-        const elapsedTime = Date.now() - startTime;
-        if (elapsedTime >= easingDuration) {
-          reel.style.top = `${stopPosition}px`; 
-          setTimeout(callback, 500); 
-        } else {
-          const easingProgress = elapsedTime / easingDuration;
-          const easedTop =
-            startPosition + (stopPosition - startPosition) * easingProgress;
-          reel.style.top = `${easedTop}px`;
-          requestAnimationFrame(easeToStop);
-        }
-      }
+    if (slowingDown) {
+      spinSpeed = Math.max(2, spinSpeed * 0.95); // Gradually reduce speed
+    }
 
-      easeToStop();
+    currentTop -= spinSpeed; // Update the reel's top position
+    reel.style.top = `${currentTop}px`;
+
+    if (!slowingDown && currentTop <= -(totalRows * itemHeight)) {
+      currentTop = 0; // Reset the reel position to create a looping effect
+    }
+
+    // Smoothly stop the reel when close enough to the stop position
+    if (
+      slowingDown &&
+      spinSpeed <= 2 &&
+      Math.abs(currentTop - stopPosition) < 1
+    ) {
+      reel.style.top = `${stopPosition}px`; // Snap to the exact stop position
+      setTimeout(callback, 500); // Trigger the callback after stopping
       return;
     }
 
-    
-    currentTop -= spinSpeed;
-    reel.style.top = `${currentTop}px`;
-
-    
-    if (currentTop <= -(totalRows * itemHeight)) {
-      currentTop = 0;
-    }
-
-    
-    if (!easingStart) {
-      spinSpeed = Math.max(2, spinSpeed * slowDownRate); 
-    }
-
-    requestAnimationFrame(spin);
+    requestAnimationFrame(spin); // Continue spinning
   }
 
   spin();
 }
+
 
 
 

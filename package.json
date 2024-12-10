@@ -15,11 +15,23 @@
   },
   "build": {
     "asar": true,
+    "asarUnpack": [
+      "**/*.{mp3,mp4,png,jpg,webp,ttf,woff,woff2,otf}"
+    ],
     "appId": "com.vuperautopets.app",
     "productName": "VUperAutoPets",
     "files": [
       "**/*",
-      "!node_modules/.cache/**/*"
+      "!node_modules/.cache",
+      "!dist",
+      "!logs",
+      "!*.log",
+      "!*.tmp",
+      "!*.map",
+      "!test/**",
+      "!*.config.js",
+      "!minify-*.js",
+      "!obfuscate.js"
     ],
     "win": {
       "target": "nsis",

@@ -26,6 +26,11 @@ app.on("ready", () => {
   //  globalShortcut.register("CommandOrControl+Shift+I", () => {});
   //  globalShortcut.register("CommandOrControl+Shift+C", () => {});
   //  globalShortcut.register("F12", () => {});
+  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+    // Open URL in the user's default browser
+    require("electron").shell.openExternal(url);
+    return { action: "deny" }; // Prevent Electron from creating a new window
+  });
   mainWindow.webContents.session.webRequest.onHeadersReceived(
   (details, callback) => {
     callback({

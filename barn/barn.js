@@ -475,7 +475,7 @@ function createFood(event) {
 
 function followPath(animal, path, callback) {
   let index = 0;
-  const speed = 1.4;
+  const speed = 1;
   function moveStep() {
     if (index >= path.length) {
       if (callback) callback();
