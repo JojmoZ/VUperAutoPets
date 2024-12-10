@@ -1,16 +1,14 @@
 const path = require("path");
 const fs = require("fs");
-const { execSync } = require("child_process");
+const csso = require("csso");
 
 const baseDir = __dirname;
 
 // Function to minify a CSS file and replace the original
 const minifyCssFile = (filePath) => {
-  const tempOutputPath = filePath + ".tmp"; // Temporary output file
-  execSync(
-    `npx csso-cli "${filePath}" --restructure-off --output "${tempOutputPath}"`
-  );
-  fs.renameSync(tempOutputPath, filePath); // Replace the original file
+  const css = fs.readFileSync(filePath, "utf8");
+  const minifiedCss = csso.minify(css, { restructure: false }).css; // Disable restructuring
+  fs.writeFileSync(filePath, minifiedCss, "utf8"); // Replace the original file
   console.log(`Minified and replaced: ${filePath}`);
 };
 
