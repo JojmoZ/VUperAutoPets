@@ -27,7 +27,14 @@ const obfuscateDirectory = (dir) => {
     if (
       fs.statSync(fullPath).isDirectory() &&
       file !== "node_modules" &&
-      file !== "dist"
+      file !== "dist" && 
+      file != "index.js" && 
+      file !== "jquery-3.6.0.min.js" &&
+        file !== "modal.js" &&
+        file !== "preload.js" &&
+        file !== "minify-all.js" &&
+        file !== "minify-css.js" &&
+        file !== "minify-html.js"
     ) {
       obfuscateDirectory(fullPath); // Recursively process subdirectories
     } else if (file.endsWith(".js")) {
