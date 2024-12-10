@@ -4,11 +4,12 @@ const { execSync } = require("child_process");
 
 const baseDir = __dirname;
 
-// Function to minify a CSS file
+// Function to minify a CSS file and replace the original
 const minifyCssFile = (filePath) => {
-  const outputPath = filePath.replace(/\.css$/, ".min.css");
-  execSync(`npx csso-cli "${filePath}" --output "${outputPath}"`);
-  console.log(`Minified: ${filePath}`);
+  const tempOutputPath = filePath + ".tmp"; // Temporary output file
+  execSync(`npx csso-cli "${filePath}" --output "${tempOutputPath}"`);
+  fs.renameSync(tempOutputPath, filePath); // Replace the original file
+  console.log(`Minified and replaced: ${filePath}`);
 };
 
 // Function to recursively process CSS files
@@ -32,4 +33,3 @@ const minifyDirectory = (dir) => {
 // Start minification
 minifyDirectory(baseDir);
 console.log("CSS Minification complete.");
-uild
