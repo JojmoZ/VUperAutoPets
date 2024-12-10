@@ -10,8 +10,12 @@ const minifyHtmlFile = async (filePath) => {
   const minifiedHtml = await htmlMinifier.minify(html, {
     collapseWhitespace: true,
     removeComments: true,
-    minifyCSS: true,
-    minifyJS: true,
+    minifyCSS: true, // Minify inline CSS
+    minifyJS: true, // Minify inline JS
+    keepClosingSlash: true, // Keep closing slash for self-closing tags
+    removeAttributeQuotes: false, // Don't remove quotes around attributes
+    sortAttributes: true, // Sort attributes for consistency
+    sortClassName: true, // Sort class names for consistency
   });
   fs.writeFileSync(filePath, minifiedHtml, "utf8");
   console.log(`Minified: ${filePath}`);

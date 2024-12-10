@@ -7,7 +7,9 @@ const baseDir = __dirname;
 // Function to minify a CSS file and replace the original
 const minifyCssFile = (filePath) => {
   const tempOutputPath = filePath + ".tmp"; // Temporary output file
-  execSync(`npx csso-cli "${filePath}" --output "${tempOutputPath}"`);
+  execSync(
+    `npx csso-cli "${filePath}" --restructure-off --output "${tempOutputPath}"`
+  );
   fs.renameSync(tempOutputPath, filePath); // Replace the original file
   console.log(`Minified and replaced: ${filePath}`);
 };
