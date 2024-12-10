@@ -7,9 +7,14 @@
   "scripts": {
     "start": "electronmon .",
     "dist": "electron-builder",
-    "minify-all": "node minify-all.js"
+    "minify-all": "node minify-all.js",
+    "obfuscate": "node obfuscate.js",
+    "minify-html": "node minify-html.js",
+    "minify-css": "node minify-css.js",
+    "build": "npm run obfuscate && npm run minify-html && npm run minify-css"
   },
   "build": {
+    "asar": true,
     "appId": "com.vuperautopets.app",
     "productName": "VUperAutoPets",
     "files": [
@@ -22,10 +27,13 @@
     }
   },
   "devDependencies": {
+    "csso-cli": "^4.0.2",
     "electron": "33.3.0",
     "electron-builder": "^25.1.8",
     "electron-reload": "^2.0.0-alpha.1",
     "electronmon": "^2.0.3",
+    "html-minifier-terser": "^7.2.0",
+    "javascript-obfuscator": "^4.1.1",
     "terser": "^5.37.0"
   }
 }
