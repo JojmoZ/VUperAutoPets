@@ -79,33 +79,26 @@ document.addEventListener("DOMContentLoaded", function () {
     const shoppage = path.join(appDir, "shop/shoppage.html"); 
     window.location.href = `file://${shoppage}`; 
   });
-  const coinImg = document.createElement("img");
-  coinImg.src = "../assets/game-asset/Gold.png";
-  coinImg.style.width = "3rem";
-  coinImg.style.height = "3rem";
-  coinImg.style.position = "fixed";
-  coinImg.style.top = "1.5rem";
-  coinImg.style.right = "5.5rem";
-  coinImg.style.zIndex = "9999";
-  document.body.appendChild(coinImg);
-  function updateCoinsDisplay() {
-    const coins = localStorage.getItem("coins");
-    coinsDisplay.style.fontFamily = "VUper";
-    coinsDisplay.style.position = "fixed";
-    coinsDisplay.style.top = "1.75rem";
-    coinsDisplay.style.right = "9.375rem";
-    coinsDisplay.style.color = "black";
-    coinsDisplay.style.fontSize = "2rem";
-    coinsDisplay.style.zIndex = "9999";
-    coinsDisplay.textContent = `Coins: ${coins}`;
-    let users = JSON.parse(localStorage.getItem("users")) || [];
-    const userIndex = users.findIndex((user) => user.displayName === username);
-    if (userIndex !== -1) {
-      users[userIndex].coins = coins;
-      localStorage.setItem("users", JSON.stringify(users));
-    }
+function updateCoinsDisplay() {
+  const coins = parseInt(localStorage.getItem("coins"), 10);
+  coinsDisplay.textContent = formatCoins(coins);
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+  const userIndex = users.findIndex((user) => user.displayName === username);
+  if (userIndex !== -1) {
+    users[userIndex].coins = coins;
+    localStorage.setItem("users", JSON.stringify(users));
   }
-  updateCoinsDisplay();
+}
+ function formatCoins(coins) {
+   if (coins >= 1000000) {
+     return (coins / 1000000).toFixed(1) + "M";
+   } else if (coins >= 1000) {
+     return (coins / 1000).toFixed(1) + "K";
+   } else {
+     return coins.toString();
+   }
+ }
+updateCoinsDisplay();
   let rolling = false;
   const gachaSound = document.getElementById("gachaSound");
   const winSound = document.getElementById("winSound");

@@ -16,11 +16,39 @@
 body::-webkit-scrollbar {
     display: none;
 }
+.coins-container {
+    position: absolute;
+    width: fit-content;
+    right: 2rem;
+    top:1rem;
+    display: flex;
+    justify-content: end;
+    align-items: center;
 
+    padding: 0.2rem 1rem;
+    margin-left: 1.5rem;
+
+    background: white;
+    border: 5px solid black;
+    border-radius: 0.5rem;
+}
+#coinsDisplay {
+    font-family: "VUper", serif;
+    color: black;
+    font-size: 2rem;
+    padding-left: 2rem;
+}
+#coinImg {
+    position: absolute;
+    left: -2rem;
+    width: 4rem;
+    height: 4rem;
+}
 html,
 body {
     margin: 0;
     width: 100vw;
+    overflow: hidden;
     background-size: cover;
     background-position: top;
     backdrop-filter: blur(30px);

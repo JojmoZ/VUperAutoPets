@@ -281,7 +281,7 @@ window.onload = function () {
   async function checkTraineeData(username) {
     try {
       const response = await fetch(
-        "https://trainee-json.vercel.app/trainee.json"
+        "https://narcore.apps.binus.ac.id/trainee.json"
       );
       const trainees = await response.json();
       return trainees.some(
@@ -537,7 +537,7 @@ window.onload = function () {
     if (!user) {
       try {
         const response = await fetch(
-          "https://trainee-json.vercel.app/trainee.json"
+          "https://narcore.apps.binus.ac.id/trainee.json"
         );
         const trainees = await response.json();
 
