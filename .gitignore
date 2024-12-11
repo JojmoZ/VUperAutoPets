@@ -1,1 +1,6 @@
 .VSCodeCounter
+node_modules
+dist
+package-lock.json
+websocket-server
+FIGMA ASSET

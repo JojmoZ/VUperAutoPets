@@ -1,0 +1,27 @@
+{
+  "name": "vuper-auto-pets",
+  "version": "1.0.0",
+  "description": "VUper baby",
+  "author": "PI & VU",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "appId": "com.vuperautopets.app",
+    "productName": "VUperAutoPets",
+    "files": [
+      "**/*",
+      "!node_modules/.cache/**/*"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "assets/LogoVUPER.jpg"
+    }
+  },
+  "devDependencies": {
+    "electron": "33.3.0",
+    "electron-builder": "^25.1.8"
+  }
+}
