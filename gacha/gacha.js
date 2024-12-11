@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
      const animal = shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
      initialAnimals.push(animal);
-     slotItem.innerHTML = `<img src="${animal.img}" alt="${animal.name}" style="width 167px; height 167px;">`;
+     slotItem.innerHTML = `<img src="${animal.img}" alt="${animal.name}" style="width 195px; height 195px;">`;
      reel.appendChild(slotItem);
    }
 
@@ -69,15 +69,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     clearLocalStorageExceptUsers();
 
-    const loginPath = path.join(appDir, "login/index.html"); // Build the correct file path
-    window.location.href = `file://${loginPath}`; // Redirect using the file:// protocol
+    const loginPath = path.join(appDir, "login/index.html"); 
+    window.location.href = `file://${loginPath}`; 
   }
 
   const coinsDisplay = document.getElementById("coinsDisplay");
   const backBtn = document.getElementById("backArrow");
   backBtn.addEventListener("click", function () {
-    const shoppage = path.join(appDir, "shop/shoppage.html"); // Build the correct file path
-    window.location.href = `file://${shoppage}`; // Redirect using the file:// protocol
+    const shoppage = path.join(appDir, "shop/shoppage.html"); 
+    window.location.href = `file://${shoppage}`; 
   });
   const coinImg = document.createElement("img");
   coinImg.src = "../assets/game-asset/Gold.png";
@@ -252,60 +252,60 @@ function spinColumn(column, finalAnimal, callback) {
   reel.style.top = "0px";
   column.appendChild(reel);
 
-  const itemHeight = 167; // Height of each slot item
+  const itemHeight = 195; 
   const visibleSlots = 3;
   const rowsAbove = 24;
   const rowsBelow = 6;
   const totalRows = rowsAbove + visibleSlots + rowsBelow;
 
-  // Populate the reel with animals
+  
   for (let i = 0; i < totalRows; i++) {
     const slotItem = document.createElement("div");
     slotItem.classList.add("slot-item");
 
     const animal =
       i === rowsAbove + Math.floor(visibleSlots / 2)
-        ? finalAnimal // Place the final animal in the center visible slot
+        ? finalAnimal 
         : shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
 
-    slotItem.innerHTML = `<img src="${animal.img}" alt="${animal.name}" style="width: 167px; height: 167px;">`;
+    slotItem.innerHTML = `<img src="${animal.img}" alt="${animal.name}" style="width: 195px; height: 195px;">`;
     reel.appendChild(slotItem);
   }
 
-  const stopPosition = -(rowsAbove * itemHeight) +167; // Final stopping position
-  let currentTop = 0; // Current position of the reel
-  let spinSpeed = 30; // Initial spin speed
-  let slowingDown = false; // Whether the reel is in the slow-down phase
+  const stopPosition = -(rowsAbove * itemHeight); 
+  let currentTop = 0; 
+  let spinSpeed = 30; 
+  let slowingDown = false; 
 
   function spin() {
-    // Start slowing down when near the stop position
+    
     if (!slowingDown && Math.abs(currentTop - stopPosition) <= itemHeight * 5) {
       slowingDown = true;
     }
 
     if (slowingDown) {
-      spinSpeed = Math.max(2, spinSpeed * 0.95); // Gradually reduce speed
+      spinSpeed = Math.max(2, spinSpeed * 0.97); 
     }
 
-    currentTop -= spinSpeed; // Update the reel's top position
+    currentTop -= spinSpeed; 
     reel.style.top = `${currentTop}px`;
 
     if (!slowingDown && currentTop <= -(totalRows * itemHeight)) {
-      currentTop = 0; // Reset the reel position to create a looping effect
+      currentTop = 0; 
     }
 
-    // Smoothly stop the reel when close enough to the stop position
+    
     if (
       slowingDown &&
       spinSpeed <= 2 &&
       Math.abs(currentTop - stopPosition) < 1
     ) {
-      reel.style.top = `${stopPosition}px`; // Snap to the exact stop position
-      setTimeout(callback, 500); // Trigger the callback after stopping
+      reel.style.top = `${stopPosition}px`; 
+      setTimeout(callback, 500); 
       return;
     }
 
-    requestAnimationFrame(spin); // Continue spinning
+    requestAnimationFrame(spin); 
   }
 
   spin();

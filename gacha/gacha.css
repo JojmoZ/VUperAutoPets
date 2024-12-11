@@ -75,7 +75,7 @@ body {
     align-items: center;
     justify-content: center;
     width: 70vw;
-    height:60vh;
+    height: 645px;
     aspect-ratio: 1/1;
     background-image: url("../assets/gacha/board-alt.png");
     background-size: 100% 100%;
@@ -92,7 +92,7 @@ body {
   gap: 20px;
   position: relative;
   overflow: hidden;
-  height: 501px; 
+  height: 585px; 
   width: 100%;
 }
 
@@ -106,7 +106,7 @@ body {
 
 .slot-item {
   width: 100%;
-  height: calc(100% / 3); 
+  height:195px; 
   display: flex;
   justify-content: center;
   align-items: center;
@@ -117,7 +117,7 @@ body {
   width: 80%; 
   height: auto; 
   max-width: 10rem;
-  max-height: 10rem;
+  max-height: 195px;
 }
 
 
