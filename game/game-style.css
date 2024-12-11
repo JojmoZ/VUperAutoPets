@@ -50,6 +50,7 @@ body {
 #coins {
   font-size: 2rem;
   color: black;
+  margin-left:1rem;
 }
 .animal {
   width: 6.25rem;
@@ -142,7 +143,11 @@ img {
   width: 8rem;
   height: auto;
 }
-
+.stats-top{
+  display:flex;
+  position: absolute; 
+  top: 20px;right: 2rem;
+}
 .back-arrow:hover {
   transform: scale(1.1);
 }
@@ -182,14 +187,18 @@ img {
   display: none;
 }
 .hearts-container {
-  position: absolute;
-  top: 10px;
-  right: 20px;
+  position: relative;
+  /* top: 10px;
+  right: 20px; */
 }
 .coins-container {
-  position: absolute;
-  top: 50px;
-  right: 20px;
+  position: relative;
+  /* top: 50px;
+  right: 20px; */
+  background-color: white;
+  padding: 0.2rem 1rem;
+  border: 5px solid black;
+  border-radius: 0.5rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -197,12 +206,19 @@ img {
   font-size: 1.25rem;
   font-weight: bold;
 }
+#coinIcon{
+ position: absolute;
+    left: -2rem;
+    width: 3rem;
+    height:3rem;
+
+}
 .coins-container span {
   font-family: "VUper", sans-serif;
 }
 .hearts-container img {
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 4rem;
+  height: 4rem;
   margin-left: 0.625rem;
 }
 .coins-container img {

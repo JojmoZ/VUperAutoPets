@@ -8,7 +8,7 @@ let username;
 let pairingTimeout = null;
 let pairingDuration = 50000;
 function connectWebSocket() {
-  socket = new WebSocket("https://narcore.apps.binus.ac.id");
+  socket = new WebSocket("https://nova-dolomite-mink.glitch.me");
 
   socket.onopen = () => {
     console.log("Connected to server");
@@ -1367,9 +1367,19 @@ document.addEventListener("DOMContentLoaded", function () {
   document.addEventListener("dragend", hideFreezeBin);
   localStorage.setItem("ingame", false);
 });
+function formatCoins(coins) {
+  if (coins >= 1000000) {
+    return (coins / 1000000).toFixed(1) + "M";
+  } else if (coins >= 1000) {
+    return (coins / 1000).toFixed(1) + "K";
+  } else {
+    return coins.toString();
+  }
+}
 function updateCoinsDisplay() {
   localStorage.setItem("gamecoins", coins);
-  document.getElementById("coins").textContent = `Coins: ${coins}`;
+  let displaycoin = formatCoins(coins);
+  document.getElementById("coins").textContent = `${displaycoin}`;
 }
 function generateEnemyTeamName() {
   fetch("../assets/jsons/teamnames.json")
