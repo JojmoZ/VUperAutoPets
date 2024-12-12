@@ -192,6 +192,15 @@ function handleCheatActivation() {
 
     localStorage.setItem("coins", coins - 5);
     updateCoinsDisplay();
+     let users = JSON.parse(localStorage.getItem("users")) || [];
+     const userIndex = users.findIndex((user) => user.username === username);
+     if (userIndex !== -1) {
+       if (!users[userIndex].pity) {
+         users[userIndex].pity = 0;
+       }
+       users[userIndex].pity += 1;
+       localStorage.setItem("users", JSON.stringify(users));
+     }
   if (handleCheatActivation()) {
     return; 
   }
@@ -204,8 +213,9 @@ function handleCheatActivation() {
     const selectedAnimals = [];
     const random = Math.random();
 
-    if (random < 0.02) {
-      
+    if (random < 0.02 || users[userIndex].pity >= 50) {
+        users[userIndex].pity = 0; // Reset pity count after a special reward
+        localStorage.setItem("users", JSON.stringify(users));
       const specialRewards = shopAnimals.filter((animal) =>
         ["MSeer", "VandaJ", "YenguiK", "PamstIr"].includes(animal.name)
       );
@@ -214,7 +224,15 @@ function handleCheatActivation() {
       for (let i = 0; i < 3; i++) {
         selectedAnimals.push(rareAnimal);
       }
-    } else {
+    } else if(random < 0.09){
+       const otherAnimals = shopAnimals.filter(
+         (animal) =>
+           !["MSeer", "VandaJ", "YenguiK", "PamstIr"].includes(animal.name)
+       );
+        for(let i =0 ; i< 3; i++){
+          selectedAnimals.push(otherAnimals);
+        }
+    }else {
       
       for (let i = 0; i < 3; i++) {
         selectedAnimals.push(
