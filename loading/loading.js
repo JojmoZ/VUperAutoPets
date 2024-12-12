@@ -104,7 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const animalRect = animalVUnt.getBoundingClientRect();
     tipBox.style.left = `${animalRect.left + animalRect.width / 2}px`;
-    tipBox.style.top = `${animalRect.top - animalRect.height + 100}px`;
+    tipBox.style.top = `${animalRect.top - animalRect.height + 50}px`;
 
     setTimeout(() => {
       tipBox.classList.add("tip-animate-in");
@@ -115,7 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
       tipBox.classList.add("tip-animate-out");
       setTimeout(() => {
         document.body.removeChild(tipBox);
-        tipBox = null; // Allow new tips to appear
+        tipBox = null; 
       }, 500);
     }, 3000);
   }
