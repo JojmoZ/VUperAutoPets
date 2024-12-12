@@ -1,3 +1,94 @@
+// Hero Section
+
+const DELAY = 500;
+
+document.addEventListener('DOMContentLoaded', () => {
+  const primaryImages = [
+    '../assets/login/parallax/parallax-vunt.webp',
+    '../assets/login/parallax/parallax-pamstir.webp',
+  ];
+
+  const secondaryImages = [
+    '../assets/home-asset/hero/rocket.png',
+    '../assets/home-asset/hero/teddy.png',
+  ];
+
+  const tertiaryImages = [
+    '../assets/home-asset/hero/trumpet.png',
+    '../assets/home-asset/hero/scissors.png',
+  ];
+
+  const groupImages = [
+    [
+      '../assets/home-asset/hero/img-group-1.png',
+      '../assets/home-asset/hero/img-group-2.png',
+      '../assets/home-asset/hero/img-group-3.png',
+      '../assets/home-asset/hero/img-group-4.png',
+    ],
+    [
+      '../assets/home-asset/hero/coin.png',
+      '../assets/home-asset/hero/coin.png',
+      '../assets/home-asset/hero/coin.png',
+      '../assets/home-asset/hero/coin.png',
+    ]
+  ];
+
+  let primaryIndex = 0;
+  let secondaryIndex = 0;
+  let tertiaryIndex = 0;
+  let groupSetIndex = 0;
+  let groupIndices = [0, 1, 2, 3];
+
+  function cycleImages() {
+    const imgPrimary = document.querySelector('.img-primary');
+    const imgSecondary = document.querySelector('.img-secondary');
+    const imgTertiary = document.querySelector('.img-tertiary');
+
+    function applyTransition(element) {
+      element.style.transition = 'all 0.5s ease-in-out';
+      element.style.opacity = '0';
+      element.style.transform = 'translateY(50px)';
+    }
+
+    function setNewImage(element, newSrc, delay) {
+      setTimeout(() => {
+        element.src = newSrc;
+        setTimeout(() => {
+          element.style.opacity = '1';
+          element.style.transform = 'translateY(0)';
+        }, DELAY);
+      }, delay);
+    }
+
+    primaryIndex = (primaryIndex + 1) % primaryImages.length;
+    applyTransition(imgPrimary);
+    setNewImage(imgPrimary, primaryImages[primaryIndex], DELAY);
+
+    secondaryIndex = (secondaryIndex + 1) % secondaryImages.length;
+    applyTransition(imgSecondary);
+    setNewImage(imgSecondary, secondaryImages[secondaryIndex], DELAY * 1.3);
+
+    tertiaryIndex = (tertiaryIndex + 1) % tertiaryImages.length;
+    applyTransition(imgTertiary);
+    setNewImage(imgTertiary, tertiaryImages[tertiaryIndex], DELAY * 1.5);
+  }
+
+  function cycleGroup() {
+    const groupImgs = document.querySelectorAll('.image-group img');
+    const currentGroup = groupImages[groupSetIndex];
+    groupImgs.forEach((img, index) => {
+      groupIndices[index] = (groupIndices[index] + 1) % currentGroup.length;
+      applyTransition(img);
+      setNewImage(img, currentGroup[groupIndices[index]], DELAY * (1 + (index / 5)));
+    });
+
+    groupSetIndex = (groupSetIndex + 1) % groupImages.length;
+
+  }
+
+  setInterval(cycleImages, 3000);
+});
+
 window.onload = function () {
   localStorage.removeItem("ingame");
   const track = document.getElementById("maps");
