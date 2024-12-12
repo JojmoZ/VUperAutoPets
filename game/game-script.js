@@ -1259,7 +1259,7 @@ function loadassets() {
   fistImg.src = "../assets/game-asset/fist.png";
   heartImg.src = "../assets/game-asset/heart.png";
   bandageImg.src = "../assets/game-asset/hurt.png";
-  starImg.src = "../assets/game-asset/star.png";
+  starImg.src = "../assets/game-asset/star-new-new.png";
 }
 function playBackgroundMusic() {
   battleMusic.pause();
@@ -2022,10 +2022,10 @@ function animateDeathFlyOff(animal, index, teamType, onComplete) {
   }
 
   function triggerStarExplosion(x, y, explosionComplete) {
-    const explosionDuration = 40;
+    const explosionDuration = 50;
     let explosionFrame = 0;
     const maxRadius = 150;
-    const starSize = 80;
+    const starSize = 50;
 
     function drawExplosion() {
       if (paused) {

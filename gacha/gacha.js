@@ -193,7 +193,7 @@ function handleCheatActivation() {
     localStorage.setItem("coins", coins - 5);
     updateCoinsDisplay();
      let users = JSON.parse(localStorage.getItem("users")) || [];
-     const userIndex = users.findIndex((user) => user.username === username);
+     const userIndex = users.findIndex((user) => user.displayName === username);
      if (userIndex !== -1) {
        if (!users[userIndex].pity) {
          users[userIndex].pity = 0;

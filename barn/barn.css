@@ -83,7 +83,7 @@ canvas {
   position: absolute;
   top: 0px;
   right: 0px;
-  width: 12.5rem;
+  width: 16.5rem;
   padding: 0 0.625rem;
   background: linear-gradient(
     135deg,
@@ -102,7 +102,7 @@ canvas {
 }
 
 .stat-window.show {
-  max-height: 12.5rem;
+  max-height: 15rem;
   padding: 0.625rem;
   background-position: 100% 50%;
 }
@@ -113,6 +113,7 @@ canvas {
   padding: 0.5rem 0;
   display: flex;
   justify-content: space-between;
+  font-size: 2rem;
 }
 
 .stat-window hr {
@@ -133,7 +134,7 @@ canvas {
   text-align: center;
   font-weight: bold;
   font-family: "VUper", sans-serif;
-  font-size: 1.2rem;
+  font-size: 2rem;
   margin-bottom: 0.5rem;
   display: flex;
   justify-content: center;
@@ -154,6 +155,6 @@ canvas {
   align-items: center;
 }
 #animalStatPicture{
-  width: 2rem;
+  width: 3rem;
   height: auto;
 }
