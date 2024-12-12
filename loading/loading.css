@@ -128,7 +128,7 @@ body {
 /*  height: 150%;*/
 /*  z-index: 7;*/
 /*}*/
-
+/* 
 .main-content {
   height: 100vh;
   background-color: #210002;
@@ -145,31 +145,6 @@ body {
   height: 100%;
 }
 
-#loading-bar {
-  position: absolute;
-  bottom: 0.625rem;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 90%;
-  height: 1.25rem;
-  background-color: #fff;
-  border-radius: 0.625rem;
-}
-
-#loading-fill {
-  width: 0%;
-  height: 100%;
-  background-color: #febd01;
-  border-radius: 0.625rem;
-}
-
-.score {
-  position: absolute;
-  top: 0.625rem;
-  right: 0.625rem;
-  font-size: 1.5rem;
-  color: white;
-}
 
 #gameCanvas {
   width: 100%;
@@ -210,6 +185,7 @@ body {
 .mirror {
   transform: scaleX(-1);
 }
+  */
 .overlay {
   position: fixed;
   top: 0;
@@ -220,6 +196,26 @@ body {
   z-index: 100;
   opacity: 0;
   transition: opacity 1s ease-in-out;
+}
+
+
+#loading-bar {
+  position: absolute;
+  bottom: 0.625rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  border: 4px solid #000;
+  height: 3rem;
+  background-color: #fff;
+  border-radius: 0.625rem;
+}
+
+#loading-fill {
+  width: 0%;
+  height: 100%;
+  background-color: #FF6900;
+  border-radius: 0.4rem;
 }
 
 .logo {
@@ -248,4 +244,4 @@ body {
 
 .fade-in-logo {
   opacity: 1;
-}
+} 
