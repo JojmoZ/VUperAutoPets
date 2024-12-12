@@ -70,28 +70,28 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
  function triggerTransitionToGame() {
-   if (document.querySelector(".overlay")) return; 
+   if (document.querySelector(".overlay")) return;
 
-   
+
    const blackOverlay = document.createElement("div");
    blackOverlay.classList.add("overlay");
    document.body.appendChild(blackOverlay);
 
-   
+
    const logo = document.createElement("img");
    logo.src = "../assets/title-logo.png";
    logo.classList.add("logo");
    blackOverlay.appendChild(logo);
 
-   
+
    setTimeout(() => {
      blackOverlay.classList.add("fade-in-overlay");
      logo.classList.add("fade-in-logo");
 
-     
+
      setTimeout(() => {
        window.location.href = "/game/game.html";
-     }, 5000); 
+     }, 5000);
    }, 100);
  }
 
@@ -134,7 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
       tipElement.style.left = `${leftPosition}%`;
       tipElement.style.right = "auto";
       tipElement.style.transform = "none";
-      
+
 
       animalElement.style.position = "absolute";
       animalElement.style.top = "60%";
@@ -162,14 +162,14 @@ document.addEventListener("DOMContentLoaded", () => {
       const logged = localStorage.getItem("loggedin");
 
       if (!logged) {
-        
-        function clearLocalStorageExceptUsers() {
-          const keysToKeep = ["users"]; 
 
-          
+        function clearLocalStorageExceptUsers() {
+          const keysToKeep = ["users"];
+
+
           const allKeys = Object.keys(localStorage);
 
-          
+
           allKeys.forEach((key) => {
             if (!keysToKeep.includes(key)) {
               localStorage.removeItem(key);
@@ -177,23 +177,23 @@ document.addEventListener("DOMContentLoaded", () => {
           });
         }
 
-        
+
         clearLocalStorageExceptUsers();
 
-        
+
         window.location.href = "/login/index.html";
       }
 
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
+
+
+
+
+
+
+
+
+
+
 
       const overlap = activeTips.some((activeTip) =>
         isOverlappingWithPadding(activeTip, tipBox, padding)
@@ -204,7 +204,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       attempts++;
-      
+
       console.log(`Attempt ${attempts}: Overlap detected, retrying...`);
     } while (attempts < maxAttempts);
 
@@ -317,3 +317,4 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("mousedown", playBackgroundAudio);
   document.addEventListener("mouseup", playBackgroundAudio);
 });
+

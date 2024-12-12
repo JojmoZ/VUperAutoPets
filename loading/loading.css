@@ -2,83 +2,132 @@
   font-family: 'VUper';
   src: url('../assets/font/LapsusPro-Bold.otf') format('opentype');
 }
+
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'VUper';
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'VUper', serif;
 }
 
 body {
- font-family: 'VUper';
-  overflow: hidden;
+    overflow: hidden;
 }
 
-body::-webkit-scrollbar {
-  display: none;
+#parallax-container {
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
 }
 
-body {
-  scrollbar-width: none;
+.parallax {
+    position: absolute;
+    height: 105vh;
+    width: 105vw;
+
+    background-size: cover;
+
+    animation: wave 5s infinite;
+
+    overflow: hidden;
 }
 
-.parallax-container {
-  position: relative;
-  height: 100vh;
-  overflow: hidden;
+#p-1 {
+    background-image: url("../assets/login/parallax/parallax-1.png");
+    animation-delay: 2s;
 }
 
-.parallax-layer {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  z-index: 1;
+#p-2 {
+    background-image: url("../assets/login/parallax/parallax-2.png");
+    animation-delay: 1s;
 }
-.parallax-layera {
-  position: absolute;
-  width: 17.188rem;
-  height: 7.813rem;
-  top: 10%;
-  left: 42.5%;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  z-index: 1;
+
+#p-3 {
+    background-image: url("../assets/login/parallax/parallax-3.png");
 }
-#layer-8 {
-  background-image: url(../assets/title-logo.png);
+
+@keyframes wave {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-2rem);
+    }
+    100% {
+        transform: translateY(0);
+    }
 }
-#layer-0 {
-  background-image: url("../assets/parallax/paral0.png");
-}
-#layer-1 {
-  background-image: url("../assets/parallax/paral1.png");
-}
-#layer-2 {
-  background-image: url("../assets/parallax/paral2.png");
-}
-#layer-3 {
-  background-image: url("../assets/parallax/paral3.png");
-}
-#layer-4 {
-  background-image: url("../assets/parallax/paral4.png");
-}
-#layer-5 {
-  background-image: url("../assets/parallax/paral5.png");
-}
-#layer-6 {
-  background-image: url("../assets/parallax/paral6.png");
-}
-#layer-7 {
-  background-image: url("../assets/parallax/newnewparal7.png");
-  position: absolute;
-  top: 21.875rem;
-  height: 150%;
-  z-index: 7;
-}
+
+/*body {*/
+/*  overflow: hidden;*/
+/*}*/
+
+/*body::-webkit-scrollbar {*/
+/*  display: none;*/
+/*}*/
+
+/*body {*/
+/*  scrollbar-width: none;*/
+/*}*/
+
+/*.parallax-container {*/
+/*  position: relative;*/
+/*  height: 100vh;*/
+/*  overflow: hidden;*/
+/*}*/
+
+/*.parallax-layer {*/
+/*  position: absolute;*/
+/*  width: 100%;*/
+/*  height: 100%;*/
+/*  background-size: cover;*/
+/*  background-position: center;*/
+/*  background-repeat: no-repeat;*/
+/*  z-index: 1;*/
+/*}*/
+/*.parallax-layera {*/
+/*  position: absolute;*/
+/*  width: 17.188rem;*/
+/*  height: 7.813rem;*/
+/*  top: 10%;*/
+/*  left: 42.5%;*/
+/*  background-size: cover;*/
+/*  background-position: center;*/
+/*  background-repeat: no-repeat;*/
+/*  z-index: 1;*/
+/*}*/
+/*#layer-8 {*/
+/*  background-image: url(../assets/title-logo.png);*/
+/*}*/
+/*#layer-0 {*/
+/*  background-image: url("../assets/parallax/paral0.png");*/
+/*}*/
+/*#layer-1 {*/
+/*  background-image: url("../assets/parallax/paral1.png");*/
+/*}*/
+/*#layer-2 {*/
+/*  background-image: url("../assets/parallax/paral2.png");*/
+/*}*/
+/*#layer-3 {*/
+/*  background-image: url("../assets/parallax/paral3.png");*/
+/*}*/
+/*#layer-4 {*/
+/*  background-image: url("../assets/parallax/paral4.png");*/
+/*}*/
+/*#layer-5 {*/
+/*  background-image: url("../assets/parallax/paral5.png");*/
+/*}*/
+/*#layer-6 {*/
+/*  background-image: url("../assets/parallax/paral6.png");*/
+/*}*/
+/*#layer-7 {*/
+/*  background-image: url("../assets/parallax/newnewparal7.png");*/
+/*  position: absolute;*/
+/*  top: 21.875rem;*/
+/*  height: 150%;*/
+/*  z-index: 7;*/
+/*}*/
 
 .main-content {
   height: 100vh;
@@ -179,7 +228,7 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  opacity: 0; 
+  opacity: 0;
   transition: opacity 2s ease-in-out;
 }
 

@@ -59,29 +59,29 @@ body {
 *   Hero Section
 */
 
+@keyframes cloud {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 100vw 0;
+    }
+}
+
 #hero {
     display: flex;
     flex-direction: column;
+
     height: 100vh;
+    width: 100vw;
     background-image: url("../assets/login/parallax/parallax-1.png");
+    background-size: cover;
+
+    animation: cloud 50s linear infinite;
+
     z-index: -100;
 }
 
-#layer-2 {
-    position: absolute;
-    width: 100vw;
-    height: 100vh;
-    background-image: url("../assets/login/parallax/parallax-2.png");
-    z-index: -10;
-}
-
-#layer-3 {
-    position: absolute;
-    width: 100vw;
-    height: 100vh;
-    background-image: url("../assets/login/parallax/parallax-3.png");
-    z-index: 1;
-}
 
 .hero-container {
     display: flex;
@@ -95,23 +95,46 @@ body {
 .hero-left {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
 
+    padding: 1rem;
+
     width: 50%;
-    height: 100%;
+    height: 85%;
 
     z-index: 10;
+}
+
+#layer-2 {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background-image: url("../assets/login/parallax/parallax-2.png");
+    z-index: -10;
+}
+
+#layer-3 {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: url("../assets/login/parallax/parallax-3.png");
+    z-index: 1;
 }
 
 .hero-text {
     width: 80%;
     text-align: center;
-    color: white;
-    font-size: 2rem;
+
+    color: black;
+    font-size: 1.5rem;
     font-family: var(--font-p), serif;
     font-weight: bold;
-    -webkit-text-stroke: 0.15rem black;
+
+    background-color: white;
+    padding: 1rem;
+    border-radius: 0.625rem;
+    border: 0.325rem solid black;
 }
 
 @keyframes stampEffect {
@@ -126,7 +149,7 @@ body {
 }
 
 .hero-left > img {
-    width: 90%;
+    width: 100%;
     height: auto;
 
     animation: stampEffect 1s ease forwards;
@@ -134,7 +157,7 @@ body {
 
 .hero-right {
     position: relative;
-    
+
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -147,34 +170,34 @@ body {
 }
 
 .hero-right .img-primary {
-    width: 32rem;
+    width: 58%;
     height: auto;
 
     position: relative;
-    top: -10rem;
-    left: -10rem;
+    top: -8%;
+    left: -12%;
 
     z-index: 5;
 }
 
 .hero-right .img-secondary {
-    width: 16rem;
+    width: 30%;
     height: auto;
 
     position: absolute;
-    top: 1rem;
-    right: 7.5rem;
+    top: 0;
+    right: 16%;
 
     z-index: 3;
 }
 
 .hero-right .img-tertiary {
-    width: 10rem;
+    width: 20%;
     height: auto;
 
     position: absolute;
-    top: 30%;
-    right: 2rem;
+    top: 32%;
+    right: 8%;
 
     z-index: 1;
 }
@@ -185,35 +208,13 @@ body {
 }
 
 .image-group img {
-    width: 12rem;
-    height: 12rem;
+    width: 10rem;
+    height: 10rem;
 }
 
 .hero-right img,
 .image-group img {
     transition: all 0.5s ease-in-out;
-}
-
-@keyframes cloud {
-    0% {
-        background-position: 0 0;
-    }
-    100% {
-        background-position: 100vw 0;
-    }
-}
-
-.jumbotron:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: -1;
-    background: url("../assets/login/parallax/parallax-1.png") repeat-x;
-    background-size: 100%;
-    animation: cloud 50s linear infinite;
 }
 
 .jumbotron {
@@ -232,8 +233,46 @@ body {
     justify-content: center;
     align-items: center;
     margin: 0 auto;
-    min-height: 50vh; /* Ensures enough space */
+    min-height: 50vh;
     transition: min-height 0.5s ease, padding 0.5s ease;
+}
+
+#user-greeting {
+    position: absolute;
+    bottom: 8%;
+    right: 8%;
+
+    background: url("../assets/buttons/empty-btn.png") no-repeat center;
+    background-size: contain;
+
+    width: 24rem;
+    height: auto;
+
+    padding: 3rem 3rem 3.5rem 3rem;
+
+    text-align: center;
+
+    z-index: 100;
+
+    font-size: 2rem;
+
+    margin-block: 0;
+}
+
+#typewriter {
+    color: #57291a;
+    letter-spacing: 0.125rem;
+}
+
+.username {
+    color: #fff;
+}
+
+#cursor {
+    color: #57291a;
+
+    font-weight: bold;
+    animation: blink 1s linear infinite;
 }
 
 .curved-text-container {
@@ -252,8 +291,6 @@ text {
     font-size: 3rem;
     fill: #febd01;
 }
-
-
 
 
 .hidden {
@@ -1072,35 +1109,9 @@ body > .image {
     }
 }
 
-#typewriter {
-    color: #57291a;
-    letter-spacing: 0.125rem;
-}
 
-.username {
-    color: #fff;
-}
 
-#cursor {
-    color: #57291a;
-    font-weight: bold;
-    animation: blink 1s linear infinite;
-}
 
-#user-greeting {
-    position: relative;
-    background: url("../assets/buttons/empty-btn.png") no-repeat center;
-    background-size: contain;
-    background-position: center;
-    padding-block: 3rem 3.5rem;
-    width: 30rem;
-    padding-inline: 3rem;
-    height: auto;
-}
-
-#user-greeting p {
-    margin: 2rem;
-}
 
 @keyframes blink {
     100% {
