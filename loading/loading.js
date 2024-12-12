@@ -1,4 +1,4 @@
-// document.addEventListener("DOMContentLoaded", () => {
+
   const layers = document.querySelectorAll(".parallax-layer");
   const loadingFill = document.getElementById("loading-fill");
   const totalGameTime = 20 * 1000;
@@ -68,6 +68,7 @@
     loadingFill.style.width = `${progress}%`;
 
     if (elapsedTime >= totalGameTime) {
+      lockScroll();
       triggerTransitionToGame()
     }
   }
@@ -92,8 +93,8 @@
 
      
      setTimeout(() => {
-       const gamePath = path.join(appDir, "game/game.html"); // Build the correct file path
-       window.location.href = `file://${gamePath}`; // Redirect using the file:// protocol
+       const gamePath = path.join(appDir, "game/game.html"); 
+       window.location.href = `file://${gamePath}`; 
      }, 5000); 
    }, 100);
  }
@@ -184,8 +185,8 @@
         clearLocalStorageExceptUsers();
 
         
-        const loginPath = path.join(appDir, "login/index.html"); // Build the correct file path
-    window.location.href = `file://${loginPath}`; // Redirect using the file:// protocol
+        const loginPath = path.join(appDir, "login/index.html"); 
+    window.location.href = `file://${loginPath}`; 
       }
 
       
@@ -320,4 +321,4 @@
   document.addEventListener("focus", playBackgroundAudio);
   document.addEventListener("mousedown", playBackgroundAudio);
   document.addEventListener("mouseup", playBackgroundAudio);
-// });
+

@@ -121,7 +121,7 @@ button {
 }
 canvas {
   user-select: none;
-  margin-top: -5vh;
+  /* margin-top: -5vh; */
 }
 img {
   width: 100%;

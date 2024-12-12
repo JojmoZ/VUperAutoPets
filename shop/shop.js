@@ -206,7 +206,7 @@ const appDir = window.electron.__dirname;
         }
       
         const h3 = document.getElementById("textext");
-        h3.innerHTML = "Are you sure you want to buy this?";
+        h3.innerHTML = `Are you sure you want to buy ${animal.name}?`;
         confirmButton.style.display = "inline-block";
         h3.style.textAlign = "center";
         cancelButton.innerHTML = "Close";
@@ -232,8 +232,9 @@ const appDir = window.electron.__dirname;
         imageContainer.style.setProperty("--animal-border-color", darkerColor);
       
         if (specialAnimals.includes(animalName)) {
+          document.getElementById("modal-animal-price").textContent = "";
           h3.innerHTML =
-            "You cannot buy this animal. You can only get this animal through gacha.";
+            `You cannot buy ${animalName}. You can only get ${animalName} through gacha.`;
           confirmButton.style.display = "none";
           h3.style.textAlign = "center";
           cancelButton.innerHTML = "Close";
