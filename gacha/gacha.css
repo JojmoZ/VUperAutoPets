@@ -47,7 +47,7 @@ body::-webkit-scrollbar {
 }
 #coinImg {
     position: absolute;
-    left: -2rem;
+    left: -2.5rem;
     width: 4rem;
     height: 4rem;
 }

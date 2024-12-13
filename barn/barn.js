@@ -241,6 +241,7 @@ function astar(start, end) {
   return null;
 }
 
+
 function heuristic(a, b) {
   return Math.abs(a.row - b.row) + Math.abs(a.col - b.col);
 }
@@ -381,8 +382,8 @@ function roamAnimal(animal) {
 }
 
 function createFood(event) {
-  const foodX = event.clientX - 10;
-  const foodY = event.clientY - 10;
+   const foodX = (event.clientX - 10) / scaleX;
+   const foodY = (event.clientY - 10) / scaleY;
   const foodWidth = 20;
   const foodHeight = 20;
 
@@ -404,7 +405,7 @@ function createFood(event) {
   foodElements.push(foodElement);
 
   const foodRow = Math.floor((foodY / scaleY) / gridSize);
-const foodCol = Math.floor((foodX / scaleX) / gridSize);
+  const foodCol = Math.floor((foodX / scaleX) / gridSize);
   const animals = document.querySelectorAll(".animal");
   let closestAnimal = null;
   let minDistance = Infinity;
@@ -433,8 +434,8 @@ const foodCol = Math.floor((foodX / scaleX) / gridSize);
     cancelAnimationFrame(closestAnimal.roamAnimationId);
     setTimeout(() => {
       const start = {
-  row: Math.floor((parseFloat(animal.style.top) + animal.offsetHeight / 2) / (gridSize * scaleY)),
-  col: Math.floor((parseFloat(animal.style.left) + animal.offsetWidth / 2) / (gridSize * scaleX)),
+  row: Math.floor((parseFloat(closestAnimal.style.top) + closestAnimal.offsetHeight / 2) / (gridSize * scaleY)),
+  col: Math.floor((parseFloat(closestAnimal.style.left) + closestAnimal.offsetWidth / 2) / (gridSize * scaleX)),
 };
 
 const end = {
@@ -542,104 +543,63 @@ function unstickAnimal(animal) {
   const startX = parseFloat(animal.style.left) + animal.offsetWidth / 2;
   const startY = parseFloat(animal.style.top) + animal.offsetHeight / 2;
 
-  const safeDistance = 30;
-  const searchRadius = 100;
   const stepSize = gridSize;
+  let validLocations = [];
 
-  let safeLocations = [];
-
-  for (
-    let row = -Math.ceil(searchRadius / stepSize);
-    row <= Math.ceil(searchRadius / stepSize);
-    row++
-  ) {
-    for (
-      let col = -Math.ceil(searchRadius / stepSize);
-      col <= Math.ceil(searchRadius / stepSize);
-      col++
-    ) {
+  for (let row = -10; row <= 10; row++) {
+    for (let col = -10; col <= 10; col++) {
       const candidateX = startX + col * stepSize;
       const candidateY = startY + row * stepSize;
 
       if (
-        candidateX < 0 ||
-        candidateX > animalContainer.clientWidth ||
-        candidateY < 0 ||
-        candidateY > animalContainer.clientHeight
-      )
-        continue;
-
-      if (
+        candidateX >= 0 &&
+        candidateX <= animalContainer.clientWidth &&
+        candidateY >= 0 &&
+        candidateY <= animalContainer.clientHeight &&
         !isInRestrictedZone(
-          candidateX - animal.offsetWidth / 2,
-          candidateY - animal.offsetHeight / 2,
+          candidateX,
+          candidateY,
           animal.offsetWidth,
           animal.offsetHeight
         )
       ) {
-        const isFarEnough = restrictedZones.every((zone) => {
-          const zoneX = zone.x * scaleX;
-          const zoneY = zone.y * scaleY;
-          const zoneWidth = zone.width * scaleX;
-          const zoneHeight = zone.height * scaleY;
-          const zoneCenterX = zoneX + zoneWidth / 2;
-          const zoneCenterY = zoneY + zoneHeight / 2;
-
-          const distance = Math.sqrt(
-            (candidateX - zoneCenterX) ** 2 + (candidateY - zoneCenterY) ** 2
-          );
-
-          return distance >= safeDistance;
-        });
-
-        if (isFarEnough) {
-          safeLocations.push({ x: candidateX, y: candidateY });
-        }
+        validLocations.push({ x: candidateX, y: candidateY });
       }
     }
   }
 
-  let closestLocation = null;
-  let minDistance = Infinity;
-  safeLocations.forEach((location) => {
-    const distance = Math.sqrt(
-      (location.x - startX) ** 2 + (location.y - startY) ** 2
-    );
-    if (distance < minDistance) {
-      minDistance = distance;
-      closestLocation = location;
-    }
-  });
-
-  if (closestLocation) {
-    const endX = closestLocation.x - animal.offsetWidth / 2;
-    const endY = closestLocation.y - animal.offsetHeight / 2;
-
-    const duration = 500;
-    const startTime = performance.now();
-
-    function animateMove(currentTime) {
-      const elapsedTime = currentTime - startTime;
-      const progress = Math.min(elapsedTime / duration, 1);
-
-      const newX = startX + (endX - startX) * progress;
-      const newY = startY + (endY - startY) * progress;
-
-      animal.style.left = `${newX}px`;
-      animal.style.top = `${newY}px`;
-
-      if (progress < 1) {
-        requestAnimationFrame(animateMove);
-      } else {
-        console.log("Animal successfully moved to a safe location.");
-      }
-    }
-
-    requestAnimationFrame(animateMove);
+  if (validLocations.length > 0) {
+    const target = validLocations[0]; // Choose the first valid location
+    animateMove(animal, target.x, target.y);
   } else {
-    console.warn("No valid nearby location found to unstick the animal.");
+    console.warn("No valid location found to unstick the animal.");
   }
 }
+
+function animateMove(animal, targetX, targetY) {
+  const duration = 500;
+  const startTime = performance.now();
+  const startX = parseFloat(animal.style.left);
+  const startY = parseFloat(animal.style.top);
+
+  function animate(currentTime) {
+    const elapsedTime = currentTime - startTime;
+    const progress = Math.min(elapsedTime / duration, 1);
+
+    const newX = startX + (targetX - startX) * progress;
+    const newY = startY + (targetY - startY) * progress;
+
+    animal.style.left = `${newX}px`;
+    animal.style.top = `${newY}px`;
+
+    if (progress < 1) {
+      requestAnimationFrame(animate);
+    }
+  }
+
+  requestAnimationFrame(animate);
+}
+
 
 function updateAnimalSizes() {
   const barnElement = document.getElementById("animals");
