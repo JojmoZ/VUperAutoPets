@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "start": "electronmon .",
-    "dist": "electron-builder",
+    "dist": "electron-builder build --win portable",
     "minify-all": "node minify-all.js",
     "obfuscate": "node obfuscate.js",
     "minify-html": "node minify-html.js",
@@ -18,11 +18,17 @@
     "asarUnpack": [
       "**/*.{mp3,mp4,png,jpg,webp,ttf,woff,woff2,otf}"
     ],
+     "compression": "maximum", 
+  "nsis": {
+    "oneClick": false,
+    "allowToChangeInstallationDirectory": true
+  },
     "appId": "com.vuperautopets.app",
     "productName": "VUperAutoPets",
     "files": [
       "**/*",
       "!node_modules/.cache",
+      "!node_modules",
       "!dist",
       "!logs",
       "!*.log",

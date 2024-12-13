@@ -72,23 +72,20 @@ const restrictedZones = [
   { x: 1680, y: 30, width: 90, height: 65 },
   { x: 1850, y: 0, width: 70, height: 1080 },
 ];
-function updateScalingFactors() {
-  const barnElement = document.getElementById("animals");
-  const barnRect = barnElement.getBoundingClientRect();
-  scaleX = barnRect.width / 1920;
-  scaleY = barnRect.height / 1080;
-}
+// function updateScalingFactors() {
+//   const barnElement = document.getElementById("animals");
+//   const barnRect = barnElement.getBoundingClientRect();
+//   scaleX = barnRect.width / 1920;
+//   scaleY = barnRect.height / 1080;
+// }
 const logged = localStorage.getItem("loggedin");
 
 if (!logged) {
-  
   function clearLocalStorageExceptUsers() {
-    const keysToKeep = ["users"]; 
+    const keysToKeep = ["users"];
 
-    
     const allKeys = Object.keys(localStorage);
 
-    
     allKeys.forEach((key) => {
       if (!keysToKeep.includes(key)) {
         localStorage.removeItem(key);
@@ -96,22 +93,21 @@ if (!logged) {
     });
   }
 
-  
   clearLocalStorageExceptUsers();
 
-  
-  const loginPath = path.join(appDir, "login/index.html"); 
-    window.location.href = `file://${loginPath}`; 
+  const loginPath = path.join(appDir, "login/index.html");
+  window.location.href = `file://${loginPath}`;
 }
 
 function isInRestrictedZone(animalX, animalY, animalWidth, animalHeight) {
-  updateScalingFactors();
+  const { bgWidth, bgHeight, offsetX, offsetY } = calculateBackgroundOffsets();
 
   return restrictedZones.some((zone) => {
-    const zoneX = zone.x * scaleX;
-    const zoneY = zone.y * scaleY;
-    const zoneWidth = zone.width * scaleX;
-    const zoneHeight = zone.height * scaleY;
+    const zoneX = (zone.x / 1920) * bgWidth + offsetX;
+    const zoneY = (zone.y / 1080) * bgHeight + offsetY;
+    const zoneWidth = (zone.width / 1920) * bgWidth;
+    const zoneHeight = (zone.height / 1080) * bgHeight;
+
     return (
       animalX < zoneX + zoneWidth &&
       animalX + animalWidth > zoneX &&
@@ -145,7 +141,7 @@ function getUserAnimals() {
 
 function createAnimal(animal) {
   const animalElement = document.createElement("img");
-  animalElement.src = animal.img
+  animalElement.src = animal.img;
   animalElement.className = "animal";
   animalElement.style.position = "absolute";
   animalElement.dataset.name = animal.name;
@@ -253,11 +249,11 @@ function isValidCell(row, col) {
   return (
     row >= 0 && row < rows && col >= 0 && col < cols && grid[row][col] !== 1
   );
-}
+} 
 const backbtn = document.getElementById("backArrow");
 backbtn.addEventListener("click", function () {
-  const menuPath = path.join(appDir, "menu/menu.html"); 
-  window.location.href = `file://${menuPath}`; 
+  const menuPath = path.join(appDir, "menu/menu.html");
+  window.location.href = `file://${menuPath}`;
 });
 function moveOutOfRestrictedZone(animal) {
   const directions = [
@@ -401,7 +397,7 @@ function createFood(event) {
   foodElement.style.height = "1.75rem";
   foodElement.style.backgroundImage = "url('../assets/items/Pizza.webp')";
   foodElement.style.backgroundSize = "cover";
-  
+
   foodElement.style.left = `${foodX}px`;
   foodElement.style.top = `${foodY}px`;
   animalContainer.appendChild(foodElement);
@@ -451,10 +447,10 @@ function createFood(event) {
       const end = { row: foodRow, col: foodCol };
 
       const path = astar(start, end);
-      if (path) {
-        followPath(closestAnimal, path, () => {
-          foodElement.remove();
-          foodElements = foodElements.filter((el) => el !== foodElement);
+    if (path) {
+      followPath(closestAnimal, path, () => {
+        foodElement.remove();
+        foodElements = foodElements.filter((el) => el !== foodElement);
           if (
             isInRestrictedZone(
               parseFloat(closestAnimal.style.left),
@@ -465,16 +461,16 @@ function createFood(event) {
           ) {
             unstickAnimal(closestAnimal);
           }
-          closestAnimal.dataset.isMovingToFood = "false";
-          roamAnimal(closestAnimal);
-        });
-      }
+        closestAnimal.dataset.isMovingToFood = "false";
+        roamAnimal(closestAnimal);
+      });
+    }
     }, 200);
   }
 }
 
 function followPath(animal, path, callback) {
-  let index = 0;
+    let index = 0;
   const speed = 1;
   function moveStep() {
     if (index >= path.length) {
@@ -502,21 +498,27 @@ function followPath(animal, path, callback) {
       setTimeout(moveStep, 10);
     }
   }
+
   moveStep();
   setTimeout(() => {}, 500);
 }
+
 function drawRestrictedZones() {
+  const { bgWidth, bgHeight, offsetX, offsetY } = calculateBackgroundOffsets();
   const existingZones = document.querySelectorAll(".restricted-area");
   existingZones.forEach((zone) => zone.remove());
 
   restrictedZones.forEach((zone) => {
     const zoneElement = document.createElement("div");
     zoneElement.className = "restricted-area";
+
+    // Map the coordinates to the actual background size and position
     zoneElement.style.position = "absolute";
-    zoneElement.style.left = `${zone.x * scaleX}px`;
-    zoneElement.style.top = `${zone.y * scaleY}px`;
-    zoneElement.style.width = `${zone.width * scaleX}px`;
-    zoneElement.style.height = `${zone.height * scaleY}px`;
+    zoneElement.style.left = `${(zone.x / 1920) * bgWidth + offsetX}px`;
+    zoneElement.style.top = `${(zone.y / 1080) * bgHeight + offsetY}px`;
+    zoneElement.style.width = `${(zone.width / 1920) * bgWidth}px`;
+    zoneElement.style.height = `${(zone.height / 1080) * bgHeight}px`;
+
     animalContainer.appendChild(zoneElement);
   });
 }
@@ -686,11 +688,11 @@ function updateCoordinates() {
 }
 
 window.addEventListener("resize", () => {
-  updateScalingFactors();
-  resetGrid();
+  // updateScalingFactors();
   drawRestrictedZones();
+  resetGrid();
 });
-updateScalingFactors();
+// updateScalingFactors();
 resetGrid();
 drawRestrictedZones();
 
@@ -710,6 +712,30 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+function calculateBackgroundOffsets() {
+  const barnElement = document.getElementById("animals");
+  const barnRect = barnElement.getBoundingClientRect();
+  const bgImageAspectRatio = 1920 / 1080; // Aspect ratio of the original background image
+  const containerAspectRatio = barnRect.width / barnRect.height;
+
+  let bgWidth, bgHeight, offsetX, offsetY;
+
+  if (containerAspectRatio > bgImageAspectRatio) {
+    // Container is wider than the image
+    bgWidth = barnRect.width;
+    bgHeight = barnRect.width / bgImageAspectRatio;
+    offsetX = 0;
+    offsetY = (barnRect.height - bgHeight) / 2;
+  } else {
+    // Container is taller than the image
+    bgWidth = barnRect.height * bgImageAspectRatio;
+    bgHeight = barnRect.height;
+    offsetX = (barnRect.width - bgWidth) / 2;
+    offsetY = 0;
+  }
+
+  return { bgWidth, bgHeight, offsetX, offsetY };
+}
 
 function resetGrid() {
   updateScalingFactors();
@@ -733,7 +759,7 @@ let currentAnimal = null;
 function showStatWindow(animal) {
   const pic = document.getElementById("animalStatPicture");
   pic.src = animal.src;
-  
+
   const statWindow = document.getElementById("statWindow");
   const animalName = document.getElementById("animalName");
   const animalAttack = document.getElementById("animalAttack");
