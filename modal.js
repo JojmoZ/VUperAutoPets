@@ -22,7 +22,8 @@ class Modal {
       z-index: 10012312678330;
     `;
     this.modalBox.style.cssText = `
-      background: linear-gradient(135deg, rgba(0, 0, 255, 0.8), rgba(255, 0, 0, 0.8));
+      background:white;
+      border: 9px solid black;
       padding: 40px;
       border-radius: 15px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
@@ -36,7 +37,7 @@ class Modal {
     this.modalContent.style.cssText = `
       margin-bottom: 20px;
       font-size: 2.5rem;
-      color: white;
+      color: black;
       line-height: 1.5;
     `;
     this.modalCloseButton.style.cssText = `
