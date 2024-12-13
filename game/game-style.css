@@ -914,6 +914,7 @@ img {
   gap: 3rem;
   left: 5%;
   bottom: 5%;
+  z-index: 1;
   background-color: rgba(0, 0, 0, 0.5);
 }
 .enemyTeamInfo {
@@ -925,6 +926,7 @@ img {
   border-radius: 20px;
   gap: 3rem;
   right: 5%;
+  z-index: 1;
   bottom: 5%;
   background-color: rgba(0, 0, 0, 0.5);
 }

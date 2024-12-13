@@ -2964,9 +2964,9 @@ function togglePause() {
     document.getElementById("pauseasset").src =
       "../assets/game-asset/button/pause-btn.png";
     const pauseDuration = performance.now() - pauseStartTime;
-    activeAnimations.forEach((anim) => {
-      anim.lastFrameTime += pauseDuration;
-    });
+    // activeAnimations.forEach((anim) => {
+    //   anim.lastFrameTime += pauseDuration;
+    // });
     pauseStartTime = null;
   }
 }
@@ -3022,12 +3022,19 @@ function generaateMyInfo() {
   let username = localStorage.getItem("username") || "";
   const myName = document.createElement("p");
   myName.textContent = username;
-  const myLives = document.createElement("p");
-  myLives.textContent = `Lives: ${lives}`;
+  const myLives = document.createElement("pre");
+    myLives.textContent = `Lives     ${lives}`;
   const heart = document.createElement("img");
   heart.src = "../assets/game-asset/stat-heart.png";
-  heart.style.width = "1.5rem";
-  heart.style.height = "1.5rem";
+  heart.style.width = "3rem";
+  heart.style.height = "3rem";
+  heart.style.position = "relative";
+  heart.style.zIndex = "-1"
+  if(lives ==1){
+    heart.style.left = "-2.2rem"
+  }else{
+    heart.style.left = "-2.4rem"
+  }
   const RightDiv = document.createElement("div");
   const LeftDiv = document.createElement("div");
   LeftDiv.style.display = "flex";
@@ -3038,6 +3045,7 @@ function generaateMyInfo() {
   LeftDiv.style.textAlign = "left";
   LeftDiv.style.justifyContent = "space-between";
   MyteamName.textContent = teamName;
+  MyteamName.style.color = "#59CEC6";
   LeftDiv.appendChild(myName);
   LeftDiv.appendChild(MyteamName);
   RightDiv.appendChild(myLives);
@@ -3053,21 +3061,30 @@ function generateEnemyInfo(bossBattle = false) {
   const enemyTeamInfo = document.getElementById("enemyTeamInfo");
   const heart = document.createElement("img");
   heart.src = "../assets/game-asset/stat-heart.png";
-  heart.style.width = "1.5rem";
-  heart.style.height = "1.5rem";
+  heart.style.width = "3rem";
+  heart.style.height = "3rem";
+  heart.style.position = "relative"
+  heart.style.zIndex = "-1"
   enemyTeamInfo.innerHTML = "";
   const fromOnline = localStorage.getItem("fromOnline");
-  let enemyLives = document.createElement("p");
+  let enemyLives = document.createElement("pre");
   const enemyName = document.createElement("p");
   if (fromOnline == "false" && bossBattle == false) {
     enemyName.textContent = "Hard Bot";
-    enemyLives.textContent = "Lives: 1";
+    enemyLives.textContent = "Lives     1";
+    heart.style.left = "-2.2rem"
   } else if (bossBattle == true) {
     enemyName.textContent = "ADMIN";
-    enemyLives.textContent = "Lives: 1";
+    enemyLives.textContent = "Lives     1";
+    heart.style.left = "-2.2rem"
   } else {
     enemyName.textContent = enemyOnlineName;
-    enemyLives.textContent = "Lives: " + enemyOnlineLives;
+    enemyLives.textContent = "Lives     " + enemyOnlineLives;
+    if(enemyOnlineLives == 1){
+      heart.style.left = "-2.2rem"
+    }else{
+      heart.style.left = "-2.4rem"
+    }
   }
   const leftDiv = document.createElement("div");
   const rightDiv = document.createElement("div");
@@ -3075,6 +3092,7 @@ function generateEnemyInfo(bossBattle = false) {
   rightDiv.style.flexDirection = "column";
   let MyteamName = document.createElement("p");
   MyteamName.style.margin = "0";
+  MyteamName.style.color = "#F46D33";
   enemyName.style.margin = "0";
   rightDiv.style.textAlign = "right";
   rightDiv.style.justifyContent = "space-between";
