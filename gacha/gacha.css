@@ -8,7 +8,14 @@
 * {
     font-family: 'VUper', serif;
 }
-
+.gacha-iamge-container{
+    position: absolute;
+}
+.gacha-title-imagae{
+    position:relative;
+    top:3rem;
+    height: 15rem;
+}
 .hidden {
     display: none;
 }

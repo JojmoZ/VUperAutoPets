@@ -72,12 +72,12 @@ const restrictedZones = [
   { x: 1680, y: 30, width: 90, height: 65 },
   { x: 1850, y: 0, width: 70, height: 1080 },
 ];
-// function updateScalingFactors() {
-//   const barnElement = document.getElementById("animals");
-//   const barnRect = barnElement.getBoundingClientRect();
-//   scaleX = barnRect.width / 1920;
-//   scaleY = barnRect.height / 1080;
-// }
+function updateScalingFactors() {
+  const barnElement = document.getElementById("animals");
+  const barnRect = barnElement.getBoundingClientRect();
+  scaleX = barnRect.width / 1920;
+  scaleY = barnRect.height / 1080;
+}
 const logged = localStorage.getItem("loggedin");
 
 if (!logged) {
@@ -403,8 +403,8 @@ function createFood(event) {
   animalContainer.appendChild(foodElement);
   foodElements.push(foodElement);
 
-  const foodRow = Math.floor(event.clientY / gridSize);
-  const foodCol = Math.floor(event.clientX / gridSize);
+  const foodRow = Math.floor((foodY / scaleY) / gridSize);
+const foodCol = Math.floor((foodX / scaleX) / gridSize);
   const animals = document.querySelectorAll(".animal");
   let closestAnimal = null;
   let minDistance = Infinity;
@@ -433,24 +433,21 @@ function createFood(event) {
     cancelAnimationFrame(closestAnimal.roamAnimationId);
     setTimeout(() => {
       const start = {
-        row: Math.floor(
-          (parseFloat(closestAnimal.style.top) +
-            closestAnimal.offsetHeight / 2) /
-            gridSize
-        ),
-        col: Math.floor(
-          (parseFloat(closestAnimal.style.left) +
-            closestAnimal.offsetWidth / 2) /
-            gridSize
-        ),
-      };
-      const end = { row: foodRow, col: foodCol };
+  row: Math.floor((parseFloat(animal.style.top) + animal.offsetHeight / 2) / (gridSize * scaleY)),
+  col: Math.floor((parseFloat(animal.style.left) + animal.offsetWidth / 2) / (gridSize * scaleX)),
+};
+
+const end = {
+  row: Math.floor(foodY / (gridSize * scaleY)),
+  col: Math.floor(foodX / (gridSize * scaleX)),
+};
+
 
       const path = astar(start, end);
-    if (path) {
-      followPath(closestAnimal, path, () => {
-        foodElement.remove();
-        foodElements = foodElements.filter((el) => el !== foodElement);
+      if (path) {
+        followPath(closestAnimal, path, () => {
+          foodElement.remove();
+          foodElements = foodElements.filter((el) => el !== foodElement);
           if (
             isInRestrictedZone(
               parseFloat(closestAnimal.style.left),
@@ -478,8 +475,9 @@ function followPath(animal, path, callback) {
       return;
     }
     const node = path[index];
-    const nextX = node.col * gridSize + gridSize / 2;
-    const nextY = node.row * gridSize + gridSize / 2;
+    const nextX = node.col * gridSize * scaleX + gridSize * scaleX / 2;
+const nextY = node.row * gridSize * scaleY + gridSize * scaleY / 2;
+
     const currentX = parseFloat(animal.style.left) + animal.offsetWidth / 2;
     const currentY = parseFloat(animal.style.top) + animal.offsetHeight / 2;
     const deltaX = nextX - currentX;
@@ -688,11 +686,11 @@ function updateCoordinates() {
 }
 
 window.addEventListener("resize", () => {
-  // updateScalingFactors();
+  updateScalingFactors();
   drawRestrictedZones();
   resetGrid();
 });
-// updateScalingFactors();
+updateScalingFactors();
 resetGrid();
 drawRestrictedZones();
 
@@ -738,7 +736,7 @@ function calculateBackgroundOffsets() {
 }
 
 function resetGrid() {
-  updateScalingFactors();
+  updateScalingFactors(); // Update scaleX and scaleY first
   grid.forEach((row) => row.fill(0));
   restrictedZones.forEach((zone) => {
     const startX = Math.floor((zone.x * scaleX) / gridSize);
@@ -748,11 +746,14 @@ function resetGrid() {
 
     for (let i = startY; i <= endY; i++) {
       for (let j = startX; j <= endX; j++) {
-        if (i >= 0 && i < rows && j >= 0 && j < cols) grid[i][j] = 1;
+        if (i >= 0 && i < rows && j >= 0 && j < cols) {
+          grid[i][j] = 1; // Mark restricted zones
+        }
       }
     }
   });
 }
+
 
 let currentAnimal = null;
 
