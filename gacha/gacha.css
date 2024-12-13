@@ -116,6 +116,17 @@ body {
     }
 }
 
+@keyframes fadeOutScale {
+    from {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5);
+    }
+}
+
 .gacha-container {
     display: flex;
     align-items: center;
@@ -326,6 +337,10 @@ h1.hover::after {
     transform: translate(-50%, -50%);
     z-index: 1001;
     animation: fadeInScale 0.5s ease-out forwards;
+}
+
+.win-image-container.fade-out {
+    animation: fadeOutScale 0.5s ease-out forwards;
 }
 
 .win-image-container img {

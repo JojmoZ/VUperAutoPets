@@ -369,19 +369,19 @@ document.addEventListener("DOMContentLoaded", function () {
       launchFireworksRound();
     }, 2000);
 
-    // setTimeout(() => {
-    //   h1Element.classList.add("hover");
-    // }, 500);
-
     setTimeout(() => {
       fireworksContainer.style.display = "none";
-      winImageContainer.style.display = "none"; // Hide the win image
-      while (fireworksContainer.firstChild) {
-        fireworksContainer.removeChild(fireworksContainer.firstChild);
-      }
-      // h1Element.classList.remove("hover");
-      // h1Element.innerText = originalText;
-      // h1Element.setAttribute("data-text", originalText);
+      winImageContainer.classList.add("fade-out"); // Apply fade-out animation
+      setTimeout(() => {
+        winImageContainer.style.display = "none"; // Hide the win image
+        winImageContainer.classList.remove("fade-out"); // Remove fade-out class
+        while (fireworksContainer.firstChild) {
+          fireworksContainer.removeChild(fireworksContainer.firstChild);
+        }
+        // h1Element.classList.remove("hover");
+        // h1Element.innerText = originalText;
+        // h1Element.setAttribute("data-text", originalText);
+      }, 500); // Match the duration of the fade-out animation
     }, 5000);
   }
 
