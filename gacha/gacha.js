@@ -277,7 +277,7 @@ document.addEventListener("DOMContentLoaded", function () {
           ? finalAnimal
           : shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
 
-      slotItem.innerHTML = `<img src="${animal.img}" alt="${animal.name}" style="width: 195px; height: 195px;">`;
+      slotItem.innerHTML = `<img src="${animal.img}" alt="${animal.name}" style="max-width: 10rem; max-height: 195px;aspect-ratio:1/1">`;
       reel.appendChild(slotItem);
     }
 
@@ -335,6 +335,8 @@ document.addEventListener("DOMContentLoaded", function () {
   function showFireworks() {
     const fireworksContainer = document.getElementById("fireworks-container");
     const winImageContainer = document.getElementById("winImageContainer");
+    const overlay = document.getElementById("overlay");
+    overlay.style.display = "block"; // Show the overlay
     fireworksContainer.style.display = "block";
     winImageContainer.style.display = "block"; // Show the win image
 
@@ -375,6 +377,7 @@ document.addEventListener("DOMContentLoaded", function () {
       setTimeout(() => {
         winImageContainer.style.display = "none"; // Hide the win image
         winImageContainer.classList.remove("fade-out"); // Remove fade-out class
+        overlay.style.display = "none"; // Hide the overlay
         while (fireworksContainer.firstChild) {
           fireworksContainer.removeChild(fireworksContainer.firstChild);
         }
