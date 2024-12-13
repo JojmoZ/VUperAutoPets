@@ -213,7 +213,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const selectedAnimals = [];
     const random = Math.random();
 
-    if (random < 0.02 || users[userIndex].pity >= 50) {
+    if (random < 0.05 || users[userIndex].pity >= 50) {
       users[userIndex].pity = 0;
       localStorage.setItem("users", JSON.stringify(users));
       const specialRewards = shopAnimals.filter((animal) =>
@@ -224,7 +224,7 @@ document.addEventListener("DOMContentLoaded", function () {
       for (let i = 0; i < 3; i++) {
         selectedAnimals.push(rareAnimal);
       }
-    } else if (random < 0.09) {
+    } else if (random < 0.3) {
       const otherAnimals = shopAnimals.filter(
         (animal) =>
           !["MSeer", "VandaJ", "YenguiK", "PamstIr"].includes(animal.name)

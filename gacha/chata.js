@@ -1,11 +1,11 @@
 let cheatCode = "";
 const cheatSequences = {
   jaklingko: "500000 Coins",
-  subcoc: "MSeer",
-  subcojava: "YenguiK",
-  subcodb: "VandaJ",
-  subcowd: "PamstIr",
-  subcovis: "eagSVle",
+  subcoc: "Your next reward is your SubCo A&DS!",
+  subcojava: "Your next reward is your SubCo Java!",
+  subcodb: "Your next reward is your SubCo DB!",
+  subcowd: "Your next reward is your SubCo WD!",
+  subcovis: "Your next reward is your SubCo COMVIS!",
 };
 let cheatActivated = false;
 let cheatReward = "";
@@ -93,7 +93,7 @@ function showCheatModal(reward) {
       cheatModal.style.display = "none";
       cheatModal.classList.remove("hide");
       cheatActivated = false;
-    }, 500);
+    }, 3000);
   }, 1500);
 
   if(reward == "500000 Coins"){

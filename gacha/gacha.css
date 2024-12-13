@@ -203,10 +203,9 @@ body {
 }
 
 
-/* .slot-item:nth-child(even) {
+.slot-item:nth-child(even) {
   background-color: rgba(240, 240, 240, 0.5); 
-} */
-
+}
 .lever-container {
     display: flex;
     justify-content: center;
@@ -365,7 +364,7 @@ h1.hover::after {
 }
 
 .win-image-container img {
-    width: 60rem;
+    width: 70rem;
     max-width: 60rem;
     height: auto;
 }
