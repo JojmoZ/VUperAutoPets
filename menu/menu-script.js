@@ -25,8 +25,8 @@ window.onload = () => {
 
     clearLocalStorageExceptUsers();
 
-    const loginPath = path.join(appDir, "login/index.html"); // Build the correct file path
-    window.location.href = `file://${loginPath}`; // Redirect using the file:// protocol
+    const loginPath = path.join(appDir, "login/index.html"); 
+    window.location.href = `file://${loginPath}`; 
   }
 
   localStorage.removeItem("ingame");
@@ -35,26 +35,26 @@ window.onload = () => {
   playbtn.addEventListener("click", function () {
     checkboughtanimals();
       if (canPlay) {
-        const loadingPath = path.join(appDir, "loading/loading.html"); // Build the correct file path
-        window.location.href = `file://${loadingPath}`; // Redirect using the file:// protocol
+        const loadingPath = path.join(appDir, "loading/loading.html"); 
+        window.location.href = `file://${loadingPath}`; 
       } else {
         ShowModal("You need to have at least 1 animal to play the game!");
       }
   });
   const homebtn = document.getElementById("home-btn");
   homebtn.addEventListener("click", function () {
-    const homePath = path.join(appDir, "home/homepage.html"); // Build the correct file path
-    window.location.href = `file://${homePath}`; // Redirect using the file:// protocol
+    const homePath = path.join(appDir, "home/homepage.html"); 
+    window.location.href = `file://${homePath}`; 
   });
   const barnbtn = document.getElementById("barn-btn");
   barnbtn.addEventListener("click", function () {
-    const barnPath = path.join(appDir, "barn/barnpage.html"); // Build the correct file path
-    window.location.href = `file://${barnPath}`; // Redirect using the file:// protocol
+    const barnPath = path.join(appDir, "barn/barnpage.html"); 
+    window.location.href = `file://${barnPath}`; 
   });
   const shopbtn = document.getElementById("shop-btn");
   shopbtn.addEventListener("click", function () {
-    const shopPath = path.join(appDir, "shop/shoppage.html"); // Build the correct file path
-    window.location.href = `file://${shopPath}`; // Redirect using the file:// protocol
+    const shopPath = path.join(appDir, "shop/shoppage.html"); 
+    window.location.href = `file://${shopPath}`; 
   });
 
   overlay.addEventListener("click", function () {
@@ -77,8 +77,8 @@ window.onload = () => {
     localStorage.removeItem("firstTime");
     localStorage.removeItem("teamName");
     localStorage.removeItem("fromOnline");
-    const loginPath = path.join(appDir, "login/index.html"); // Build the correct file path
-    window.location.href = `file://${loginPath}`; // Redirect using the file:// protocol
+    const loginPath = path.join(appDir, "login/index.html"); 
+    window.location.href = `file://${loginPath}`; 
   });
   function checkboughtanimals() {
     const boughtanimals = localStorage.getItem("ownedAnimals");

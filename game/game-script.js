@@ -141,8 +141,8 @@ if (!logged) {
 
   clearLocalStorageExceptUsers();
 
-  const loginPath = path.join(appDir, "login/index.html"); // Build the correct file path
-    window.location.href = `file://${loginPath}`; // Redirect using the file:// protocol
+  const loginPath = path.join(appDir, "login/index.html"); 
+    window.location.href = `file://${loginPath}`; 
 }
 
 function saveRandomAnimals() {
@@ -152,8 +152,8 @@ function rollfirst() {
   const ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
   if (!ownedAnimals || ownedAnimals.length === 0) {
     setTimeout(() => {
-      const homePath = path.join(appDir, "home/homepage.html"); // Build the correct file path
-    window.location.href = `file://${homePath}`; // Redirect using the file:// protocol
+      const homePath = path.join(appDir, "home/homepage.html"); 
+    window.location.href = `file://${homePath}`; 
     }, 3000);
     return;
   }
@@ -1240,8 +1240,8 @@ function hideNonBattleElements() {
 }
 document.getElementById("backArrow").addEventListener("click", function () {
   localStorage.removeItem("ingame");
-  const menuPath = path.join(appDir, "menu/menu.html"); // Build the correct file path
-  window.location.href = `file://${menuPath}`; // Redirect using the file:// protocol
+  const menuPath = path.join(appDir, "menu/menu.html"); 
+  window.location.href = `file://${menuPath}`; 
 });
 function showCanvas() {
   document.getElementById("battleCanvas").classList.remove("hidden");
@@ -1324,8 +1324,8 @@ document.addEventListener("DOMContentLoaded", function () {
         setTimeout(() => {
           if (lives <= 0) {
             resetGame();
-            const menuPath = path.join(appDir, "menu/menu.html"); // Build the correct file path
-            window.location.href = `file://${menuPath}`; // Redirect using the file:// protocol
+            const menuPath = path.join(appDir, "menu/menu.html"); 
+            window.location.href = `file://${menuPath}`; 
           }
         }, 1000);
         localStorage.setItem("lives", lives);
@@ -2725,8 +2725,8 @@ function DefeatScreen() {
         hideRightSide();
         openCurtains(() => {
           resetGame();
-          const menuPath = path.join(appDir, "menu/menu.html"); // Build the correct file path
-          window.location.href = `file://${menuPath}`; // Redirect using the file:// protocol
+          const menuPath = path.join(appDir, "menu/menu.html"); 
+          window.location.href = `file://${menuPath}`; 
         });
       }, 1000);
     }, 1000);

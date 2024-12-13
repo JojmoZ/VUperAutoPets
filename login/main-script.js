@@ -185,8 +185,8 @@ window.onload = function () {
   let isLoginCardVisible = false;
   const logged = localStorage.getItem("loggedin");
   if (logged) {
-    const homePath = path.join(appDir, "home/homepage.html"); // Build the correct file path
-    window.location.href = `file://${homePath}`; // Redirect using the file:// protocol
+    const homePath = path.join(appDir, "home/homepage.html"); 
+    window.location.href = `file://${homePath}`; 
   }
   registerTab.classList.add("active");
   registrationForm.classList.add("active");
@@ -583,8 +583,8 @@ window.onload = function () {
       localStorage.setItem("username", user.displayName);
       localStorage.setItem("coins", user.coins);
       localStorage.setItem("ownedAnimals", JSON.stringify(user.ownedAnimals));
-      const menuPath = path.join(appDir, "menu/menu.html"); // Build the correct file path
-      window.location.href = `file://${menuPath}`; // Redirect using the file:// protocol
+      const menuPath = path.join(appDir, "menu/menu.html"); 
+      window.location.href = `file://${menuPath}`; 
     } else {
       modalErrorText.innerText = "Invalid username or password.";
       showErrorModal();

@@ -6,8 +6,8 @@ window.onload = function () {
 
   const backbtn = document.getElementById("backArrow");
   backbtn.addEventListener("click", function () {
-    const menuPath = path.join(appDir, "menu/menu.html"); // Build the correct file path
-    window.location.href = `file://${menuPath}`; // Redirect using the file:// protocol
+    const menuPath = path.join(appDir, "menu/menu.html"); 
+    window.location.href = `file://${menuPath}`; 
   });
   track.dataset.percentage = "-30";
   track.style.transform = `translate(-30%, -50%)`;
@@ -78,8 +78,8 @@ window.onload = function () {
 
     clearLocalStorageExceptUsers();
 
-    const loginPath = path.join(appDir, "login/index.html"); // Build the correct file path
-    window.location.href = `file://${loginPath}`; // Redirect using the file:// protocol
+    const loginPath = path.join(appDir, "login/index.html"); 
+    window.location.href = `file://${loginPath}`; 
   }
   const fadeInElements = document.querySelectorAll(".fade-in-element");
   const elementObserver = new IntersectionObserver(

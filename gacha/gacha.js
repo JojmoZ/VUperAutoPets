@@ -214,7 +214,7 @@ function handleCheatActivation() {
     const random = Math.random();
 
     if (random < 0.02 || users[userIndex].pity >= 50) {
-        users[userIndex].pity = 0; // Reset pity count after a special reward
+        users[userIndex].pity = 0; 
         localStorage.setItem("users", JSON.stringify(users));
       const specialRewards = shopAnimals.filter((animal) =>
         ["MSeer", "VandaJ", "YenguiK", "PamstIr"].includes(animal.name)

@@ -90,7 +90,7 @@ body {
   justify-content: center;
   align-items: center;
   margin: 0 auto;
-    min-height: 50vh; /* Ensures enough space */
+    min-height: 50vh; 
   transition: min-height 0.5s ease, padding 0.5s ease;
 }
 
