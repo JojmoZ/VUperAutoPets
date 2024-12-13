@@ -113,4 +113,53 @@ window.onload = () => {
   document.addEventListener("focus", playBackgroundAudio);
   document.addEventListener("mousedown", playBackgroundAudio);
   document.addEventListener("mouseup", playBackgroundAudio);
+   const username = localStorage.getItem("username").split(" ")[0];
+   const el = document.querySelector("#typewriter");
+    const words = [
+      `Welcome, <span class="username">${username} </span>!`,
+      `Bienvenido, <span class="username">${username} </span>!`,
+      `Bienvenue, <span class="username">${username} </span>!`,
+      `Willkommen, <span class="username">${username} </span>!`,
+      `Benvenuto, <span class="username">${username} </span>!`,
+    ];
+
+    const sleepTime = 100;
+    let currWordIndex = 0;
+
+    const sleep = (time) => {
+      return new Promise((resolve) => setTimeout(resolve, time));
+    };
+
+    const effect = async () => {
+      while (true) {
+        const currWord = words[currWordIndex];
+        let isTag = false;
+
+        for (let i = 0; i < currWord.length; i++) {
+          if (currWord[i] === "<") isTag = true;
+          if (currWord[i] === ">") isTag = false;
+
+          el.innerHTML = currWord.substring(0, i + 1);
+          if (!isTag) await sleep(sleepTime);
+        }
+
+        await sleep(3000);
+
+        for (let i = currWord.length; i >= 0; i--) {
+          if (currWord[i] === ">") isTag = true;
+          if (currWord[i] === "<") isTag = false;
+
+          el.innerHTML = currWord.substring(0, i);
+          if (!isTag) await sleep(sleepTime);
+        }
+
+        let nextWordIndex;
+        do {
+          nextWordIndex = Math.floor(Math.random() * words.length);
+        } while (nextWordIndex === currWordIndex);
+
+        currWordIndex = nextWordIndex;
+      }
+    };
+    effect();
 };
