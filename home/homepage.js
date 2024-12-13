@@ -111,6 +111,27 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(cycleImages, 5000);
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+    const info = document.querySelector('.top-pets-info');
+    const container = document.querySelector('.pet-container');
+    const visibleCards = container.querySelectorAll('.pet-card:not(.hidden)');
+    const allCards = container.querySelectorAll('.pet-card');
+
+    visibleCards.forEach(card => {
+        card.addEventListener('click', () => {
+            container.classList.add('expanded');
+
+            info.classList.add('hidden');
+
+            allCards.forEach(c => c.classList.remove('hidden'));
+            //
+            // if (container.classList.contains('expanded')) {
+            //     card.classList.add('active');
+            // }
+        });
+    });
+});
+
 window.onload = function () {
     localStorage.removeItem("ingame");
     const track = document.getElementById("maps");
