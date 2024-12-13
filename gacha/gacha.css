@@ -105,6 +105,17 @@ body {
     }
 }
 
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
 .gacha-container {
     display: flex;
     align-items: center;
@@ -141,7 +152,8 @@ body {
 
 .slot-item {
   width: 100%;
-  height:195px; 
+  height:195px;
+  aspect-ratio: 1/1; 
   display: flex;
   justify-content: center;
   align-items: center;
@@ -171,7 +183,21 @@ body {
     margin-bottom: 1rem;
     position: relative;
 }
+.Start-Button-Container{
 
+}
+.start-button{
+    width: 13rem;
+    aspect-ratio: 1/1;
+    height: 6.25rem;
+    background-image: url(../assets/game-asset/button/confirm-btn.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    cursor: pointer;
+    border: none;
+    background-image: url(../assets/gacha/2.png);
+}
 .lever {
     width: 20px;
     height: 100px;
@@ -290,4 +316,20 @@ h1.hover::after {
 
 .color-row.yellow {
   background-color: rgba(255, 255, 0, 0.2);
+}
+
+.win-image-container {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1001;
+    animation: fadeInScale 0.5s ease-out forwards;
+}
+
+.win-image-container img {
+    width: 50rem;
+    max-width: 50rem;
+    height: auto;
 }

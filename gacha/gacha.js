@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("column3"),
   ];
   const gachaResult = document.getElementById("gachaResult");
-  const h1Element = document.querySelector("h1[data-text='Try Your Luck!']");
+  // const h1Element = document.querySelector("h1[data-text='Try Your Luck!']");
   let shopAnimals = [];
   const username = localStorage.getItem("username");
   fetch("../assets/jsons/shopAnimals.json")
@@ -23,36 +23,37 @@ document.addEventListener("DOMContentLoaded", function () {
 
   let isRolling = false;
   const logged = localStorage.getItem("loggedin");
- function populateColumn(column) {
-   const reel = document.createElement("div");
-   reel.style.position = "relative";
-   reel.style.top = "0px";
-   column.appendChild(reel);
+  function populateColumn(column) {
+    const reel = document.createElement("div");
+    reel.style.position = "relative";
+    reel.style.top = "0px";
+    column.appendChild(reel);
 
-   const visibleSlots = 3; 
-   const rowsAbove = 12; 
-   const rowsBelow = 6; 
-   const totalRows = rowsAbove + visibleSlots + rowsBelow;
+    const visibleSlots = 3;
+    const rowsAbove = 12;
+    const rowsBelow = 6;
+    const totalRows = rowsAbove + visibleSlots + rowsBelow;
 
-   column.dataset.initialAnimals = JSON.stringify([]); 
-   const initialAnimals = [];
+    column.dataset.initialAnimals = JSON.stringify([]);
+    const initialAnimals = [];
 
-   for (let i = 0; i < totalRows; i++) {
-     const slotItem = document.createElement("div");
-     slotItem.classList.add("slot-item");
+    for (let i = 0; i < totalRows; i++) {
+      const slotItem = document.createElement("div");
+      slotItem.classList.add("slot-item");
 
-     const animal = shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
-     initialAnimals.push(animal);
-     slotItem.innerHTML = `<img src="${animal.img}" alt="${animal.name}" style="width 195px; height 195px;">`;
-     reel.appendChild(slotItem);
-   }
+      const animal =
+        shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
+      initialAnimals.push(animal);
+      slotItem.innerHTML = `<img src="${animal.img}" alt="${animal.name}" style="width 195px; height 195px;">`;
+      reel.appendChild(slotItem);
+    }
 
-   column.dataset.initialAnimals = JSON.stringify(initialAnimals); 
- }
+    column.dataset.initialAnimals = JSON.stringify(initialAnimals);
+  }
 
- function populateInitialColumns() {
-   columns.forEach((column) => populateColumn(column));
- }
+  function populateInitialColumns() {
+    columns.forEach((column) => populateColumn(column));
+  }
 
   if (!logged) {
     function clearLocalStorageExceptUsers() {
@@ -69,43 +70,43 @@ document.addEventListener("DOMContentLoaded", function () {
 
     clearLocalStorageExceptUsers();
 
-    const loginPath = path.join(appDir, "login/index.html"); 
-    window.location.href = `file://${loginPath}`; 
+    const loginPath = path.join(appDir, "login/index.html");
+    window.location.href = `file://${loginPath}`;
   }
 
   const coinsDisplay = document.getElementById("coinsDisplay");
   const backBtn = document.getElementById("backArrow");
   backBtn.addEventListener("click", function () {
-    const shoppage = path.join(appDir, "shop/shoppage.html"); 
-    window.location.href = `file://${shoppage}`; 
+    const shoppage = path.join(appDir, "shop/shoppage.html");
+    window.location.href = `file://${shoppage}`;
   });
-function updateCoinsDisplay() {
-  const coins = parseInt(localStorage.getItem("coins"), 10);
-  coinsDisplay.textContent = formatCoins(coins);
-  let users = JSON.parse(localStorage.getItem("users")) || [];
-  const userIndex = users.findIndex((user) => user.displayName === username);
-  if (userIndex !== -1) {
-    users[userIndex].coins = coins;
-    localStorage.setItem("users", JSON.stringify(users));
+  function updateCoinsDisplay() {
+    const coins = parseInt(localStorage.getItem("coins"), 10);
+    coinsDisplay.textContent = formatCoins(coins);
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+    const userIndex = users.findIndex((user) => user.displayName === username);
+    if (userIndex !== -1) {
+      users[userIndex].coins = coins;
+      localStorage.setItem("users", JSON.stringify(users));
+    }
   }
-}
- function formatCoins(coins) {
-   if (coins >= 1000000) {
-     return (coins / 1000000).toFixed(1) + "M";
-   } else if (coins >= 1000) {
-     return (coins / 1000).toFixed(1) + "K";
-   } else {
-     return coins.toString();
-   }
- }
-updateCoinsDisplay();
+  function formatCoins(coins) {
+    if (coins >= 1000000) {
+      return (coins / 1000000).toFixed(1) + "M";
+    } else if (coins >= 1000) {
+      return (coins / 1000).toFixed(1) + "K";
+    } else {
+      return coins.toString();
+    }
+  }
+  updateCoinsDisplay();
   let rolling = false;
   const gachaSound = document.getElementById("gachaSound");
   const winSound = document.getElementById("winSound");
   lever.addEventListener("mousedown", function () {
     if (isRolling) return;
     isRolling = true;
-    lever.style.transform = "translateY(100px)";
+    lever.style.transform = "translateY(10px)";
     gachaSound.loop = true;
     gachaSound.play();
     setTimeout(() => {
@@ -117,45 +118,44 @@ updateCoinsDisplay();
     lever.style.transform = "translateY(0)";
   });
 
-function handleCheatActivation() {
-  if (cheatAnimal) {
-    const selectedAnimal = shopAnimals.find(
-      (animal) => animal.name === cheatAnimal
-    );
-    if (selectedAnimal) {
-      const columns = [
-        document.getElementById("column1"),
-        document.getElementById("column2"),
-        document.getElementById("column3"),
-      ];
-      columns.forEach((column, index) => {
-        setTimeout(() => {
-          spinColumn(column, selectedAnimal, () => {
-            if (index === columns.length - 1) {
-              isRolling = false;
-              checkThreeOfAKind([
-                selectedAnimal,
-                selectedAnimal,
-                selectedAnimal,
-              ]);
-            }
-          });
-        }, index * 1000);
-      });
-
-      localStorage.setItem(
-        "coins",
-        (localStorage.getItem("coins") - 5).toString()
+  function handleCheatActivation() {
+    if (cheatAnimal) {
+      const selectedAnimal = shopAnimals.find(
+        (animal) => animal.name === cheatAnimal
       );
-      updateCoinsDisplay();
+      if (selectedAnimal) {
+        const columns = [
+          document.getElementById("column1"),
+          document.getElementById("column2"),
+          document.getElementById("column3"),
+        ];
+        columns.forEach((column, index) => {
+          setTimeout(() => {
+            spinColumn(column, selectedAnimal, () => {
+              if (index === columns.length - 1) {
+                isRolling = false;
+                checkThreeOfAKind([
+                  selectedAnimal,
+                  selectedAnimal,
+                  selectedAnimal,
+                ]);
+              }
+            });
+          }, index * 1000);
+        });
 
-      cheatAnimal = "";
-      return true;
+        localStorage.setItem(
+          "coins",
+          (localStorage.getItem("coins") - 5).toString()
+        );
+        updateCoinsDisplay();
+
+        cheatAnimal = "";
+        return true;
+      }
     }
+    return false;
   }
-  return false;
-}
-
 
   function addCheatAnimalToUser(animalName) {
     const animal = shopAnimals.find((a) => a.name === animalName);
@@ -192,18 +192,18 @@ function handleCheatActivation() {
 
     localStorage.setItem("coins", coins - 5);
     updateCoinsDisplay();
-     let users = JSON.parse(localStorage.getItem("users")) || [];
-     const userIndex = users.findIndex((user) => user.displayName === username);
-     if (userIndex !== -1) {
-       if (!users[userIndex].pity) {
-         users[userIndex].pity = 0;
-       }
-       users[userIndex].pity += 1;
-       localStorage.setItem("users", JSON.stringify(users));
-     }
-  if (handleCheatActivation()) {
-    return; 
-  }
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+    const userIndex = users.findIndex((user) => user.displayName === username);
+    if (userIndex !== -1) {
+      if (!users[userIndex].pity) {
+        users[userIndex].pity = 0;
+      }
+      users[userIndex].pity += 1;
+      localStorage.setItem("users", JSON.stringify(users));
+    }
+    if (handleCheatActivation()) {
+      return;
+    }
     const columns = [
       document.getElementById("column1"),
       document.getElementById("column2"),
@@ -214,8 +214,8 @@ function handleCheatActivation() {
     const random = Math.random();
 
     if (random < 0.02 || users[userIndex].pity >= 50) {
-        users[userIndex].pity = 0; 
-        localStorage.setItem("users", JSON.stringify(users));
+      users[userIndex].pity = 0;
+      localStorage.setItem("users", JSON.stringify(users));
       const specialRewards = shopAnimals.filter((animal) =>
         ["MSeer", "VandaJ", "YenguiK", "PamstIr"].includes(animal.name)
       );
@@ -224,16 +224,16 @@ function handleCheatActivation() {
       for (let i = 0; i < 3; i++) {
         selectedAnimals.push(rareAnimal);
       }
-    } else if(random < 0.09){
-       const otherAnimals = shopAnimals.filter(
-         (animal) =>
-           !["MSeer", "VandaJ", "YenguiK", "PamstIr"].includes(animal.name)
-       );
-        for(let i =0 ; i< 3; i++){
-          selectedAnimals.push(otherAnimals);
-        }
-    }else {
-      
+    } else if (random < 0.09) {
+      const otherAnimals = shopAnimals.filter(
+        (animal) =>
+          !["MSeer", "VandaJ", "YenguiK", "PamstIr"].includes(animal.name)
+      );
+       const animalyes = otherAnimals[Math.floor(Math.random() * otherAnimals.length)];
+      for (let i = 0; i < 3; i++) {
+        selectedAnimals.push(animalyes  );
+      }
+    } else {
       for (let i = 0; i < 3; i++) {
         selectedAnimals.push(
           shopAnimals[Math.floor(Math.random() * shopAnimals.length)]
@@ -241,7 +241,6 @@ function handleCheatActivation() {
       }
     }
 
-    
     columns.forEach((column, index) => {
       populateColumn(column, selectedAnimals[index]);
       setTimeout(() => {
@@ -251,81 +250,76 @@ function handleCheatActivation() {
             checkThreeOfAKind(selectedAnimals);
           }
         });
-      }, index * 1000); 
+      }, index * 1000);
     });
   }
 
-function spinColumn(column, finalAnimal, callback) {
-  console.log("Final Animal:", finalAnimal);
-  column.innerHTML = "";
-  const reel = document.createElement("div");
-  reel.style.position = "relative";
-  reel.style.top = "0px";
-  column.appendChild(reel);
+  function spinColumn(column, finalAnimal, callback) {
+    console.log("Final Animal:", finalAnimal);
+    column.innerHTML = "";
+    const reel = document.createElement("div");
+    reel.style.position = "relative";
+    reel.style.top = "0px";
+    column.appendChild(reel);
 
-  const itemHeight = 195; 
-  const visibleSlots = 3;
-  const rowsAbove = 24;
-  const rowsBelow = 6;
-  const totalRows = rowsAbove + visibleSlots + rowsBelow;
+    const itemHeight = 195;
+    const visibleSlots = 3;
+    const rowsAbove = 24;
+    const rowsBelow = 6;
+    const totalRows = rowsAbove + visibleSlots + rowsBelow;
 
-  
-  for (let i = 0; i < totalRows; i++) {
-    const slotItem = document.createElement("div");
-    slotItem.classList.add("slot-item");
+    for (let i = 0; i < totalRows; i++) {
+      const slotItem = document.createElement("div");
+      slotItem.classList.add("slot-item");
 
-    const animal =
-      i === rowsAbove + Math.floor(visibleSlots / 2)
-        ? finalAnimal 
-        : shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
+      const animal =
+        i === rowsAbove + Math.floor(visibleSlots / 2)
+          ? finalAnimal
+          : shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
 
-    slotItem.innerHTML = `<img src="${animal.img}" alt="${animal.name}" style="width: 195px; height: 195px;">`;
-    reel.appendChild(slotItem);
+      slotItem.innerHTML = `<img src="${animal.img}" alt="${animal.name}" style="width: 195px; height: 195px;">`;
+      reel.appendChild(slotItem);
+    }
+
+    const stopPosition = -(rowsAbove * itemHeight);
+    let currentTop = 0;
+    let spinSpeed = 30;
+    let slowingDown = false;
+
+    function spin() {
+      if (
+        !slowingDown &&
+        Math.abs(currentTop - stopPosition) <= itemHeight * 5
+      ) {
+        slowingDown = true;
+      }
+
+      if (slowingDown) {
+        spinSpeed = Math.max(2, spinSpeed * 0.97);
+      }
+
+      currentTop -= spinSpeed;
+      reel.style.top = `${currentTop}px`;
+
+      if (!slowingDown && currentTop <= -(totalRows * itemHeight)) {
+        currentTop = 0;
+      }
+
+      if (
+        slowingDown &&
+        spinSpeed <= 2 &&
+        Math.abs(currentTop - stopPosition) < 1
+      ) {
+        reel.style.top = `${stopPosition}px`;
+        setTimeout(callback, 500);
+        return;
+      }
+
+      requestAnimationFrame(spin);
+    }
+
+    spin();
   }
-
-  const stopPosition = -(rowsAbove * itemHeight); 
-  let currentTop = 0; 
-  let spinSpeed = 30; 
-  let slowingDown = false; 
-
-  function spin() {
-    
-    if (!slowingDown && Math.abs(currentTop - stopPosition) <= itemHeight * 5) {
-      slowingDown = true;
-    }
-
-    if (slowingDown) {
-      spinSpeed = Math.max(2, spinSpeed * 0.97); 
-    }
-
-    currentTop -= spinSpeed; 
-    reel.style.top = `${currentTop}px`;
-
-    if (!slowingDown && currentTop <= -(totalRows * itemHeight)) {
-      currentTop = 0; 
-    }
-
-    
-    if (
-      slowingDown &&
-      spinSpeed <= 2 &&
-      Math.abs(currentTop - stopPosition) < 1
-    ) {
-      reel.style.top = `${stopPosition}px`; 
-      setTimeout(callback, 500); 
-      return;
-    }
-
-    requestAnimationFrame(spin); 
-  }
-
-  spin();
-}
-
-
-
-
-
 
   function checkThreeOfAKind(selectedAnimals) {
     if (
@@ -340,10 +334,14 @@ function spinColumn(column, finalAnimal, callback) {
 
   function showFireworks() {
     const fireworksContainer = document.getElementById("fireworks-container");
-    const originalText = h1Element.innerText;
-    h1Element.innerText = "YOU WIN!";
-    h1Element.setAttribute("data-text", "YOU WIN!");
+    const winImageContainer = document.getElementById("winImageContainer");
     fireworksContainer.style.display = "block";
+    winImageContainer.style.display = "block"; // Show the win image
+
+    // Reset animation
+    winImageContainer.style.animation = 'none';
+    winImageContainer.offsetHeight; // Trigger reflow
+    winImageContainer.style.animation = null;
 
     function launchFireworksRound() {
       for (let i = 0; i < 10; i++) {
@@ -352,7 +350,7 @@ function spinColumn(column, finalAnimal, callback) {
         fireworkLeft.style.backgroundColor = getRandomRGBColor();
         fireworkLeft.style.boxShadow = `0 0 15px 5px ${getRandomRGBColor()}`;
         fireworksContainer.appendChild(fireworkLeft);
-
+        
         animateFirework(fireworkLeft, true);
 
         const fireworkRight = document.createElement("div");
@@ -371,18 +369,19 @@ function spinColumn(column, finalAnimal, callback) {
       launchFireworksRound();
     }, 2000);
 
-    setTimeout(() => {
-      h1Element.classList.add("hover");
-    }, 500);
+    // setTimeout(() => {
+    //   h1Element.classList.add("hover");
+    // }, 500);
 
     setTimeout(() => {
       fireworksContainer.style.display = "none";
+      winImageContainer.style.display = "none"; // Hide the win image
       while (fireworksContainer.firstChild) {
         fireworksContainer.removeChild(fireworksContainer.firstChild);
       }
-      h1Element.classList.remove("hover");
-      h1Element.innerText = originalText;
-      h1Element.setAttribute("data-text", originalText);
+      // h1Element.classList.remove("hover");
+      // h1Element.innerText = originalText;
+      // h1Element.setAttribute("data-text", originalText);
     }, 5000);
   }
 
@@ -477,7 +476,6 @@ function spinColumn(column, finalAnimal, callback) {
       return shopAnimals[Math.floor(Math.random() * shopAnimals.length)];
     }
   }
-
 
   const backgroundAudio = new Audio(
     "../assets/sound/Super Auto Pets  - Menu Theme.mp3"

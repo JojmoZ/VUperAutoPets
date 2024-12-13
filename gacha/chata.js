@@ -35,16 +35,47 @@ document.addEventListener("keydown", function (event) {
   }
 });
 
-function updateCoinsDisplay() {
+// function updateCoinsDisplay() {
+//   let coins = Number(localStorage.getItem("coins"));
+//   coins += 500000;
+//   localStorage.setItem("coins", coins);
+//   const coinsDisplay = document.getElementById("coinsDisplay");
+//   if (coinsDisplay) {
+//     coinsDisplay.textContent = `Coins: ${coins}`;
+//   }
+// }
+  function updateCoinsDisplay() {
+    const coins = parseInt(localStorage.getItem("coins"), 10);
+    coinsDisplay.textContent = formatCoins(coins);
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+    const userIndex = users.findIndex((user) => user.displayName === username);
+    if (userIndex !== -1) {
+      users[userIndex].coins = coins;
+      localStorage.setItem("users", JSON.stringify(users));
+    }
+  }
+function addCoinsReward() {
   let coins = Number(localStorage.getItem("coins"));
   coins += 500000;
-  localStorage.setItem("coins", coins);
-  const coinsDisplay = document.getElementById("coinsDisplay");
-  if (coinsDisplay) {
-    coinsDisplay.textContent = `Coins: ${coins}`;
+  localStorage.setItem("coins", coins.toString());
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+  const userIndex = users.findIndex((user) => user.displayName === username);
+  if (userIndex !== -1) {
+    users[userIndex].coins = coins;
+    localStorage.setItem("users", JSON.stringify(users));
+  }
+  updateCoinsDisplay();
+  // addCoinsReward();
+}
+function formatCoins(coins) {
+  if (coins >= 1000000) {
+    return (coins / 1000000).toFixed(1) + "M";
+  } else if (coins >= 1000) {
+    return (coins / 1000).toFixed(1) + "K";
+  } else {
+    return coins.toString();
   }
 }
-
 const cheatModal = document.getElementById("cheat-modal");
 const cheatText = document.getElementById("cheat-text");
 const cheatRewardText = document.getElementById("cheat-reward");
@@ -66,12 +97,6 @@ function showCheatModal(reward) {
   }, 1500);
 
   if(reward == "500000 Coins"){
-     let users = JSON.parse(localStorage.getItem("users")) || [];
-     let coins = Number(localStorage.getItem("coins"));
-     const userIndex = users.findIndex((user) => user.displayName === username);
-    if (userIndex !== -1) {
-      users[userIndex].coins = coins;
-      localStorage.setItem("users", JSON.stringify(users));
-    }
+    addCoinsReward();
   }
 }
