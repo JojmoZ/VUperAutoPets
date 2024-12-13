@@ -81,8 +81,6 @@ canvas {
 
 .stat-window {
   position: absolute;
-  top: 0px;
-  right: 0px;
   width: 16.5rem;
   padding: 0 0.625rem;
   background: linear-gradient(

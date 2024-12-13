@@ -777,6 +777,15 @@ function showStatWindow(animal) {
       }, 10);
     }, 10);
   }
+
+  function updateStatWindowPosition() {
+    const animalRect = animal.getBoundingClientRect();
+    statWindow.style.left = `${animalRect.right + 10}px`;
+    statWindow.style.top = `${animalRect.top}px`;
+    requestAnimationFrame(updateStatWindowPosition);
+  }
+
+  updateStatWindowPosition();
 }
 
 function hideStatWindow() {
@@ -787,6 +796,7 @@ function hideStatWindow() {
     currentAnimal = null;
   }, 300);
 }
+
 const backgroundAudio = new Audio(
   "../assets/sound/Super Auto Pets  - Menu Theme.mp3"
 );
