@@ -454,24 +454,4 @@ window.onload = function () {
     window.addEventListener("beforeunload", () => {
         localStorage.setItem("backgroundAudioTime", backgroundAudio.currentTime);
     });
-    document.querySelectorAll(".pet-card").forEach((card) => {
-      card.addEventListener("click", () => {
-        const container = document.querySelector(".pet-container");
-
-        // Remove 'expanded' from other cards
-        document
-          .querySelectorAll(".pet-card")
-          .forEach((c) => c.classList.remove("expanded"));
-
-        // Add 'expanded' to clicked card and the container
-        container.classList.add("expanded");
-        card.classList.add("expanded");
-
-        // Optional: Adjust z-index after the animation
-        setTimeout(() => {
-          card.style.zIndex = "5";
-        }, 800); // Match this delay with CSS transition duration
-      });
-    });
-
 };
