@@ -1,4 +1,6 @@
-// Hero Section
+/**
+ * SECTION: Hero
+ */
 
 const DELAY = 500;
 
@@ -111,6 +113,10 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(cycleImages, 5000);
 });
 
+/**
+ * SECTION: Top Pets
+ */
+
 document.addEventListener('DOMContentLoaded', () => {
     const info = document.querySelector('.top-pets-info');
     const container = document.querySelector('.pet-container');
@@ -131,6 +137,25 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+/**
+ * SECTION: Trailer
+ */
+
+let popup = document.querySelector('.popup-video');
+let video = document.querySelector('#video-play');
+
+document.getElementById('play-video-btn').addEventListener('click', function() {
+    popup.classList.remove('hidden');
+    video.currentTime = 0;
+    video.play();
+});
+
+popup.addEventListener('click', function () {
+    popup.classList.add('hidden');
+    video.pause();
+});
+
 
 window.onload = function () {
     localStorage.removeItem("ingame");

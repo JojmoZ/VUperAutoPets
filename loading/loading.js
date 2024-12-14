@@ -51,8 +51,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const elapsedTime = Date.now() - startTime;
     const progress = Math.min((elapsedTime / totalGameTime) * 100, 100);
     loadingFill.style.width = `${progress}%`;
-    animalVUnt.style.left = `calc(${progress}% - 3rem)`;
-    animalVUnt.style.width = `10rem`;
+    animalVUnt.style.left = `calc(${progress}% - 5rem)`;
+    animalVUnt.style.top = `-7.5rem`
+    animalVUnt.style.width = `8rem`;
+    animalVUnt.style.height = `8rem`;
 
     if (elapsedTime >= totalGameTime) {
       triggerTransitionToGame()
