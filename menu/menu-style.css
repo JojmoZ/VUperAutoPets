@@ -1,4 +1,4 @@
-@font-face {
+ @font-face {
     font-family: 'VUper';
     src: url('../assets/font/LapsusPro-Bold.otf') format('opentype');
 }
@@ -26,7 +26,7 @@ button {
     border: none;
 }
 
-button img {
+button img  {
     width: 100%;
     height: auto;
 }
