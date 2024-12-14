@@ -267,7 +267,6 @@ body {
     justify-content: start;
     transition: all 0.5s ease;
 }
-
 .pet-card {
     position: absolute;
 
@@ -282,11 +281,20 @@ body {
     background-position: center;
     border-radius: 1rem;
 
-
     width: 28rem;
     height: 28rem;
 
-    transition: all 0.5s ease;
+    /* Increase transition duration and use smoother easing */
+    transition: transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1), 
+                opacity 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.pet-container.expanded .pet-card {
+    position: static;
+
+    /* Ensure transform is smooth */
+    transform: translateX(0) scale(1);
+    transition: transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .pet-card:nth-child(1) {
@@ -309,6 +317,10 @@ body {
 
 .pet-card:nth-child(4) {
     background-image: url('../assets/home-asset/top-pets/top-bg-4.png');
+}
+
+.pet-card:nth-child(4) img { 
+    left:0.5rem;
 }
 
 .pet-card:nth-child(5) {
@@ -338,13 +350,14 @@ body {
 }
 
 .pet-container.expanded {
-    width: 100%;
+    width: 200vw;
+    gap:50px;
+    overflow: visible;
     justify-content: space-between;
 }
 
 .pet-container.expanded .pet-card {
     position: static;
-
     transform: translateX(0) scale(1);
 }
 
@@ -404,100 +417,6 @@ text {
     font-size: 2rem;
     color: black;
 }
-
-.play-button {
-    border: 0;
-    cursor: pointer;
-    position: relative;
-    border-radius: 1rem;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    padding: 0;
-    width: 12.5rem;
-    height: 3.75rem;
-    transition: opacity 1s ease;
-}
-
-.play-button.hidden {
-    opacity: 0;
-    pointer-events: none;
-}
-
-.play-button div {
-    background-color: black;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    overflow: hidden;
-}
-
-.play-button a {
-    position: relative;
-    text-decoration: none;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #ece8e1;
-    text-transform: uppercase;
-    z-index: 2;
-}
-
-.play-button::before,
-.play-button::after {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border: 1px solid rgb(134, 129, 124);
-    left: 0;
-    z-index: 1;
-}
-
-.play-button::before {
-    top: 0;
-}
-
-.play-button::after {
-    bottom: 0;
-}
-
-.play-button:hover a {
-    color: black;
-}
-
-.play-button span {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 120%;
-    height: 110%;
-    background-color: #cbac24;
-    transform: translateX(-105%) skew(-10deg);
-    transition: 0.8s ease;
-    z-index: 0;
-}
-
-.play-button:hover span {
-    transform: translateX(-5%) skew(-10deg);
-}
-
-.game-desc {
-    color: black;
-    text-align: left;
-    background-image: url(../assets/login/background.png);
-
-    opacity: 1;
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-    justify-content: center;
-    padding: 2rem 1rem;
-}
-
 .img-desc {
     width: 100%;
     max-width: 37.5rem;
@@ -515,23 +434,7 @@ text {
     margin: 1rem 0;
 }
 
-.game-maker {
-    background-color: rgba(255, 255, 255, 0.9);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-image: url(../assets/maps/Scary_Forest.webp);
-    padding: 2rem 1rem;
-}
 
-.game-maker .text {
-    width: 100%;
-    max-width: 37.5rem;
-    font-size: 1.2rem;
-    padding: 1rem;
-}
 
 .carousel {
     position: relative;
@@ -589,45 +492,7 @@ text {
     background-color: orange;
 }
 
-@keyframes borderAnimation {
-    0% {
-        border-image: linear-gradient(90deg, #ff0099, #ff6600) 1;
-    }
-    50% {
-        border-image: linear-gradient(90deg, #00ff99, #6600ff) 1;
-    }
-    100% {
-        border-image: linear-gradient(90deg, #ff0099, #ff6600) 1;
-    }
-}
 
-.description-card::before {
-    content: "";
-    position: absolute;
-    top: -4px;
-    left: -4px;
-    right: -5px;
-    bottom: -4px;
-    border-radius: 15px;
-    border: 5px solid transparent;
-    border-image: linear-gradient(90deg, #ff0099, #ff6600) 1;
-    z-index: -1;
-    transition: border-image 0.5s ease;
-}
-
-.description-card:hover::before {
-    animation: borderAnimation 2s linear infinite;
-}
-
-.description-card h2 {
-    margin: 0;
-    font-size: 1.5em;
-}
-
-.description-card p {
-    margin-top: 0.625rem;
-    font-size: 1.2em;
-}
 
 @keyframes fadeInLeft {
     0% {
