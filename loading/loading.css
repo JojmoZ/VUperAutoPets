@@ -21,6 +21,19 @@ body {
     overflow: hidden;
 }
 
+.logo-loading {
+    position: absolute;
+
+    top: 1rem;
+    left: 50%;
+
+    transform: translate(-50%, 50%);
+
+    width: 40%;
+
+    z-index: 2;
+}
+
 .parallax {
     position: absolute;
     height: 105vh;
@@ -36,15 +49,21 @@ body {
 #p-1 {
     background-image: url("../assets/login/parallax/parallax-1.png");
     animation-delay: 2s;
+
+    z-index: 0;
 }
 
 #p-2 {
     background-image: url("../assets/login/parallax/parallax-2.png");
     animation-delay: 1s;
+
+    z-index: 1;
 }
 
 #p-3 {
     background-image: url("../assets/login/parallax/parallax-3.png");
+
+    z-index: 3;
 }
 
 @keyframes wave {
@@ -209,6 +228,8 @@ body {
   height: 3rem;
   background-color: #fff;
   border-radius: 0.625rem;
+
+    z-index: 100;
 }
 
 #loading-fill {
@@ -249,8 +270,8 @@ body {
 .animal-vunt {
   position: absolute;
   top: -3rem;
-  width: 5rem;
-  height: 5rem;
+  width: 8rem;
+  height: 8rem;
   cursor: pointer;
 }
 

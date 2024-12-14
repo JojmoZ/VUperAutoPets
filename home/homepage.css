@@ -252,6 +252,8 @@ body {
     font-size: 1.5rem;
 }
 
+
+
 .pet-container {
     position: relative;
     width: 50%;
@@ -340,6 +342,8 @@ body {
 
     transform: translateX(0) scale(1);
 }
+
+
 
 /*
 *
@@ -1086,7 +1090,8 @@ section {
 }
 
 .map-section {
-    background-color: #141414;
+    background-image: url("../assets/background/menu-bg.png");
+
 }
 
 .map-item {
