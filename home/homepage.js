@@ -236,57 +236,9 @@ window.onload = function () {
         }, 1000);
     }
 
-    function updateCarousel() {
-        carouselImageElement.src = carouselImages[currentIndex];
-        carouselTextElement.textContent = carouselTexts[currentIndex];
-        updateIndicators();
-    }
 
-    function updateIndicators() {
-        indicators.forEach((indicator, index) => {
-            if (index === currentIndex) {
-                indicator.classList.add("active");
-            } else {
-                indicator.classList.remove("active");
-            }
-        });
-    }
 
-    function startCarousel() {
-        if (!autoSlideInterval) {
-            autoSlideInterval = setInterval(fadeOutAndChangeContent, 5000);
-        }
-    }
 
-    function stopCarousel() {
-        clearInterval(autoSlideInterval);
-        autoSlideInterval = null;
-    }
-
-    indicators.forEach((indicator) => {
-        indicator.addEventListener("click", function () {
-            currentIndex = parseInt(this.dataset.index);
-            stopCarousel();
-            updateCarousel();
-            startCarousel();
-        });
-    });
-    updateCarousel();
-    const carouselObserver = new IntersectionObserver(
-        (entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    console.log("Carousel is visible, starting the carousel timer");
-                    startCarousel();
-                } else {
-                    console.log("Carousel is not visible, stopping the carousel timer");
-                    stopCarousel();
-                }
-            });
-        },
-        {threshold: 0.5}
-    );
-    carouselObserver.observe(carouselSection);
     const socialMediaSection = document.querySelector(".social-media");
 
     const instagram = document.querySelector(".instagram");
@@ -312,84 +264,9 @@ window.onload = function () {
     );
     socialMediaObserver.observe(socialMediaSection);
 
-    const audio = document.getElementById("audio");
-    const visualization = document.getElementById("visualization");
-    const context = new (window.AudioContext || window.webkitAudioContext)();
-    let isPlaying = false;
-
-    const analyser = context.createAnalyser();
-    const source = context.createMediaElementSource(audio);
-    source.connect(analyser);
-    analyser.connect(context.destination);
-
-    analyser.fftSize = 512;
-    const bufferLength = analyser.frequencyBinCount;
-    const dataArray = new Uint8Array(bufferLength);
-
-    const canvasCtx = visualization.getContext("2d");
-    const canvasHeight = visualization.height;
-    const canvasWidth = visualization.width;
-    const barWidth = (canvasWidth / bufferLength) * 2.5;
-    const barHeightFactor = 0.4;
-
-    function renderFrame() {
-        canvasCtx.clearRect(0, 0, canvasWidth, canvasHeight);
-
-        analyser.getByteFrequencyData(dataArray);
-
-        let x = 0;
-
-        for (let i = 0; i < bufferLength; i++) {
-            const barHeight =
-                (Math.pow(dataArray[i], 3) / 210 ** 2) * barHeightFactor;
-            const color = `rgba(203, ${50 + (dataArray[i] / 255) * 205}, 36, 0.8)`;
-
-            const barYPosition = canvasHeight / 1.6;
-
-            canvasCtx.fillStyle = color;
-            canvasCtx.fillRect(x, barYPosition - barHeight, barWidth, barHeight);
-
-            canvasCtx.fillStyle = `rgba(203, ${
-                50 + (dataArray[i] / 255) * 205
-            }, 36, 0.5)`;
-            canvasCtx.fillRect(x, barYPosition, barWidth, barHeight);
-
-            x += barWidth + 1;
-        }
-
-        requestAnimationFrame(renderFrame);
-    }
-
-    const playOSTButton = document.getElementById("ost-play-button");
-    const buttonIcon = document.getElementById("button-icon");
-    playOSTButton.addEventListener("mousemove", (e) => {
-        const rect = playOSTButton.getBoundingClientRect();
-
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-
-        playOSTButton.style.setProperty("--mouseX", `${x}px`);
-        playOSTButton.style.setProperty("--mouseY", `${y}px`);
-    });
-
-    playOSTButton.addEventListener("click", function () {
-        if (!isPlaying) {
-            if (context.state === "suspended") {
-                context.resume();
-            }
-            audio.play();
-            buttonIcon.src = "../assets/home-asset/pause.png";
-            isPlaying = true;
-            renderFrame();
-        } else {
-            audio.pause();
-            buttonIcon.src = "../assets/home-asset/playmusic.png";
-            isPlaying = false;
-        }
-    });
+   
     const jumbotron = document.querySelector(".jumbotron");
     const trailer = document.querySelector(".trailer");
-    const gamedesc = document.querySelector(".game-desc");
     const gamemaker = document.querySelector(".game-maker");
     const ostsec = document.querySelector(".ost-section");
     let djigsrc = "../assets/Animals/DJig.webp";
@@ -441,9 +318,6 @@ window.onload = function () {
     const sections = [
         {element: document.querySelector(".jumbotron"), animal: djigsrc},
         {element: document.querySelector(".trailer"), animal: liber},
-        {element: document.querySelector(".game-desc"), animal: owlf},
-        {element: document.querySelector(".game-maker"), animal: ppat},
-        {element: document.querySelector(".ost-section"), animal: labbik},
     ];
 
     const sectionObserver = new IntersectionObserver(
@@ -555,79 +429,24 @@ window.onload = function () {
     window.addEventListener("beforeunload", () => {
         localStorage.setItem("backgroundAudioTime", backgroundAudio.currentTime);
     });
+    document.querySelectorAll(".pet-card").forEach((card) => {
+      card.addEventListener("click", () => {
+        const container = document.querySelector(".pet-container");
 
-    const hatConfigurations = {
-        "abandon-hat": {
-            top: "-40%",
-            left: "15%",
-            transform: "rotate(10deg)",
-        },
-        crown: {
-            top: "-30%",
-            left: "10%",
-            width: "11rem",
-            transform: "rotate(10deg)",
-        },
-        foil: {
-            top: "-35%",
-            left: "14%",
-            transform: "rotate(5deg)",
-        },
-        paper: {
-            top: "-23%",
-            left: "15%",
-            transform: "rotate(8deg) scaleX(-1)",
-        },
-        santa: {
-            top: "-25%",
-            left: "18%",
-            transform: "rotate(5deg)",
-        },
-        trophy: {
-            top: "-35%",
-            left: "16%",
-            transform: "rotate(15deg)",
-        },
-    };
+        // Remove 'expanded' from other cards
+        document
+          .querySelectorAll(".pet-card")
+          .forEach((c) => c.classList.remove("expanded"));
 
-    const hatImages = [
-        "../assets/hats/abandon-hat.png",
-        "../assets/hats/crown.png",
-        "../assets/hats/foil.png",
-        "../assets/hats/paper.png",
-        "../assets/hats/santa.png",
-        "../assets/hats/trophy.png",
-    ];
-    let currentHatIndex = 0;
+        // Add 'expanded' to clicked card and the container
+        container.classList.add("expanded");
+        card.classList.add("expanded");
 
-    const hatImage = document.querySelector(".Hats img");
-
-    function updateHatCarousel() {
-        const hatPath = hatImages[currentHatIndex];
-        const hatName = hatPath.split("/").pop().replace(".png", "");
-        const config = hatConfigurations[hatName];
-
-        hatImage.src = hatPath;
-
-        if (config) {
-            const hatElement = document.querySelector(".Hats");
-            hatElement.style.top = config.top;
-            hatElement.style.left = config.left;
-            hatImage.style.width = config.width || "11rem";
-            hatElement.style.transform = config.transform || "none";
-        }
-    }
-
-    document.getElementById("hat-left-arrow").addEventListener("click", () => {
-        currentHatIndex =
-            (currentHatIndex - 1 + hatImages.length) % hatImages.length;
-        updateHatCarousel();
+        // Optional: Adjust z-index after the animation
+        setTimeout(() => {
+          card.style.zIndex = "5";
+        }, 800); // Match this delay with CSS transition duration
+      });
     });
 
-    document.getElementById("hat-right-arrow").addEventListener("click", () => {
-        currentHatIndex = (currentHatIndex + 1) % hatImages.length;
-        updateHatCarousel();
-    });
-
-    updateHatCarousel();
 };
