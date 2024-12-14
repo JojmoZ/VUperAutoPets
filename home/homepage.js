@@ -117,26 +117,6 @@ document.addEventListener('DOMContentLoaded', () => {
  * SECTION: Top Pets
  */
 
-document.addEventListener('DOMContentLoaded', () => {
-    const info = document.querySelector('.top-pets-info');
-    const container = document.querySelector('.pet-container');
-    const visibleCards = container.querySelectorAll('.pet-card:not(.hidden)');
-    const allCards = container.querySelectorAll('.pet-card');
-
-    visibleCards.forEach(card => {
-        card.addEventListener('click', () => {
-            container.classList.add('expanded');
-
-            info.classList.add('hidden');
-
-            allCards.forEach(c => c.classList.remove('hidden'));
-            //
-            // if (container.classList.contains('expanded')) {
-            //     card.classList.add('active');
-            // }
-        });
-    });
-});
 
 /**
  * SECTION: Trailer
@@ -341,7 +321,6 @@ window.onload = function () {
     }
 
     const sections = [
-        {element: document.querySelector(".jumbotron"), animal: djigsrc},
         {element: document.querySelector(".trailer"), animal: liber},
     ];
 
@@ -454,4 +433,64 @@ window.onload = function () {
     window.addEventListener("beforeunload", () => {
         localStorage.setItem("backgroundAudioTime", backgroundAudio.currentTime);
     });
+  const carouselWrapper = document.querySelector(".carousel-wrapper");
+  const topPetsText = document.getElementById("topPetsText"); // Text to hide
+  const cards = document.querySelectorAll(".pet-card");
+  let isExpanded = false;
+
+  // Function to toggle the carousel state and text visibility
+  function toggleCarousel(expand) {
+    if (expand) {
+      carouselWrapper.classList.add("expanded");
+      carouselWrapper.classList.remove("collapsed");
+      topPetsText.classList.add("hidden"); // Hide the text
+      isExpanded = true;
+    } else {
+      carouselWrapper.classList.add("collapsed");
+      carouselWrapper.classList.remove("expanded");
+      topPetsText.classList.remove("hidden"); // Show the text
+      isExpanded = false;
+    }
+  }
+
+  // Add click event listeners to cards to expand or collapse the carousel
+  cards.forEach((card) => {
+    card.addEventListener("click", () => {
+      if (!isExpanded) {
+        toggleCarousel(true); // Expand carousel and hide text
+      }
+    });
+  });
+
+  // Enable dragging for expanded carousel
+  const carousel = document.getElementById("carousel");
+  let isDragging = false;
+  let startX = 0;
+  let scrollLeft = 0;
+
+  carousel.addEventListener("mousedown", (e) => {
+    if (!isExpanded) return;
+    isDragging = true;
+    startX = e.pageX - carousel.offsetLeft;
+    scrollLeft = carousel.scrollLeft;
+    carousel.style.cursor = "grabbing";
+  });
+
+  carousel.addEventListener("mouseleave", () => {
+    isDragging = false;
+    carousel.style.cursor = "default";
+  });
+
+  carousel.addEventListener("mouseup", () => {
+    isDragging = false;
+    carousel.style.cursor = "default";
+  });
+
+  carousel.addEventListener("mousemove", (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const x = e.pageX - carousel.offsetLeft;
+    const walk = (x - startX) * 2; // Adjust scroll speed
+    carousel.scrollLeft = scrollLeft - walk;
+  });
 };

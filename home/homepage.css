@@ -1064,3 +1064,86 @@ body > .image {
 .hat-container {
     position: relative;
 }
+#top-pets {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem 1rem;
+    background-image: url("../assets/background/menu-bg.png");
+    background-size: cover;
+}
+
+.top-pets-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+    max-width: 1200px;
+    gap: 2rem;
+}
+
+.top-pets-text {
+    flex: 1;
+    color: white;
+    font-family: "Comic Sans MS", serif;
+    text-align: left;
+}
+
+.top-pets-cards {
+    flex: 1;
+    display: flex;
+    overflow: hidden; /* Hide overflowing cards */
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel-wrapper {
+    width: 100%;
+    overflow: hidden; /* Prevent scrolling when collapsed */
+}
+#carousel {
+    display: flex;
+    gap: 1rem;
+    transition: transform 0.5s ease-in-out;
+}
+.carousel-wrapper.collapsed {
+    width: 50%; /* Show a portion of the carousel when collapsed */
+    overflow: hidden;
+}
+
+.carousel-wrapper.expanded {
+    width: 100%; /* Show the full carousel when expanded */
+    overflow-x: auto; /* Allow horizontal scrolling */
+}
+
+.pet-card {
+    flex: 0 0 auto; /* Prevent shrinking */
+    width: 12rem; /* Adjust size of cards */
+    height: 16rem;
+    margin: 0 1rem;
+    border-radius: 15px;
+    background-color: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.pet-card img {
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    object-fit: cover;
+}
+.carousel-wrapper.collapsed .pet-card:nth-child(n+4) {
+    display: none; /* Hide all cards after the third */
+}
+
+.carousel-wrapper.expanded .pet-card {
+    display: block; /* Show all cards in expanded mode */
+}
+.pet-card.active {
+    transform: scale(1.2);
+}
+
+.pet-card:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
