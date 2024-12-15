@@ -176,11 +176,17 @@ visibleCards.forEach((card, index) => {
 // Scroll input event listener
 petRange.addEventListener("input", (e) => {
   const rangeValue = e.target.value; // Range slider (0 - 100)
-  const containerOffset = initialRight - (rangeValue / 100) * maxScrollDistance;
+
+  // Smooth interpolation using ease-out formula
+  const smoothRangeValue = Math.pow(rangeValue / 100, 2); // Non-linear interpolation
+
+  // Calculate container offset
+  const containerOffset = initialRight - smoothRangeValue * maxScrollDistance;
   container.style.right = `${containerOffset}%`;
 
   console.log({
     rangeValue,
+    smoothRangeValue,
     maxScrollDistance,
     containerOffset,
     rightPosition: container.style.right,
