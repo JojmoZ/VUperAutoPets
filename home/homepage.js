@@ -173,8 +173,6 @@ visibleCards.forEach((card, index) => {
 petRange.addEventListener("input", (e) => {
   const rangeValue = e.target.value; // Range slider (0 - 100)
   const containerOffset = initialRight - (rangeValue / 100) * maxScrollDistance;
-
-  // Apply the calculated offset using `right`
   container.style.right = `${containerOffset}%`;
 
   console.log({

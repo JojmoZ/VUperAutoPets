@@ -397,7 +397,7 @@ body {
 #pet-range {
     width: 50rem;
     position: absolute;
-    bottom: 5rem;
+    bottom: 10rem;
     margin-top: 1rem;
     transition: opacity 0.5s ease;
     opacity: 1; /* Ensure the range input is visible */
