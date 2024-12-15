@@ -162,13 +162,4 @@
 
 <script src="homepage.js"></script>
 <script src="../modal.js" defer></script>
-<script>
-    document.getElementById('pet-range').addEventListener('input', function (e) {
-        const petContainer = document.querySelector('.pet-container.expanded');
-        if (petContainer) {
-            const maxScrollLeft = petContainer.scrollWidth - petContainer.clientWidth;
-            petContainer.scrollLeft = (e.target.value / 100) * maxScrollLeft;
-        }
-    });
-</script>
 </html>
