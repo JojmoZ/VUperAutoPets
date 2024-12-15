@@ -300,7 +300,7 @@ function resetCarousel() {
   petstopinfo.classList.add("hidden");
   // Reset the curtain
   curtain.style.transform = "translateY(-100%)"; // Move the curtain back up
-
+  curtain.style.backgroundImage = ""; // Remove the background image
   // Reset each card
   const allCards = document.querySelectorAll(".pet-card");
   allCards.forEach((card) => {
