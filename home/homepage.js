@@ -121,6 +121,7 @@ document.addEventListener("DOMContentLoaded", () => {
  * SECTION: Top Pets
  */
 
+
 const container = document.querySelector(".pet-container");
 const petRange = document.getElementById("pet-range");
 const petstopinfo = document.getElementById("top-pets-info");
@@ -133,25 +134,22 @@ const closeInfoButton = document.getElementById("close-info");
 const prevButton = document.getElementById("prev-animal");
 const nextButton = document.getElementById("next-animal");
 
-let initialRight = -30; 
-let maxScrollDistance = 0; 
- const curtain = document.querySelector("#top-pets .curtain");
+let initialRight = -30;
+let maxScrollDistance = 0;
+const curtain = document.querySelector("#top-pets .curtain");
 let tempcontright;
 function calculateMaxScroll() {
-  const containerWidth = container.scrollWidth; 
-  const viewportWidth = window.innerWidth; 
+  const containerWidth = container.scrollWidth;
+  const viewportWidth = window.innerWidth;
   const maxDistance = ((containerWidth - viewportWidth) / viewportWidth) * 100;
-  return maxDistance + 5; 
+  return maxDistance + 5;
 }
-
 
 visibleCards.forEach((card, index) => {
   card.addEventListener("click", () => {
-    
     if (container.classList.contains("expanded")) return;
 
     if (index === 0) {
-      
       card.classList.add("scale-up");
 
       setTimeout(() => {
@@ -160,34 +158,27 @@ visibleCards.forEach((card, index) => {
         petRange.classList.remove("hidden");
         petstopinfo.classList.add("hidden");
 
-        
-        petRange.value = 0; 
+        petRange.value = 0;
         container.style.right = `${initialRight}%`;
 
-        
-        initialRight = -30; 
+        initialRight = -30;
         maxScrollDistance = calculateMaxScroll();
 
-        
         hiddenCards.forEach((hiddenCard, idx) => {
           setTimeout(() => {
             hiddenCard.classList.remove("hidden");
-            
           }, idx * 100);
         });
-      }, 400); 
+      }, 400);
     }
   });
 });
 
-
 petRange.addEventListener("input", (e) => {
-  const rangeValue = e.target.value; 
+  const rangeValue = e.target.value;
 
-  
-  const smoothRangeValue = Math.pow(rangeValue / 100, 2); 
+  const smoothRangeValue = Math.pow(rangeValue / 100, 2);
 
-  
   const containerOffset = initialRight - smoothRangeValue * maxScrollDistance;
   container.style.right = `${containerOffset}%`;
 
@@ -204,13 +195,11 @@ const allCards = document.querySelectorAll(".pet-card");
 
 allCards.forEach((card) => {
   card.addEventListener("click", () => {
-    
     if (container.classList.contains("expanded")) {
       showAnimalInfo(card);
     }
   });
 });
-
 
 closeInfoButton.addEventListener("click", () => {
   // Add 'hide' class to trigger diagonal exit animation
@@ -224,7 +213,6 @@ closeInfoButton.addEventListener("click", () => {
   }, 500); // M
 });
 
-
 const petDescriptions = {
   MSeer: "MSeer is a wise and calm animal, known for its strategic abilities.",
   VandaJ: "VandaJ loves adventure and is always ready to explore.",
@@ -233,75 +221,63 @@ const petDescriptions = {
   PamstIr: "PamstIr is playful and loves making friends with everyone.",
 };
 
-
 function showAnimalInfo(card) {
   const image = card.querySelector("img");
   const animalName = image.alt;
 
-  
   image.classList.add("move-down");
 
-  
   setTimeout(() => {
-    
     const curtain = document.querySelector("#top-pets .curtain");
-    curtain.style.transform = "translateY(0)"; 
+    curtain.style.transform = "translateY(0)";
     setTimeout(() => {
-       const bgImage = window.getComputedStyle(card).backgroundImage;
-       curtain.style.backgroundImage = bgImage;
-       curtain.style.backgroundRepeat = "no-repeat";
-       curtain.style.backgroundSize = "cover";
-       card.style.backgroundImage = "none";
-       card.style.overflow = "visible";
-       petRange.classList.add("hidden");
-       
-       
-       setTimeout(() => {
-            const allCards = Array.from(document.querySelectorAll(".pet-card"));
-            console.log(allCards)
-           allCards.forEach((c) => {
-               if (c !== card) {
-                   c.classList.add("showandtellhidden"); 
-                }
-            });
-            
-            
-            setTimeout(() => {
+      const bgImage = window.getComputedStyle(card).backgroundImage;
+      curtain.style.backgroundImage = bgImage;
+      curtain.style.backgroundRepeat = "no-repeat";
+      curtain.style.backgroundSize = "cover";
+      card.style.backgroundImage = "none";
+      card.style.overflow = "visible";
+      petRange.classList.add("hidden");
+
+      setTimeout(() => {
+        const allCards = Array.from(document.querySelectorAll(".pet-card"));
+        console.log(allCards);
+        allCards.forEach((c) => {
+          if (c !== card) {
+            c.classList.add("showandtellhidden");
+          }
+        });
+
+        setTimeout(() => {
           const containerRightOffset = parseFloat(container.style.right) || 0;
 
-          
           const cardRect = card.getBoundingClientRect();
           const containerRect = container.getBoundingClientRect();
 
-          
           const offsetX =
             cardRect.left - containerRect.left - containerRightOffset;
           const offsetY = cardRect.top - containerRect.top;
 
-          
           card.style.transition = "none";
           container.style.transition = "none";
 
-          
           card.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
 
-          
-          card.offsetHeight; 
+          card.offsetHeight;
           container.offsetHeight;
           tempcontright = container.style.right;
           container.style.right = ``;
-          console.log(tempcontright)
-          card.style.transition = "all 0.8s ease-in-out"; 
+          console.log(tempcontright);
+          card.style.transition = "all 0.8s ease-in-out";
           container.style.transition = "all 0.8s ease-in-out";
 
-          
           card.style.transform = "translate(0, 0)";
           card.classList.add("showandtell");
           image.classList.remove("move-down");
-          
+
           allCards.forEach((c) => {
             if (c !== card) {
-              c.classList.add("hidden"); 
+              c.classList.add("hidden");
             }
           });
           setTimeout(() => {
@@ -319,9 +295,9 @@ function showAnimalInfo(card) {
 }
 
 function resetCarousel() {
-    container.style.right = `${initialRight}%`;
-    container.style.right = tempcontright
-    petstopinfo.classList.add("hidden");
+  container.style.right = `${initialRight}%`;
+  container.style.right = tempcontright;
+  petstopinfo.classList.add("hidden");
   // Reset the curtain
   curtain.style.transform = "translateY(-100%)"; // Move the curtain back up
 
