@@ -295,27 +295,53 @@ function showAnimalInfo(card) {
 }
 
 function resetCarousel() {
-  container.style.right = `${initialRight}%`;
-  container.style.right = tempcontright;
-  petstopinfo.classList.add("hidden");
-  // Reset the curtain
-  curtain.style.transform = "translateY(-100%)"; // Move the curtain back up
-  curtain.style.backgroundImage = ""; // Remove the background image
-  // Reset each card
   const allCards = document.querySelectorAll(".pet-card");
-  allCards.forEach((card) => {
-    card.classList.remove("hidden", "showandtell", "showandtellhidden");
-    card.style.transform = ""; // Remove any transform applied
-    card.style.transition = ""; // Reset transitions
-    card.style.backgroundImage = ""; // Reset background image
-    card.style.overflow = ""; // Reset overflow
-  });
-  petRange.classList.remove("hidden");
-  infoCard.classList.add("hidden");
+  const shownCard = document.querySelector(".pet-card.showandtell");
 
-  // Restore the background
-  document.getElementById("top-pets").style.backgroundImage =
-    "url('../assets/login/background.png')";
+  // Step 1: Fade out the shown animal
+  if (shownCard) {
+    shownCard.style.transition = "opacity 0.8s ease-in-out";
+    shownCard.style.opacity = "0";
+  }
+
+  // Step 2: Animate curtain back up
+  setTimeout(() => {
+    curtain.style.transform = "translateY(-100%)"; // Lift curtain
+
+    setTimeout(() => {
+      curtain.style.backgroundImage = ""; // Reset curtain background
+      setTimeout(()=>{
+        container.style.transition = "all 0.8s ease-in-out";
+        container.style.transform = "translateY(20px)"; // Start below
+        container.style.opacity = "0"; // Start invisible
+        setTimeout(() => {
+          allCards.forEach((card) => {
+            card.classList.remove("hidden", "showandtell", "showandtellhidden");
+            card.style.opacity = "1"; // Reset opacity
+            card.style.transform = ""; // Remove any transform applied
+            card.style.transition = ""; // Reset transitions
+            card.style.backgroundImage = ""; // Reset background image
+            card.style.overflow = ""; // Reset overflow
+          });
+          setTimeout(() => {
+              container.style.transform = "translateY(0)"; // Slide back up
+            container.style.opacity = "1"; // Fade in
+          }, 100); // Add slight delay for smooth animation
+        }, 500);
+      },0)
+      // Step 4: Animate container slide-in
+      
+      // Step 3: Reset all cards to their initial state
+
+      // Step 5: Restore the background
+      petRange.classList.remove("hidden");
+      infoCard.classList.add("hidden");
+      // petstopinfo.classList.remove("hidden");
+
+      document.getElementById("top-pets").style.backgroundImage =
+        "url('../assets/login/background.png')";
+    }, 800); // Wait for curtain animation to finish
+  }, 800); // Wait for shown animal to fade out
 }
 
 /**

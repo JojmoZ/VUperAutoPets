@@ -348,11 +348,13 @@ body {
 .pet-container {
     position: absolute;
     width: 50%;
+    opacity: 1;
     right: -10%;
     display: flex;
     align-items: center;
     justify-content: start;
-    transition: all 0.5s ease;
+    transition: all 0.5s ease-in-out;
+    transform: translateY(0);
     
 }
 
@@ -368,7 +370,7 @@ body {
 }
 .pet-card {
     position: absolute;
-
+    opacity: 1;
     display: flex;
     justify-content: center;
     align-items: center;
