@@ -2,158 +2,170 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>VUper Auto Pets</title>
-    <link rel="stylesheet" href="homepage.css"/>
+    <link rel="stylesheet" href="homepage.css" />
     <link rel="icon" type="image/png" href="../assets/LogoVUPER.jpg">
     <link rel="stylesheet" href="../cursor.css">
 </head>
+
 <body>
-<button class="back-arrow" id="backArrow">
-    <img src="../assets/game-asset/button/back-button.png" alt="Back">
-</button>
-<section id="hero">
-    <div class="hero-container">
-        <div class="hero-left">
-            <img src="../assets/title-logo.png" alt="logo" class="stamp"/>
-            <p class="hero-text">
-                Build a team of cute pets with unique abilities. Battle against other players. Everything is at your own
-                pace in this chill free-to-play auto battler.
-            </p>
-            <div class="image-group">
-                <img src="../assets/home-asset/hero/img-group-1.png" alt="Image Group"/>
-                <img src="../assets/home-asset/hero/img-group-2.png" alt="Image Group"/>
-                <img src="../assets/home-asset/hero/img-group-3.png" alt="Image Group"/>
-                <img src="../assets/home-asset/hero/img-group-4.png" alt="Image Group"/>
+    <button class="back-arrow" id="backArrow">
+        <img src="../assets/game-asset/button/back-button.png" alt="Back">
+    </button>
+    <section id="hero">
+        <div class="hero-container">
+            <div class="hero-left">
+                <img src="../assets/title-logo.png" alt="logo" class="stamp" />
+                <p class="hero-text">
+                    Build a team of cute pets with unique abilities. Battle against other players. Everything is at your
+                    own
+                    pace in this chill free-to-play auto battler.
+                </p>
+                <div class="image-group">
+                    <img src="../assets/home-asset/hero/img-group-1.png" alt="Image Group" />
+                    <img src="../assets/home-asset/hero/img-group-2.png" alt="Image Group" />
+                    <img src="../assets/home-asset/hero/img-group-3.png" alt="Image Group" />
+                    <img src="../assets/home-asset/hero/img-group-4.png" alt="Image Group" />
+                </div>
+            </div>
+            <div id="layer-2"></div>
+            <div id="layer-3"></div>
+            <div class="hero-right">
+                <img src='../assets/login/parallax/parallax-vunt.webp' alt="Hero Image" class="img-primary" />
+                <img src='../assets/home-asset/hero/rocket.png' alt="Hero Image" class="img-secondary" />
+                <img src='../assets/home-asset/hero/trumpet.png' alt="Hero Image" class="img-tertiary" />
+
             </div>
         </div>
-        <div id="layer-2"></div>
-        <div id="layer-3"></div>
-        <div class="hero-right">
-            <img src='../assets/login/parallax/parallax-vunt.webp' alt="Hero Image" class="img-primary"/>
-            <img src='../assets/home-asset/hero/rocket.png' alt="Hero Image" class="img-secondary"/>
-            <img src='../assets/home-asset/hero/trumpet.png' alt="Hero Image" class="img-tertiary"/>
-
-        </div>
-    </div>
-</section>
+    </section>
 <section id="top-pets">
-    <div class="top-pets-info">
+    <div class="curtain"></div>
+    <div class="top-pets-info" id="top-pets-info">
         <h1>Top Pets</h1>
         <p>These are the top pets that are currently trending in the game!</p>
     </div>
     <div class="pet-container">
         <div class="pet-card">
-            <img src="../assets/home-asset/top-pets/MSeer.webp" alt="Pet 1" class="pet-image"/>
+            <img src="../assets/home-asset/top-pets/MSeer.webp" alt="MSeer" class="pet-image" />
         </div>
         <div class="pet-card">
-            <img src="../assets/home-asset/top-pets/VandaJ.webp" alt="Pet 2" class="pet-image"/>
+            <img src="../assets/home-asset/top-pets/VandaJ.webp" alt="VandaJ" class="pet-image" />
         </div>
         <div class="pet-card">
-            <img src="../assets/home-asset/top-pets/YenguiK.webp" alt="Pet 3" class="pet-image"/>
+            <img src="../assets/home-asset/top-pets/YenguiK.webp" alt="YenguiK" class="pet-image" />
         </div>
         <div class="pet-card hidden">
-            <img src="../assets/home-asset/top-pets/eagSVle.webp" alt="Pet 4" class="pet-image"/>
+            <img src="../assets/home-asset/top-pets/eagSVle.webp" alt="eagSVle" class="pet-image" />
         </div>
         <div class="pet-card hidden">
-            <img src="../assets/home-asset/top-pets/PamstIr.webp" alt="Pet 5" class="pet-image"/>
+            <img src="../assets/home-asset/top-pets/PamstIr.webp" alt="PamstIr" class="pet-image" />
         </div>
+    </div>
+    <input type="range" id="pet-range" min="0" max="100" value="0" class="hidden">
+    <div id="info-card" class="hidden">
+        <button id="close-info">X</button>
+        <h2 id="animal-name"></h2>
+        <p id="animal-description"></p>
     </div>
 </section>
-<section class="trailer">
-    <div class="title-wrapper">
-        <img src="../assets/buttons/empty-btn.png" alt=""/>
+    <section class="trailer">
+        <div class="title-wrapper">
+            <img src="../assets/buttons/empty-btn.png" alt="" />
 
-        <h2 class="section-title">Trailer</h2>
-    </div>
-    <div class="trailer-background">
-        <div>
-            <div class="trailer-container fade-in-element">
-                <video id="trailer-video" src="../assets/video/Super%20Auto%20Pets%20-%20Gameplay%20Trailer.mp4"
-                       muted></video>
-                <button id="play-video-btn">
-                    <img src="../assets/buttons/play-video.png" alt="video 1"/>
-                </button>
-            </div>
-
-            <div style="text-align: center; color: white; display: flex; flex-direction: column; align-items: center; ">
-                <div style="font-size: 3.5rem; -webkit-text-stroke: 0.15rem black; letter-spacing: 0.2rem; margin-block: 1.5rem 1rem">VUper Auto Pets</div>
-                <div style="font-family: 'Comic Sans MS', serif; width: 60%; font-size: 1.35rem">VUper Auto Pets is the first game out of independent studio Team 24-1 Games, and is available both
-                as a free browser title as well as a mobile app for Android, it’s certainly a game worth checking
-                out.
+            <h2 class="section-title">Trailer</h2>
+        </div>
+        <div class="trailer-background">
+            <div>
+                <div class="trailer-container fade-in-element">
+                    <video id="trailer-video" src="../assets/video/Super%20Auto%20Pets%20-%20Gameplay%20Trailer.mp4"
+                        muted></video>
+                    <button id="play-video-btn">
+                        <img src="../assets/buttons/play-video.png" alt="video 1" />
+                    </button>
                 </div>
+
+                <div
+                    style="text-align: center; color: white; display: flex; flex-direction: column; align-items: center; ">
+                    <div
+                        style="font-size: 3.5rem; -webkit-text-stroke: 0.15rem black; letter-spacing: 0.2rem; margin-block: 1.5rem 1rem">
+                        VUper Auto Pets</div>
+                    <div style="font-family: 'Comic Sans MS', serif; width: 60%; font-size: 1.35rem">VUper Auto Pets is
+                        the first game out of independent studio Team 24-1 Games, and is available both
+                        as a free browser title as well as a mobile app for Android, it’s certainly a game worth
+                        checking
+                        out.
+                    </div>
+                </div>
+
+
             </div>
+            <div class="popup-video hidden">
+                <video id="video-play" src="../assets/video/Super%20Auto%20Pets%20-%20Gameplay%20Trailer.mp4"
+                    controls></video>
+            </div>
+        </div>
+    </section>
+    <section class="map-section">
+        <div class="title-wrapper">
+            <h2 class="section-title" style="font-size: 3rem;color: white;">Featured Maps</h2>
+        </div>
 
+        <div id="maps" data-mouse-down-at="0" data-prev-percentage="-30">
+            <div class="map-item">
+                <img class="image" src="../assets/maps/cornfield.png" alt="" draggable="false">
+                <p class="map-text">Cornfield</p>
+            </div>
+            <div class="map-item">
+                <img class="image" src="../assets/maps/wizard school.png" alt="" draggable="false">
+                <p class="map-text">Wizard School</p>
+            </div>
+            <div class="map-item">
+                <img class="image" src="../assets/maps/wildrown.png" alt="" draggable="false">
+                <p class="map-text">Wild Town</p>
+            </div>
+            <div class="map-item">
+                <img class="image" src="../assets/maps/urbancity.png" alt="" draggable="false">
+                <p class="map-text">Urban City</p>
+            </div>
+            <div class="map-item">
+                <img class="image" src="../assets/maps/toxicsewer.png" alt="" draggable="false">
+                <p class="map-text">Toxic Sewer</p>
+            </div>
+            <div class="map-item">
+                <img class="image" src="../assets/maps/japan.png" alt="" draggable="false">
+                <p class="map-text">Japan</p>
+            </div>
+            <div class="map-item">
+                <img class="image" src="../assets/maps/pineforest.png" alt="" draggable="false">
+                <p class="map-text">Pine Forest</p>
+            </div>
+            <div class="map-item">
+                <img class="image" src="../assets/maps/shortcut.png" alt="" draggable="false">
+                <p class="map-text">ShortCake</p>
+            </div>
+        </div>
 
+    </section>
+    <section class="social-media">
+        <div class="title-wrapper">
+            <h2 class="section-title" style="font-size: 3rem;color: #A09BFE;">Contact Us!</h2>
         </div>
-        <div class="popup-video hidden">
-            <video id="video-play" src="../assets/video/Super%20Auto%20Pets%20-%20Gameplay%20Trailer.mp4"
-                   controls></video>
-        </div>
-    </div>
-</section>
-<section class="map-section">
-    <div class="title-wrapper">
-        <h2 class="section-title" style="font-size: 3rem;color: white;">Featured Maps</h2>
-    </div>
+        <a href="https://instagram/slcbinusuniv" target="_blank" class="tooltip" data-tooltip="Instagram">
+            <img src="../assets/home-asset/contact/social-5.png" alt="Instagram" class="instagram" />
+        </a>
 
-    <div id="maps" data-mouse-down-at="0" data-prev-percentage="-30">
-        <div class="map-item">
-            <img class="image" src="../assets/maps/cornfield.png" alt="" draggable="false">
-            <p class="map-text">Cornfield</p>
-        </div>
-        <div class="map-item">
-            <img class="image" src="../assets/maps/wizard school.png" alt="" draggable="false">
-            <p class="map-text">Wizard School</p>
-        </div>
-        <div class="map-item">
-            <img class="image" src="../assets/maps/wildrown.png" alt="" draggable="false">
-            <p class="map-text">Wild Town</p>
-        </div>
-        <div class="map-item">
-            <img class="image" src="../assets/maps/urbancity.png" alt="" draggable="false">
-            <p class="map-text">Urban City</p>
-        </div>
-        <div class="map-item">
-            <img class="image" src="../assets/maps/toxicsewer.png" alt="" draggable="false">
-            <p class="map-text">Toxic Sewer</p>
-        </div>
-        <div class="map-item">
-            <img class="image" src="../assets/maps/japan.png" alt="" draggable="false">
-            <p class="map-text">Japan</p>
-        </div>
-        <div class="map-item">
-            <img class="image" src="../assets/maps/pineforest.png" alt="" draggable="false">
-            <p class="map-text">Pine Forest</p>
-        </div>
-        <div class="map-item">
-            <img class="image" src="../assets/maps/shortcut.png" alt="" draggable="false">
-            <p class="map-text">ShortCake</p>
-        </div>
-    </div>
-
-</section>
-<section class="social-media">
-    <div class="title-wrapper">
-        <h2 class="section-title" style="font-size: 3rem;color: #A09BFE;">Contact Us!</h2>
-    </div>
-    <a href="https://instagram/slcbinusuniv" target="_blank" class="tooltip" data-tooltip="Instagram">
-        <img src="../assets/home-asset/contact/social-5.png" alt="Instagram" class="instagram"/>
-    </a>
-
-    <a href="https://www.youtube.com/@teamwoodgames" target="_blank" class="tooltip"
-       data-tooltip="Youtube">
-        <img src="../assets/home-asset/contact/social-3.png" alt="Steam" class="steam"/>
-    </a>
-    <a href="https://x.com/TeamWoodGames" target="_blank" class="tooltip" data-tooltip="Twitter">
-        <img src="../assets/home-asset/contact/social-1.png" alt="Twitter" class="twitter"/>
-    </a>
-</section>
+        <a href="https://www.youtube.com/@teamwoodgames" target="_blank" class="tooltip" data-tooltip="Youtube">
+            <img src="../assets/home-asset/contact/social-3.png" alt="Steam" class="steam" />
+        </a>
+        <a href="https://x.com/TeamWoodGames" target="_blank" class="tooltip" data-tooltip="Twitter">
+            <img src="../assets/home-asset/contact/social-1.png" alt="Twitter" class="twitter" />
+        </a>
+    </section>
 </body>
 
 
 <script src="homepage.js"></script>
 <script src="../modal.js" defer></script>
-
 </html>
