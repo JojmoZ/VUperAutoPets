@@ -1,4 +1,3 @@
-
 :root {
     --primary: 50 70% 47%;
 
@@ -227,16 +226,24 @@ body {
 
 #top-pets {
     background-image: url("../assets/login/background.png");
-
     display: flex;
 }
-
+#top-pets .curtain {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: translateY(-100%); /* Initially hidden above */
+  transition: transform 0.8s ease-in; /* Smooth curtain effect */
+  z-index: 0; /* Ensure it covers the content */
+}
 .top-pets-info {
     display: flex;
     flex-direction: column;
-
+    position: absolute;
     width: 50%;
-
+    left: 10%;
     text-align: left;
 
     gap: 1rem;
@@ -259,12 +266,25 @@ body {
 
 
 .pet-container {
-    position: relative;
+    position: absolute;
     width: 50%;
+    right: -10%;
     display: flex;
     align-items: center;
     justify-content: start;
     transition: all 0.5s ease;
+
+}
+
+.pet-container.expanded {
+    width: 120vw;
+    gap:50px;
+    right:-30%;
+    justify-content: space-evenly;
+}
+.pet-card.scale-up {
+    transform: scale(1.2) !important; /* Ensure it overrides other transform styles */
+    transition: transform 0.4s ease-out; /* Smooth scaling */
 }
 
 .pet-card {
@@ -285,8 +305,8 @@ body {
     height: 28rem;
 
     /* Increase transition duration and use smoother easing */
-    transition: transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1),
-    opacity 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition: transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1), 
+                opacity 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .pet-container.expanded .pet-card {
@@ -297,6 +317,14 @@ body {
     transition: transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
+.pet-card.hidden {
+    display: none;
+}
+.pet-container.expanded .pet-card:hover {
+    transform: scale(1.1); /* Slightly scale up */
+    transition: transform 0.3s ease-out; /* Smooth and fast scaling */
+    cursor: pointer; /* Indicate the card is clickable */
+}
 .pet-card:nth-child(1) {
     background-image: url('../assets/home-asset/top-pets/top-bg-1.png');
     z-index: 3;
@@ -349,22 +377,27 @@ body {
     border-radius: 1rem;
 }
 
-.pet-container.expanded {
-    width: 200vw;
-    gap: 50px;
-    overflow: visible;
-    justify-content: space-between;
-}
-
 .pet-container.expanded .pet-card {
     position: static;
     transform: translateX(0) scale(1);
 }
 
 
-/*
-*
-*/
+/* Track style for IE/Edge */
+#pet-range::-ms-track {
+    width: 100%;
+    height: 10px;
+    background: transparent;
+    border-color: transparent;
+    color: transparent;
+}
+
+/* IE/Edge slider background */
+#pet-range::-ms-fill-lower {
+    background: #e0e0e0;
+    border-radius: 5px;
+}
+
 
 /* Jumbotron */
 
@@ -416,7 +449,6 @@ text {
     font-size: 2rem;
     color: black;
 }
-
 .img-desc {
     width: 100%;
     max-width: 37.5rem;
@@ -435,61 +467,6 @@ text {
 }
 
 
-.carousel {
-    position: relative;
-    width: 100%;
-    max-width: 37.5rem;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.carousel img {
-    width: 100%;
-    max-width: 18.75rem;
-    border-radius: 0.625rem;
-    transition: opacity 1s ease-in-out;
-    margin-bottom: 0.625rem;
-    opacity: 1;
-}
-
-.carousel img.hidden {
-    opacity: 0;
-}
-
-.carousel-controls {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    margin-top: 0.625rem;
-}
-
-.carousel-controls button {
-    padding: 0.625rem 1.25rem;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 5px;
-}
-
-.carousel-indicators {
-    display: flex;
-    justify-content: center;
-    margin-top: 0.625rem;
-}
-
-.indicator {
-    width: 2.5rem;
-    height: 0.625rem;
-    background-color: gray;
-    margin: 0 5px;
-    cursor: pointer;
-}
-
-.indicator.active {
-    background-color: orange;
-}
 
 
 @keyframes fadeInLeft {
