@@ -126,48 +126,52 @@ const petstopinfo = document.getElementById("top-pets-info");
 const visibleCards = container.querySelectorAll(".pet-card:not(.hidden)");
 const hiddenCards = container.querySelectorAll(".pet-card.hidden");
 
-let initialRight = -10; // Default starting point (-10%)
+let initialRight = -30; // Default starting point (-30%)
 let maxScrollDistance = 0; // Dynamically calculated scroll range
 
 // Function to calculate max scroll distance dynamically
 function calculateMaxScroll() {
   const containerWidth = container.scrollWidth; // Full width of pet-container
   const viewportWidth = window.innerWidth; // Width of the visible screen
-
-  // Calculate max scroll distance so the last card aligns
   const maxDistance = ((containerWidth - viewportWidth) / viewportWidth) * 100;
-  return maxDistance; // In percentage
+  return maxDistance +5; // In percentage
 }
 
 // Expand container and set scroll range
 visibleCards.forEach((card, index) => {
   card.addEventListener("click", () => {
+    // Check if container is already expanded
+    if (container.classList.contains("expanded")) return;
+
     if (index === 0) {
-      // Apply delay and effect only to the first card
-      card.classList.add("scale-up"); // Add scale-up class
+      // Apply scaling effect
+      card.classList.add("scale-up");
 
       setTimeout(() => {
-        card.classList.remove("scale-up"); // Remove the scale-up class after delay
+        card.classList.remove("scale-up");
         container.classList.add("expanded");
         petRange.classList.remove("hidden");
         petstopinfo.classList.add("hidden");
 
-        // Adjust right position and calculate max scroll
-        initialRight = -30;
+        // Reset scroll position and range value
+        petRange.value = 0; // Reset range to start
+        container.style.right = `${initialRight}%`;
+
+        // Adjust max scroll range
+        initialRight = -30; // Set to new expanded right position
         maxScrollDistance = calculateMaxScroll();
 
-        // Reveal hidden cards with delay
+        // Reveal hidden cards with a delay
         hiddenCards.forEach((hiddenCard, idx) => {
           setTimeout(() => {
             hiddenCard.classList.remove("hidden");
             hiddenCard.style.opacity = "1";
           }, idx * 100);
         });
-      }, 400); // Add slight delay before expanding
+      }, 400); // Delay for smooth scaling
     }
   });
 });
-
 
 // Scroll input event listener
 petRange.addEventListener("input", (e) => {
@@ -182,6 +186,8 @@ petRange.addEventListener("input", (e) => {
     rightPosition: container.style.right,
   });
 });
+
+
 
 /**
  * SECTION: Trailer
