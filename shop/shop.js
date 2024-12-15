@@ -98,15 +98,16 @@ document.addEventListener("DOMContentLoaded", function () {
     { passive: false }
   );
 
+
   function smoothScroll() {
     if (Math.abs(scrollAmount) > 0.5) {
       shopContainer.scrollLeft += scrollAmount;
-      scrollAmount *= 0.85;
+      scrollAmount *= 0.75;
 
-      const maxScroll = shopContainer.scrollWidth - window.innerWidth;
       const scrollLeft = shopContainer.scrollLeft;
+      const maxScroll = shopContainer.scrollWidth - window.innerWidth;
 
-      const clampedScroll = Math.max(0, Math.min(scrollLeft, maxScroll));
+      const clampedScroll = Math.max(0, Math.min(scrollLeft, maxScroll)) * 0.5;
       document.body.style.backgroundPosition = `${-clampedScroll}px top`;
 
       animationFrame = requestAnimationFrame(smoothScroll);
@@ -125,6 +126,12 @@ document.addEventListener("DOMContentLoaded", function () {
   scrollBar.addEventListener("input", function () {
     const maxScrollLeft = shopContainer.scrollWidth - shopContainer.clientWidth;
     const scrollLeft = (scrollBar.value / 100) * maxScrollLeft;
+
+    const maxScroll = shopContainer.scrollWidth - window.innerWidth;
+
+    const clampedScroll = Math.max(0, Math.min(scrollLeft, maxScroll)) * 0.5;
+    document.body.style.backgroundPosition = `${-clampedScroll}px top`;
+
     shopContainer.scrollLeft = scrollLeft;
   });
 

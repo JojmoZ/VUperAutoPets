@@ -971,34 +971,57 @@ section {
  */
 
 .map-section {
-    background-image: url("../assets/background/menu-bg.png");
+    background-image: url("../assets/maps/Field.webp");
+    background-size: contain;
+}
+
+#blur-filter {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    backdrop-filter: blur(10px);
 }
 
 .map-item {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     text-align: center;
-    gap: 0.625rem;
     position: relative;
+    margin-right: 4rem;
 }
 
 .map-item .image {
     width: 40vmin;
-    height: 56vmin;
+    height: 48vmin;
     object-fit: cover;
     object-position: center;
     cursor: pointer;
     transition: transform 0.5s ease, z-index 0.5s ease;
+
+    /*border-radius: 0.5rem;*/
+    box-shadow: black 0 0 2rem;
 }
 
 .map-item .map-text {
     font-family: "VUper", sans-serif;
     font-size: 3rem;
-    color: white;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-    margin-top: -0.625rem;
+    color: #57291A;
+
+    position: absolute;
+    z-index: 15;
+    bottom: 2.5vmin;
+
+    letter-spacing: 0.2rem;
+}
+
+.map-item .ribbon {
+    position: absolute;
+    bottom: 0;
+    left: -4.35vmin;
+    width: 50vmin;
+    z-index: 10;
 }
 
 .map-item > .image,

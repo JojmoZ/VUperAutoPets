@@ -38,14 +38,20 @@ body::-webkit-scrollbar {
 html,
 body {
     margin: 0;
+    padding: 0;
+
+    background: url("../assets/maps/Field.webp");
+    background-size: contain;
 }
 
 .shop-wrapper {
     display: flex;
     height: 100vh;
     align-items: center;
-    background: url("../assets/background/menu-bg.png") no-repeat center center fixed;
     overflow: hidden;
+    z-index: -10;
+
+    backdrop-filter: blur(10px);
 }
 
 .shop-container {
@@ -61,6 +67,7 @@ body {
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;''
     -ms-overflow-style: none;
+
 }
 
 .shop-container::-webkit-scrollbar {
@@ -83,11 +90,13 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    overflow: visible; /* Ensure overflow is visible */
+    overflow: visible;
 }
+
 .card:hover {
     transform: translateY(-1rem) scale(1.05);
 }
+
 @keyframes rainbow {
     0% {
         background-position: 0 50%;
@@ -325,48 +334,6 @@ body {
     height: 6rem;
 }
 
-/*.gacha-btn {*/
-/*    cursor: pointer;*/
-/*    background: none;*/
-/*    border: none;*/
-/*}*/
-
-/*.gacha-btn img {*/
-/*    width: 25rem;*/
-/*    height: auto;*/
-/*}*/
-
-/*.gacha-contain {*/
-/*    position: absolute;*/
-/*    bottom: 0%;*/
-/*    right: 0%;*/
-/*}*/
-
-/*.gacha-btn:hover {*/
-/*    filter: brightness(1.2);*/
-/*}*/
-
-/*.redeem-contain {*/
-/*    position: absolute;*/
-/*    bottom: 0;*/
-/*    right: 25%;*/
-/*}*/
-
-/*.redeem-btn {*/
-/*    cursor: pointer;*/
-/*    background: none;*/
-/*    border: none;*/
-/*}*/
-
-/*.redeem-btn img {*/
-/*    width: 25rem;*/
-/*    height: auto;*/
-/*}*/
-
-/*.redeem-btn:hover {*/
-/*    filter: brightness(1.2);*/
-/*}*/
-
 .header-container {
     position: fixed;
     top: 0;
@@ -379,6 +346,8 @@ body {
     justify-content: space-between;
     margin-inline: 8rem 1rem;
     gap: 2rem;
+
+    z-index: 10;
 
     height: 3.75rem;
 }
