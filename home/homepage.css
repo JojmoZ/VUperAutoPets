@@ -258,7 +258,6 @@ body {
 }
 
 
-
 .pet-container {
     position: relative;
     width: 50%;
@@ -267,6 +266,7 @@ body {
     justify-content: start;
     transition: all 0.5s ease;
 }
+
 .pet-card {
     position: absolute;
 
@@ -285,8 +285,8 @@ body {
     height: 28rem;
 
     /* Increase transition duration and use smoother easing */
-    transition: transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1), 
-                opacity 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition: transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1),
+    opacity 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .pet-container.expanded .pet-card {
@@ -319,8 +319,8 @@ body {
     background-image: url('../assets/home-asset/top-pets/top-bg-4.png');
 }
 
-.pet-card:nth-child(4) img { 
-    left:0.5rem;
+.pet-card:nth-child(4) img {
+    left: 0.5rem;
 }
 
 .pet-card:nth-child(5) {
@@ -351,7 +351,7 @@ body {
 
 .pet-container.expanded {
     width: 200vw;
-    gap:50px;
+    gap: 50px;
     overflow: visible;
     justify-content: space-between;
 }
@@ -360,7 +360,6 @@ body {
     position: static;
     transform: translateX(0) scale(1);
 }
-
 
 
 /*
@@ -417,6 +416,7 @@ text {
     font-size: 2rem;
     color: black;
 }
+
 .img-desc {
     width: 100%;
     max-width: 37.5rem;
@@ -433,7 +433,6 @@ text {
     z-index: 1;
     margin: 1rem 0;
 }
-
 
 
 .carousel {
@@ -491,7 +490,6 @@ text {
 .indicator.active {
     background-color: orange;
 }
-
 
 
 @keyframes fadeInLeft {
@@ -746,13 +744,14 @@ text {
 
 .title-wrapper {
     position: absolute;
-    top: 7%;
-    width: 30%;
+    top: 5%;
+    width: 35%;
     text-align: center;
-    z-index: 10;
     display: flex;
     align-items: center;
     justify-content: center;
+
+    z-index: 100;
 }
 
 .title-wrapper img {
@@ -771,7 +770,6 @@ text {
     display: inline-block;
     position: relative;
 }
-
 
 
 .section-title.visible {
@@ -893,18 +891,27 @@ section {
 
 .trailer {
     justify-content: center;
-    background-image: url(../assets/background/bg-purple.png);
+    background-image: url(../assets/background/bg-gradient-2.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
     display: flex;
     align-items: center;
 }
 
+.trailer-background {
+    position: relative;
+}
+
 .trailer-container {
+    z-index: 10;
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
     width: 50vw;
     margin: 0 auto;
+    position: relative;
 }
 
 .trailer-container button {
@@ -913,6 +920,8 @@ section {
     height: fit-content;
     background: none;
     border: none;
+
+    z-index: 100;
 
     transition: 0.5s all ease;
 }
@@ -930,23 +939,20 @@ section {
     width: 100%;
     height: auto;
     box-shadow: 0 5px 0.625rem rgba(0, 0, 0, 0.2);
-
     box-sizing: border-box;
-
     border-radius: 0.5rem;
     border: 0.2rem solid white;
+    position: relative;
+    z-index: 5;
 }
 
 .popup-video {
-    position: absolute;
-
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-
     background: rgba(0, 0, 0, 0.5);
-
     z-index: 100;
 }
 
@@ -963,9 +969,33 @@ section {
     transform: translate(-50%, -50%);
 }
 
+.vunt-peek {
+    position: absolute;
+    top: 10%;
+    left: 12%;
+    width: 25%;
+    z-index: 1;
+    transform: rotate(15deg);
+
+}
+
+.pamstir-peek {
+    position: absolute;
+    top: 10%;
+    right: 15%;
+    width: 20%;
+    z-index: 1;
+
+    transform: rotate(45deg) scaleX(-1);
+}
+
+
+/**
+ * SECTION: Map
+ */
+
 .map-section {
     background-image: url("../assets/background/menu-bg.png");
-
 }
 
 .map-item {
@@ -1117,9 +1147,6 @@ body > .image {
         --angle: 360deg;
     }
 }
-
-
-
 
 
 @keyframes blink {
