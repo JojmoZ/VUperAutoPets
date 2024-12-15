@@ -273,7 +273,10 @@ body {
     right:-30%;
     justify-content: space-evenly;
 }
-
+.pet-card.scale-up {
+    transform: scale(1.2) !important; /* Ensure it overrides other transform styles */
+    transition: transform 0.4s ease-out; /* Smooth scaling */
+}
 .pet-card {
     position: absolute;
 

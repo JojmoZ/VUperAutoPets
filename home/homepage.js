@@ -140,24 +140,34 @@ function calculateMaxScroll() {
 }
 
 // Expand container and set scroll range
-visibleCards.forEach((card) => {
+visibleCards.forEach((card, index) => {
   card.addEventListener("click", () => {
-    container.classList.add("expanded");
-    petRange.classList.remove("hidden");
-    petstopinfo.classList.add("hidden");
+    if (index === 0) {
+      // Apply delay and effect only to the first card
+      card.classList.add("scale-up"); // Add scale-up class
 
-    // Adjust right position and calculate max scroll
-    initialRight = -30; // Start at -30%
-    maxScrollDistance = calculateMaxScroll();
-
-    hiddenCards.forEach((hiddenCard, index) => {
       setTimeout(() => {
-        hiddenCard.classList.remove("hidden");
-        hiddenCard.style.opacity = "1";
-      }, index * 100);
-    });
+        card.classList.remove("scale-up"); // Remove the scale-up class after delay
+        container.classList.add("expanded");
+        petRange.classList.remove("hidden");
+        petstopinfo.classList.add("hidden");
+
+        // Adjust right position and calculate max scroll
+        initialRight = -30;
+        maxScrollDistance = calculateMaxScroll();
+
+        // Reveal hidden cards with delay
+        hiddenCards.forEach((hiddenCard, idx) => {
+          setTimeout(() => {
+            hiddenCard.classList.remove("hidden");
+            hiddenCard.style.opacity = "1";
+          }, idx * 100);
+        });
+      }, 400); // Add slight delay before expanding
+    }
   });
 });
+
 
 // Scroll input event listener
 petRange.addEventListener("input", (e) => {
