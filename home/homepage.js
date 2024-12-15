@@ -121,46 +121,59 @@ document.addEventListener("DOMContentLoaded", () => {
  * SECTION: Top Pets
  */
 const container = document.querySelector(".pet-container");
- const petRange = document.getElementById("pet-range");
- const petstopinfo = document.getElementById("top-pets-info");
- const visibleCards = container.querySelectorAll(".pet-card:not(.hidden)");
- const hiddenCards = container.querySelectorAll(".pet-card.hidden");
+const petRange = document.getElementById("pet-range");
+const petstopinfo = document.getElementById("top-pets-info");
+const visibleCards = container.querySelectorAll(".pet-card:not(.hidden)");
+const hiddenCards = container.querySelectorAll(".pet-card.hidden");
 
- // Reveal hidden cards and expand container
- visibleCards.forEach((card) => {
-   card.addEventListener("click", () => {
-     container.classList.add("expanded");
-     petRange.classList.remove("hidden");
-     petstopinfo.classList.add("hidden");
+let initialRight = -10; // Default starting point (-10%)
+let maxScrollDistance = 0; // Dynamically calculated scroll range
 
-     // Reveal hidden cards
-     hiddenCards.forEach((hiddenCard, index) => {
-       setTimeout(() => {
-         hiddenCard.classList.remove("hidden");
-         hiddenCard.style.opacity = "1";
-       }, index * 100); // Stagger reveal
-     });
-   });
- });
+// Function to calculate max scroll distance dynamically
+function calculateMaxScroll() {
+  const containerWidth = container.scrollWidth; // Full width of pet-container
+  const viewportWidth = window.innerWidth; // Width of the visible screen
 
- // Update position of pet-container on range input
- petRange.addEventListener("input", (e) => {
-   const rangeValue = e.target.value;
-   const maxScrollDistance = 120; // Adjust this value as needed for total scroll range
-   const containerOffset = (rangeValue / 100) * maxScrollDistance;
+  // Calculate max scroll distance so the last card aligns
+  const maxDistance = ((containerWidth - viewportWidth) / viewportWidth) * 100;
+  return maxDistance; // In percentage
+}
 
-   // Apply the calculated offset to move the container
-   container.style.left = `-${containerOffset}vw`;
+// Expand container and set scroll range
+visibleCards.forEach((card) => {
+  card.addEventListener("click", () => {
+    container.classList.add("expanded");
+    petRange.classList.remove("hidden");
+    petstopinfo.classList.add("hidden");
 
-   // Debug output for troubleshooting
-   console.log({
-     rangeValue,
-     maxScrollDistance,
-     containerOffset,
-     leftPosition: container.style.left,
-   });
- });
+    // Adjust right position and calculate max scroll
+    initialRight = -30; // Start at -30%
+    maxScrollDistance = calculateMaxScroll();
 
+    hiddenCards.forEach((hiddenCard, index) => {
+      setTimeout(() => {
+        hiddenCard.classList.remove("hidden");
+        hiddenCard.style.opacity = "1";
+      }, index * 100);
+    });
+  });
+});
+
+// Scroll input event listener
+petRange.addEventListener("input", (e) => {
+  const rangeValue = e.target.value; // Range slider (0 - 100)
+  const containerOffset = initialRight - (rangeValue / 100) * maxScrollDistance;
+
+  // Apply the calculated offset using `right`
+  container.style.right = `${containerOffset}%`;
+
+  console.log({
+    rangeValue,
+    maxScrollDistance,
+    containerOffset,
+    rightPosition: container.style.right,
+  });
+});
 
 /**
  * SECTION: Trailer

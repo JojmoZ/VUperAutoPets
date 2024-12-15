@@ -270,6 +270,7 @@ body {
 .pet-container.expanded {
     width: 120vw;
     gap:50px;
+    right:-30%;
     justify-content: space-evenly;
 }
 
