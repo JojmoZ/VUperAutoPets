@@ -121,39 +121,46 @@ document.addEventListener("DOMContentLoaded", () => {
  * SECTION: Top Pets
  */
 const container = document.querySelector(".pet-container");
-const petRange = document.getElementById("pet-range");
-const petstopinfo = document.getElementById("top-pets-info");
-const visibleCards = container.querySelectorAll(".pet-card:not(.hidden)");
-const hiddenCards = container.querySelectorAll(".pet-card.hidden");
+ const petRange = document.getElementById("pet-range");
+ const petstopinfo = document.getElementById("top-pets-info");
+ const visibleCards = container.querySelectorAll(".pet-card:not(.hidden)");
+ const hiddenCards = container.querySelectorAll(".pet-card.hidden");
 
-// Reveal hidden cards and expand container
-visibleCards.forEach((card) => {
-  card.addEventListener("click", () => {
-    container.classList.add("expanded");
-    petRange.classList.remove("hidden");
-    petstopinfo.classList.add("hidden");
-    hiddenCards.forEach((hiddenCard, index) => {
-      setTimeout(() => {
-        hiddenCard.classList.remove("hidden");
-        hiddenCard.style.opacity = "1";
-      }, index * 100); // Stagger reveal
-    });
-  });
-});
+ // Reveal hidden cards and expand container
+ visibleCards.forEach((card) => {
+   card.addEventListener("click", () => {
+     container.classList.add("expanded");
+     petRange.classList.remove("hidden");
+     petstopinfo.classList.add("hidden");
 
-// Update scroll position on range input
-petRange.addEventListener("input", (e) => {
-  const maxScrollLeft = container.scrollWidth - container.clientWidth;
-  const scrollLeft = (e.target.value / 100) * maxScrollLeft;
-  container.scrollLeft = scrollLeft;
+     // Reveal hidden cards
+     hiddenCards.forEach((hiddenCard, index) => {
+       setTimeout(() => {
+         hiddenCard.classList.remove("hidden");
+         hiddenCard.style.opacity = "1";
+       }, index * 100); // Stagger reveal
+     });
+   });
+ });
 
-  // Debug output for troubleshooting
-  console.log({
-    rangeValue: e.target.value,
-    maxScrollLeft,
-    scrollLeft,
-  });
-});
+ // Update position of pet-container on range input
+ petRange.addEventListener("input", (e) => {
+   const rangeValue = e.target.value;
+   const maxScrollDistance = 120; // Adjust this value as needed for total scroll range
+   const containerOffset = (rangeValue / 100) * maxScrollDistance;
+
+   // Apply the calculated offset to move the container
+   container.style.left = `-${containerOffset}vw`;
+
+   // Debug output for troubleshooting
+   console.log({
+     rangeValue,
+     maxScrollDistance,
+     containerOffset,
+     leftPosition: container.style.left,
+   });
+ });
+
 
 /**
  * SECTION: Trailer
@@ -246,37 +253,6 @@ window.onload = function () {
   sectionTitles.forEach((title) => {
     titleObserver.observe(title);
   });
-  const carouselSection = document.querySelector(".game-maker");
-  const carouselImages = [
-    "../assets/LogoVUPER.jpg",
-    "../assets/social-media/Steam.png",
-    "../assets/home-asset/TeamWoodGames.jpg",
-  ];
-  const carouselTexts = [
-    "Super Auto Pets is the first game out of independent studio Team Wood Games, and is available both as a free browser title as well as a mobile app for Android, it’s certainly a game worth checking out.",
-    "This game is available in Steam! Download VUper Auto Pets Free Now!",
-    "We are the creators of this game, you can see more of us in https://itch.io/profile/teamwood",
-  ];
-  let currentIndex = 0;
-  let autoSlideInterval;
-
-  const carouselImageElement = document.getElementById("carousel-image");
-  const carouselTextElement = document.getElementById("carousel-text");
-  const indicators = document.querySelectorAll(".indicator");
-
-  function fadeOutAndChangeContent() {
-    carouselImageElement.style.opacity = "0";
-    carouselTextElement.style.opacity = "0";
-
-    setTimeout(() => {
-      currentIndex = (currentIndex + 1) % carouselImages.length;
-      updateCarousel();
-      setTimeout(() => {
-        carouselImageElement.style.opacity = "1";
-        carouselTextElement.style.opacity = "1";
-      }, 50);
-    }, 1000);
-  }
 
   const socialMediaSection = document.querySelector(".social-media");
 
@@ -466,64 +442,5 @@ window.onload = function () {
   window.addEventListener("beforeunload", () => {
     localStorage.setItem("backgroundAudioTime", backgroundAudio.currentTime);
   });
-  const carouselWrapper = document.querySelector(".carousel-wrapper");
-  const topPetsText = document.getElementById("topPetsText"); // Text to hide
-  const cards = document.querySelectorAll(".pet-card");
-  let isExpanded = false;
 
-  // Function to toggle the carousel state and text visibility
-  function toggleCarousel(expand) {
-    if (expand) {
-      carouselWrapper.classList.add("expanded");
-      carouselWrapper.classList.remove("collapsed");
-      topPetsText.classList.add("hidden"); // Hide the text
-      isExpanded = true;
-    } else {
-      carouselWrapper.classList.add("collapsed");
-      carouselWrapper.classList.remove("expanded");
-      topPetsText.classList.remove("hidden"); // Show the text
-      isExpanded = false;
-    }
-  }
-
-  // Add click event listeners to cards to expand or collapse the carousel
-  cards.forEach((card) => {
-    card.addEventListener("click", () => {
-      if (!isExpanded) {
-        toggleCarousel(true); // Expand carousel and hide text
-      }
-    });
-  });
-
-  // Enable dragging for expanded carousel
-  const carousel = document.getElementById("carousel");
-  let isDragging = false;
-  let startX = 0;
-  let scrollLeft = 0;
-
-  carousel.addEventListener("mousedown", (e) => {
-    if (!isExpanded) return;
-    isDragging = true;
-    startX = e.pageX - carousel.offsetLeft;
-    scrollLeft = carousel.scrollLeft;
-    carousel.style.cursor = "grabbing";
-  });
-
-  carousel.addEventListener("mouseleave", () => {
-    isDragging = false;
-    carousel.style.cursor = "default";
-  });
-
-  carousel.addEventListener("mouseup", () => {
-    isDragging = false;
-    carousel.style.cursor = "default";
-  });
-
-  carousel.addEventListener("mousemove", (e) => {
-    if (!isDragging) return;
-    e.preventDefault();
-    const x = e.pageX - carousel.offsetLeft;
-    const walk = (x - startX) * 2; // Adjust scroll speed
-    carousel.scrollLeft = scrollLeft - walk;
-  });
 };

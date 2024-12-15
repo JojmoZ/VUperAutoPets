@@ -257,12 +257,20 @@ body {
 }
 
 .pet-container {
-    position: relative;
+    position: absolute;
     width: 50%;
+    right: -10%;
     display: flex;
     align-items: center;
     justify-content: start;
     transition: all 0.5s ease;
+    
+}
+
+.pet-container.expanded {
+    width: 120vw;
+    gap:50px;
+    justify-content: space-evenly;
 }
 
 .pet-card {
@@ -349,12 +357,6 @@ body {
     height: 125%;
     object-fit: contain;
     border-radius: 1rem;
-}
-
-.pet-container.expanded {
-    width: 200vw;
-    gap:50px;
-    justify-content: space-between;
 }
 
 .pet-container.expanded .pet-card {
@@ -468,63 +470,6 @@ text {
     margin: 1rem 0;
 }
 
-
-
-.carousel {
-    position: relative;
-    width: 100%;
-    max-width: 37.5rem;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.carousel img {
-    width: 100%;
-    max-width: 18.75rem;
-    border-radius: 0.625rem;
-    transition: opacity 1s ease-in-out;
-    margin-bottom: 0.625rem;
-    opacity: 1;
-}
-
-.carousel img.hidden {
-    opacity: 0;
-}
-
-.carousel-controls {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    margin-top: 0.625rem;
-}
-
-.carousel-controls button {
-    padding: 0.625rem 1.25rem;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 5px;
-}
-
-.carousel-indicators {
-    display: flex;
-    justify-content: center;
-    margin-top: 0.625rem;
-}
-
-.indicator {
-    width: 2.5rem;
-    height: 0.625rem;
-    background-color: gray;
-    margin: 0 5px;
-    cursor: pointer;
-}
-
-.indicator.active {
-    background-color: orange;
-}
 
 
 
