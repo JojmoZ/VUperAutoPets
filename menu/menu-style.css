@@ -59,8 +59,9 @@ button:active {
     position: fixed;
     top: 0;
 
-    width: 100%;
+    width: 80%;
     height: 100%;
+
 
     background-image: url("../assets/home-asset/menu.png");
     background-size: 100% 100%;
@@ -153,7 +154,7 @@ header {
 
     text-align: center;
 
-    z-index: 5;
+    z-index: 10;
     font-family: "Comic Sans MS", serif;
     font-weight: 700;
 
