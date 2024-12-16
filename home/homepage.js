@@ -425,30 +425,49 @@ window.onload = function () {
     titleObserver.observe(title);
   });
 
-  const socialMediaSection = document.querySelector(".social-media");
+const socialMediaSection = document.querySelector(".social-media");
 
-  const instagram = document.querySelector(".instagram");
-  const twitter = document.querySelector(".twitter");
-  const steam = document.querySelector(".steam");
-  const socialMediaObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          instagram.classList.add("walk");
-          twitter.classList.add("walk");
-          steam.classList.add("walk");
-          console.log("Social Media is visible");
-        } else {
-          instagram.classList.remove("walk");
-          twitter.classList.remove("walk");
-          steam.classList.remove("walk");
-          console.log("Social Media is not visible");
-        }
-      });
-    },
-    { threshold: 0.5 }
-  );
-  socialMediaObserver.observe(socialMediaSection);
+const instagram = document.querySelector(".instagram");
+const twitter = document.querySelector(".twitter");
+const steam = document.querySelector(".steam");
+const facebook = document.querySelector(".facebook");
+const discord = document.querySelector(".discord");
+
+const allIcons = [instagram, twitter, steam, facebook, discord];
+let completedAnimations = 0;
+
+// Disable tooltips initially
+document
+  .querySelectorAll(".tooltip")
+  .forEach((el) => el.classList.add("tooltip-disabled"));
+
+// Observer to start the animations
+const socialMediaObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        allIcons.forEach((icon) => icon.classList.add("walk"));
+      }
+    });
+  },
+  { threshold: 0.5 }
+);
+
+// Listen for the end of animations
+allIcons.forEach((icon) => {
+  icon.addEventListener("animationend", () => {
+    completedAnimations += 1;
+    if (completedAnimations === allIcons.length) {
+      // Enable tooltips after all animations have completed
+      document
+        .querySelectorAll(".tooltip")
+        .forEach((el) => el.classList.remove("tooltip-disabled"));
+    }
+  });
+});
+
+socialMediaObserver.observe(socialMediaSection);
+
 
   let liber = "../assets/Animals/Liberian_Husky.webp";
 
