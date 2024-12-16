@@ -1,7 +1,7 @@
 {
   "name": "vuper-auto-pets",
   "version": "1.0.0",
-  "description": "VUper baby",
+  "description": "VUper",
   "author": "PI & VU",
   "main": "index.js",
   "scripts": {
@@ -18,11 +18,11 @@
     "asarUnpack": [
       "**/*.{mp3,mp4,png,jpg,webp,ttf,woff,woff2,otf}"
     ],
-     "compression": "maximum", 
-  "nsis": {
-    "oneClick": false,
-    "allowToChangeInstallationDirectory": true
-  },
+    "compression": "maximum",
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
     "appId": "com.vuperautopets.app",
     "productName": "VUperAutoPets",
     "files": [
