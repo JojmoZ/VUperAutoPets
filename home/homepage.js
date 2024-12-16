@@ -221,6 +221,7 @@ const petDescriptions = {
   PamstIr: "PamstIr is playful and loves making friends with everyone.",
 };
 
+
 function showAnimalInfo(card) {
   const image = card.querySelector("img");
   const animalName = image.alt;
@@ -247,22 +248,22 @@ function showAnimalInfo(card) {
             c.classList.add("showandtellhidden");
           }
         });
-
+        
         setTimeout(() => {
           const containerRightOffset = parseFloat(container.style.right) || 0;
-
+          
           const cardRect = card.getBoundingClientRect();
           const containerRect = container.getBoundingClientRect();
-
+          
           const offsetX =
-            cardRect.left - containerRect.left - containerRightOffset;
+          cardRect.left - containerRect.left - containerRightOffset;
           const offsetY = cardRect.top - containerRect.top;
-
+          
           card.style.transition = "none";
           container.style.transition = "none";
-
+          
           card.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
-
+          
           card.offsetHeight;
           container.offsetHeight;
           tempcontright = container.style.right;
@@ -270,23 +271,23 @@ function showAnimalInfo(card) {
           console.log(tempcontright);
           card.style.transition = "all 0.8s ease-in-out";
           container.style.transition = "all 0.8s ease-in-out";
-
+          
           card.style.transform = "translate(0, 0)";
           card.classList.add("showandtell");
           image.classList.remove("move-down");
-
+          animalNameElement.textContent = animalName;
+          animalDescriptionElement.textContent =
+            petDescriptions[animalName] || "No description available.";
+          infoCard.classList.remove("hidden", "hide");
+          void infoCard.offsetWidth; // Trigger reflow
+          infoCard.classList.add("show"); // Add 'show' class
+          
           allCards.forEach((c) => {
             if (c !== card) {
               c.classList.add("hidden");
             }
           });
           setTimeout(() => {
-            animalNameElement.textContent = animalName;
-            animalDescriptionElement.textContent =
-              petDescriptions[animalName] || "No description available.";
-            infoCard.classList.remove("hidden", "hide");
-            void infoCard.offsetWidth; // Trigger reflow
-            infoCard.classList.add("show"); // Add 'show' class
           }, 1000);
         }, 1000);
       }, 50);
