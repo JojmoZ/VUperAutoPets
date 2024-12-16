@@ -6,6 +6,7 @@ const frameDuration = 1000 / 60;
 localStorage.removeItem("ingame");
 const gridSize = 10;
 let animationId;
+let grid;
 let foodElement = null;
 let foodElements = [];
 let scaleX, scaleY;
@@ -72,12 +73,7 @@ const restrictedZones = [
   { x: 1680, y: 30, width: 90, height: 65 },
   { x: 1850, y: 0, width: 70, height: 1080 },
 ];
-function updateScalingFactors() {
-  const barnElement = document.getElementById("animals");
-  const barnRect = barnElement.getBoundingClientRect();
-  scaleX = barnRect.width / 1920;
-  scaleY = barnRect.height / 1080;
-}
+
 const logged = localStorage.getItem("loggedin");
 
 if (!logged) {
@@ -119,7 +115,7 @@ function isInRestrictedZone(animalX, animalY, animalWidth, animalHeight) {
 
 const rows = Math.floor(window.innerHeight / gridSize);
 const cols = Math.floor(window.innerWidth / gridSize);
-const grid = Array.from({ length: rows }, () => Array(cols).fill(0));
+const grida = Array.from({ length: rows }, () => Array(cols).fill(0));
 restrictedZones.forEach((zone) => {
   const startX = Math.floor(zone.x / gridSize);
   const startY = Math.floor(zone.y / gridSize);
@@ -129,7 +125,7 @@ restrictedZones.forEach((zone) => {
     if (i >= rows) continue;
     for (let j = startX; j <= endX; j++) {
       if (j >= cols) continue;
-      grid[i][j] = 1;
+      grida[i][j] = 1;
     }
   }
 });
@@ -241,7 +237,6 @@ function astar(start, end) {
   return null;
 }
 
-
 function heuristic(a, b) {
   return Math.abs(a.row - b.row) + Math.abs(a.col - b.col);
 }
@@ -250,7 +245,7 @@ function isValidCell(row, col) {
   return (
     row >= 0 && row < rows && col >= 0 && col < cols && grid[row][col] !== 1
   );
-} 
+}
 const backbtn = document.getElementById("backArrow");
 backbtn.addEventListener("click", function () {
   const menuPath = path.join(appDir, "menu/menu.html");
@@ -382,15 +377,21 @@ function roamAnimal(animal) {
 }
 
 function createFood(event) {
-   const foodX = (event.clientX - 10) / scaleX;
-   const foodY = (event.clientY - 10) / scaleY;
+  const { bgWidth, bgHeight, offsetX, offsetY } = calculateBackgroundOffsets();
+
+  // Calculate food coordinates relative to the scaled background
+  const foodX = (event.clientX - offsetX) / (bgWidth / 1920);
+  const foodY = (event.clientY - offsetY) / (bgHeight / 1080);
   const foodWidth = 20;
   const foodHeight = 20;
 
+  // Check if the food is placed in a restricted zone
   if (isInRestrictedZone(foodX, foodY, foodWidth, foodHeight)) {
+    console.warn("Food placement is in a restricted zone.");
     return;
   }
 
+  // Create and style the food element
   const foodElement = document.createElement("div");
   foodElement.className = "food";
   foodElement.style.position = "absolute";
@@ -399,13 +400,17 @@ function createFood(event) {
   foodElement.style.backgroundImage = "url('../assets/items/Pizza.webp')";
   foodElement.style.backgroundSize = "cover";
 
-  foodElement.style.left = `${foodX}px`;
-  foodElement.style.top = `${foodY}px`;
+  // Position the food element relative to the scaled background
+  foodElement.style.left = `${(foodX / 1920) * bgWidth + offsetX}px`;
+  foodElement.style.top = `${(foodY / 1080) * bgHeight + offsetY}px`;
   animalContainer.appendChild(foodElement);
   foodElements.push(foodElement);
 
-  const foodRow = Math.floor((foodY / scaleY) / gridSize);
-  const foodCol = Math.floor((foodX / scaleX) / gridSize);
+  // Convert food position to grid indices
+  const foodRow = Math.floor(foodY / gridSize);
+  const foodCol = Math.floor(foodX / gridSize);
+
+  // Find the closest animal to the food
   const animals = document.querySelectorAll(".animal");
   let closestAnimal = null;
   let minDistance = Infinity;
@@ -413,13 +418,16 @@ function createFood(event) {
   animals.forEach((animal) => {
     if (animal.dataset.isMovingToFood === "true") return;
 
-    const animalRow = Math.floor(
-      (parseFloat(animal.style.top) + animal.offsetHeight / 2) / gridSize
-    );
-    const animalCol = Math.floor(
-      (parseFloat(animal.style.left) + animal.offsetWidth / 2) / gridSize
-    );
+    // Get animal's position relative to the scaled background
+    const animalX =
+      (parseFloat(animal.style.left) - offsetX) / (bgWidth / 1920);
+    const animalY =
+      (parseFloat(animal.style.top) - offsetY) / (bgHeight / 1080);
 
+    const animalRow = Math.floor(animalY / gridSize);
+    const animalCol = Math.floor(animalX / gridSize);
+
+    // Calculate Manhattan distance between the animal and the food
     const distance =
       Math.abs(animalRow - foodRow) + Math.abs(animalCol - foodCol);
 
@@ -430,67 +438,90 @@ function createFood(event) {
   });
 
   if (closestAnimal) {
+    console.log(closestAnimal);
     closestAnimal.dataset.isMovingToFood = "true";
     cancelAnimationFrame(closestAnimal.roamAnimationId);
     setTimeout(() => {
+      // Calculate starting and ending points for pathfinding
       const start = {
-  row: Math.floor((parseFloat(closestAnimal.style.top) + closestAnimal.offsetHeight / 2) / (gridSize * scaleY)),
-  col: Math.floor((parseFloat(closestAnimal.style.left) + closestAnimal.offsetWidth / 2) / (gridSize * scaleX)),
-};
+        row: Math.floor(
+          (parseFloat(closestAnimal.style.top) - offsetY) /
+            (gridSize * (bgHeight / 1080))
+        ),
+        col: Math.floor(
+          (parseFloat(closestAnimal.style.left) - offsetX) /
+            (gridSize * (bgWidth / 1920))
+        ),
+      };
 
-const end = {
-  row: Math.floor(foodY / (gridSize * scaleY)),
-  col: Math.floor(foodX / (gridSize * scaleX)),
-};
-
+      const end = {
+        row: foodRow,
+        col: foodCol,
+      };
 
       const path = astar(start, end);
+      if (!path) {
+        console.warn("Pathfinding failed: No valid path found.");
+      } else {
+        console.log("Path:", path);
+      }
       if (path) {
         followPath(closestAnimal, path, () => {
           foodElement.remove();
           foodElements = foodElements.filter((el) => el !== foodElement);
-          if (
-            isInRestrictedZone(
-              parseFloat(closestAnimal.style.left),
-              parseFloat(closestAnimal.style.top),
-              closestAnimal.offsetWidth,
-              closestAnimal.offsetHeight
-            )
-          ) {
-            unstickAnimal(closestAnimal);
-          }
-        closestAnimal.dataset.isMovingToFood = "false";
-        roamAnimal(closestAnimal);
-      });
-    }
+          closestAnimal.dataset.isMovingToFood = "false";
+          roamAnimal(closestAnimal);
+        });
+      }
     }, 200);
+  } else {
+    console.warn("No closest animal found for the food.");
   }
 }
 
 function followPath(animal, path, callback) {
-    let index = 0;
+  let index = 0;
   const speed = 1;
+
   function moveStep() {
     if (index >= path.length) {
       if (callback) callback();
       return;
     }
-    const node = path[index];
-    const nextX = node.col * gridSize * scaleX + gridSize * scaleX / 2;
-const nextY = node.row * gridSize * scaleY + gridSize * scaleY / 2;
 
+    const { bgWidth, bgHeight, offsetX, offsetY } =
+      calculateBackgroundOffsets(); // Apply scaling offsets dynamically
+
+    // Target position (scaled and adjusted)
+    const node = path[index];
+    const nextX =
+      (node.col * gridSize * bgWidth) / 1920 +
+      offsetX +
+      (gridSize * bgWidth) / 1920 / 2;
+    const nextY =
+      (node.row * gridSize * bgHeight) / 1080 +
+      offsetY +
+      (gridSize * bgHeight) / 1080 / 2;
+
+    // Current position of the animal
     const currentX = parseFloat(animal.style.left) + animal.offsetWidth / 2;
     const currentY = parseFloat(animal.style.top) + animal.offsetHeight / 2;
+
+    // Calculate movement
     const deltaX = nextX - currentX;
     const deltaY = nextY - currentY;
     const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
     if (distance > speed) {
       const moveX = (deltaX / distance) * speed;
       const moveY = (deltaY / distance) * speed;
+
       animal.style.left = `${currentX + moveX - animal.offsetWidth / 2}px`;
       animal.style.top = `${currentY + moveY - animal.offsetHeight / 2}px`;
+
       requestAnimationFrame(moveStep);
     } else {
+      // Snap to next grid node
       animal.style.left = `${nextX - animal.offsetWidth / 2}px`;
       animal.style.top = `${nextY - animal.offsetHeight / 2}px`;
       index++;
@@ -499,7 +530,6 @@ const nextY = node.row * gridSize * scaleY + gridSize * scaleY / 2;
   }
 
   moveStep();
-  setTimeout(() => {}, 500);
 }
 
 function drawRestrictedZones() {
@@ -511,7 +541,6 @@ function drawRestrictedZones() {
     const zoneElement = document.createElement("div");
     zoneElement.className = "restricted-area";
 
-    // Map the coordinates to the actual background size and position
     zoneElement.style.position = "absolute";
     zoneElement.style.left = `${(zone.x / 1920) * bgWidth + offsetX}px`;
     zoneElement.style.top = `${(zone.y / 1080) * bgHeight + offsetY}px`;
@@ -522,141 +551,22 @@ function drawRestrictedZones() {
   });
 }
 
-drawRestrictedZones();
-
-function updateRestrictedZones() {
-  const barnElement = document.getElementById("animals");
-  const barnRect = barnElement.getBoundingClientRect();
-  const scaleX = barnRect.width / 1920;
-  const scaleY = barnRect.height / 1080;
-
-  const restrictedAreaElements = document.querySelectorAll(".restricted-area");
-  restrictedAreaElements.forEach((element, index) => {
-    const zone = restrictedZones[index];
-    element.style.left = `${zone.x * scaleX}px`;
-    element.style.top = `${zone.y * scaleY}px`;
-    element.style.width = `${zone.width * scaleX}px`;
-    element.style.height = `${zone.height * scaleY}px`;
-  });
-}
-function unstickAnimal(animal) {
-  const startX = parseFloat(animal.style.left) + animal.offsetWidth / 2;
-  const startY = parseFloat(animal.style.top) + animal.offsetHeight / 2;
-
-  const stepSize = gridSize;
-  let validLocations = [];
-
-  for (let row = -10; row <= 10; row++) {
-    for (let col = -10; col <= 10; col++) {
-      const candidateX = startX + col * stepSize;
-      const candidateY = startY + row * stepSize;
-
-      if (
-        candidateX >= 0 &&
-        candidateX <= animalContainer.clientWidth &&
-        candidateY >= 0 &&
-        candidateY <= animalContainer.clientHeight &&
-        !isInRestrictedZone(
-          candidateX,
-          candidateY,
-          animal.offsetWidth,
-          animal.offsetHeight
-        )
-      ) {
-        validLocations.push({ x: candidateX, y: candidateY });
-      }
-    }
-  }
-
-  if (validLocations.length > 0) {
-    const target = validLocations[0]; // Choose the first valid location
-    animateMove(animal, target.x, target.y);
-  } else {
-    console.warn("No valid location found to unstick the animal.");
-  }
-}
-
-function animateMove(animal, targetX, targetY) {
-  const duration = 500;
-  const startTime = performance.now();
-  const startX = parseFloat(animal.style.left);
-  const startY = parseFloat(animal.style.top);
-
-  function animate(currentTime) {
-    const elapsedTime = currentTime - startTime;
-    const progress = Math.min(elapsedTime / duration, 1);
-
-    const newX = startX + (targetX - startX) * progress;
-    const newY = startY + (targetY - startY) * progress;
-
-    animal.style.left = `${newX}px`;
-    animal.style.top = `${newY}px`;
-
-    if (progress < 1) {
-      requestAnimationFrame(animate);
-    }
-  }
-
-  requestAnimationFrame(animate);
-}
-
-
-function updateAnimalSizes() {
-  const barnElement = document.getElementById("animals");
-  const barnRect = barnElement.getBoundingClientRect();
-  const scaleX = barnRect.width / 1920;
-  const scaleY = barnRect.height / 1080;
-
-  const animals = document.querySelectorAll(".animal");
-  animals.forEach((animal) => {
-    const originalWidth = 50;
-    const originalHeight = 50;
-    animal.style.width = `${originalWidth * scaleX}px`;
-    animal.style.height = `${originalHeight * scaleY}px`;
-
-    const left = parseFloat(animal.style.left);
-    const top = parseFloat(animal.style.top);
-    animal.style.left = `${left * scaleX}px`;
-    animal.style.top = `${top * scaleY}px`;
-  });
-}
-
-function updateCoordinates() {
-  const barnElement = document.getElementById("animals");
-  const barnRect = barnElement.getBoundingClientRect();
-  const scaleX = barnRect.width / 1920;
-  const scaleY = barnRect.height / 1080;
-
-  const animals = document.querySelectorAll(".animal");
-  animals.forEach((animal) => {
-    const left = parseFloat(animal.style.left) / scaleX;
-    const top = parseFloat(animal.style.top) / scaleY;
-    animal.style.left = `${left}px`;
-    animal.style.top = `${top}px`;
-  });
-
-  const restrictedAreaElements = document.querySelectorAll(".restricted-area");
-  restrictedAreaElements.forEach((element, index) => {
-    const zone = restrictedZones[index];
-    element.style.left = `${zone.x * scaleX}px`;
-    element.style.top = `${zone.y * scaleY}px`;
-    element.style.width = `${zone.width * scaleX}px`;
-    element.style.height = `${zone.height * scaleY}px`;
-  });
-}
+// drawRestrictedZones();
 
 window.addEventListener("resize", () => {
-  updateScalingFactors();
   drawRestrictedZones();
-  resetGrid();
 });
-updateScalingFactors();
-resetGrid();
-drawRestrictedZones();
-
+// resetGrid();
+// // updateScalingFactors();
+// drawRestrictedZones();
+let initialGridResetDone = false;
 document.addEventListener("DOMContentLoaded", () => {
   hideStatWindow();
   const userAnimals = getUserAnimals();
+  setTimeout(() => {
+    resetGrid();
+    drawRestrictedZones();
+  }, 100); // Allow time for initial rendering and resizing
   userAnimals.forEach((animal) => {
     const animalElement = createAnimal(animal);
   });
@@ -670,22 +580,21 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
 function calculateBackgroundOffsets() {
   const barnElement = document.getElementById("animals");
   const barnRect = barnElement.getBoundingClientRect();
-  const bgImageAspectRatio = 1920 / 1080; // Aspect ratio of the original background image
+  const bgImageAspectRatio = 1920 / 1080;
   const containerAspectRatio = barnRect.width / barnRect.height;
 
   let bgWidth, bgHeight, offsetX, offsetY;
 
   if (containerAspectRatio > bgImageAspectRatio) {
-    // Container is wider than the image
     bgWidth = barnRect.width;
     bgHeight = barnRect.width / bgImageAspectRatio;
     offsetX = 0;
     offsetY = (barnRect.height - bgHeight) / 2;
   } else {
-    // Container is taller than the image
     bgWidth = barnRect.height * bgImageAspectRatio;
     bgHeight = barnRect.height;
     offsetX = (barnRect.width - bgWidth) / 2;
@@ -694,26 +603,32 @@ function calculateBackgroundOffsets() {
 
   return { bgWidth, bgHeight, offsetX, offsetY };
 }
+function initializeGrid() {
+  return Array.from({ length: rows }, () => Array(cols).fill(0));
+}
 
 function resetGrid() {
-  updateScalingFactors(); // Update scaleX and scaleY first
-  grid.forEach((row) => row.fill(0));
+  const { bgWidth, bgHeight } = calculateBackgroundOffsets();
+  const rows = Math.floor(bgHeight / gridSize);
+  const cols = Math.floor(bgWidth / gridSize);
+
+  grid = Array.from({ length: rows }, () => Array(cols).fill(0));
+
   restrictedZones.forEach((zone) => {
-    const startX = Math.floor((zone.x * scaleX) / gridSize);
-    const startY = Math.floor((zone.y * scaleY) / gridSize);
-    const endX = Math.floor(((zone.x + zone.width) * scaleX) / gridSize);
-    const endY = Math.floor(((zone.y + zone.height) * scaleY) / gridSize);
+    const startX = Math.floor(zone.x / gridSize);
+    const startY = Math.floor(zone.y / gridSize);
+    const endX = Math.floor((zone.x + zone.width) / gridSize);
+    const endY = Math.floor((zone.y + zone.height) / gridSize);
 
     for (let i = startY; i <= endY; i++) {
+      if (i < 0 || i >= rows) continue;
       for (let j = startX; j <= endX; j++) {
-        if (i >= 0 && i < rows && j >= 0 && j < cols) {
-          grid[i][j] = 1; // Mark restricted zones
-        }
+        if (j < 0 || j >= cols) continue;
+        grid[i][j] = 1;
       }
     }
   });
 }
-
 
 let currentAnimal = null;
 

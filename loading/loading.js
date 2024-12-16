@@ -1,10 +1,10 @@
-
+document.addEventListener("DOMContentLoaded", () => {
   const layers = document.querySelectorAll(".parallax-layer");
   const loadingFill = document.getElementById("loading-fill");
-  const totalGameTime = 20 * 1000;
+  const totalGameTime = 20 * 2000;
+  localStorage.removeItem("ingame");
   const path = window.electron.path;
   const appDir = window.electron.__dirname;
-  localStorage.removeItem("ingame");
   const startTime = Date.now();
   const tips = [
     "Kalau melawan tantangan yang tinggi, jangan menyerah!",
@@ -47,206 +47,40 @@
     "Kayaknya perlu extend deh...",
   ];
 
-  const mainContent = document.querySelector(".main-content");
-  let storedAnimals;
-  try {
-    storedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
-    if (!Array.isArray(storedAnimals) || !storedAnimals.length) {
-      throw new Error("Invalid data");
-    }
-  } catch (e) {
-    storedAnimals = [
-      { name: "VUnt", img: "../assets/Animals/VUnt.webp" },
-      { name: "caKRbara", img: "../assets/Animals/caKRbara.webp" },
-    ];
-  }
-  const animals = storedAnimals;
-
   function updateLoading() {
     const elapsedTime = Date.now() - startTime;
     const progress = Math.min((elapsedTime / totalGameTime) * 100, 100);
     loadingFill.style.width = `${progress}%`;
+    animalVUnt.style.left = `calc(${progress}% - 5rem)`;
+    animalVUnt.style.top = `-7.5rem`;
+    animalVUnt.style.width = `8rem`;
+    animalVUnt.style.height = `8rem`;
 
     if (elapsedTime >= totalGameTime) {
-      lockScroll();
-      triggerTransitionToGame()
+      triggerTransitionToGame();
     }
   }
- function triggerTransitionToGame() {
-   if (document.querySelector(".overlay")) return; 
+  function triggerTransitionToGame() {
+    if (document.querySelector(".overlay")) return;
 
-   
-   const blackOverlay = document.createElement("div");
-   blackOverlay.classList.add("overlay");
-   document.body.appendChild(blackOverlay);
+    const blackOverlay = document.createElement("div");
+    blackOverlay.classList.add("overlay");
+    document.body.appendChild(blackOverlay);
 
-   
-   const logo = document.createElement("img");
-   logo.src = "../assets/title-logo.png";
-   logo.classList.add("logo");
-   blackOverlay.appendChild(logo);
+    const logo = document.createElement("img");
+    logo.src = "../assets/title-logo.png";
+    logo.classList.add("logo");
+    blackOverlay.appendChild(logo);
 
-   
-   setTimeout(() => {
-     blackOverlay.classList.add("fade-in-overlay");
-     logo.classList.add("fade-in-logo");
-
-     
-     setTimeout(() => {
-       const gamePath = path.join(appDir, "game/game.html"); 
-       window.location.href = `file://${gamePath}`; 
-     }, 5000); 
-   }, 100);
- }
-
-
-  const activeTips = [];
-  const padding = 20;
-  function showRandomTip() {
-    if (window.pageYOffset + window.innerHeight < document.body.scrollHeight) {
-      return;
-    }
-    const tip = tips[Math.floor(Math.random() * tips.length)];
-    const animal = animals[Math.floor(Math.random() * animals.length)];
-    const tipElement = document.createElement("div");
-    tipElement.className = "tip";
-    tipElement.textContent = tip;
-
-    const animalElement = document.createElement("img");
-    animalElement.src = animal.img;
-    animalElement.alt = animal.name;
-    animalElement.className = "animal";
-
-    const maxAttempts = 20;
-    let attempts = 0;
-    let topPosition, leftPosition, position, tipBox;
-
-    do {
-      topPosition = Math.random() * 70 + 10;
-      leftPosition = Math.random() * 80 + 10;
-
-      if (leftPosition < 30) {
-        position = "left";
-      } else if (leftPosition > 70) {
-        position = "right";
-      } else {
-        position = "center";
-      }
-
-      tipElement.style.position = "absolute";
-      tipElement.style.top = `${topPosition}%`;
-      tipElement.style.left = `${leftPosition}%`;
-      tipElement.style.right = "auto";
-      tipElement.style.transform = "none";
-      
-
-      animalElement.style.position = "absolute";
-      animalElement.style.top = "60%";
-      if (position === "left") {
-        tipElement.style.left = `${leftPosition}%`;
-        tipElement.style.right = "auto";
-        tipElement.style.flexDirection = "row-reverse";
-        animalElement.style.left = "-3.125rem";
-        animalElement.classList.add("mirror");
-      } else if (position === "right") {
-        tipElement.style.right = `${100 - leftPosition}%`;
-        tipElement.style.left = "auto";
-        animalElement.style.right = "-3.125rem";
-        tipElement.style.flexDirection = "row";
-      } else {
-        tipElement.style.left = "50%";
-        tipElement.style.transform = "translateX(-50%)";
-        animalElement.style.right = "-3.125rem";
-        tipElement.style.flexDirection = "row";
-      }
-
-      mainContent.appendChild(tipElement);
-      tipBox = tipElement.getBoundingClientRect();
-      mainContent.removeChild(tipElement);
-      const logged = localStorage.getItem("loggedin");
-
-      if (!logged) {
-        
-        function clearLocalStorageExceptUsers() {
-          const keysToKeep = ["users"]; 
-
-          
-          const allKeys = Object.keys(localStorage);
-
-          
-          allKeys.forEach((key) => {
-            if (!keysToKeep.includes(key)) {
-              localStorage.removeItem(key);
-            }
-          });
-        }
-
-        
-        clearLocalStorageExceptUsers();
-
-        
-        const loginPath = path.join(appDir, "login/index.html"); 
-    window.location.href = `file://${loginPath}`; 
-      }
-
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-
-      const overlap = activeTips.some((activeTip) =>
-        isOverlappingWithPadding(activeTip, tipBox, padding)
-      );
-
-      if (!overlap) {
-        break;
-      }
-
-      attempts++;
-      
-      console.log(`Attempt ${attempts}: Overlap detected, retrying...`);
-    } while (attempts < maxAttempts);
-
-    if (attempts < maxAttempts) {
-      tipElement.appendChild(animalElement);
-      mainContent.appendChild(tipElement);
-      const currentTipBox = tipElement.getBoundingClientRect();
-      activeTips.push(currentTipBox);
+    setTimeout(() => {
+      blackOverlay.classList.add("fade-in-overlay");
+      logo.classList.add("fade-in-logo");
 
       setTimeout(() => {
-        tipElement.classList.add("tip-animate-in");
-      }, 100);
-
-      setTimeout(() => {
-        tipElement.classList.remove("tip-animate-in");
-        tipElement.classList.add("tip-animate-out");
-        setTimeout(() => {
-          mainContent.removeChild(tipElement);
-          const index = activeTips.findIndex(
-            (activeTip) => activeTip === currentTipBox
-          );
-          if (index > -1) activeTips.splice(index, 1);
-        }, 500);
+        const gamePath = path.join(appDir, "game/game.html");
+        window.location.href = `file://${gamePath}`; 
       }, 5000);
-    } else {
-      console.warn(
-        "Max attempts reached; unable to place tip without overlap."
-      );
-    }
-  }
-  function isOverlappingWithPadding(rect1, rect2, padding) {
-    return !(
-      rect1.right + padding < rect2.left - padding ||
-      rect1.left - padding > rect2.right + padding ||
-      rect1.bottom + padding < rect2.top - padding ||
-      rect1.top - padding > rect2.bottom + padding
-    );
+    }, 100);
   }
 
   function lockScroll() {
@@ -258,49 +92,65 @@
   }
   lockScroll();
 
-  setInterval(updateLoading, 100);
-  setInterval(showRandomTip, 3000);
+  let tipBox = null;
 
-  window.addEventListener("scroll", () => {
-    const scrollTop = window.pageYOffset;
+  function showRandomTip() {
+    if (tipBox) return; // Prevent multiple tips from appearing
 
-    layers.forEach((layer) => {
-      const speed = layer.getAttribute("data-speed");
-      const movement = -((scrollTop * speed) / 100);
-      layer.style.transform = `translate3d(0px, ${movement}px, 0px)`;
-    });
-  });
-  window.addEventListener("load", () => {
+    tipBox = document.createElement("div");
+    tipBox.classList.add("tip");
+    tipBox.textContent = tips[Math.floor(Math.random() * tips.length)];
+    document.body.appendChild(tipBox);
+
+    const animalRect = animalVUnt.getBoundingClientRect();
+    tipBox.style.left = `${animalRect.left + animalRect.width / 2}px`;
+    tipBox.style.top = `${animalRect.top - animalRect.height + 50}px`;
+
     setTimeout(() => {
-      const scrollDuration = 5000;
-      const start = window.pageYOffset;
-      const end = mainContent.offsetTop;
-      const distance = end - start;
-      const startTime = performance.now();
+      tipBox.classList.add("tip-animate-in");
+    }, 100);
 
-      function scrollStep(timestamp) {
-        const progress = Math.min((timestamp - startTime) / scrollDuration, 1);
-        window.scrollTo(0, start + distance * progress);
-        if (progress < 1) {
-          requestAnimationFrame(scrollStep);
-        } else {
-          unlockScroll();
-        }
-      }
-
-      requestAnimationFrame(scrollStep);
+    setTimeout(() => {
+      tipBox.classList.remove("tip-animate-in");
+      tipBox.classList.add("tip-animate-out");
+      setTimeout(() => {
+        document.body.removeChild(tipBox);
+        tipBox = null;
+      }, 500);
     }, 3000);
-  });
+  }
+
+  const animalVUnt = document.createElement("img");
+  animalVUnt.src = "../assets/Animals/VUnt.webp";
+  animalVUnt.style.width = "5rem";
+  animalVUnt.style.height = "5rem";
+  animalVUnt.style.position = "relative";
+  animalVUnt.style.top = "-7rem";
+  animalVUnt.style.transform = "scaleX(-1)";
+  animalVUnt.classList.add("animal-vunt");
+  document.getElementById("loading-bar").appendChild(animalVUnt);
+
+  animalVUnt.addEventListener("click", showRandomTip);
+
+  setInterval(updateLoading, 100);
+
   const backgroundAudio = new Audio(
     "../assets/sound/Super Auto Pets  - Menu Theme.mp3"
   );
-  backgroundAudio.volume = 0.08;
+  const savedVolume = localStorage.getItem("backgroundAudioVolume");
+  if (savedVolume !== null) {
+    backgroundAudio.volume = parseFloat(savedVolume);
+  } else {
+    backgroundAudio.volume = 0.1;
+  }
   backgroundAudio.loop = true;
   const savedTime = localStorage.getItem("backgroundAudioTime");
   if (savedTime) {
     backgroundAudio.currentTime = parseFloat(savedTime);
   }
-
+  window.addEventListener("beforeunload", () => {
+    localStorage.setItem("backgroundAudioTime", backgroundAudio.currentTime);
+  });
   const playBackgroundAudio = () => {
     backgroundAudio.play();
     document.removeEventListener("click", playBackgroundAudio);
@@ -321,4 +171,4 @@
   document.addEventListener("focus", playBackgroundAudio);
   document.addEventListener("mousedown", playBackgroundAudio);
   document.addEventListener("mouseup", playBackgroundAudio);
-
+});
