@@ -10,12 +10,13 @@
 }
 
 body::-webkit-scrollbar {
-  display: none;
+    display: none;
 }
 
 body {
     font-family: 'VUper', sans-serif;
-    background: url("../assets/background/menu-bg.png") no-repeat center center fixed;
+    background: url("../assets/maps/Field.webp");
+    background-size: contain;
     height: 100vh;
     overflow: hidden;
 }
@@ -39,12 +40,117 @@ button:active {
     transform: translateY(3%);
 }
 
+#blur-filter {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    backdrop-filter: blur(10px);
+}
+
 #logo {
     position: fixed;
     top: 1rem;
     left: 1rem;
-    width: 24rem;
+    width: 25%;
     height: auto;
+}
+
+#settings-menu {
+    position: fixed;
+    top: 0;
+
+    width: 80%;
+    height: 100%;
+
+
+    background-image: url("../assets/home-asset/menu.png");
+    background-size: 100% 100%;
+
+    z-index: 1000;
+}
+.soundbackboard, .privacyPolicy {
+    position: relative;
+    background-image: url('../assets/buttons/orange-btn-empty.png');
+    height: 20%;
+    left: 15%;
+    width: 65%;
+    background-size: 100% 100%;
+    display: flex;
+    flex-direction: column;
+}
+.soundBoardTop{
+    display: flex;
+    justify-content: space-between;
+    height: 50%;
+}
+.privacyPolicy p {
+    margin-top: 1rem;
+    font-size: 4rem;
+    color:#57291A;
+    margin-left: 3rem;
+}
+.soundBoardTop p{
+    margin-top: 1rem;
+    font-size: 4rem;
+    color:#57291A;
+}
+.leftSound{
+    margin-top: 1rem;
+    margin-left: 3rem;
+}
+.rightSound{
+    margin-top: 1rem;
+    margin-right: 3rem;
+}
+.soundBoardBottom{
+    display: flex;
+    height: 50%;
+}
+.SoundRange {
+    margin-top:1rem;
+    -webkit-appearance: none; 
+    appearance: none;
+    width: 100%;
+    height: 1rem;
+    background: linear-gradient(to right, #651F00 0%, #651F00 50%, #FF5A25 50%, #FF5A25 100%);
+    border-radius: 0.5rem;
+    outline: none;
+    transition: background 0.3s ease-in-out;
+    margin-left: 3rem;
+    margin-right: 3rem;
+}
+.Credits{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.credits-owner{
+    max-width: 70%;
+    text-align: center;
+    margin-top: 1rem;
+    margin-right: 4rem;
+    font-size: 4rem;
+    color:#57291A;
+}
+/* Hide the default slider thumb */
+.SoundRange::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    /* background: #57291A; */
+    cursor: pointer;
+    /* box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); */
+}
+
+.SoundRange::-moz-range-thumb {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    background: #57291A;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
 main {
@@ -52,19 +158,23 @@ main {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    height: 100%;
+    width: 35%;
+    margin-inline: auto;
 }
 
 .main-btn {
-    width: 40%;
+    width: 100%;
     height: auto;
 }
 
 .menu-btn {
-    width: 40%;
+    width: 100%;
     height: auto;
 }
 
 header {
+    position: absolute;
     width: 100%;
     display: flex;
     justify-content: flex-end;
@@ -72,10 +182,9 @@ header {
 }
 
 .sub-btn {
-    width: 4rem;
-    height: 4rem;
+    width: 5rem;
+    height: 5rem;
     z-index: 10;
-
 }
 
 .menu {
@@ -85,6 +194,8 @@ header {
     justify-content: flex-end;
     position: fixed;
     width: 24%;
+
+    padding: 0.25rem;
     top: 0.75rem;
     right: 0.5rem;
     background: white;
@@ -109,4 +220,43 @@ header {
     bottom: 0;
     background: rgba(0, 0, 0, 0.5);
     z-index: 10;
+}
+
+#user-greeting {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+
+    background-color: white;
+    border: 5px solid black;
+    border-radius: 10px;
+
+    width: 24rem;
+    height: auto;
+
+    padding: 0.5rem;
+
+    text-align: center;
+
+    z-index: 10;
+    font-family: "Comic Sans MS", serif;
+    font-weight: 700;
+
+    font-size: 1.5rem;
+
+    margin-block: 0;
+}
+
+#typewriter {
+    color: black;
+}
+
+.username {
+    color: #fe6a02;
+}
+
+#cursor {
+    color: black;
+    font-weight: bold;
+    animation: blink 1s linear infinite;
 }

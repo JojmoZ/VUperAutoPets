@@ -1,20 +1,81 @@
-<!doctype html>
-    <html lang=en>
-    <meta charset=UTF-8>
-    <meta content="width=device-width,initial-scale=1" name=viewport>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VUper Auto Pets</title>
-    <link href=menu-style.css rel=stylesheet>
-    <link href=../assets/LogoVUPER.jpg rel=icon type=image/png>
-    <link href=../cursor.css rel=stylesheet>
-    <div class=hidden id=overlay></div><img alt=logo src=../assets/title-logo.png id=logo>
-    <header><button class=sub-btn id=burger-btn><img alt=burger src=../assets/buttons/burger-btn.png></button>
-        <div class="hidden menu" id=menu><button class=logout-button id=logout-btn><img alt=logout
-                    src=../assets/buttons/logout-btn.png></button></div>
-    </header>
-    <main><button class=main-btn id=play-btn><img alt=play src=../assets/buttons/play-btn.png></button> <button
-            class=menu-btn id=home-btn><img alt=home src=../assets/buttons/home-btn.png></button> <button class=menu-btn
-            id=shop-btn><img alt=shop src=../assets/buttons/shop-btn.png></button> <button class=menu-btn
-            id=barn-btn><img alt=barn src=../assets/buttons/barn-btn.png></button></main>
-    <footer></footer>
-    <script src=menu-script.js></script>
-    <script src=../modal.js></script>
+    <link rel="stylesheet" href="menu-style.css" type="text/css">
+    <link rel="icon" type="image/png" href="../assets/LogoVUPER.jpg">
+    <link rel="stylesheet" href="../cursor.css">
+</head>
+
+<body>
+    <div id="blur-filter">
+        <div id="overlay" class="hidden"></div>
+        <div id="settings-menu" class="hidden">
+            <div class="soundbackboard">
+                <div class="soundBoardTop">
+                    <div class="leftSound">
+                        <p>Sound volume</p>
+                    </div>
+                    <div class="rightSound" id="rightSound">
+                        <p id="percent">100%</p>
+                    </div>
+                </div>
+                <div class="soundBoardBottom">
+                    <input type="range" id="SoundRange" min="0" max="100" value="0" class="SoundRange">
+                </div>
+            </div>
+            <div class="privacyPolicy">
+                <p>Privacy Policy</p>
+            </div>
+            <div class="Credits">
+                <div>
+                    <img src="../assets/Animals/VUnt.webp" alt="">
+                    <img src="../assets/Animals/PamstIr.webp" style="transform: scaleX(-1);" alt="">
+                </div>
+                <div class="credits-owner">
+                    <p>VU & PI</p>
+                </div>
+            </div>
+        </div>
+
+        <img src="../assets/title-logo.png" alt="logo" id="logo">
+        <header>
+            <button id="burger-btn" class="sub-btn">
+                <img src="../assets/buttons/burger-btn.png" alt="burger">
+            </button>
+
+            <div class="menu hidden" id="menu">
+                <button id="settings-btn" class="logout-button">
+                    <img src="../assets/buttons/settings-btn.png" alt="logout">
+                </button>
+                <button id="logout-btn" class="logout-button">
+                    <img src="../assets/buttons/logout-btn.png" alt="logout">
+                </button>
+            </div>
+        </header>
+        <main>
+            <button id="play-btn" class="main-btn">
+                <img src="../assets/buttons/play-btn.png" alt="play">
+            </button>
+            <button id="home-btn" class="menu-btn">
+                <img src="../assets/buttons/home-btn.png" alt="home">
+            </button>
+            <button id="shop-btn" class="menu-btn">
+                <img src="../assets/buttons/shop-btn.png" alt="shop">
+            </button>
+            <button id="barn-btn" class="menu-btn">
+                <img src="../assets/buttons/barn-btn.png" alt="barn">
+            </button>
+        </main>
+        <footer style="position: absolute;bottom: 0;right: 0;">
+            <p id="user-greeting" class="fade-bottom"><span id="typewriter"></span><span id="cursor">|</span></p>
+        </footer>
+    </div>
+</body>
+<script src="menu-script.js"></script>
+<script src="../modal.js"></script>
+
+</html>
