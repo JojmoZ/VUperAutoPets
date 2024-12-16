@@ -98,6 +98,8 @@ header {
     justify-content: flex-end;
     position: fixed;
     width: 24%;
+
+    padding: 0.25rem;
     top: 0.75rem;
     right: 0.5rem;
     background: white;
@@ -126,38 +128,39 @@ header {
 
 #user-greeting {
     position: absolute;
-    bottom: 8%;
-    right: 8%;
+    bottom: 1rem;
+    right: 1rem;
 
-    background: url("../assets/buttons/empty-btn.png") no-repeat center;
-    background-size: contain;
+    background-color: white;
+    border: 5px solid black;
+    border-radius: 10px;
 
-    width: 35rem;
+    width: 24rem;
     height: auto;
 
-    padding: 3rem 3rem 3.5rem 3rem;
+    padding: 0.5rem;
 
     text-align: center;
 
     z-index: 100;
+    font-family: "Comic Sans MS", serif;
+    font-weight: 700;
 
-    font-size: 2rem;
+    font-size: 1.5rem;
 
     margin-block: 0;
 }
 
 #typewriter {
-    color: #57291a;
-    letter-spacing: 0.125rem;
+    color: black;
 }
 
 .username {
-    color: #fff;
+    color: #fe6a02;
 }
 
 #cursor {
-    color: #57291a;
-
+    color: black;
     font-weight: bold;
     animation: blink 1s linear infinite;
 }

@@ -1,152 +1,251 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VUper Auto Pets</title>
+    <link rel="stylesheet" href="main-style.css" />
+    <link rel="icon" type="image/png" href="../assets/LogoVUPER.jpg" />
+    <link rel="stylesheet" href="../cursor.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VUper Auto Pets</title>
-  <link rel="stylesheet" href="main-style.css">
-  <link rel="icon" type="image/png" href="../assets/LogoVUPER.jpg">
-  <link rel="stylesheet" href="../cursor.css">
-</head>
+  <body
+    style="
+      background-image: url(../assets/login/background.png);
+      background-size: auto;
+    "
+  >
+    <div id="border"></div>
+    <div id="settings-frame"></div>
 
-
-<body style="background-image: url(../assets/login/background.png); background-size: auto;">
-  <div id="border"></div>
-
-  <div class="big">
-    <div class="logo-on-top">
-      <img src="../assets/login/parallax/parallax-1.png" alt="p1" class="parallax-layer-1">
-      <img src="../assets/login/parallax/parallax-2.png" alt="p2" class="parallax-layer-2">
-      <img src="../assets/login/parallax/parallax-3.png" alt="p3" class="parallax-layer-3">
-      <img src="../assets/login/parallax/parallax-pamstir.webp" alt="p3" class="parallax-layer-4 left">
-      <img src="../assets/login/parallax/parallax-vunt.webp" alt="p3" class="parallax-layer-4 right">
-      <img id="logo" src="../assets/title-logo.png" alt="Logo" class="logoer">
-      <button id="start-button">
-        <img src="../assets/login/start.png" alt="Arrow">
-      </button>
-    </div>
-    <img id="turtle" src="../assets/Animals/turGTle.webp" alt="Turtle">
-    <div id="loginCard">
-      <div class="header">
-        <span id="registerTab">Register</span> | <span id="loginTab">Login</span>
+    <div class="big">
+      <div class="logo-on-top">
+        <img src="../assets/login/parallax/grass-frame.png" alt="Grass Frame" class="frame"/>
+        <img
+          src="../assets/login/parallax/parallax-1.png"
+          alt="p1"
+          class="parallax-layer-1"
+        />
+        <img
+          src="../assets/login/parallax/parallax-2.png"
+          alt="p2"
+          class="parallax-layer-2"
+        />
+        <img
+          src="../assets/login/parallax/parallax-3.png"
+          alt="p3"
+          class="parallax-layer-3"
+        />
+        <img
+          src="../assets/login/parallax/parallax-pamstir.webp"
+          alt="p3"
+          class="parallax-layer-4 left"
+        />
+        <img
+          src="../assets/login/parallax/parallax-vunt.webp"
+          alt="p3"
+          class="parallax-layer-4 right"
+        />
+        <img
+          id="logo"
+          src="../assets/title-logo.png"
+          alt="Logo"
+          class="logoer"
+        />
+        <button id="start-button">
+          <img src="../assets/login/start.png" alt="Arrow" />
+        </button>
       </div>
-      <div class="content">
-        <form id="registrationForm" style="display: none;" novalidate>
-          <p class="title">Register Your Account</p>
-          <div class="input-group">
-            <input class="input" type="text" id="registerUsername" name="username" required autocomplete="off">
-            <label class="label" for="registerUsername">Username</label>
-            <p class="error-message" id="usernameError"></p>
-          </div>
-          <div class="input-group">
-            <input class="input" type="password" id="registerPassword" name="password" required autocomplete="off">
-            <label class="label" for="registerPassword">Password</label>
-            <button type="button" class="toggle-password" data-target="registerPassword">
-              <img src="../assets/login/eye.png" alt="Toggle Visibility">
-            </button>
-            <p class="error-message" id="passwordError"></p>
-          </div>
-          <div class="input-group">
-            <input class="input" type="password" id="confirmPassword" name="confirmPassword" required
-              autocomplete="off">
-            <label class="label" for="confirmPassword">Confirm Password</label>
-            <button type="button" class="toggle-password" data-target="confirmPassword">
-              <img src="../assets/login/eye.png" alt="Toggle Visibility">
-            </button>
-            <p class="error-message" id="confirmPasswordError"></p>
-          </div>
-          <p id="registerError" class="error"></p>
-          <button class="btn" type="submit">
-            <div class="text-container">
-              <span class="text">Register</span>
-              <span class="text">Register</span>
-            </div>
-          </button>
-        </form>
-
-        <form id="loginForm" style="display: none;" novalidate>
-          <p class="title">Login to Your Account</p>
-          <div class="input-group">
-            <input class="input" type="text" id="loginUsername" name="username" required autocomplete="off">
-            <label class="label" for="loginUsername">Username</label>
-          </div>
-          <div class="input-group">
-            <input class="input" type="password" id="loginPassword" name="password" required autocomplete="off">
-            <label class="label" for="loginPassword">Password</label>
-            <button type="button" class="toggle-password" data-target="loginPassword">
-              <img src="../assets/login/eye.png" alt="Toggle Visibility">
-            </button>
-          </div>
-          <p id="loginError" class="error"></p>
-          <button class="btn" type="submit">
-            <div class="text-container">
-              <span class="text">Login</span>
-              <span class="text">Login</span>
-            </div>
-          </button>
-
-        </form>
-
-      </div>
-    </div>
-  </div>
-  <div class="overlay hidden"></div>
-
-  <div class="captcha-modal hidden" id="captchaModal1">
-    <div class="captcha-wrapper">
-      <header class="captcha-header">Generated Captcha</header>
-      <button class="close-btn" onclick="hideCaptcha()">✖</button>
-      <div class="captcha-area">
-        <div class="captcha-img">
-          <img src="../assets/login/captcha-bg.png" alt="Captcha Background">
-          <span class="captcha"></span>
+      <img id="turtle" src="../assets/Animals/turGTle.webp" alt="Turtle" />
+      <div id="loginCard">
+        <div class="header">
+          <span id="registerTab">Register</span> |
+          <span id="loginTab">Login</span>
         </div>
-        <button class="reload-btn">
-          <img src="../assets/login/reload.png" alt="Reload" width="20" height="20">
-        </button>
-      </div>
-      <div class="input-area">
-        <input class="input" type="text" id="captchaInput1" autocomplete="off" required />
-        <label class="label" for="captchaInput1">Enter Captcha</label>
-        <button class="check-btn">Check</button>
+        <div class="content">
+          <form id="registrationForm" style="display: none" novalidate>
+            <p class="title">Register Your Account</p>
+            <div class="input-group">
+              <input
+                class="input"
+                type="text"
+                id="registerUsername"
+                name="username"
+                required
+                autocomplete="off"
+              />
+              <label class="label" for="registerUsername">Username</label>
+              <p class="error-message" id="usernameError"></p>
+            </div>
+            <div class="input-group">
+              <input
+                class="input"
+                type="password"
+                id="registerPassword"
+                name="password"
+                required
+                autocomplete="off"
+              />
+              <label class="label" for="registerPassword">Password</label>
+              <button
+                type="button"
+                class="toggle-password"
+                data-target="registerPassword"
+              >
+                <img src="../assets/login/eye.png" alt="Toggle Visibility" />
+              </button>
+              <p class="error-message" id="passwordError"></p>
+            </div>
+            <div class="input-group">
+              <input
+                class="input"
+                type="password"
+                id="confirmPassword"
+                name="confirmPassword"
+                required
+                autocomplete="off"
+              />
+              <label class="label" for="confirmPassword"
+                >Confirm Password</label
+              >
+              <button
+                type="button"
+                class="toggle-password"
+                data-target="confirmPassword"
+              >
+                <img src="../assets/login/eye.png" alt="Toggle Visibility" />
+              </button>
+              <p class="error-message" id="confirmPasswordError"></p>
+            </div>
+            <p id="registerError" class="error"></p>
+            <button class="btn" type="submit">
+              <div class="text-container">
+                <span class="text">Register</span>
+                <span class="text">Register</span>
+              </div>
+            </button>
+          </form>
+
+          <form id="loginForm" style="display: none" novalidate>
+            <p class="title">Login to Your Account</p>
+            <div class="input-group">
+              <input
+                class="input"
+                type="text"
+                id="loginUsername"
+                name="username"
+                required
+                autocomplete="off"
+              />
+              <label class="label" for="loginUsername">Username</label>
+            </div>
+            <div class="input-group">
+              <input
+                class="input"
+                type="password"
+                id="loginPassword"
+                name="password"
+                required
+                autocomplete="off"
+              />
+              <label class="label" for="loginPassword">Password</label>
+              <button
+                type="button"
+                class="toggle-password"
+                data-target="loginPassword"
+              >
+                <img src="../assets/login/eye.png" alt="Toggle Visibility" />
+              </button>
+            </div>
+            <p id="loginError" class="error"></p>
+            <button class="btn" type="submit">
+              <div class="text-container">
+                <span class="text">Login</span>
+                <span class="text">Login</span>
+              </div>
+            </button>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
+    <div class="overlay hidden"></div>
 
-
-  <div class="captcha-modal hidden" id="captchaModal2">
-    <div class="container">
-      <header>Generated Captcha</header>
-      <button class="close-btn" onclick="hideCaptcha()">✖</button>
-      <div class="captcha-area">
-        <canvas id="captchaCanvas" width="150" height="50"></canvas>
-        <button class="reload-btn2">
-          <img src="../assets/login/reload.png" alt="Reload" width="20" height="20">
-        </button>
-      </div>
-      <div class="input-group">
-        <input class="input" type="text" id="captchaInput2" autocomplete="off" required />
-        <label class="label" for="captchaInput2">Enter Captcha</label>
-      </div>
-      <div class="input_field button disabled">
-        <button id="submitCaptchaBtn2">Check</button>
+    <div class="captcha-modal hidden" id="captchaModal1">
+      <div class="captcha-wrapper">
+        <header class="captcha-header">Generated Captcha</header>
+        <button class="close-btn" onclick="hideCaptcha()">✖</button>
+        <div class="captcha-area">
+          <div class="captcha-img">
+            <img
+              src="../assets/login/captcha-bg.png"
+              alt="Captcha Background"
+            />
+            <span class="captcha"></span>
+          </div>
+          <button class="reload-btn">
+            <img
+              src="../assets/login/reload.png"
+              alt="Reload"
+              width="20"
+              height="20"
+            />
+          </button>
+        </div>
+        <div class="input-area">
+          <input
+            class="input"
+            type="text"
+            id="captchaInput1"
+            autocomplete="off"
+            required
+          />
+          <label class="label" for="captchaInput1">Enter Captcha</label>
+          <button class="check-btn">Check</button>
+        </div>
       </div>
     </div>
-  </div>
-
-  <div id="errorModal">
-    <div class="modal-content">
-      <div class="modal-icon">
-        <div class="cross"></div>
-      </div>
-      <div class="modal-message">
-        <p id="modalErrorText">An error occurred.</p>
+    <div class="captcha-modal hidden" id="captchaModal2">
+      <div class="container">
+        <header>Generated Captcha</header>
+        <button class="close-btn" onclick="hideCaptcha()">✖</button>
+        <div class="captcha-area">
+          <canvas id="captchaCanvas" width="150" height="50"></canvas>
+          <button class="reload-btn2">
+            <img
+              src="../assets/login/reload.png"
+              alt="Reload"
+              width="20"
+              height="20"
+            />
+          </button>
+        </div>
+        <div class="input-group">
+          <input
+            class="input"
+            type="text"
+            id="captchaInput2"
+            autocomplete="off"
+            required
+          />
+          <label class="label" for="captchaInput2">Enter Captcha</label>
+        </div>
+        <div class="input_field button disabled">
+          <button id="submitCaptchaBtn2">Check</button>
+        </div>
       </div>
     </div>
-  </div>
 
-  <script src="main-script.js"></script>
-</body>
+    <div id="errorModal">
+      <div class="modal-content">
+        <div class="modal-icon">
+          <div class="cross"></div>
+        </div>
+        <div class="modal-message">
+          <p id="modalErrorText">An error occurred.</p>
+        </div>
+      </div>
+    </div>
 
+    <script src="main-script.js"></script>
+  </body>
 </html>
