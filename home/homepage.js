@@ -592,7 +592,12 @@ socialMediaObserver.observe(socialMediaSection);
   const backgroundAudio = new Audio(
     "../assets/sound/Super Auto Pets  - Menu Theme.mp3"
   );
-  backgroundAudio.volume = 0.09;
+   const savedVolume = localStorage.getItem("backgroundAudioVolume");
+   if (savedVolume !== null) {
+     backgroundAudio.volume = parseFloat(savedVolume);
+   } else {
+     backgroundAudio.volume = 0.1;
+   }
   backgroundAudio.loop = true;
 
   const savedTime = localStorage.getItem("backgroundAudioTime");

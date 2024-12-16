@@ -788,7 +788,9 @@ const savedTime = localStorage.getItem("backgroundAudioTime");
 if (savedTime) {
   backgroundAudio.currentTime = parseFloat(savedTime);
 }
-
+window.addEventListener("beforeunload", () => {
+  localStorage.setItem("backgroundAudioTime", backgroundAudio.currentTime);
+});
 const playBackgroundAudio = () => {
   backgroundAudio.play();
   document.removeEventListener("click", playBackgroundAudio);

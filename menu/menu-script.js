@@ -91,7 +91,40 @@ window.onload = () => {
   const backgroundAudio = new Audio(
     "../assets/sound/Super Auto Pets  - Menu Theme.mp3"
   );
-  backgroundAudio.volume = 0.09;
+const soundRange = document.getElementById("SoundRange");
+const percentDisplay = document.getElementById("percent");
+soundRange.value = backgroundAudio.volume * 100;
+percentDisplay.textContent = `${soundRange.value}%`;
+function updateSliderBackground(value) {
+  const percentage = value + "%";
+  soundRange.style.background = `linear-gradient(to right, #651F00 0%, #651F00 ${percentage}, #FF5A25 ${percentage}, #FF5A25 100%)`;
+}
+updateSliderBackground(soundRange.value);
+backgroundAudio.volume = 0.5; 
+backgroundAudio.loop = true;
+
+
+const savedVolume = localStorage.getItem("backgroundAudioVolume");
+if (savedVolume !== null) {
+  backgroundAudio.volume = parseFloat(savedVolume);
+  soundRange.value = backgroundAudio.volume * 100;
+  percentDisplay.textContent = `${soundRange.value}%`;
+  updateSliderBackground(soundRange.value);
+}
+
+
+soundRange.addEventListener("input", function () {
+  const volumeValue = soundRange.value / 100; 
+  backgroundAudio.volume = volumeValue; 
+  percentDisplay.textContent = `${soundRange.value}%`; 
+  updateSliderBackground(soundRange.value); 
+});
+
+
+window.addEventListener("beforeunload", () => {
+  localStorage.setItem("backgroundAudioVolume", backgroundAudio.volume);
+  localStorage.setItem("backgroundAudioTime", backgroundAudio.currentTime);
+});
   backgroundAudio.loop = true;
 
   const savedTime = localStorage.getItem("backgroundAudioTime");
