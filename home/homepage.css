@@ -598,7 +598,11 @@ text {
     font-size: 3rem;
     fill: #febd01;
 }
+.fadeoutfadingout{
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
 
+}
 
 .hidden {
     display: none;
