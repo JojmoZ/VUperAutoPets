@@ -213,10 +213,10 @@ const petDescriptions = {
   PamstIr: "PamstIr is playful and loves making friends with everyone.",
 };
 
-let isShowingAnimal = false; // Global flag to prevent multiple calls
+let isShowingAnimal = false; 
 function showAnimalInfo(card) {
-  if (isShowingAnimal) return; // Prevent further calls if already running
-  isShowingAnimal = true; // Set the flag to lock the function
+  if (isShowingAnimal) return; 
+  isShowingAnimal = true; 
   const image = card.querySelector("img");
   const animalName = image.alt;
 
@@ -304,7 +304,7 @@ function resetCarousel() {
     if (shownCard) {
       shownCard.style.transition = "opacity 0.8s ease-in-out";
       shownCard.style.opacity = "0";
-      isShowingAnimal = false; // Reset the flag after animation completes
+      isShowingAnimal = false; 
     }
     setTimeout(() => {
       curtain.style.backgroundImage = ""; 
