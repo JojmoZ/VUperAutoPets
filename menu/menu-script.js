@@ -1,9 +1,15 @@
 const overlay = document.getElementById("overlay");
+const menu = document.getElementById("menu");
 
 document.getElementById("burger-btn").addEventListener("click", function () {
-  const menu = document.getElementById("menu");
   overlay.classList.toggle("hidden");
   menu.classList.toggle("hidden");
+});
+
+document.getElementById("settings-btn").addEventListener("click", function () {
+  const settingsMenu = document.getElementById("settings-menu");
+  menu.classList.remove("hidden");
+  settingsMenu.classList.remove("hidden");
 });
 
 window.onload = () => {

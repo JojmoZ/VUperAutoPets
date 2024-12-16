@@ -55,6 +55,19 @@ button:active {
     height: auto;
 }
 
+#settings-menu {
+    position: fixed;
+    top: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background-image: url("../assets/home-asset/menu.png");
+    background-size: 100% 100%;
+
+    z-index: 1000;
+}
+
 main {
     display: flex;
     flex-direction: column;
@@ -63,8 +76,6 @@ main {
     height: 100%;
     width: 35%;
     margin-inline: auto;
-
-
 }
 
 .main-btn {
@@ -142,7 +153,7 @@ header {
 
     text-align: center;
 
-    z-index: 100;
+    z-index: 5;
     font-family: "Comic Sans MS", serif;
     font-weight: 700;
 
