@@ -50,7 +50,6 @@ body {
     align-items: center;
     overflow: hidden;
     z-index: -10;
-
     backdrop-filter: blur(10px);
 }
 
