@@ -98,6 +98,7 @@ percentDisplay.textContent = `${soundRange.value}%`;
 function updateSliderBackground(value) {
   const percentage = value + "%";
   soundRange.style.background = `linear-gradient(to right, #651F00 0%, #651F00 ${percentage}, #FF5A25 ${percentage}, #FF5A25 100%)`;
+  backgroundAudio.play();
 }
 updateSliderBackground(soundRange.value);
 backgroundAudio.volume = 0.5; 

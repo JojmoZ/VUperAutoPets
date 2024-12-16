@@ -119,7 +119,19 @@ button:active {
     margin-left: 3rem;
     margin-right: 3rem;
 }
-
+.Credits{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.credits-owner{
+    max-width: 70%;
+    text-align: center;
+    margin-top: 1rem;
+    margin-right: 4rem;
+    font-size: 4rem;
+    color:#57291A;
+}
 /* Hide the default slider thumb */
 .SoundRange::-webkit-slider-thumb {
     -webkit-appearance: none;
