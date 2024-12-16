@@ -1,5 +1,6 @@
 const overlay = document.getElementById("overlay");
 const menu = document.getElementById("menu");
+const settingsMenu = document.getElementById("settings-menu");
 
 document.getElementById("burger-btn").addEventListener("click", function () {
   overlay.classList.toggle("hidden");
@@ -7,7 +8,6 @@ document.getElementById("burger-btn").addEventListener("click", function () {
 });
 
 document.getElementById("settings-btn").addEventListener("click", function () {
-  const settingsMenu = document.getElementById("settings-menu");
   menu.classList.remove("hidden");
   settingsMenu.classList.remove("hidden");
 });
@@ -61,6 +61,7 @@ window.onload = () => {
     const menu = document.getElementById("menu");
     overlay.classList.toggle("hidden");
     menu.classList.toggle("hidden");
+    settingsMenu.classList.add("hidden");
   });
 
   document.getElementById("logout-btn").addEventListener("click", function () {
