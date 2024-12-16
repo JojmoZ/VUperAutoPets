@@ -762,7 +762,7 @@ text {
 .tooltip::after {
     content: attr(data-tooltip);
     position: absolute;
-    bottom: 120%;
+    bottom: calc(100% + 1.5rem);
     left: 50%;
     background-color: rgba(0, 0, 0, 0.8);
     color: #fff;
@@ -817,14 +817,14 @@ text {
 
 @keyframes walkTwitter {
     0% {
-        transform: translateX(200%);
+        transform: translateX(200%) translateY(110%);
         opacity: 0;
     }
     50% {
         opacity: 1;
     }
     100% {
-        transform: translateX(0%);
+        transform: translateX(0%) translateY(110%);
         opacity: 1;
     }
 }
@@ -842,7 +842,33 @@ text {
         opacity: 1;
     }
 }
+@keyframes walkFacebook {
+    0% {
+        transform: translateX(200%);
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(0%);
+        opacity: 1;
+    }
+}
 
+@keyframes walkDiscord {
+    0% {
+        transform: translateX(-200%) translateY(110%);
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(0%) translateY(110%);
+        opacity: 1;
+    }
+}
 .instagram.walk {
     animation: walkInstagram 2s ease forwards;
 }
@@ -854,7 +880,19 @@ text {
 .steam.walk {
     animation: walkSteam 2s ease forwards;
 }
+.facebook.walk {
+    animation: walkFacebook 2s ease forwards;
+}
 
+.discord.walk {
+    animation: walkDiscord 2s ease forwards;
+}
+.tooltip.discords::after {
+    bottom: calc(100% - 10rem); /* Adjust position for Discord */
+}
+.tooltip.twitters::after {
+    bottom: calc(100% - 10rem); /* Adjust position for Twitter */
+}
 .fancy-card {
     background: white;
     border-radius: 1.25rem;
@@ -967,68 +1005,9 @@ section {
     }
 }
 
-.ost-section {
-    display: flex;
-    flex-direction: column;
-    z-index: 2;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem 1rem;
-    background-image: url(../assets/maps/Desert.webp);
-    color: white;
-    text-align: center;
-}
 
-.visualizer-container {
-    width: 100%;
-    max-width: 37.5rem;
-}
 
-#visualization {
-    display: block;
-    width: 100%;
-}
 
-.ost-card:hover {
-    transform: translateY(-0.625rem);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-}
-
-.play-ost-button {
-    border: none;
-    background: none;
-    padding: 0;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 3.75rem;
-    height: 3.75rem;
-}
-
-.play-ost-button img {
-    width: 2.5rem;
-    height: 2.5rem;
-    transition: transform 0.3s ease;
-}
-
-.play-ost-button:hover img {
-    transform: scale(1.1);
-}
-
-.play-ost-button:hover {
-    transform: translateY(-5px);
-}
-
-.ost-card {
-    opacity: 0;
-    transform: translateX(-100%);
-    transition: opacity 0.5s ease, transform 0.5s ease;
-}
-
-.ost-card.visible {
-    animation: slideInLeft 2s ease forwards;
-}
 
 .card-content {
     opacity: 0;
