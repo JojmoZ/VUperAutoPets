@@ -11,7 +11,21 @@
 <body>
 <div id="blur-filter">
     <div id="overlay" class="hidden"></div>
-    <div id="settings-menu" class="hidden"></div>
+    <div id="settings-menu" class="hidden">
+        <div class="soundbackboard">
+           <div class="soundBoardTop">
+            <div class="leftSound">
+                <p>Sound volume</p>
+            </div>
+            <div class="rightSound" id="rightSound">
+                <p id="percent">100%</p>
+            </div>
+           </div>
+           <div class="soundBoardBottom">
+            <input type="range" id="SoundRange" min="0" max="100" value="0" class="SoundRange">
+           </div>
+        </div>
+    </div>
 
     <img src="../assets/title-logo.png" alt="logo" id="logo">
     <header>

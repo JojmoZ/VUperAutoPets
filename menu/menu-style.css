@@ -68,7 +68,43 @@ button:active {
 
     z-index: 1000;
 }
-
+.soundbackboard{
+    position: relative;
+    background-image: url('../assets/buttons/orange-btn-empty.png');
+    height: 20%;
+    left: 12%;
+    width: 73%;
+    background-size: 100% 100%;
+    display: flex;
+    flex-direction: column;
+}
+.soundBoardTop{
+    display: flex;
+    justify-content: space-between;
+    height: 50%;
+}
+.soundBoardTop p{
+    margin-top: 1rem;
+    font-size: 4rem;
+    color:#57291A;
+}
+.leftSound{
+    margin-top: 1rem;
+    margin-left: 3rem;
+}
+.rightSound{
+    margin-top: 1rem;
+    margin-right: 3rem;
+}
+.soundBoardBottom{
+    display: flex;
+    height: 50%;
+}
+.SoundRange{
+    margin-left: 3rem;
+    width: 100%;
+    margin-right:3rem;
+}
 main {
     display: flex;
     flex-direction: column;

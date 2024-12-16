@@ -8,7 +8,6 @@ document.getElementById("burger-btn").addEventListener("click", function () {
 });
 
 document.getElementById("settings-btn").addEventListener("click", function () {
-  menu.classList.remove("hidden");
   settingsMenu.classList.remove("hidden");
 });
 
