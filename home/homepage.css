@@ -74,6 +74,8 @@ body {
     width: 100vw;
     background-image: url("../assets/login/parallax/parallax-1.png");
     background-size: cover;
+    background-position: center;
+
 
     animation: cloud 50s linear infinite;
 
@@ -223,21 +225,22 @@ body {
 * Top Pets Section
 */
 
-
 #animal-name{
     margin-top: 1rem;
     margin-bottom: 0.5rem;
     font-size: 4rem;
 }
+
 #animal-description{
     font-size: 2rem;
 }
+
 #info-card {
     display: flex;
     position: absolute;
     top: 40%;
     left: 60%;
-    transform: translate(-50%, 100%) rotate(-10deg); /* Start off-screen below, tilted */
+    transform: translate(-50%, 100%) rotate(-10deg);
     width: 30%;
     padding: 0rem 2rem 2rem 2rem;
     background: repeating-linear-gradient(
@@ -253,22 +256,19 @@ body {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    opacity: 0; /* Start fully transparent */
-    transition: transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.8s ease; /* Smooth slide and fade */
+    opacity: 0;
+    transition: transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.8s ease;
 }
 
 #info-card.show {
-    transform: translate(-50%, -50%) rotate(0deg); /* Slide to center, remove tilt */
-    opacity: 1; /* Fully visible */
+    transform: translate(-50%, -50%) rotate(0deg);
+    opacity: 1;
 }
 
 #info-card.hide {
-    transform: translate(-50%, 100%) rotate(-10deg); /* Slide back down, tilted again */
-    opacity: 0; /* Fade out */
+    transform: translate(-50%, 100%) rotate(-10deg);
+    opacity: 0;
 }
-
-
-
 
 .showandtellvisible{
     opacity: 1;
@@ -306,7 +306,10 @@ body {
     transition: transform 0.5s ease-in-out;
 }
 #top-pets {
-    background-image: url("../assets/login/background.png");
+    background-image: url("../assets/background/bg-gradient-1.png");
+    background-position: center;
+    background-size: 100%;
+    background-color: white;
     display: flex;
 }
 #top-pets .curtain {
@@ -488,7 +491,6 @@ body {
     transform: translateX(-100%);
 }
 
-/* Add styles for the input range element */
 #pet-range {
      -webkit-appearance: none; /* Remove default appearance */
     appearance: none;
@@ -1075,7 +1077,7 @@ section {
     box-shadow: 0 5px 0.625rem rgba(0, 0, 0, 0.2);
     box-sizing: border-box;
     border-radius: 0.5rem;
-    border: 0.2rem solid white;
+    border: 0.5rem solid black;
     position: relative;
     z-index: 5;
 }
@@ -1129,9 +1131,11 @@ section {
  */
 
 .map-section {
-    background-image: url("../assets/maps/Field.webp");
+    background-image: url("../assets/background/bg-gradient-3.png");
     background-size: contain;
     position: relative;
+    background-position: center;
+
 }
 
 .blur-filter {
@@ -1148,6 +1152,8 @@ section {
     justify-content: center;
     text-align: center;
     position: relative;
+    border: 0.5rem solid black;
+    border-radius: 0.5rem;
     margin-right: 4rem;
 }
 
@@ -1158,8 +1164,6 @@ section {
     object-position: center;
     cursor: pointer;
     transition: transform 0.5s ease, z-index 0.5s ease;
-
-    box-shadow: black 0 0 2rem;
 }
 
 .map-item .map-text {
@@ -1177,7 +1181,7 @@ section {
 .map-item .ribbon {
     position: absolute;
     bottom: 0;
-    left: -4.35vmin;
+    left: -4.5vmin;
     width: 50vmin;
     z-index: 10;
 }
@@ -1192,7 +1196,7 @@ body > .image {
 #maps {
     margin-top: 3rem;
     display: flex;
-    gap: 4vmin;
+    gap: 2vmin;
     position: absolute;
     left: 50%;
     top: 50%;

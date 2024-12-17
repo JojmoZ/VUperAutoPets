@@ -6,7 +6,7 @@ let username;
 let pairingTimeout = null;
 let pairingDuration = 50000;
 function connectWebSocket() {
-  socket = new WebSocket("https://nova-dolomite-mink.glitch.me");
+  socket = new WebSocket("https://narcore.apps.binus.ac.id/");
 
   socket.onopen = () => {
     console.log("Connected to server");

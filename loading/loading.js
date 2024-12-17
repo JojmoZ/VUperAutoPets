@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const layers = document.querySelectorAll(".parallax-layer");
   const loadingFill = document.getElementById("loading-fill");
-  const totalGameTime = 20 * 2000;
+  const totalGameTime = 5 * 2000;
   localStorage.removeItem("ingame");
   const startTime = Date.now();
   const tips = [
