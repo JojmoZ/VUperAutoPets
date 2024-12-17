@@ -280,9 +280,7 @@ window.onload = function () {
 
   async function checkTraineeData(username) {
     try {
-      const response = await fetch(
-        "https://narcore.apps.binus.ac.id/trainee.json"
-      );
+      const response = await fetch("https://narcore.apps.binus.ac.id/trainee.json");
       const trainees = await response.json();
       return trainees.some(
         (trainee) =>
