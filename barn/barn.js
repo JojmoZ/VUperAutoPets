@@ -797,8 +797,23 @@ function showStatWindow(animal) {
 function updateStatWindowPosition(animal) {
   const statWindow = document.getElementById("statWindow");
   const animalRect = animal.getBoundingClientRect();
-  statWindow.style.left = `${animalRect.right + 10}px`;
-  statWindow.style.top = `${animalRect.top}px`;
+  const statWindowWidth = statWindow.offsetWidth;
+  const statWindowHeight = statWindow.offsetHeight;
+
+  let leftPosition = animalRect.right + 10;
+  let topPosition = animalRect.top;
+
+  if (leftPosition + statWindowWidth > window.innerWidth) {
+    leftPosition = animalRect.left - statWindowWidth - 10;
+  }
+
+  if (topPosition + statWindowHeight > window.innerHeight) {
+    topPosition = window.innerHeight - statWindowHeight - 10;
+  }
+
+  statWindow.style.left = `${leftPosition}px`;
+  statWindow.style.top = `${topPosition}px`;
+
   requestAnimationFrame(() => updateStatWindowPosition(animal));
 }
 
