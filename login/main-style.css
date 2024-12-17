@@ -181,7 +181,7 @@ img#turtle.offscreen {
 }
 
 #loginCard {
-    top:20%;
+    top:25%;
     position: absolute;
     right: -50%;
     transition: opacity 1s ease, right 1s ease, transform 1s ease;
@@ -218,7 +218,7 @@ form.active {
 }
 #loginCard .header {
     /* background-color: #cbac24; */
-    position:absolute;
+    /* position:absolute; */
     width: 104%;
     text-align: center;
     padding: 0.2em 1em;
@@ -238,7 +238,7 @@ form.active {
 }
 
 #loginCard .content {
-    padding: 2em;
+    padding: 0rem 2em 2em 2em;
     width: 100%;
     text-align: center;
 }
@@ -246,7 +246,7 @@ form.active {
 .title {
     font-size: 2em;
     /* color: #cbac24; */
-    color:grey;
+    color:black;
 }
 
 input[type="submit"] {
@@ -341,6 +341,7 @@ input[type="password"] {
 }
 
 #modalErrorText {
+    font-family: "Comic Sans MS", serif;
     font-size: 1.2em;
     line-height: 3em;
 }
@@ -408,6 +409,7 @@ input[type="password"] {
 }
 
 #modalSuccessText {
+    font-family: "Comic Sans MS", serif;
     font-size: 1.2em;
     line-height: 3em;
 }
@@ -913,7 +915,7 @@ body.modal-active {
 }
 
 .btn:hover .text:nth-child(1) {
-    color: white;
+    color: #FF5A25;
     translate: 0 80%;
 }
 
@@ -927,4 +929,14 @@ body.modal-active {
 .btn:hover .text:nth-child(2) {
     transition-delay: 0.1s;
     translate: 0 0;
+}
+
+#registerTab, #loginTab {
+    font-size: 1rem;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+#registerTab.hidden, #loginTab.hidden {
+    opacity: 0;
+    transform: translateY(20px);
 }

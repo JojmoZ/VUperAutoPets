@@ -183,6 +183,7 @@ window.onload = function () {
   const errorModal = document.getElementById("errorModal");
   const modalErrorText = document.getElementById("modalErrorText");
   let isLoginCardVisible = false;
+  showForm(registrationForm, loginForm);
   const logged = localStorage.getItem("loggedin");
   if (logged) {
     const homePath = path.join(appDir, "home/homepage.html"); 
@@ -201,6 +202,26 @@ window.onload = function () {
         formToShow.classList.add("active");
       }, 20);
     }, 500);
+  
+    if (formToShow === registrationForm) {
+      registerTab.classList.add("hidden");
+      setTimeout(() => {
+        registerTab.style.display = "none";
+        loginTab.style.display = "block";
+        setTimeout(() => {
+          loginTab.classList.remove("hidden");
+        }, 20);
+      }, 500);
+    } else {
+      loginTab.classList.add("hidden");
+      setTimeout(() => {
+        loginTab.style.display = "none";
+        registerTab.style.display = "block";
+        setTimeout(() => {
+          registerTab.classList.remove("hidden");
+        }, 20);
+      }, 500);
+    }
   }
 
   registerTab.addEventListener("click", () => {
