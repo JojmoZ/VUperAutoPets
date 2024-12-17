@@ -12,6 +12,10 @@ body::-webkit-scrollbar {
 .hidden {
   display: none;
 }
+.p-container{
+  display: flex;
+  justify-content: space-between;
+}
 .back-arrow {
   position: absolute;
   top: 0;
@@ -93,7 +97,7 @@ canvas {
   border: 1px solid #ccc;
   border-radius: 5px;
   display: none;
-  transition: max-height 0.3s ease-out, padding 0.3s ease-out,
+  transition: max-height 0.5s ease-out, padding 0.5s ease-out,
     background-position 1s ease-out;
   max-height: 0;
   overflow: hidden;

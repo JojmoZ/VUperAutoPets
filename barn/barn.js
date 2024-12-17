@@ -745,43 +745,27 @@ function resetGrid() {
 let currentAnimal = null;
 
 function showStatWindow(animal) {
+  
   const pic = document.getElementById("animalStatPicture");
-  pic.src = animal.src;
-
   const statWindow = document.getElementById("statWindow");
   const animalName = document.getElementById("animalName");
   const animalAttack = document.getElementById("animalAttack");
   const animalHealth = document.getElementById("animalHealth");
   const animalCost = document.getElementById("animalCost");
   const hrElement = statWindow.querySelector("hr");
-
+  const animalColor = animal.dataset.color || "#ffffff";
+  
   if (currentAnimal === animal) {
     return;
   }
-
-  currentAnimal = animal;
-
-  const animalColor = animal.dataset.color || "#ffffff";
-  statWindow.style.setProperty("--animal-color", animalColor);
-
-  if (statWindow.classList.contains("show")) {
-    statWindow.classList.remove("show");
-    setTimeout(() => {
-      animalName.textContent = animal.dataset.name;
-      animalAttack.textContent = animal.dataset.attack;
-      animalHealth.textContent = animal.dataset.health;
-      animalCost.textContent = animal.dataset.cost;
-      hrElement.style.width = "0";
-      statWindow.classList.add("show");
-      setTimeout(() => {
-        hrElement.style.width = "100%";
-      }, 10);
-    }, 300);
-  } else {
+  
+  const updateStatWindow = () => {
+    pic.src = animal.src;
     animalName.textContent = animal.dataset.name;
     animalAttack.textContent = animal.dataset.attack;
     animalHealth.textContent = animal.dataset.health;
     animalCost.textContent = animal.dataset.cost;
+    statWindow.style.setProperty("--animal-color", animalColor);
     hrElement.style.width = "0";
     statWindow.style.display = "block";
     setTimeout(() => {
@@ -790,16 +774,32 @@ function showStatWindow(animal) {
         hrElement.style.width = "100%";
       }, 10);
     }, 10);
-  }
+  };
 
-  function updateStatWindowPosition() {
-    const animalRect = animal.getBoundingClientRect();
-    statWindow.style.left = `${animalRect.right + 10}px`;
-    statWindow.style.top = `${animalRect.top}px`;
-    requestAnimationFrame(updateStatWindowPosition);
-  }
 
-  updateStatWindowPosition();
+  if (statWindow.classList.contains("show")) {
+    const oldAnimal = currentAnimal;
+    statWindow.classList.remove("show");
+    setTimeout(() => {
+      statWindow.style.display = "none";
+      updateStatWindow();
+      currentAnimal = animal;
+      updateStatWindowPosition(animal);
+    }, 300);
+    updateStatWindowPosition(oldAnimal);
+  } else {
+    updateStatWindow();
+    currentAnimal = animal;
+    updateStatWindowPosition(animal);
+  }
+}
+
+function updateStatWindowPosition(animal) {
+  const statWindow = document.getElementById("statWindow");
+  const animalRect = animal.getBoundingClientRect();
+  statWindow.style.left = `${animalRect.right + 10}px`;
+  statWindow.style.top = `${animalRect.top}px`;
+  requestAnimationFrame(() => updateStatWindowPosition(animal));
 }
 
 function hideStatWindow() {
@@ -808,7 +808,7 @@ function hideStatWindow() {
   setTimeout(() => {
     statWindow.style.display = "none";
     currentAnimal = null;
-  }, 300);
+  }, 800);
 }
 
 const backgroundAudio = new Audio(
@@ -816,10 +816,7 @@ const backgroundAudio = new Audio(
 );
 backgroundAudio.volume = 0.08;
 backgroundAudio.loop = true;
-const savedTime = localStorage.getItem("backgroundAudioTime");
-if (savedTime) {
-  backgroundAudio.currentTime = parseFloat(savedTime);
-}
+
 
 const playBackgroundAudio = () => {
   backgroundAudio.play();
