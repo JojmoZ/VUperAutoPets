@@ -306,7 +306,7 @@ window.onload = function () {
 
       errorElement.style.height = `${fullHeight}px`;
       errorElement.style.opacity = "1";
-      errorElement.style.transform = "translateY(0)";
+      errorElement.style.transform = "translateY(3)";
 
       setTimeout(() => {
         errorElement.style.height = "auto";

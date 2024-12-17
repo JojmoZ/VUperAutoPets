@@ -213,13 +213,15 @@ form.active {
 #loginCard .header button{
     padding:1rem 3rem;
     border-radius: 0.5rem;
+    background-color: #FF5A25;
+    color:#57291A;
 }
 #loginCard .header {
     /* background-color: #cbac24; */
     position:absolute;
     width: 104%;
     text-align: center;
-    padding: 0em 1em;
+    padding: 0.2em 1em;
     border-top-left-radius: 0.5em;
     border-top-right-radius: 0.5em;
     font-size: 1.5em;
@@ -890,7 +892,7 @@ body.modal-active {
 
 .btn::after {
     --direction: -1;
-    top: 101%;
+    top: 100%;
     left: 56%;
 }
 
