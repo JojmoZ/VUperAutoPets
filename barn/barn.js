@@ -40,10 +40,10 @@ const restrictedZones = [
   { x: 890, y: 750, width: 180, height: 70 },
   { x: 890, y: 240, width: 100, height: 100 },
   { x: 915, y: 140, width: 15, height: 130 },
-  { x: 915, y: 220, width: 50, height: 60 },
-  { x: 929, y: 260, width: 120, height: 100 },
-  { x: 949, y: 280, width: 120, height: 100 },
-  { x: 969, y: 140 + 160, width: 120, height: 100 },
+  { x: 915, y: 220, width: 50, height: 60 }, 
+  { x: 929, y: 280, width: 120, height: 100 },
+  { x: 949, y: 300, width: 120, height: 100 },
+  { x: 969, y: 320, width: 120, height: 80 },
   { x: 970, y: 740, width: 100, height: 70 },
   { x: 990, y: 720, width: 100, height: 70 },
   { x: 1010, y: 700, width: 100, height: 70 },
@@ -461,13 +461,24 @@ function createFood(event) {
       const path = astar(start, end);
       if (!path) {
         console.warn("Pathfinding failed: No valid path found.");
+        foodElement.remove();
+        foodElements = foodElements.filter((el) => el !== foodElement);
+        closestAnimal.dataset.isMovingToFood = "false";
+        roamAnimal(closestAnimal);
       } else {
-        console.log("Path:", path);
-      }
-      if (path) {
         followPath(closestAnimal, path, () => {
           foodElement.remove();
           foodElements = foodElements.filter((el) => el !== foodElement);
+              if (
+                isInRestrictedZone(
+                  parseFloat(closestAnimal.style.left),
+                  parseFloat(closestAnimal.style.top),
+                  closestAnimal.offsetWidth,
+                  closestAnimal.offsetHeight
+                )
+              ) {
+                unstickAnimal(closestAnimal);
+              }
           closestAnimal.dataset.isMovingToFood = "false";
           roamAnimal(closestAnimal);
         });
@@ -475,6 +486,108 @@ function createFood(event) {
     }, 200);
   } else {
     console.warn("No closest animal found for the food.");
+  }
+}
+function unstickAnimal(animal) {
+  const startX = parseFloat(animal.style.left) + animal.offsetWidth / 2;
+  const startY = parseFloat(animal.style.top) + animal.offsetHeight / 2;
+
+  const safeDistance = 30;
+  const searchRadius = 100;
+  const stepSize = gridSize;
+
+  let safeLocations = [];
+
+  for (
+    let row = -Math.ceil(searchRadius / stepSize);
+    row <= Math.ceil(searchRadius / stepSize);
+    row++
+  ) {
+    for (
+      let col = -Math.ceil(searchRadius / stepSize);
+      col <= Math.ceil(searchRadius / stepSize);
+      col++
+    ) {
+      const candidateX = startX + col * stepSize;
+      const candidateY = startY + row * stepSize;
+
+      if (
+        candidateX < 0 ||
+        candidateX > animalContainer.clientWidth ||
+        candidateY < 0 ||
+        candidateY > animalContainer.clientHeight
+      )
+        continue;
+
+      if (
+        !isInRestrictedZone(
+          candidateX - animal.offsetWidth / 2,
+          candidateY - animal.offsetHeight / 2,
+          animal.offsetWidth,
+          animal.offsetHeight
+        )
+      ) {
+        const isFarEnough = restrictedZones.every((zone) => {
+          const zoneX = (zone.x / 1920) * animalContainer.clientWidth;
+          const zoneY = (zone.y / 1080) * animalContainer.clientHeight;
+          const zoneWidth = (zone.width / 1920) * animalContainer.clientWidth;
+          const zoneHeight = (zone.height / 1080) * animalContainer.clientHeight;
+          const zoneCenterX = zoneX + zoneWidth / 2;
+          const zoneCenterY = zoneY + zoneHeight / 2;
+
+          const distance = Math.sqrt(
+            (candidateX - zoneCenterX) ** 2 + (candidateY - zoneCenterY) ** 2
+          );
+
+          return distance >= safeDistance;
+        });
+
+        if (isFarEnough) {
+          safeLocations.push({ x: candidateX, y: candidateY });
+        }
+      }
+    }
+  }
+
+  let closestLocation = null;
+  let minDistance = Infinity;
+  safeLocations.forEach((location) => {
+    const distance = Math.sqrt(
+      (location.x - startX) ** 2 + (location.y - startY) ** 2
+    );
+    if (distance < minDistance) {
+      minDistance = distance;
+      closestLocation = location;
+    }
+  });
+
+  if (closestLocation) {
+    const endX = closestLocation.x - animal.offsetWidth / 2;
+    const endY = closestLocation.y - animal.offsetHeight / 2;
+
+    const duration = 500;
+    const startTime = performance.now();
+
+    function animateMove(currentTime) {
+      const elapsedTime = currentTime - startTime;
+      const progress = Math.min(elapsedTime / duration, 1);
+
+      const newX = startX + (endX - startX) * progress;
+      const newY = startY + (endY - startY) * progress;
+
+      animal.style.left = `${newX - animal.offsetWidth / 2}px`;
+      animal.style.top = `${newY - animal.offsetHeight / 2}px`;
+
+      if (progress < 1) {
+        requestAnimationFrame(animateMove);
+      } else {
+        console.log("Animal successfully moved to a safe location.");
+      }
+    }
+
+    requestAnimationFrame(animateMove);
+  } else {
+    console.warn("No valid nearby location found to unstick the animal.");
   }
 }
 
