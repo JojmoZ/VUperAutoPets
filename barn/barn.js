@@ -386,7 +386,6 @@ function createFood(event) {
 
   // Check if the food is placed in a restricted zone
   if (isInRestrictedZone(foodX, foodY, foodWidth, foodHeight)) {
-    console.warn("Food placement is in a restricted zone.");
     return;
   }
 
@@ -437,7 +436,6 @@ function createFood(event) {
   });
 
   if (closestAnimal) {
-    console.log(closestAnimal);
     closestAnimal.dataset.isMovingToFood = "true";
     cancelAnimationFrame(closestAnimal.roamAnimationId);
     setTimeout(() => {
@@ -460,7 +458,6 @@ function createFood(event) {
 
       const path = astar(start, end);
       if (!path) {
-        console.warn("Pathfinding failed: No valid path found.");
         foodElement.remove();
         foodElements = foodElements.filter((el) => el !== foodElement);
         closestAnimal.dataset.isMovingToFood = "false";
@@ -485,14 +482,13 @@ function createFood(event) {
       }
     }, 200);
   } else {
-    console.warn("No closest animal found for the food.");
   }
 }
 function unstickAnimal(animal) {
   const startX = parseFloat(animal.style.left) + animal.offsetWidth / 2;
   const startY = parseFloat(animal.style.top) + animal.offsetHeight / 2;
 
-  const safeDistance = 30;
+  const safeDistance = 50;
   const searchRadius = 100;
   const stepSize = gridSize;
 
@@ -527,7 +523,7 @@ function unstickAnimal(animal) {
           animal.offsetHeight
         )
       ) {
-        const isFarEnough = restrictedZones.every((zone) => {
+        const distanceToRestrictedZones = restrictedZones.reduce((minDist, zone) => {
           const zoneX = (zone.x / 1920) * animalContainer.clientWidth;
           const zoneY = (zone.y / 1080) * animalContainer.clientHeight;
           const zoneWidth = (zone.width / 1920) * animalContainer.clientWidth;
@@ -539,31 +535,26 @@ function unstickAnimal(animal) {
             (candidateX - zoneCenterX) ** 2 + (candidateY - zoneCenterY) ** 2
           );
 
-          return distance >= safeDistance;
-        });
+          return Math.min(minDist, distance);
+        }, Infinity);
 
-        if (isFarEnough) {
-          safeLocations.push({ x: candidateX, y: candidateY });
-        }
+        safeLocations.push({ x: candidateX, y: candidateY, distanceToRestrictedZones });
       }
     }
   }
 
-  let closestLocation = null;
-  let minDistance = Infinity;
+  let bestLocation = null;
+  let maxDistance = -Infinity;
   safeLocations.forEach((location) => {
-    const distance = Math.sqrt(
-      (location.x - startX) ** 2 + (location.y - startY) ** 2
-    );
-    if (distance < minDistance) {
-      minDistance = distance;
-      closestLocation = location;
+    if (location.distanceToRestrictedZones > maxDistance) {
+      maxDistance = location.distanceToRestrictedZones;
+      bestLocation = location;
     }
   });
 
-  if (closestLocation) {
-    const endX = closestLocation.x - animal.offsetWidth / 2;
-    const endY = closestLocation.y - animal.offsetHeight / 2;
+  if (bestLocation) {
+    const endX = bestLocation.x - animal.offsetWidth / 2;
+    const endY = bestLocation.y - animal.offsetHeight / 2;
 
     const duration = 500;
     const startTime = performance.now();
@@ -581,13 +572,22 @@ function unstickAnimal(animal) {
       if (progress < 1) {
         requestAnimationFrame(animateMove);
       } else {
-        console.log("Animal successfully moved to a safe location.");
+        if (
+          isInRestrictedZone(
+            parseFloat(animal.style.left),
+            parseFloat(animal.style.top),
+            animal.offsetWidth,
+            animal.offsetHeight
+          )
+        ) {
+          unstickAnimal(animal);
+        } else {
+        }
       }
     }
 
     requestAnimationFrame(animateMove);
   } else {
-    console.warn("No valid nearby location found to unstick the animal.");
   }
 }
 
