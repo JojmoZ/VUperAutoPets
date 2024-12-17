@@ -68,7 +68,8 @@ const restrictedZones = [
   { x: 1169, y: 140 + 150, width: 260, height: 100 },
   { x: 1169 + 225, y: 200, width: 16, height: 100 },
   { x: 1169, y: 140 + 120, width: 245, height: 50 },
-  { x: 1350, y: 885, width: 1920 - 1350, height: 190 },
+  { x: 1350, y: 870, width: 1920 - 1350, height: 30 },
+  { x: 1350, y: 870, width: 15, height: 145 },
   { x: 1410, y: 40, width: 220, height: 125 },
   { x: 1480, y: 0, width: 130, height: 125 },
   { x: 1610, y: 150 + 140, width: 1920 - 1610, height: 100 },
@@ -76,7 +77,8 @@ const restrictedZones = [
   { x: 1635, y: 200, width: 14, height: 140 },
   { x: 1635, y: 140 + 120, width: 1920 - 1635, height: 50 },
   { x: 1680, y: 50, width: 90, height: 65 },
-  { x: 1850, y: 0, width: 70, height: 1080 },
+  { x: 1850, y: 0, width: 70, height: 140 },
+  { x: 1850, y: 280, width: 70, height: 1080 },
 ];
 
 const logged = localStorage.getItem("loggedin");
