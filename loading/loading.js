@@ -55,11 +55,14 @@ document.addEventListener("DOMContentLoaded", () => {
     animalVUnt.style.top = `-7.5rem`;
     animalVUnt.style.width = `8rem`;
     animalVUnt.style.height = `8rem`;
-
-    if (elapsedTime >= totalGameTime) {
+    updateToolTipposition();
+    if (elapsedTime < totalGameTime) {
+      requestAnimationFrame(updateLoading);
+    } else {
       triggerTransitionToGame();
     }
   }
+
   function triggerTransitionToGame() {
     if (document.querySelector(".overlay")) return;
 
@@ -72,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
     logo.classList.add("logo");
     blackOverlay.appendChild(logo);
 
-    setTimeout(() => {
+    requestAnimationFrame(() => {
       blackOverlay.classList.add("fade-in-overlay");
       logo.classList.add("fade-in-logo");
 
@@ -80,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const gamePath = path.join(appDir, "game/game.html");
         window.location.href = `file://${gamePath}`;
       }, 5000);
-    }, 100);
+    });
   }
 
   function lockScroll() {
@@ -103,9 +106,9 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.appendChild(tipBox);
 
     const animalRect = animalVUnt.getBoundingClientRect();
-    tipBox.style.left = `${animalRect.left + animalRect.width / 2}px`;
-    tipBox.style.top = `${animalRect.top - animalRect.height + 50}px`;
-
+    // tipBox.style.left = `${animalRect.left + animalRect.width / 2}px`;
+    // tipBox.style.top = `${animalRect.top - animalRect.height + 50}px`;
+  // updateToolTipposition();
     setTimeout(() => {
       tipBox.classList.add("tip-animate-in");
     }, 100);
@@ -119,7 +122,14 @@ document.addEventListener("DOMContentLoaded", () => {
       }, 500);
     }, 3000);
   }
-
+  function updateToolTipposition() {
+    if (tipBox) {
+      const animalRect = animalVUnt.getBoundingClientRect();
+      tipBox.style.left = `${animalRect.left + animalRect.width / 2}px`;
+      tipBox.style.top = `${animalRect.top - animalRect.height + 115}px`;
+      tipBox.style.transform = "translate(-40%, -100%)"; // Center horizontally and position above
+    }
+  }
   const animalVUnt = document.createElement("img");
   animalVUnt.src = "../assets/Animals/VUnt.webp";
   animalVUnt.style.width = "5rem";
@@ -132,7 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   animalVUnt.addEventListener("click", showRandomTip);
 
-  setInterval(updateLoading, 100);
+  requestAnimationFrame(updateLoading);
 
   const backgroundAudio = new Audio(
     "../assets/sound/Super Auto Pets  - Menu Theme.mp3"
