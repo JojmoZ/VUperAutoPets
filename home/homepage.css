@@ -375,6 +375,7 @@ body {
     gap:50px;
     right:-30%;
     justify-content: space-evenly;
+    z-index: 10101010;
 }
 .pet-card.scale-up {
     transform: scale(1.2) !important; /* Ensure it overrides other transform styles */
