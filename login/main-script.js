@@ -535,10 +535,10 @@ window.onload = function () {
 
       if (targetInput.type === "password") {
         targetInput.type = "text";
-        img.src = "../assets/login/hide.png";
+        img.src = "../assets/login/hiddeneyeblack.png";
       } else {
         targetInput.type = "password";
-        img.src = "../assets/login/eye.png";
+        img.src = "../assets/login/eyeblack.png";
       }
     });
   });
