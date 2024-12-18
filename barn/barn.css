@@ -15,6 +15,17 @@ body::-webkit-scrollbar {
 .p-container{
   display: flex;
   justify-content: space-between;
+  /* align-items: center; */
+}
+.rightStatSide{
+  position: relative;
+  left:-50%;  
+  font-size: 2rem;
+  -webkit-text-stroke: 1px white;
+}
+.p-container p{
+  display: flex;
+  align-items: center ;
 }
 .back-arrow {
   position: absolute;
@@ -95,7 +106,7 @@ canvas {
   background-size: 300% 300%;
   background-position: 50% 50%;
   border: 3px solid black;
-  border-radius: 5px;
+  border-radius: 15px;
   display: none;
   transition: max-height 0.5s ease-out, padding 0.5s ease-out,
     background-position 1s ease-out;
