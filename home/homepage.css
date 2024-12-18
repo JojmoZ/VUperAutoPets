@@ -320,13 +320,13 @@ body {
   height: 100%;
   transform: translateY(-100%); /* Initially hidden above */
   transition: transform 0.8s ease-in; /* Smooth curtain effect */
-  z-index: 0; /* Ensure it covers the content */
+  z-index: 2; /* Ensure it covers the content */
 }
 .top-pets-info {
     display: flex;
     flex-direction: column;
     position: absolute;
-    width: 50%;
+    width: 30%;
     left: 10%;
     text-align: left;
     z-index: 10;
@@ -334,15 +334,9 @@ body {
     padding: 2rem 1rem;
 }
 
-.top-pets-info h1 {
-    font-size: 5rem;
-    font-weight: bold;
-
-    margin: 0;
-
-    color: white;
-    -webkit-text-stroke: 0.2rem black;
-
+.top-pets-info img {
+    width: 100%;
+    z-index: 0;
     transition: all 0.5s ease-in-out;
 }
 
@@ -354,7 +348,7 @@ body {
 
 .pet-container {
     position: absolute;
-    width: 50%;
+    width: 60%;
     opacity: 1;
     right: -10%;
     display: flex;
@@ -362,6 +356,7 @@ body {
     justify-content: start;
     transition: all 0.5s ease-in-out;
     transform: translateY(0);
+    z-index: 5;
     
 }
 
@@ -1147,6 +1142,7 @@ section {
     width: 100vw;
     height: 100vh;
     backdrop-filter: blur(10px);
+    z-index: 0;
 }
 
 .map-item {

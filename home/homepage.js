@@ -124,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const container = document.querySelector(".pet-container");
 const petRange = document.getElementById("pet-range");
-const topPetsHeader = document.querySelector("#top-pets-info h1");
+const topPetsHeader = document.querySelector("#top-pets-info img");
 const topPetsDesc = document.querySelector("#top-pets-info p");
 const animalNameElement = document.getElementById("animal-name");
 const animalDescriptionElement = document.getElementById("animal-description");
@@ -230,8 +230,6 @@ function showAnimalInfo(card) {
         curtain.style.transform = "translateY(0)";
         setTimeout(() => {
             curtain.style.backgroundImage = window.getComputedStyle(card).backgroundImage;
-            curtain.style.backgroundRepeat = "no-repeat";
-            curtain.style.backgroundSize = "cover";
             card.style.backgroundImage = "none";
             card.style.overflow = "visible";
             topPetsHeader.classList.add("hidden");
@@ -333,7 +331,7 @@ function resetCarousel() {
             petRange.classList.remove("hidden");
             infoCard.classList.add("hidden");
             document.getElementById("top-pets").style.backgroundImage =
-                "url('../assets/login/background.png')";
+                "url('../assets/maps/Field.webp')";
         }, 800);
     }, 300);
 }
