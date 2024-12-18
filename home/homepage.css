@@ -229,20 +229,25 @@ body {
     margin-top: 1rem;
     margin-bottom: 0.5rem;
     font-size: 4rem;
+    width: 100%;
+    letter-spacing: 0.2rem;
 }
 
 #animal-description{
-    font-size: 2rem;
+    font-size: 1.5rem;
+    font-family: "Comic Sans MS", serif;
+    font-weight: normal;
+
 }
 
 #info-card {
     display: flex;
     position: absolute;
-    top: 40%;
+    top: 50%;
     left: 60%;
     transform: translate(-50%, 100%) rotate(-10deg);
-    width: 30%;
-    padding: 0rem 2rem 2rem 2rem;
+    width: 40%;
+    padding: 3rem;
     background: repeating-linear-gradient(
         -45deg,
         #f6f6f6,
@@ -253,9 +258,9 @@ body {
     border-radius: 1rem;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     z-index: 10;
+    text-align: left;
     flex-direction: column;
     align-items: center;
-    text-align: center;
     opacity: 0;
     transition: transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.8s ease;
 }
@@ -273,9 +278,11 @@ body {
 .showandtellvisible{
     opacity: 1;
 }
+
 .showandtellhidden{
     opacity: 0;
 }
+
 #info-card.hidden {
     display: none;
 }
@@ -283,20 +290,25 @@ body {
 #close-info {
     position: absolute;
     top: 1rem;
-    right: 1rem;
+    right: 1.5rem;
     background: none;
     border: none;
     font-size: 2rem;
     cursor: pointer;
+
+    font-family: "Comic Sans MS", serif;
+    font-weight: bold;
+    color: #a60000;
 }
+
 .pet-card.showandtell {
     position: absolute !important;
     margin-bottom: 8%;
-    left:0%;
+    left: 0;
     padding: 2rem;
     z-index: 10;
-    /* transition: all 0.8s ease-in-out; Smooth transition */
 }
+
 .pet-card img.move-down {
     transform: translateY(70px);
     transition: transform 0.5s ease-in-out;
@@ -305,6 +317,7 @@ body {
     transform: translateY(0);
     transition: transform 0.5s ease-in-out;
 }
+
 #top-pets {
     background-image: url("../assets/maps/Field.webp");
     background-position: center;
@@ -312,6 +325,7 @@ body {
     background-color: white;
     display: flex;
 }
+
 #top-pets .curtain {
   position: absolute;
   top: 0;
@@ -322,6 +336,7 @@ body {
   transition: transform 0.8s ease-in;
   z-index: 2;
 }
+
 .top-pets-info {
     display: flex;
     flex-direction: column;
@@ -331,9 +346,6 @@ body {
     text-align: left;
     z-index: 10;
     gap: 1rem;
-
-
-
     padding: 2rem 1rem;
 }
 
@@ -397,8 +409,7 @@ body {
     width: 28rem;
     height: 28rem;
 
-    /* Increase transition duration and use smoother easing */
-    transition: transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1), 
+    transition: transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1),
                 opacity 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 

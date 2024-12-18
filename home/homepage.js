@@ -234,7 +234,7 @@ closeInfoButton.addEventListener("click", () => {
 });
 
 const petDescriptions = {
-    MSeer: "MSeer is a wise and calm animal, known for its strategic abilities.",
+    MSeer: "The MSeer is a high-impact support pet, known for its ability to deal significant damage with its \"Attack\" ability.<br><br>",
     VandaJ: "VandaJ loves adventure and is always ready to explore.",
     YenguiK: "YenguiK has unmatched speed and agility.",
     eagSVle: "eagSVle soars high with unmatched vision and precision.",
@@ -301,7 +301,7 @@ function showAnimalInfo(card) {
                     card.classList.add("showandtell");
                     image.classList.remove("move-down");
                     animalNameElement.textContent = animalName;
-                    animalDescriptionElement.textContent =
+                    animalDescriptionElement.innerHTML =
                         petDescriptions[animalName] || "No description available.";
                     infoCard.classList.remove("hidden", "hide");
                     void infoCard.offsetWidth;
