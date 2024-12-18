@@ -430,15 +430,15 @@ body {
   cursor: pointer; /* Indicate the card is clickable */
 }
 .pet-card:nth-child(1) {
-  background-image: url("../assets/home-asset/top-pets/top-bg-1.png");
-  z-index: 3;
-  transform: translateX(0);
+    background-image: url('../assets/home-asset/top-pets/top-bg-5.png');
+    z-index: 3;
+    transform: translateX(0);
 }
 
 .pet-card:nth-child(2) {
-  background-image: url("../assets/home-asset/top-pets/top-bg-2.png");
-  z-index: 2;
-  transform: translateX(5rem) scale(0.9);
+    background-image: url('../assets/home-asset/top-pets/top-bg-4.png');
+    z-index: 2;
+    transform: translateX(5rem) scale(0.9);
 }
 
 .pet-card:nth-child(3) {
@@ -448,7 +448,7 @@ body {
 }
 
 .pet-card:nth-child(4) {
-  background-image: url("../assets/home-asset/top-pets/top-bg-4.png");
+    background-image: url('../assets/home-asset/top-pets/top-bg-2.png');
 }
 
 .pet-card:nth-child(4) img {
@@ -456,7 +456,7 @@ body {
 }
 
 .pet-card:nth-child(5) {
-  background-image: url("../assets/home-asset/top-pets/top-bg-5.png");
+    background-image: url('../assets/home-asset/top-pets/top-bg-1.png');
 }
 
 .pet-card:hover:nth-child(1) {
