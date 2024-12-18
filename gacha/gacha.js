@@ -128,11 +128,15 @@ document.addEventListener("DOMContentLoaded", function () {
           document.getElementById("column2"),
           document.getElementById("column3"),
         ];
+        let columnsFinished = 0;
         columns.forEach((column, index) => {
           setTimeout(() => {
             spinColumn(column, selectedAnimal, () => {
-              if (index === columns.length - 1) {
+              columnsFinished++;
+              if (columnsFinished === columns.length) {
                 isRolling = false;
+                gachaSound.pause(); // Stop the gacha sound after all columns finish spinning
+                gachaSound.currentTime = 0; // Reset the sound to the beginning
                 checkThreeOfAKind([
                   selectedAnimal,
                   selectedAnimal,

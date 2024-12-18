@@ -23,7 +23,19 @@ document.addEventListener("keydown", function (event) {
         cheatReward = reward;
         updateCoinsDisplay();
       } else {
-        cheatAnimal = reward;
+       if (sequence === "subcoc") {
+         cheatAnimal = "MSeer";
+       } else if (sequence === "subcojava") {
+         cheatAnimal = "YenguiK";
+       } else if (sequence === "subcodb") {
+         cheatAnimal = "VandaJ";
+       } else if (sequence === "subcowd") {
+         cheatAnimal = "PamstIr";
+       } else if (sequence === "subcovis") {
+         cheatAnimal = "eagSVle";
+       } else {
+         cheatAnimal = ""; // Default if no match (optional)
+       }
          cheatReward = reward;
       }
       break;
