@@ -203,20 +203,16 @@ viewAllButton.addEventListener("click", () => {
 });
 
 petRange.addEventListener("input", (e) => {
-  const rangeValue = e.target.value;
+ const rangeValue = e.target.value;
 
-  const smoothRangeValue = Math.pow(rangeValue / 100, 2);
+ // Normalize the rangeValue to a percentage of max scroll distance
+ const normalizedRange = rangeValue / 100; // Converts 0-100 range to 0.0-1.0
 
-  const containerOffset = initialRight - smoothRangeValue * maxScrollDistance;
-  container.style.right = `${containerOffset}%`;
+ // Calculate the container offset with a consistent rate
+ const containerOffset = initialRight - normalizedRange * maxScrollDistance;
 
-  console.log({
-    rangeValue,
-    smoothRangeValue,
-    maxScrollDistance,
-    containerOffset,
-    rightPosition: container.style.right,
-  });
+ // Apply the calculated offset
+ container.style.right = `${containerOffset}%`;
 });
 
 const allCards = document.querySelectorAll(".pet-card");
