@@ -315,7 +315,9 @@ function showAnimalInfo(card) {
       }, 50);
     }, 100);
   }, 500);
+
 }
+
 
 function resetCarousel() {
   const allCards = document.querySelectorAll(".pet-card");
