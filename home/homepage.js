@@ -230,11 +230,11 @@ closeInfoButton.addEventListener("click", () => {
 });
 
 const petDescriptions = {
-    MSeer: "The MSeer is a high-impact support pet, known for its ability to deal significant damage with its \"Attack\" ability.",
-    VandaJ: "VandaJ loves adventure and is always ready to explore.",
-    YenguiK: "YenguiK has unmatched speed and agility.",
-    eagSVle: "eagSVle soars high with unmatched vision and precision.",
-    PamstIr: "PamstIr is playful and loves making friends with everyone.",
+  PamstIr: "The PamstIr is a unique pet that can be used to counter enemy strategies, making it a great choice for a flexible team.",
+  eagSVle: "The eagSVle has a powerful ability, which makes it a great choice for a summoning-based strategy.",
+  YenguiK: "The YenguiK is a scaling pet, which is an excellent choice for longer games where scaling is essential.",
+  VandaJ: "The VandaJ is a versatile pet, which makes it a great choice for scaling early to mid-game, helping to keep your team strong.",
+  MSeer: "The MSeer is a high-impact support pet, known for its ability to deal significant damage with its \"Attack\" ability.",
 };
 
 let isShowingAnimal = false;
