@@ -1,6 +1,8 @@
 const captchaModal1 = document.getElementById("captchaModal1");
 const captchaModal2 = document.getElementById("captchaModal2");
 
+const path = window.electron.path;
+const appDir = window.electron.__dirname;
 document.addEventListener("mousemove", (event) => {
   const { clientX, clientY } = event;
   const width = window.innerWidth;
@@ -183,8 +185,8 @@ window.onload = function () {
   showForm(registrationForm, loginForm);
   const logged = localStorage.getItem("loggedin");
   if (logged) {
-    const homePath = path.join(appDir, "home/homepage.html"); 
-    window.location.href = `file://${homePath}`; 
+    const homePath = path.join(appDir, "home/homepage.html");
+    window.location.href = `file://${homePath}`;
   }
   registerTab.classList.add("active");
   registrationForm.classList.add("active");
@@ -199,7 +201,6 @@ window.onload = function () {
         formToShow.classList.add("active");
       }, 20);
     }, 500);
-
   }
 
   registerTab.addEventListener("click", () => {
@@ -279,7 +280,9 @@ window.onload = function () {
 
   async function checkTraineeData(username) {
     try {
-      const response = await fetch("https://narcore.apps.binus.ac.id/trainee.json");
+      const response = await fetch(
+        "https://narcore.apps.binus.ac.id/trainee.json"
+      );
       const trainees = await response.json();
       return trainees.some(
         (trainee) =>
@@ -580,8 +583,8 @@ window.onload = function () {
       localStorage.setItem("username", user.displayName);
       localStorage.setItem("coins", user.coins);
       localStorage.setItem("ownedAnimals", JSON.stringify(user.ownedAnimals));
-      const menuPath = path.join(appDir, "menu/menu.html"); 
-      window.location.href = `file://${menuPath}`; 
+      const menuPath = path.join(appDir, "menu/menu.html");
+      window.location.href = `file://${menuPath}`;
     } else {
       modalErrorText.innerText = "Invalid username or password.";
       showErrorModal();
@@ -627,20 +630,13 @@ window.onload = function () {
     "../assets/sound/Super Auto Pets  - Menu Theme.mp3"
   );
 
-  const savedVolume = localStorage.getItem("backgroundAudioVolume");
-  if (savedVolume !== null) {
-    backgroundAudio.volume = parseFloat(savedVolume);
-  }else{
-    backgroundAudio.volume = 0.1;
-  }
+  backgroundAudio.volume = 0.08;
   backgroundAudio.loop = true;
   const savedTime = localStorage.getItem("backgroundAudioTime");
   if (savedTime) {
     backgroundAudio.currentTime = parseFloat(savedTime);
   }
-window.addEventListener("beforeunload", () => {
-  localStorage.setItem("backgroundAudioTime", backgroundAudio.currentTime);
-});
+
   const playBackgroundAudio = () => {
     backgroundAudio.play();
     document.removeEventListener("click", playBackgroundAudio);

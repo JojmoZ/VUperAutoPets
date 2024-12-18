@@ -49,7 +49,6 @@ body {
     align-items: center;
     height: 100vh;
 }
-
 .parallax-layer-1, .parallax-layer-2, .parallax-layer-3 {
     position: absolute;
       height: 100vh;
@@ -942,6 +941,18 @@ body.modal-active {
     translate: 0 0;
 }
 
+/* #registerTab, #loginTab {
+    font-size: 1rem;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+#registerTab.hidden, #loginTab.hidden {
+    opacity: 0;
+    transform: translateY(20px);
+}
+#registerTab:hover, #loginTab:hover {
+    filter: brightness(0.8);
+} */
 .frame {
     position: fixed;
 
