@@ -318,9 +318,9 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  transform: translateY(-100%); /* Initially hidden above */
-  transition: transform 0.8s ease-in; /* Smooth curtain effect */
-  z-index: 2; /* Ensure it covers the content */
+  transform: translateY(-100%);
+  transition: transform 0.8s ease-in;
+  z-index: 2;
 }
 .top-pets-info {
     display: flex;
@@ -331,6 +331,9 @@ body {
     text-align: left;
     z-index: 10;
     gap: 1rem;
+
+
+
     padding: 2rem 1rem;
 }
 
@@ -342,8 +345,15 @@ body {
 
 .top-pets-info p {
     font-family: var(--font-p), serif;
-    color: white;
+    color: black;
+    background-color: white;
+
+    border-radius: 0.625rem;
+    border: 0.325rem solid black;
+    padding: 1rem;
     font-size: 1.5rem;
+
+    font-weight: bold;
 }
 
 .pet-container {
@@ -491,31 +501,32 @@ body {
 }
 
 #pet-range {
-     -webkit-appearance: none; /* Remove default appearance */
+    -webkit-appearance: none;
     appearance: none;
-     height: 10px; 
-    border-radius: 5px; /* Rounded corners for the track */
-    width: 50rem;
+    height: calc(3.75rem - 10px);
+    width: 50vw;
     position: absolute;
-    bottom: 10rem;
-    background: #e0e0e0; /* Track color */
+    bottom: 8rem;
+    border: 5px solid black;
+    border-radius: 0.5rem;
+
+    background: white;
     margin-top: 1rem;
     transition: opacity 0.5s ease;
-    opacity: 1; /* Ensure the range input is visible */
-}
-/* Style the thumb (slider handle) for Chrome, Safari, Edge, Opera */
-#pet-range::-webkit-slider-thumb {
-    -webkit-appearance: none; /* Remove default thumb */
-    appearance: none;
-    width: 50px; /* Width of the thumb */
-    height: 30px; /* Height of the thumb */
-    background: #FF6900; /* Thumb color */
-    border: 2px solid white; /* White border around the thumb */
-    border-radius: 40%; /* Makes the thumb circular */
-    cursor: pointer; /* Pointer on hover */
+    opacity: 1;
 }
 
-/* Style the thumb for Firefox */
+#pet-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 3.125rem;
+    height: 3.75rem;
+    background: #FF6900;
+    border: 5px solid black;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
 #pet-range::-moz-range-thumb {
     width: 50px;
     height: 30px;
@@ -558,7 +569,37 @@ body {
     border-radius: 5px;
 }
 
+#view-all {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: none;
+    padding: 0;
+}
 
+#view-all img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+#view-all span {
+    z-index: 1;
+    font-size: 3rem;
+    color: #57291A;
+    padding-block: 1.5rem 2rem;
+}
+
+#view-all:hover {
+    filter: brightness(1.2);
+}
 
 /* Jumbotron */
 

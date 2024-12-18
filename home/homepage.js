@@ -131,6 +131,7 @@ const animalDescriptionElement = document.getElementById("animal-description");
 const visibleCards = container.querySelectorAll(".pet-card:not(.hidden)");
 const hiddenCards = container.querySelectorAll(".pet-card.hidden");
 const infoCard = document.getElementById("info-card");
+const viewAllButton = document.getElementById("view-all");
 const closeInfoButton = document.getElementById("close-info");
 const prevButton = document.getElementById("prev-animal");
 const nextButton = document.getElementById("next-animal");
@@ -159,6 +160,7 @@ visibleCards.forEach((card, index) => {
                 container.classList.add("expanded");
                 petRange.classList.remove("hidden");
                 topPetsDesc.classList.add("hidden");
+                viewAllButton.style.display = "none";
                 topPetsHeader.style.transform = "translateY(-35vh)";
 
                 petRange.value = 0;
@@ -176,6 +178,29 @@ visibleCards.forEach((card, index) => {
         }
     });
 });
+
+viewAllButton.addEventListener("click", () => {
+    setTimeout(() => {
+        container.classList.add("expanded");
+        petRange.classList.remove("hidden");
+        topPetsDesc.classList.add("hidden");
+        viewAllButton.style.display = "none";
+        topPetsHeader.style.transform = "translateY(-35vh)";
+
+        petRange.value = 0;
+        container.style.right = `${initialRight}%`;
+
+        initialRight = -30;
+        maxScrollDistance = calculateMaxScroll();
+
+        hiddenCards.forEach((hiddenCard, idx) => {
+            setTimeout(() => {
+                hiddenCard.classList.remove("hidden");
+            }, idx * 100);
+        });
+    }, 400);
+});
+
 
 petRange.addEventListener("input", (e) => {
     const rangeValue = e.target.value;
