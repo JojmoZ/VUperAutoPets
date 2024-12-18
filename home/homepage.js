@@ -1,68 +1,402 @@
+/**
+ * SECTION: Hero
+ */
+
+const path = window.electron.path;
+const appDir = window.electron.__dirname;
+const DELAY = 500;
+
+document.addEventListener("DOMContentLoaded", () => {
+  const primaryImages = [
+    "../assets/login/parallax/parallax-vunt.webp",
+    "../assets/login/parallax/parallax-pamstir.webp",
+  ];
+
+  const secondaryImages = [
+    "../assets/home-asset/hero/rocket.png",
+    "../assets/home-asset/hero/teddy.png",
+  ];
+
+  const tertiaryImages = [
+    "../assets/home-asset/hero/trumpet.png",
+    "../assets/home-asset/hero/scissors.png",
+  ];
+
+  const groupImages = [
+    [
+      "../assets/home-asset/hero/img-group-1.png",
+      "../assets/home-asset/hero/img-group-2.png",
+      "../assets/home-asset/hero/img-group-3.png",
+      "../assets/home-asset/hero/img-group-4.png",
+    ],
+    [
+      "../assets/home-asset/hero/coin.png",
+      "../assets/home-asset/hero/coin.png",
+      "../assets/home-asset/hero/coin.png",
+      "../assets/home-asset/hero/coin.png",
+    ],
+  ];
+
+  let primaryIndex = 0;
+  let secondaryIndex = 0;
+  let tertiaryIndex = 0;
+  let groupSetIndex = 0;
+  let groupIndices = [0, 1, 2, 3];
+
+  function cycleImages() {
+    const imgPrimary = document.querySelector(".img-primary");
+    const imgSecondary = document.querySelector(".img-secondary");
+    const imgTertiary = document.querySelector(".img-tertiary");
+
+    function applyTransition(element) {
+      element.style.transition = "all 0.5s ease-in-out";
+      element.style.opacity = "0";
+      element.style.transform = "translateY(50px)";
+    }
+
+    function setNewImage(element, newSrc, delay) {
+      setTimeout(() => {
+        element.src = newSrc;
+        setTimeout(() => {
+          element.style.opacity = "1";
+          element.style.transform = "translateY(0)";
+        }, DELAY);
+      }, delay);
+    }
+
+    primaryIndex = (primaryIndex + 1) % primaryImages.length;
+    applyTransition(imgPrimary);
+    setNewImage(imgPrimary, primaryImages[primaryIndex], DELAY);
+
+    secondaryIndex = (secondaryIndex + 1) % secondaryImages.length;
+    applyTransition(imgSecondary);
+    setNewImage(imgSecondary, secondaryImages[secondaryIndex], DELAY * 1.3);
+
+    tertiaryIndex = (tertiaryIndex + 1) % tertiaryImages.length;
+    applyTransition(imgTertiary);
+    setNewImage(imgTertiary, tertiaryImages[tertiaryIndex], DELAY * 1.5);
+  }
+
+  function cycleGroup() {
+    const groupImgs = document.querySelectorAll(".image-group img");
+    const currentGroup = groupImages[groupSetIndex];
+
+    function applyTransition(element) {
+      element.style.transition = "all 0.5s ease-in-out";
+      element.style.opacity = "0";
+      element.style.transform = "scale(0)";
+    }
+
+    function setNewImage(element, newSrc, delay) {
+      setTimeout(() => {
+        element.src = newSrc;
+        setTimeout(() => {
+          element.style.opacity = "1";
+          element.style.transform = "scale(1.2)";
+          setTimeout(() => {
+            element.style.transform = "scale(1)";
+          }, DELAY);
+        }, DELAY);
+      }, delay);
+    }
+
+    groupImgs.forEach((img, index) => {
+      applyTransition(img);
+      setNewImage(
+        img,
+        currentGroup[groupIndices[index]],
+        DELAY * (1 + index / 5)
+      );
+    });
+
+    groupSetIndex = (groupSetIndex + 1) % groupImages.length;
+  }
+
+  cycleImages();
+  cycleGroup();
+
+  setInterval(cycleGroup, 5000);
+  setInterval(cycleImages, 5000);
+});
+
+/**
+ * SECTION: Top Pets
+ */
+
+const container = document.querySelector(".pet-container");
+const petRange = document.getElementById("pet-range");
+const topPetsHeader = document.querySelector("#top-pets-info img");
+const topPetsDesc = document.querySelector("#top-pets-info p");
+const animalNameElement = document.getElementById("animal-name");
+const animalDescriptionElement = document.getElementById("animal-description");
+const visibleCards = container.querySelectorAll(".pet-card:not(.hidden)");
+const hiddenCards = container.querySelectorAll(".pet-card.hidden");
+const infoCard = document.getElementById("info-card");
+const viewAllButton = document.getElementById("view-all");
+const closeInfoButton = document.getElementById("close-info");
+const prevButton = document.getElementById("prev-animal");
+const nextButton = document.getElementById("next-animal");
+
+let initialRight = -30;
+let maxScrollDistance = 0;
+const curtain = document.querySelector("#top-pets .curtain");
+let tempcontright;
+
+function calculateMaxScroll() {
+  const containerWidth = container.scrollWidth;
+  const viewportWidth = window.innerWidth;
+  const maxDistance = ((containerWidth - viewportWidth) / viewportWidth) * 100;
+  return maxDistance + 5;
+}
+
+visibleCards.forEach((card, index) => {
+  card.addEventListener("click", () => {
+    if (container.classList.contains("expanded")) return;
+
+    if (index === 0) {
+      card.classList.add("scale-up");
+
+      setTimeout(() => {
+        card.classList.remove("scale-up");
+        container.classList.add("expanded");
+        petRange.classList.remove("hidden");
+        topPetsDesc.classList.add("hidden");
+        viewAllButton.style.display = "none";
+        topPetsHeader.style.transform = "translateY(-35vh)";
+
+        petRange.value = 0;
+        container.style.right = `${initialRight}%`;
+
+        initialRight = -30;
+        maxScrollDistance = calculateMaxScroll();
+
+        hiddenCards.forEach((hiddenCard, idx) => {
+          setTimeout(() => {
+            hiddenCard.classList.remove("hidden");
+          }, idx * 100);
+        });
+      }, 400);
+    }
+  });
+});
+
+viewAllButton.addEventListener("click", () => {
+  setTimeout(() => {
+    container.classList.add("expanded");
+    petRange.classList.remove("hidden");
+    topPetsDesc.classList.add("hidden");
+    viewAllButton.style.display = "none";
+    topPetsHeader.style.transform = "translateY(-35vh)";
+
+    petRange.value = 0;
+    container.style.right = `${initialRight}%`;
+
+    initialRight = -30;
+    maxScrollDistance = calculateMaxScroll();
+
+    hiddenCards.forEach((hiddenCard, idx) => {
+      setTimeout(() => {
+        hiddenCard.classList.remove("hidden");
+      }, idx * 100);
+    });
+  }, 400);
+});
+
+petRange.addEventListener("input", (e) => {
+  const rangeValue = e.target.value;
+
+  const smoothRangeValue = Math.pow(rangeValue / 100, 2);
+
+  const containerOffset = initialRight - smoothRangeValue * maxScrollDistance;
+  container.style.right = `${containerOffset}%`;
+
+  console.log({
+    rangeValue,
+    smoothRangeValue,
+    maxScrollDistance,
+    containerOffset,
+    rightPosition: container.style.right,
+  });
+});
+
+const allCards = document.querySelectorAll(".pet-card");
+
+allCards.forEach((card) => {
+  card.addEventListener("click", () => {
+    if (container.classList.contains("expanded")) {
+      showAnimalInfo(card);
+    }
+  });
+});
+
+closeInfoButton.addEventListener("click", () => {
+  resetCarousel();
+});
+
+const petDescriptions = {
+  MSeer: "MSeer is a wise and calm animal, known for its strategic abilities.",
+  VandaJ: "VandaJ loves adventure and is always ready to explore.",
+  YenguiK: "YenguiK has unmatched speed and agility.",
+  eagSVle: "eagSVle soars high with unmatched vision and precision.",
+  PamstIr: "PamstIr is playful and loves making friends with everyone.",
+};
+
+let isShowingAnimal = false;
+
+function showAnimalInfo(card) {
+  if (isShowingAnimal) return;
+  isShowingAnimal = true;
+  const image = card.querySelector("img");
+  const animalName = image.alt;
+
+  setTimeout(() => {
+    image.classList.add("move-down");
+    const curtain = document.querySelector("#top-pets .curtain");
+    curtain.style.transform = "translateY(0)";
+    setTimeout(() => {
+      curtain.style.backgroundImage =
+        window.getComputedStyle(card).backgroundImage;
+      card.style.backgroundImage = "none";
+      card.style.overflow = "visible";
+      topPetsHeader.classList.add("hidden");
+      petRange.classList.add("hidden");
+
+      const allCards = Array.from(document.querySelectorAll(".pet-card"));
+      console.log(allCards);
+      allCards.forEach((c) => {
+        if (c !== card) {
+          c.classList.add("showandtellhidden");
+        }
+      });
+
+      setTimeout(() => {
+        allCards.forEach((c) => {
+          if (c !== card) {
+            c.style.transition = "opacity 0.8s ease-in-out";
+            c.style.opacity = "0";
+          }
+        });
+        setTimeout(() => {
+          const containerRightOffset = parseFloat(container.style.right) || 0;
+
+          const cardRect = card.getBoundingClientRect();
+          const containerRect = container.getBoundingClientRect();
+
+          const offsetX =
+            cardRect.left - containerRect.left - containerRightOffset - 45;
+          const offsetY = cardRect.top - containerRect.top + 50;
+
+          card.style.transition = "none";
+          container.style.transition = "none";
+
+          card.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+
+          card.offsetHeight;
+          container.offsetHeight;
+          tempcontright = container.style.right;
+          container.style.right = ``;
+          console.log(tempcontright);
+          card.style.transition = "all 0.8s ease-in-out";
+          container.style.transition = "all 0.8s ease-in-out";
+          card.style.transform = "translate(0, 0)";
+          card.classList.add("showandtell");
+          image.classList.remove("move-down");
+          animalNameElement.textContent = animalName;
+          animalDescriptionElement.textContent =
+            petDescriptions[animalName] || "No description available.";
+          infoCard.classList.remove("hidden", "hide");
+          void infoCard.offsetWidth;
+          infoCard.classList.add("show");
+          setTimeout(() => {
+            allCards.forEach((c) => {
+              if (c !== card) {
+                c.classList.add("hidden");
+              }
+            });
+          }, 800);
+        }, 1000);
+      }, 50);
+    }, 100);
+  }, 500);
+}
+
+function resetCarousel() {
+  const allCards = document.querySelectorAll(".pet-card");
+  const shownCard = document.querySelector(".pet-card.showandtell");
+  setTimeout(() => {
+    infoCard.classList.remove("show");
+    infoCard.classList.add("hide");
+    infoCard.classList.add("hidden");
+    curtain.style.transform = "translateY(-100%)";
+    if (shownCard) {
+      shownCard.style.transition = "opacity 0.8s ease-in-out";
+      shownCard.style.opacity = "0";
+      isShowingAnimal = false;
+    }
+    setTimeout(() => {
+      curtain.style.backgroundImage = "";
+      setTimeout(() => {
+        container.style.transform = "translateY(20px)";
+        container.style.opacity = "0";
+        container.style.right = tempcontright;
+        topPetsHeader.classList.remove("hidden");
+        setTimeout(() => {
+          allCards.forEach((card) => {
+            card.classList.remove("hidden", "showandtell", "showandtellhidden");
+            card.style.opacity = "1";
+            card.style.transform = "";
+            card.style.transition = "";
+            card.style.backgroundImage = "";
+            card.style.overflow = "";
+          });
+          container.style.transform = "translateY(0)";
+          container.style.opacity = "1";
+        }, 500);
+      }, 0);
+      petRange.classList.remove("hidden");
+      infoCard.classList.add("hidden");
+      document.getElementById("top-pets").style.backgroundImage =
+        "url('../assets/maps/Field.webp')";
+    }, 800);
+  }, 300);
+}
+
+/**
+ * SECTION: Trailer
+ */
+
+let popup = document.querySelector(".popup-video");
+let video = document.querySelector("#video-play");
+
+document
+  .getElementById("play-video-btn")
+  .addEventListener("click", function () {
+    popup.classList.remove("hidden");
+    video.currentTime = 0;
+    video.play();
+  });
+
+popup.addEventListener("click", function () {
+  popup.classList.add("hidden");
+  video.pause();
+});
+
 window.onload = function () {
-  const path = window.electron.path;
-  const appDir = window.electron.__dirname;
   localStorage.removeItem("ingame");
   const track = document.getElementById("maps");
 
   const backbtn = document.getElementById("backArrow");
   backbtn.addEventListener("click", function () {
-    const menuPath = path.join(appDir, "menu/menu.html"); 
-    window.location.href = `file://${menuPath}`; 
+    const menuPath = path.join(appDir, "menu/menu.html");
+    window.location.href = `file://${menuPath}`;
   });
   track.dataset.percentage = "-30";
   track.style.transform = `translate(-30%, -50%)`;
 
-  const username = localStorage.getItem("username");
+  const username = localStorage.getItem("username").split(" ")[0];
   const logged = localStorage.getItem("loggedin");
   const el = document.querySelector("#typewriter");
   if (logged) {
-    const words = [
-      `Welcome, <span class="username">${username} </span>!`,
-      `Bienvenido, <span class="username">${username} </span>!`,
-      `Bienvenue, <span class="username">${username} </span>!`,
-      `Willkommen, <span class="username">${username} </span>!`,
-      `Benvenuto, <span class="username">${username} </span>!`,
-    ];
-
-    const sleepTime = 100;
-    let currWordIndex = 0;
-
-    const sleep = (time) => {
-      return new Promise((resolve) => setTimeout(resolve, time));
-    };
-
-    const effect = async () => {
-      while (true) {
-        const currWord = words[currWordIndex];
-        let isTag = false;
-
-        for (let i = 0; i < currWord.length; i++) {
-          if (currWord[i] === "<") isTag = true;
-          if (currWord[i] === ">") isTag = false;
-
-          el.innerHTML = currWord.substring(0, i + 1);
-          if (!isTag) await sleep(sleepTime);
-        }
-
-        await sleep(3000);
-
-        for (let i = currWord.length; i >= 0; i--) {
-          if (currWord[i] === ">") isTag = true;
-          if (currWord[i] === "<") isTag = false;
-
-          el.innerHTML = currWord.substring(0, i);
-          if (!isTag) await sleep(sleepTime);
-        }
-
-        let nextWordIndex;
-        do {
-          nextWordIndex = Math.floor(Math.random() * words.length);
-        } while (nextWordIndex === currWordIndex);
-
-        currWordIndex = nextWordIndex;
-      }
-    };
-    effect();
   } else {
     function clearLocalStorageExceptUsers() {
       const keysToKeep = ["users"];
@@ -78,8 +412,8 @@ window.onload = function () {
 
     clearLocalStorageExceptUsers();
 
-    const loginPath = path.join(appDir, "login/index.html"); 
-    window.location.href = `file://${loginPath}`; 
+    const loginPath = path.join(appDir, "login/index.html");
+    window.location.href = `file://${loginPath}`;
   }
   const fadeInElements = document.querySelectorAll(".fade-in-element");
   const elementObserver = new IntersectionObserver(
@@ -120,195 +454,51 @@ window.onload = function () {
   sectionTitles.forEach((title) => {
     titleObserver.observe(title);
   });
-  const carouselSection = document.querySelector(".game-maker");
-  const carouselImages = [
-    "../assets/LogoVUPER.jpg",
-    "../assets/social-media/Steam.png",
-    "../assets/home-asset/TeamWoodGames.jpg",
-  ];
-  const carouselTexts = [
-    "Super Auto Pets is the first game out of independent studio Team Wood Games, and is available both as a free browser title as well as a mobile app for Android, it’s certainly a game worth checking out.",
-    "This game is available in Steam! Download VUper Auto Pets Free Now!",
-    "We are the creators of this game, you can see more of us in https://itch.io/profile/teamwood",
-  ];
-  let currentIndex = 0;
-  let autoSlideInterval;
 
-  const carouselImageElement = document.getElementById("carousel-image");
-  const carouselTextElement = document.getElementById("carousel-text");
-  const indicators = document.querySelectorAll(".indicator");
-
-  function fadeOutAndChangeContent() {
-    carouselImageElement.style.opacity = "0";
-    carouselTextElement.style.opacity = "0";
-
-    setTimeout(() => {
-      currentIndex = (currentIndex + 1) % carouselImages.length;
-      updateCarousel();
-      setTimeout(() => {
-        carouselImageElement.style.opacity = "1";
-        carouselTextElement.style.opacity = "1";
-      }, 50);
-    }, 1000);
-  }
-  function updateCarousel() {
-    carouselImageElement.src = carouselImages[currentIndex];
-    carouselTextElement.textContent = carouselTexts[currentIndex];
-    updateIndicators();
-  }
-  function updateIndicators() {
-    indicators.forEach((indicator, index) => {
-      if (index === currentIndex) {
-        indicator.classList.add("active");
-      } else {
-        indicator.classList.remove("active");
-      }
-    });
-  }
-  function startCarousel() {
-    if (!autoSlideInterval) {
-      autoSlideInterval = setInterval(fadeOutAndChangeContent, 5000);
-    }
-  }
-  function stopCarousel() {
-    clearInterval(autoSlideInterval);
-    autoSlideInterval = null;
-  }
-  indicators.forEach((indicator) => {
-    indicator.addEventListener("click", function () {
-      currentIndex = parseInt(this.dataset.index);
-      stopCarousel();
-      updateCarousel();
-      startCarousel();
-    });
-  });
-  updateCarousel();
-  const carouselObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          console.log("Carousel is visible, starting the carousel timer");
-          startCarousel();
-        } else {
-          console.log("Carousel is not visible, stopping the carousel timer");
-          stopCarousel();
-        }
-      });
-    },
-    { threshold: 0.5 }
-  );
-  carouselObserver.observe(carouselSection);
   const socialMediaSection = document.querySelector(".social-media");
-  
+
   const instagram = document.querySelector(".instagram");
   const twitter = document.querySelector(".twitter");
   const steam = document.querySelector(".steam");
+  const facebook = document.querySelector(".facebook");
+  const discord = document.querySelector(".discord");
+
+  const allIcons = [instagram, twitter, steam, facebook, discord];
+  let completedAnimations = 0;
+
+  // Disable tooltips initially
+  document
+    .querySelectorAll(".tooltip")
+    .forEach((el) => el.classList.add("tooltip-disabled"));
+
+  // Observer to start the animations
   const socialMediaObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          
-          instagram.classList.add("walk");
-          twitter.classList.add("walk");
-          steam.classList.add("walk");
-          console.log("Social Media is visible");
-        } else {
-          
-          instagram.classList.remove("walk");
-          twitter.classList.remove("walk");
-          steam.classList.remove("walk");
-          console.log("Social Media is not visible");
+          allIcons.forEach((icon) => icon.classList.add("walk"));
         }
       });
     },
     { threshold: 0.5 }
   );
+
+  // Listen for the end of animations
+  allIcons.forEach((icon) => {
+    icon.addEventListener("animationend", () => {
+      completedAnimations += 1;
+      if (completedAnimations === allIcons.length) {
+        // Enable tooltips after all animations have completed
+        document
+          .querySelectorAll(".tooltip")
+          .forEach((el) => el.classList.remove("tooltip-disabled"));
+      }
+    });
+  });
+
   socialMediaObserver.observe(socialMediaSection);
 
-  const audio = document.getElementById("audio");
-  const visualization = document.getElementById("visualization");
-  const context = new (window.AudioContext || window.webkitAudioContext)();
-  let isPlaying = false;
-
-  const analyser = context.createAnalyser();
-  const source = context.createMediaElementSource(audio);
-  source.connect(analyser);
-  analyser.connect(context.destination);
-
-  analyser.fftSize = 512;
-  const bufferLength = analyser.frequencyBinCount;
-  const dataArray = new Uint8Array(bufferLength);
-
-  const canvasCtx = visualization.getContext("2d");
-  const canvasHeight = visualization.height;
-  const canvasWidth = visualization.width;
-  const barWidth = (canvasWidth / bufferLength) * 2.5;
-  const barHeightFactor = 0.4;
-  function renderFrame() {
-    canvasCtx.clearRect(0, 0, canvasWidth, canvasHeight);
-
-    analyser.getByteFrequencyData(dataArray);
-
-    let x = 0;
-
-    for (let i = 0; i < bufferLength; i++) {
-      const barHeight =
-        (Math.pow(dataArray[i], 3) / 210 ** 2) * barHeightFactor;
-      const color = `rgba(203, ${50 + (dataArray[i] / 255) * 205}, 36, 0.8)`;
-
-      const barYPosition = canvasHeight / 1.6;
-
-      canvasCtx.fillStyle = color;
-      canvasCtx.fillRect(x, barYPosition - barHeight, barWidth, barHeight);
-
-      canvasCtx.fillStyle = `rgba(203, ${
-        50 + (dataArray[i] / 255) * 205
-      }, 36, 0.5)`;
-      canvasCtx.fillRect(x, barYPosition, barWidth, barHeight);
-
-      x += barWidth + 1;
-    }
-
-    requestAnimationFrame(renderFrame);
-  }
-
-  const playOSTButton = document.getElementById("ost-play-button");
-  const buttonIcon = document.getElementById("button-icon");
-  playOSTButton.addEventListener("mousemove", (e) => {
-    const rect = playOSTButton.getBoundingClientRect();
-
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
-    playOSTButton.style.setProperty("--mouseX", `${x}px`);
-    playOSTButton.style.setProperty("--mouseY", `${y}px`);
-  });
-
-  playOSTButton.addEventListener("click", function () {
-    if (!isPlaying) {
-      if (context.state === "suspended") {
-        context.resume();
-      }
-      audio.play();
-      buttonIcon.src = "../assets/home-asset/pause.png";
-      isPlaying = true;
-      renderFrame();
-    } else {
-      audio.pause();
-      buttonIcon.src = "../assets/home-asset/playmusic.png";
-      isPlaying = false;
-    }
-  });
-  const jumbotron = document.querySelector(".jumbotron");
-  const trailer = document.querySelector(".trailer");
-  const gamedesc = document.querySelector(".game-desc");
-  const gamemaker = document.querySelector(".game-maker");
-  const ostsec = document.querySelector(".ost-section");
-  let djigsrc = "../assets/Animals/DJig.webp";
   let liber = "../assets/Animals/Liberian_Husky.webp";
-  let owlf = "../assets/Animals/owLF.webp";
-  let ppat = "../assets/Animals/PPat.webp";
-  let labbik = "../assets/Animals/LabbiK.webp";
 
   function walkPerSection(section, animal) {
     if (section.querySelector(".animalWalk")) return;
@@ -351,11 +541,7 @@ window.onload = function () {
   }
 
   const sections = [
-    { element: document.querySelector(".jumbotron"), animal: djigsrc },
     { element: document.querySelector(".trailer"), animal: liber },
-    { element: document.querySelector(".game-desc"), animal: owlf },
-    { element: document.querySelector(".game-maker"), animal: ppat },
-    { element: document.querySelector(".ost-section"), animal: labbik },
   ];
 
   const sectionObserver = new IntersectionObserver(
@@ -435,7 +621,12 @@ window.onload = function () {
   const backgroundAudio = new Audio(
     "../assets/sound/Super Auto Pets  - Menu Theme.mp3"
   );
-  backgroundAudio.volume = 0.09;
+  const savedVolume = localStorage.getItem("backgroundAudioVolume");
+  if (savedVolume !== null) {
+    backgroundAudio.volume = parseFloat(savedVolume);
+  } else {
+    backgroundAudio.volume = 0.1;
+  }
   backgroundAudio.loop = true;
 
   const savedTime = localStorage.getItem("backgroundAudioTime");
@@ -467,84 +658,4 @@ window.onload = function () {
   window.addEventListener("beforeunload", () => {
     localStorage.setItem("backgroundAudioTime", backgroundAudio.currentTime);
   });
-
-  const hatConfigurations = {
-    "abandon-hat": {
-      top: "-40%",
-      left: "15%",
-      transform: "rotate(10deg)",
-    },
-    crown: {
-      top: "-30%",
-      left: "10%",
-      width: "11rem",
-      transform: "rotate(10deg)",
-    },
-    foil: {
-      top: "-35%",
-      left: "14%",
-      transform: "rotate(5deg)",
-    },
-    paper: {
-      top: "-23%",
-      left: "15%",
-      transform: "rotate(8deg) scaleX(-1)",
-    },
-    santa: {
-      top: "-25%",
-      left: "18%",
-      transform: "rotate(5deg)",
-    },
-    trophy: {
-      top: "-35%",
-      left: "16%",
-      transform: "rotate(15deg)",
-    },
-  };
-
-  const hatImages = [
-    "../assets/hats/abandon-hat.png",
-    "../assets/hats/crown.png",
-    "../assets/hats/foil.png",
-    "../assets/hats/paper.png",
-    "../assets/hats/santa.png",
-    "../assets/hats/trophy.png",
-  ];
-  let currentHatIndex = 0;
-
-  const hatImage = document.querySelector(".Hats img");
-
-  
-  function updateHatCarousel() {
-    const hatPath = hatImages[currentHatIndex];
-    const hatName = hatPath.split("/").pop().replace(".png", ""); 
-    const config = hatConfigurations[hatName];
-
-    
-    hatImage.src = hatPath;
-
-    
-    if (config) {
-      const hatElement = document.querySelector(".Hats");
-      hatElement.style.top = config.top;
-      hatElement.style.left = config.left;
-      hatImage.style.width = config.width || "11rem";
-      hatElement.style.transform = config.transform || "none";
-    }
-  }
-
-  
-  document.getElementById("hat-left-arrow").addEventListener("click", () => {
-    currentHatIndex =
-      (currentHatIndex - 1 + hatImages.length) % hatImages.length;
-    updateHatCarousel();
-  });
-
-  
-  document.getElementById("hat-right-arrow").addEventListener("click", () => {
-    currentHatIndex = (currentHatIndex + 1) % hatImages.length;
-    updateHatCarousel();
-  });
-
-  updateHatCarousel();
 };
