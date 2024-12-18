@@ -67,35 +67,38 @@ button:active {
   background-image: url("../assets/home-asset/menu.png");
   background-size: 100% 100%;
 
+  padding-top: 1rem;
+
   z-index: 1000;
 }
+
 .soundbackboard,
 .privacyPolicy {
-  /* position: relative;
-  background-image: url("../assets/buttons/orange-btn-empty.png");
-  height: 20%;
-  left: 15%;
-  width: 65%;
-  background-size: 100% 100%;
-  display: flex;
-  flex-direction: column; */
   background-image: url("../assets/buttons/btn-long.png");
+  background-size: 100% 100%;
   position: relative;
-  width: 65%;
-  height: 30%;
-  left: 15%;
+  width: 70%;
+  height: 16%;
+  left: 13%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
+
 .soundBoardTop {
   display: flex;
   justify-content: space-between;
   height: 50%;
 }
+
 .privacyPolicy p {
-  margin-top: 1rem;
+  margin-bottom: 1.5rem;
   font-size: 4rem;
   color: #57291a;
   margin-left: 3rem;
 }
+
 .soundBoardTop p {
   margin-top: 1rem;
   font-size: 4rem;
@@ -114,7 +117,7 @@ button:active {
   height: 50%;
 }
 .SoundRange {
-  margin-top: 1rem;
+  margin-top: 2rem;
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
@@ -123,8 +126,8 @@ button:active {
     to right,
     #651f00 0%,
     #651f00 50%,
-    #ff5a25 50%,
-    #ff5a25 100%
+    #fe6a01 50%,
+    #fe6a01 100%
   );
   border-radius: 0.5rem;
   outline: none;
@@ -133,17 +136,20 @@ button:active {
   margin-right: 3rem;
 }
 .Credits {
+  margin-top: 10vh;
   display: flex;
   align-items: center;
+  justify-content: centers;
   flex-direction: column;
 }
 .credits-owner {
-  max-width: 70%;
+  width: 100%;
   text-align: center;
   margin-top: 1rem;
   margin-right: 4rem;
   font-size: 4rem;
   color: #57291a;
+  margin-left: 5rem;
 }
 /* Hide the default slider thumb */
 .SoundRange::-webkit-slider-thumb {
