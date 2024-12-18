@@ -2,9 +2,8 @@
   font-family: "VUper";
   src: url("../assets/font/LapsusPro-Bold.otf") format("opentype");
 }
-*{
-  font-family: 'VUper';
-
+* {
+  font-family: "VUper";
 }
 body::-webkit-scrollbar {
   display: none;
@@ -12,20 +11,20 @@ body::-webkit-scrollbar {
 .hidden {
   display: none;
 }
-.p-container{
+.p-container {
   display: flex;
   justify-content: space-between;
   /* align-items: center; */
 }
-.rightStatSide{
+.rightStatSide {
   position: relative;
-  left:-50%;  
+  left: -50%;
   font-size: 2rem;
   -webkit-text-stroke: 1px white;
 }
-.p-container p{
+.p-container p {
   display: flex;
-  align-items: center ;
+  align-items: center;
 }
 .back-arrow {
   position: absolute;
@@ -87,6 +86,7 @@ canvas {
   cursor: pointer;
   width: 3.125rem;
   height: 3.125rem;
+  aspect-ratio: 1/1;
 }
 
 /* .restricted-area {
@@ -106,7 +106,7 @@ canvas {
   background-size: 300% 300%;
   background-position: 50% 50%;
   border: 3px solid black;
-  border-radius: 15px;
+  border-radius: 0.5rem;
   display: none;
   transition: max-height 0.5s ease-out, padding 0.5s ease-out,
     background-position 1s ease-out;
@@ -123,7 +123,6 @@ canvas {
 .stat-window p {
   font-family: "VUper";
   margin: 0;
-  padding: 0.5rem 0;
   display: flex;
   justify-content: space-between;
   font-size: 2rem;
@@ -131,11 +130,17 @@ canvas {
 
 .stat-window hr {
   border: none;
-  border-top: 1px solid #ccc;
+  height: 1px; /* Controls the thickness of the "border" */
   margin: 0.5rem 0;
-  width: 0;
   transition: width 1s ease-out;
   transform-origin: left;
+  background-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0),
+    black,
+    rgba(0, 0, 0, 0)
+  );
+  margin-bottom: 1rem;
 }
 
 .stat-window.show hr {
@@ -148,7 +153,6 @@ canvas {
   font-weight: bold;
   font-family: "VUper", sans-serif;
   font-size: 2rem;
-  margin-bottom: 0.5rem;
   display: flex;
   justify-content: center;
 }
@@ -156,18 +160,18 @@ canvas {
 .center-text {
   text-align: center;
 }
-.leftside{
+.leftside {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 0.1rem;
 }
-.abovePic{
+.abovePic {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
 }
-#animalStatPicture{
+#animalStatPicture {
   width: 3rem;
   height: auto;
 }
