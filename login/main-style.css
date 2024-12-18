@@ -188,15 +188,17 @@ img#turtle.offscreen {
     transition: opacity 1s ease, right 1s ease, transform 1s ease;
     z-index: 123789129;
     color: white;
-    border:2px solid black;
+    border:5px solid black;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     width: 80vw;
+    min-height: 30em;
     max-width: 25em;
     background-color: white;
     border-radius: 1em;
-    padding: 0 2em 2em 2em;
+    padding: 0em 2em 2em 2em;
     box-shadow: 0 0.4em 1em rgba(0, 0, 0, 0.3);
 }
 
@@ -211,18 +213,24 @@ form.active {
     opacity: 1;
     transform: translateY(0);
 }
-#loginCard .header button{
+.header button{
     padding:1rem 3rem;
     border-radius: 0.5rem;
-    background-color: #FF5A25;
+    font-size:1.5rem ;
+    border: none;
+    width: 100%;
+    background-image: url(../assets/buttons/orange-btn-empty.png);
     color:#57291A;
+    background-size: 100% 100%;
 }
-#loginCard .header {
+.header {
     /* background-color: #cbac24; */
-    /* position:absolute; */
+    position:absolute;
     width: 104%;
+    top:-15%;
+    border: none; 
     text-align: center;
-    padding: 0.2em 1em;
+    /* padding: 0.2em 1em; */
     border-top-left-radius: 0.5em;
     border-top-right-radius: 0.5em;
     font-size: 1.5em;
@@ -230,7 +238,7 @@ form.active {
     font-weight: bold;
     display: flex;
     justify-content: center;
-    gap: 5vw;
+    /* gap: 5vw; */
 }
 
 #loginCard .header span {
@@ -513,7 +521,7 @@ header {
     padding: 10px;
     cursor: pointer;
     position: absolute;
-    right: -50px;
+    right: -20px;
     top: 15px;
     transition: background-color 0.3s;
 }
@@ -525,7 +533,7 @@ header {
     padding: 10px;
     cursor: pointer;
     position: absolute;
-    right: -50px;
+    right: -20px;
     top: 15px;
     transition: background-color 0.3s;
 }
@@ -764,6 +772,7 @@ body.modal-active {
 
 #captchaModal2 .input_field {
     margin-bottom: 15px;
+    margin-top: 1rem;
 }
 
 #captchaModal2 .input_field input {
@@ -807,12 +816,12 @@ body.modal-active {
 
 .input {
     all: unset;
-    color: #fefefe;
+    color: #333;
     padding: 1rem;
     border: 1px solid #9e9e9e;
     border-radius: 10px;
     transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: #f8f8f8;
     width: 100%;
     box-sizing: border-box;
 }
@@ -821,7 +830,7 @@ body.modal-active {
     position: absolute;
     top: 1rem;
     left: 1rem;
-    color: #d4d4d4;
+    color: #888;
     pointer-events: none;
     transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -847,14 +856,14 @@ body.modal-active {
 }
 
 .input:focus {
-    border: 1px solid var(--primary);
+    border: 2px solid black;
 }
 
 .input:is(:focus, :valid) ~ .label {
     transform: translateY(-120%) scale(0.7);
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: #f8f8f8;
     padding-inline: 0.3rem;
-    color: var(--primary);
+    color: black;
 }
 
 .btn {
@@ -932,7 +941,7 @@ body.modal-active {
     translate: 0 0;
 }
 
-#registerTab, #loginTab {
+/* #registerTab, #loginTab {
     font-size: 1rem;
     transition: opacity 0.5s ease, transform 0.5s ease;
 }
@@ -943,7 +952,7 @@ body.modal-active {
 }
 #registerTab:hover, #loginTab:hover {
     filter: brightness(0.8);
-}
+} */
 .frame {
     position: fixed;
 

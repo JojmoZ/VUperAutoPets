@@ -203,25 +203,25 @@ window.onload = function () {
       }, 20);
     }, 500);
   
-    if (formToShow === registrationForm) {
-      registerTab.classList.add("hidden");
-      setTimeout(() => {
-        registerTab.style.display = "none";
-        loginTab.style.display = "block";
-        setTimeout(() => {
-          loginTab.classList.remove("hidden");
-        }, 20);
-      }, 500);
-    } else {
-      loginTab.classList.add("hidden");
-      setTimeout(() => {
-        loginTab.style.display = "none";
-        registerTab.style.display = "block";
-        setTimeout(() => {
-          registerTab.classList.remove("hidden");
-        }, 20);
-      }, 500);
-    }
+    // if (formToShow === registrationForm) {
+    //   registerTab.classList.add("hidden");
+    //   setTimeout(() => {
+    //     registerTab.style.display = "none";
+    //     loginTab.style.display = "block";
+    //     setTimeout(() => {
+    //       loginTab.classList.remove("hidden");
+    //     }, 20);
+    //   }, 500);
+    // } else {
+    //   loginTab.classList.add("hidden");
+    //   setTimeout(() => {
+    //     loginTab.style.display = "none";
+    //     registerTab.style.display = "block";
+    //     setTimeout(() => {
+    //       registerTab.classList.remove("hidden");
+    //     }, 20);
+    //   }, 500);
+    // }
   }
 
   registerTab.addEventListener("click", () => {
@@ -576,7 +576,7 @@ window.onload = function () {
       } catch (error) {
         console.error("Error loading trainee data:", error);
       }
-      modalErrorText.innerText = "Invalid username or password.";
+      modalErrorText.innerText = "Wrong Credentials";
       showErrorModal();
       return;
     }

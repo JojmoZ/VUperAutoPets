@@ -13,27 +13,30 @@
 
 <body style="background-image: url(../assets/login/background.png); background-size: auto;">
   <div id="border"></div>
-
-    <div class="logo-on-top">
-      <img src="../assets/login/parallax/grass-frame.png" alt="Grass Frame" class="frame" />
-      <img src="../assets/login/parallax/parallax-1.png" alt="p1" class="parallax-layer-1">
-      <img src="../assets/login/parallax/parallax-2.png" alt="p2" class="parallax-layer-2">
-      <img src="../assets/login/parallax/parallax-3.png" alt="p3" class="parallax-layer-3">
-      <img src="../assets/login/parallax/parallax-pamstir.webp" alt="p3" class="parallax-layer-4 left">
-      <img src="../assets/login/parallax/parallax-vunt.webp" alt="p3" class="parallax-layer-4 right">
-      <img id="logo" src="../assets/title-logo.png" alt="Logo" class="logoer">
-      <button id="start-button">
-        <img src="../assets/login/start.png" alt="Arrow">
-      </button>
+  
+  <div class="logo-on-top">
+    <img src="../assets/login/parallax/grass-frame.png" alt="Grass Frame" class="frame" />
+    <img src="../assets/login/parallax/parallax-1.png" alt="p1" class="parallax-layer-1">
+    <img src="../assets/login/parallax/parallax-2.png" alt="p2" class="parallax-layer-2">
+    <img src="../assets/login/parallax/parallax-3.png" alt="p3" class="parallax-layer-3">
+    <img src="../assets/login/parallax/parallax-pamstir.webp" alt="p3" class="parallax-layer-4 left">
+    <img src="../assets/login/parallax/parallax-vunt.webp" alt="p3" class="parallax-layer-4 right">
+    <img id="logo" src="../assets/title-logo.png" alt="Logo" class="logoer">
+    <button id="start-button">
+      <img src="../assets/login/start.png" alt="Arrow">
+    </button>
+  </div>
+  <img id="turtle" src="../assets/Animals/turGTle.webp" alt="Turtle">
+  <div id="loginCard">
+    <div class="header">
+      <button id="registerTab">Register</button>
+      <button id="loginTab">Login</button>
     </div>
-    <img id="turtle" src="../assets/Animals/turGTle.webp" alt="Turtle">
-    <div id="loginCard">
-      
-      <div class="content">
-        <form id="registrationForm" style="display: none;" novalidate>
-          <p class="title">Register Your Account</p>
-          <div class="input-group">
-            <input class="input" type="text" id="registerUsername" name="username" required autocomplete="off">
+    <div class="content">
+      <form id="registrationForm" style="display: none;" novalidate>
+        <p class="title">Register Your Account</p>
+        <div class="input-group">
+          <input class="input" type="text" id="registerUsername" name="username" required autocomplete="off">
             <label class="label" for="registerUsername">Username</label>
             <p class="error-message" id="usernameError"></p>
           </div>
@@ -86,12 +89,7 @@
 
         </form>
 
-      </div>
-      <div class="header">
-        <button id="registerTab">Don't have an account? Register Here!</button>
-        <button id="loginTab">Already have an account? Login Here!
-
-        </button>
+     
       </div>
     </div>
   <div class="overlay hidden"></div>
@@ -128,7 +126,7 @@
           <img src="../assets/login/reload.png" alt="Reload" width="20" height="20">
         </button>
       </div>
-      <div class="input-group">
+      <div class="input-area">
         <input class="input" type="text" id="captchaInput2" autocomplete="off" required />
         <label class="label" for="captchaInput2">Enter Captcha</label>
       </div>
