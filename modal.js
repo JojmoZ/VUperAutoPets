@@ -23,9 +23,9 @@ class Modal {
     `;
     this.modalBox.style.cssText = `
       background:white;
-      border: 9px solid black;
+      border: 0.5rem solid black;
       padding: 40px;
-      border-radius: 15px;
+      border-radius: 0.5rem;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
       text-align: center;
       max-width: 80%;
@@ -43,7 +43,7 @@ class Modal {
     this.modalCloseButton.style.cssText = `
       padding: 15px 30px;
       font-size: 1.2rem;
-      background-color: #007bff;
+      background-color: ;
       color: white;
       border: none;
       border-radius: 10px;

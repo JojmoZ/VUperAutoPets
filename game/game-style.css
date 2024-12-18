@@ -558,7 +558,7 @@ img {
 }
 .battlesign {
   width: 8rem;
-  height: AUTO;
+  height: auto;
   position: relative;
   left: 1rem;
   top: -1rem;

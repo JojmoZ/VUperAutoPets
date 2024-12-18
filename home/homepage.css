@@ -396,6 +396,7 @@ body {
   position: absolute;
   opacity: 1;
   display: flex;
+  flex-shrink: 0;
   justify-content: center;
   align-items: center;
 
@@ -610,6 +611,10 @@ body {
 
 #view-all:hover {
   filter: brightness(1.2);
+}
+
+#view-all:active {
+  transform: translateY(3%);
 }
 
 /* Jumbotron */

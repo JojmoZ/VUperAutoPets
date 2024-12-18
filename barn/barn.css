@@ -13,14 +13,14 @@ body::-webkit-scrollbar {
 }
 .p-container {
   display: flex;
-  justify-content: space-between;
-  /* align-items: center; */
+  justify-content: space-evenly;
 }
 .rightStatSide {
   position: relative;
   left: -50%;
   font-size: 2rem;
-  -webkit-text-stroke: 1px white;
+  color: white;
+  -webkit-text-stroke: 2px black;
 }
 .p-container p {
   display: flex;
@@ -152,7 +152,7 @@ canvas {
   text-align: center;
   font-weight: bold;
   font-family: "VUper", sans-serif;
-  font-size: 2rem;
+  font-size: 2.5rem;
   display: flex;
   justify-content: center;
 }
@@ -172,6 +172,6 @@ canvas {
   align-items: center;
 }
 #animalStatPicture {
-  width: 3rem;
+  width: 3.5rem;
   height: auto;
 }
