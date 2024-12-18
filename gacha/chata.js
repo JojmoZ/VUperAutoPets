@@ -35,15 +35,6 @@ document.addEventListener("keydown", function (event) {
   }
 });
 
-// function updateCoinsDisplay() {
-//   let coins = Number(localStorage.getItem("coins"));
-//   coins += 500000;
-//   localStorage.setItem("coins", coins);
-//   const coinsDisplay = document.getElementById("coinsDisplay");
-//   if (coinsDisplay) {
-//     coinsDisplay.textContent = `Coins: ${coins}`;
-//   }
-// }
   function updateCoinsDisplay() {
     const coins = parseInt(localStorage.getItem("coins"), 10);
     coinsDisplay.textContent = formatCoins(coins);
@@ -65,7 +56,6 @@ function addCoinsReward() {
     localStorage.setItem("users", JSON.stringify(users));
   }
   updateCoinsDisplay();
-  // addCoinsReward();
 }
 function formatCoins(coins) {
   if (coins >= 1000000) {

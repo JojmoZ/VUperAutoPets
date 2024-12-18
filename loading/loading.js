@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let tipBox = null;
 
   function showRandomTip() {
-    if (tipBox) return; // Prevent multiple tips from appearing
+    if (tipBox) return; 
 
     tipBox = document.createElement("div");
     tipBox.classList.add("tip");

@@ -9,7 +9,6 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("column3"),
   ];
   const gachaResult = document.getElementById("gachaResult");
-  // const h1Element = document.querySelector("h1[data-text='Try Your Luck!']");
   let shopAnimals = [];
   const username = localStorage.getItem("username");
   fetch("../assets/jsons/shopAnimals.json")
@@ -336,13 +335,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const fireworksContainer = document.getElementById("fireworks-container");
     const winImageContainer = document.getElementById("winImageContainer");
     const overlay = document.getElementById("overlay");
-    overlay.style.display = "block"; // Show the overlay
+    overlay.style.display = "block"; 
     fireworksContainer.style.display = "block";
-    winImageContainer.style.display = "block"; // Show the win image
+    winImageContainer.style.display = "block"; 
 
-    // Reset animation
+    
     winImageContainer.style.animation = 'none';
-    winImageContainer.offsetHeight; // Trigger reflow
+    winImageContainer.offsetHeight; 
     winImageContainer.style.animation = null;
 
     function launchFireworksRound() {
@@ -373,18 +372,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
     setTimeout(() => {
       fireworksContainer.style.display = "none";
-      winImageContainer.classList.add("fade-out"); // Apply fade-out animation
+      winImageContainer.classList.add("fade-out"); 
       setTimeout(() => {
-        winImageContainer.style.display = "none"; // Hide the win image
-        winImageContainer.classList.remove("fade-out"); // Remove fade-out class
-        overlay.style.display = "none"; // Hide the overlay
+        winImageContainer.style.display = "none"; 
+        winImageContainer.classList.remove("fade-out"); 
+        overlay.style.display = "none"; 
         while (fireworksContainer.firstChild) {
           fireworksContainer.removeChild(fireworksContainer.firstChild);
         }
-        // h1Element.classList.remove("hover");
-        // h1Element.innerText = originalText;
-        // h1Element.setAttribute("data-text", originalText);
-      }, 500); // Match the duration of the fade-out animation
+        
+        
+        
+      }, 500); 
     }, 5000);
   }
 

@@ -2964,9 +2964,6 @@ function togglePause() {
     document.getElementById("pauseasset").src =
       "../assets/game-asset/button/pause-btn.png";
     const pauseDuration = performance.now() - pauseStartTime;
-    // activeAnimations.forEach((anim) => {
-    //   anim.lastFrameTime += pauseDuration;
-    // });
     pauseStartTime = null;
   }
 }

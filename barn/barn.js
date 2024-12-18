@@ -386,18 +386,18 @@ function roamAnimal(animal) {
 function createFood(event) {
   const { bgWidth, bgHeight, offsetX, offsetY } = calculateBackgroundOffsets();
 
-  // Calculate food coordinates relative to the scaled background
+  
   const foodX = (event.clientX - offsetX) / (bgWidth / 1920);
   const foodY = (event.clientY - offsetY) / (bgHeight / 1080);
   const foodWidth = 20;
   const foodHeight = 20;
 
-  // Check if the food is placed in a restricted zone
+  
   if (isInRestrictedZone(foodX, foodY, foodWidth, foodHeight)) {
     return;
   }
 
-  // Create and style the food element
+  
   const foodElement = document.createElement("div");
   foodElement.className = "food";
   foodElement.style.position = "absolute";
@@ -406,17 +406,17 @@ function createFood(event) {
   foodElement.style.backgroundImage = "url('../assets/items/Pizza.webp')";
   foodElement.style.backgroundSize = "cover";
 
-  // Position the food element relative to the scaled background
+  
   foodElement.style.left = `${(foodX / 1920) * bgWidth + offsetX}px`;
   foodElement.style.top = `${(foodY / 1080) * bgHeight + offsetY}px`;
   animalContainer.appendChild(foodElement);
   foodElements.push(foodElement);
 
-  // Convert food position to grid indices
+  
   const foodRow = Math.floor(foodY / gridSize);
   const foodCol = Math.floor(foodX / gridSize);
 
-  // Find the closest animal to the food
+  
   const animals = document.querySelectorAll(".animal");
   let closestAnimal = null;
   let minDistance = Infinity;
@@ -424,16 +424,17 @@ function createFood(event) {
   animals.forEach((animal) => {
     if (animal.dataset.isMovingToFood === "true") return;
 
-    // Get animal's position relative to the scaled background
+    
     const animalX =
-      (parseFloat(animal.style.left) - offsetX) / (bgWidth / 1920);
+      (parseFloat(animal.style.left) + animal.offsetWidth /2 - offsetX) / (bgWidth / 1920);
     const animalY =
-      (parseFloat(animal.style.top) - offsetY) / (bgHeight / 1080);
+      (parseFloat(animal.style.top) + animal.offsetHeight / 2 - offsetY) /
+      (bgHeight / 1080);
 
     const animalRow = Math.floor(animalY / gridSize);
     const animalCol = Math.floor(animalX / gridSize);
 
-    // Calculate Manhattan distance between the animal and the food
+    
     const distance =
       Math.abs(animalRow - foodRow) + Math.abs(animalCol - foodCol);
 
@@ -447,14 +448,18 @@ function createFood(event) {
     closestAnimal.dataset.isMovingToFood = "true";
     cancelAnimationFrame(closestAnimal.roamAnimationId);
     setTimeout(() => {
-      // Calculate starting and ending points for pathfinding
+      
       const start = {
         row: Math.floor(
-          (parseFloat(closestAnimal.style.top) - offsetY) /
+          (parseFloat(closestAnimal.style.top) +
+            closestAnimal.offsetHeight / 2 -
+            offsetY) /
             (gridSize * (bgHeight / 1080))
         ),
         col: Math.floor(
-          (parseFloat(closestAnimal.style.left) - offsetX) /
+          (parseFloat(closestAnimal.style.left) +
+            closestAnimal.offsetWidth / 2 -
+            offsetX) /
             (gridSize * (bgWidth / 1920))
         ),
       };
@@ -610,9 +615,7 @@ function followPath(animal, path, callback) {
     }
 
     const { bgWidth, bgHeight, offsetX, offsetY } =
-      calculateBackgroundOffsets(); // Apply scaling offsets dynamically
-
-    // Target position (scaled and adjusted)
+      calculateBackgroundOffsets(); 
     const node = path[index];
     const nextX =
       (node.col * gridSize * bgWidth) / 1920 +
@@ -623,11 +626,11 @@ function followPath(animal, path, callback) {
       offsetY +
       (gridSize * bgHeight) / 1080 / 2;
 
-    // Current position of the animal
+    
     const currentX = parseFloat(animal.style.left) + animal.offsetWidth / 2;
     const currentY = parseFloat(animal.style.top) + animal.offsetHeight / 2;
 
-    // Calculate movement
+    
     const deltaX = nextX - currentX;
     const deltaY = nextY - currentY;
     const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
@@ -641,7 +644,7 @@ function followPath(animal, path, callback) {
 
       requestAnimationFrame(moveStep);
     } else {
-      // Snap to next grid node
+      
       animal.style.left = `${nextX - animal.offsetWidth / 2}px`;
       animal.style.top = `${nextY - animal.offsetHeight / 2}px`;
       index++;
@@ -671,14 +674,14 @@ function drawRestrictedZones() {
   });
 }
 
-// drawRestrictedZones();
+
 
 window.addEventListener("resize", () => {
   drawRestrictedZones();
 });
-// resetGrid();
-// // updateScalingFactors();
-// drawRestrictedZones();
+
+
+
 let initialGridResetDone = false;
 document.addEventListener("DOMContentLoaded", () => {
   hideStatWindow();
@@ -686,7 +689,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setTimeout(() => {
     resetGrid();
     drawRestrictedZones();
-  }, 100); // Allow time for initial rendering and resizing
+  }, 100); 
   userAnimals.forEach((animal) => {
     const animalElement = createAnimal(animal);
   });
