@@ -1,263 +1,275 @@
 @font-face {
-    font-family: 'VUper';
-    src: url('../assets/font/LapsusPro-Bold.otf') format('opentype');
+  font-family: "VUper";
+  src: url("../assets/font/LapsusPro-Bold.otf") format("opentype");
 }
 
-*, *::before, *::after {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 body {
-    font-family: 'VUper', sans-serif;
-    background: url("../assets/maps/Field.webp");
-    background-size: contain;
-    height: 100vh;
-    overflow: hidden;
+  font-family: "VUper", sans-serif;
+  background: url("../assets/maps/Field.webp");
+  background-size: contain;
+  height: 100vh;
+  overflow: hidden;
 }
 
 button {
-    cursor: pointer;
-    background: none;
-    border: none;
+  cursor: pointer;
+  background: none;
+  border: none;
 }
 
 button img {
-    width: 100%;
-    height: auto;
+  width: 100%;
+  height: auto;
 }
 
 button:hover {
-    filter: brightness(1.2);
+  filter: brightness(1.2);
 }
 
 button:active {
-    transform: translateY(3%);
+  transform: translateY(3%);
 }
 
 #blur-filter {
-    position: absolute;
-    width: 100vw;
-    height: 100vh;
-    backdrop-filter: blur(10px);
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: blur(10px);
 }
 
 #logo {
-    position: fixed;
-    top: 1rem;
-    left: 1rem;
-    width: 25%;
-    height: auto;
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  width: 25%;
+  height: auto;
 }
 
 #settings-menu {
-    position: fixed;
-    top: 0;
+  position: fixed;
+  top: 0;
 
-    width: 80%;
-    height: 100%;
+  width: 80%;
+  height: 100%;
 
+  background-image: url("../assets/home-asset/menu.png");
+  background-size: 100% 100%;
 
-    background-image: url("../assets/home-asset/menu.png");
-    background-size: 100% 100%;
-
-    z-index: 1000;
+  z-index: 1000;
 }
-.soundbackboard, .privacyPolicy {
-    position: relative;
-    background-image: url('../assets/buttons/orange-btn-empty.png');
-    height: 20%;
-    left: 15%;
-    width: 65%;
-    background-size: 100% 100%;
-    display: flex;
-    flex-direction: column;
+.soundbackboard,
+.privacyPolicy {
+  /* position: relative;
+  background-image: url("../assets/buttons/orange-btn-empty.png");
+  height: 20%;
+  left: 15%;
+  width: 65%;
+  background-size: 100% 100%;
+  display: flex;
+  flex-direction: column; */
+  background-image: url("../assets/buttons/btn-long.png");
+  position: relative;
+  width: 65%;
+  height: 30%;
+  left: 15%;
 }
-.soundBoardTop{
-    display: flex;
-    justify-content: space-between;
-    height: 50%;
+.soundBoardTop {
+  display: flex;
+  justify-content: space-between;
+  height: 50%;
 }
 .privacyPolicy p {
-    margin-top: 1rem;
-    font-size: 4rem;
-    color:#57291A;
-    margin-left: 3rem;
+  margin-top: 1rem;
+  font-size: 4rem;
+  color: #57291a;
+  margin-left: 3rem;
 }
-.soundBoardTop p{
-    margin-top: 1rem;
-    font-size: 4rem;
-    color:#57291A;
+.soundBoardTop p {
+  margin-top: 1rem;
+  font-size: 4rem;
+  color: #57291a;
 }
-.leftSound{
-    margin-top: 1rem;
-    margin-left: 3rem;
+.leftSound {
+  margin-top: 1rem;
+  margin-left: 3rem;
 }
-.rightSound{
-    margin-top: 1rem;
-    margin-right: 3rem;
+.rightSound {
+  margin-top: 1rem;
+  margin-right: 3rem;
 }
-.soundBoardBottom{
-    display: flex;
-    height: 50%;
+.soundBoardBottom {
+  display: flex;
+  height: 50%;
 }
 .SoundRange {
-    margin-top:1rem;
-    -webkit-appearance: none; 
-    appearance: none;
-    width: 100%;
-    height: 1rem;
-    background: linear-gradient(to right, #651F00 0%, #651F00 50%, #FF5A25 50%, #FF5A25 100%);
-    border-radius: 0.5rem;
-    outline: none;
-    transition: background 0.3s ease-in-out;
-    margin-left: 3rem;
-    margin-right: 3rem;
+  margin-top: 1rem;
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 1rem;
+  background: linear-gradient(
+    to right,
+    #651f00 0%,
+    #651f00 50%,
+    #ff5a25 50%,
+    #ff5a25 100%
+  );
+  border-radius: 0.5rem;
+  outline: none;
+  transition: background 0.3s ease-in-out;
+  margin-left: 3rem;
+  margin-right: 3rem;
 }
-.Credits{
-    display: flex;
-    align-items: center;
-    flex-direction: column;
+.Credits {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
-.credits-owner{
-    max-width: 70%;
-    text-align: center;
-    margin-top: 1rem;
-    margin-right: 4rem;
-    font-size: 4rem;
-    color:#57291A;
+.credits-owner {
+  max-width: 70%;
+  text-align: center;
+  margin-top: 1rem;
+  margin-right: 4rem;
+  font-size: 4rem;
+  color: #57291a;
 }
 /* Hide the default slider thumb */
 .SoundRange::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 1.5rem;
-    height: 1.5rem;
-    border-radius: 50%;
-    /* background: #57291A; */
-    cursor: pointer;
-    /* box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); */
+  -webkit-appearance: none;
+  appearance: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  /* background: #57291A; */
+  cursor: pointer;
+  /* box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); */
 }
 
 .SoundRange::-moz-range-thumb {
-    width: 1.5rem;
-    height: 1.5rem;
-    border-radius: 50%;
-    background: #57291A;
-    cursor: pointer;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background: #57291a;
+  cursor: pointer;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
 main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    width: 35%;
-    margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 35%;
+  margin-inline: auto;
 }
 
 .main-btn {
-    width: 100%;
-    height: auto;
+  width: 100%;
+  height: auto;
 }
 
 .menu-btn {
-    width: 100%;
-    height: auto;
+  width: 100%;
+  height: auto;
 }
 
 header {
-    position: absolute;
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-    padding: 1rem;
+  position: absolute;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem;
 }
 
 .sub-btn {
-    width: 5rem;
-    height: 5rem;
-    z-index: 10;
+  width: 5rem;
+  height: 5rem;
+  z-index: 10;
 }
 
 .menu {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-end;
-    position: fixed;
-    width: 24%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  position: fixed;
+  width: 24%;
 
-    padding: 0.25rem;
-    top: 0.75rem;
-    right: 0.5rem;
-    background: white;
-    border: 0.5rem solid black;
-    border-radius: 1rem;
-    z-index: 10;
+  padding: 0.25rem;
+  top: 0.75rem;
+  right: 0.5rem;
+  background: white;
+  border: 0.5rem solid black;
+  border-radius: 1rem;
+  z-index: 10;
 }
 
 .logout-button {
-    width: 100%;
+  width: 100%;
 }
 
 .hidden {
-    display: none;
+  display: none;
 }
 
 #overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 10;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 10;
 }
 
 #user-greeting {
-    position: absolute;
-    bottom: 1rem;
-    right: 1rem;
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
 
-    background-color: white;
-    border: 5px solid black;
-    border-radius: 10px;
+  background-color: white;
+  border: 5px solid black;
+  border-radius: 10px;
 
-    width: 24rem;
-    height: auto;
+  width: 24rem;
+  height: auto;
 
-    padding: 0.5rem;
+  padding: 0.5rem;
 
-    text-align: center;
+  text-align: center;
 
-    z-index: 10;
-    font-family: "Comic Sans MS", serif;
-    font-weight: 700;
+  z-index: 10;
+  font-family: "Comic Sans MS", serif;
+  font-weight: 700;
 
-    font-size: 1.5rem;
+  font-size: 1.5rem;
 
-    margin-block: 0;
+  margin-block: 0;
 }
 
 #typewriter {
-    color: black;
+  color: black;
 }
 
 .username {
-    color: #fe6a02;
+  color: #fe6a02;
 }
 
 #cursor {
-    color: black;
-    font-weight: bold;
-    animation: blink 1s linear infinite;
+  color: black;
+  font-weight: bold;
+  animation: blink 1s linear infinite;
 }
-
