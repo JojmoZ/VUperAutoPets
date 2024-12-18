@@ -1,12 +1,14 @@
 let socket;
 let isPaired = false;
 let enemyOnlineName;
+const path = window.electron.path;
+const appDir = window.electron.__dirname;
 let enemyOnlineLives;
 let username;
 let pairingTimeout = null;
 let pairingDuration = 50000;
 function connectWebSocket() {
-  socket = new WebSocket("https://narcore.apps.binus.ac.id/");
+  socket = new WebSocket("https://narcore.apps.binus.ac.id");
 
   socket.onopen = () => {
     console.log("Connected to server");
@@ -139,7 +141,8 @@ if (!logged) {
 
   clearLocalStorageExceptUsers();
 
-  window.location.href = "/login/index.html";
+  const loginPath = path.join(appDir, "login/index.html"); 
+    window.location.href = `file://${loginPath}`; 
 }
 
 function saveRandomAnimals() {
@@ -149,7 +152,8 @@ function rollfirst() {
   const ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
   if (!ownedAnimals || ownedAnimals.length === 0) {
     setTimeout(() => {
-      window.location.href = "/home/homepage.html";
+      const homePath = path.join(appDir, "home/homepage.html"); 
+    window.location.href = `file://${homePath}`; 
     }, 3000);
     return;
   }
@@ -1236,7 +1240,8 @@ function hideNonBattleElements() {
 }
 document.getElementById("backArrow").addEventListener("click", function () {
   localStorage.removeItem("ingame");
-  window.location.href = "/menu/menu.html";
+  const menuPath = path.join(appDir, "menu/menu.html"); 
+  window.location.href = `file://${menuPath}`; 
 });
 function showCanvas() {
   document.getElementById("battleCanvas").classList.remove("hidden");
@@ -1254,7 +1259,7 @@ function loadassets() {
   fistImg.src = "../assets/game-asset/fist.png";
   heartImg.src = "../assets/game-asset/heart.png";
   bandageImg.src = "../assets/game-asset/hurt.png";
-  starImg.src = "../assets/game-asset/star.png";
+  starImg.src = "../assets/game-asset/star-new-new.png";
 }
 function playBackgroundMusic() {
   battleMusic.pause();
@@ -1319,7 +1324,8 @@ document.addEventListener("DOMContentLoaded", function () {
         setTimeout(() => {
           if (lives <= 0) {
             resetGame();
-            window.location.href = "/menu/menu.html";
+            const menuPath = path.join(appDir, "menu/menu.html"); 
+            window.location.href = `file://${menuPath}`; 
           }
         }, 1000);
         localStorage.setItem("lives", lives);
@@ -1361,9 +1367,19 @@ document.addEventListener("DOMContentLoaded", function () {
   document.addEventListener("dragend", hideFreezeBin);
   localStorage.setItem("ingame", false);
 });
+function formatCoins(coins) {
+  if (coins >= 1000000) {
+    return (coins / 1000000).toFixed(1) + "M";
+  } else if (coins >= 1000) {
+    return (coins / 1000).toFixed(1) + "K";
+  } else {
+    return coins.toString();
+  }
+}
 function updateCoinsDisplay() {
   localStorage.setItem("gamecoins", coins);
-  document.getElementById("coins").textContent = `Coins: ${coins}`;
+  let displaycoin = formatCoins(coins);
+  document.getElementById("coins").textContent = `${displaycoin}`;
 }
 function generateEnemyTeamName() {
   fetch("../assets/jsons/teamnames.json")
@@ -2006,10 +2022,10 @@ function animateDeathFlyOff(animal, index, teamType, onComplete) {
   }
 
   function triggerStarExplosion(x, y, explosionComplete) {
-    const explosionDuration = 40;
+    const explosionDuration = 50;
     let explosionFrame = 0;
     const maxRadius = 150;
-    const starSize = 80;
+    const starSize = 50;
 
     function drawExplosion() {
       if (paused) {
@@ -2709,7 +2725,8 @@ function DefeatScreen() {
         hideRightSide();
         openCurtains(() => {
           resetGame();
-          window.location.href = "/menu/menu.html";
+          const menuPath = path.join(appDir, "menu/menu.html"); 
+          window.location.href = `file://${menuPath}`; 
         });
       }, 1000);
     }, 1000);
@@ -2947,9 +2964,6 @@ function togglePause() {
     document.getElementById("pauseasset").src =
       "../assets/game-asset/button/pause-btn.png";
     const pauseDuration = performance.now() - pauseStartTime;
-    activeAnimations.forEach((anim) => {
-      anim.lastFrameTime += pauseDuration;
-    });
     pauseStartTime = null;
   }
 }
@@ -3005,12 +3019,19 @@ function generaateMyInfo() {
   let username = localStorage.getItem("username") || "";
   const myName = document.createElement("p");
   myName.textContent = username;
-  const myLives = document.createElement("p");
-  myLives.textContent = `Lives: ${lives}`;
+  const myLives = document.createElement("pre");
+    myLives.textContent = `Lives     ${lives}`;
   const heart = document.createElement("img");
   heart.src = "../assets/game-asset/stat-heart.png";
-  heart.style.width = "1.5rem";
-  heart.style.height = "1.5rem";
+  heart.style.width = "3rem";
+  heart.style.height = "3rem";
+  heart.style.position = "relative";
+  heart.style.zIndex = "-1"
+  if(lives ==1){
+    heart.style.left = "-2.2rem"
+  }else{
+    heart.style.left = "-2.4rem"
+  }
   const RightDiv = document.createElement("div");
   const LeftDiv = document.createElement("div");
   LeftDiv.style.display = "flex";
@@ -3021,6 +3042,7 @@ function generaateMyInfo() {
   LeftDiv.style.textAlign = "left";
   LeftDiv.style.justifyContent = "space-between";
   MyteamName.textContent = teamName;
+  MyteamName.style.color = "#59CEC6";
   LeftDiv.appendChild(myName);
   LeftDiv.appendChild(MyteamName);
   RightDiv.appendChild(myLives);
@@ -3036,21 +3058,30 @@ function generateEnemyInfo(bossBattle = false) {
   const enemyTeamInfo = document.getElementById("enemyTeamInfo");
   const heart = document.createElement("img");
   heart.src = "../assets/game-asset/stat-heart.png";
-  heart.style.width = "1.5rem";
-  heart.style.height = "1.5rem";
+  heart.style.width = "3rem";
+  heart.style.height = "3rem";
+  heart.style.position = "relative"
+  heart.style.zIndex = "-1"
   enemyTeamInfo.innerHTML = "";
   const fromOnline = localStorage.getItem("fromOnline");
-  let enemyLives = document.createElement("p");
+  let enemyLives = document.createElement("pre");
   const enemyName = document.createElement("p");
   if (fromOnline == "false" && bossBattle == false) {
     enemyName.textContent = "Hard Bot";
-    enemyLives.textContent = "Lives: 1";
+    enemyLives.textContent = "Lives     1";
+    heart.style.left = "-2.2rem"
   } else if (bossBattle == true) {
     enemyName.textContent = "ADMIN";
-    enemyLives.textContent = "Lives: 1";
+    enemyLives.textContent = "Lives     1";
+    heart.style.left = "-2.2rem"
   } else {
     enemyName.textContent = enemyOnlineName;
-    enemyLives.textContent = "Lives: " + enemyOnlineLives;
+    enemyLives.textContent = "Lives     " + enemyOnlineLives;
+    if(enemyOnlineLives == 1){
+      heart.style.left = "-2.2rem"
+    }else{
+      heart.style.left = "-2.4rem"
+    }
   }
   const leftDiv = document.createElement("div");
   const rightDiv = document.createElement("div");
@@ -3058,6 +3089,7 @@ function generateEnemyInfo(bossBattle = false) {
   rightDiv.style.flexDirection = "column";
   let MyteamName = document.createElement("p");
   MyteamName.style.margin = "0";
+  MyteamName.style.color = "#F46D33";
   enemyName.style.margin = "0";
   rightDiv.style.textAlign = "right";
   rightDiv.style.justifyContent = "space-between";

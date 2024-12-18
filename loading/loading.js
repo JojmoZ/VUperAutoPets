@@ -3,6 +3,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const loadingFill = document.getElementById("loading-fill");
   const totalGameTime = 5 * 2000;
   localStorage.removeItem("ingame");
+  const path = window.electron.path;
+  const appDir = window.electron.__dirname;
   const startTime = Date.now();
   const tips = [
     "Kalau melawan tantangan yang tinggi, jangan menyerah!",
@@ -45,8 +47,6 @@ document.addEventListener("DOMContentLoaded", () => {
     "Kayaknya perlu extend deh...",
   ];
 
- 
-
   function updateLoading() {
     const elapsedTime = Date.now() - startTime;
     const progress = Math.min((elapsedTime / totalGameTime) * 100, 100);
@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
     animalVUnt.style.height = `8rem`;
 
     if (elapsedTime >= totalGameTime) {
-      triggerTransitionToGame()
+      triggerTransitionToGame();
     }
   }
  function triggerTransitionToGame() {
@@ -97,6 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let tipBox = null;
 
+
   function showRandomTip() {
     if (tipBox) return; // Prevent multiple tips from appearing
 
@@ -104,7 +105,6 @@ document.addEventListener("DOMContentLoaded", () => {
     tipBox.classList.add("tip");
     tipBox.textContent = tips[Math.floor(Math.random() * tips.length)];
     document.body.appendChild(tipBox);
-
     const animalRect = animalVUnt.getBoundingClientRect();
     tipBox.style.left = `${animalRect.left + animalRect.width / 2}px`;
     tipBox.style.top = `${animalRect.top - animalRect.height + 50}px`;

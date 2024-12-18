@@ -21,26 +21,10 @@ body {
     overflow: hidden;
 }
 
-.frame-btm {
-    position: fixed;
-    bottom: 0;
-    height: 9rem;
-    width: 100%;
-    z-index: 100;
-}
 
-.frame-btm img {
-    width: 100%;
-    height: 100%;
-}
-
-.logo-loading {
-    position: absolute;
-
-    top: 0;
-    left: 50%;
 
     transform: translate(-50%, 50%);
+
 
     width: 40%;
 
@@ -90,6 +74,7 @@ body {
         transform: translateY(0);
     }
 }
+
 
 
 .overlay {

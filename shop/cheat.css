@@ -54,18 +54,17 @@
   transform: scale(1.05);
 }
 #cheat-modal .modal-content {
-  background: linear-gradient(
-    135deg,
-    red,
-    orange,
-    yellow,
-    green,
-    blue,
-    indigo,
-    violet
-  );
+ background:white;
+  border: 9px solid black;
   background-size: 400% 400%;
   animation: rainbow-gradient 5s ease infinite;
+}
+.modal-text h2{
+  font-family: 'VUper';
+}
+.modal-text p {
+  font-family: 'Comic Sans MS',serif;
+
 }
 #cheat-modal .modal-text h2,
 #cheat-modal .modal-text p {

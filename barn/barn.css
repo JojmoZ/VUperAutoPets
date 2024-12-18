@@ -2,15 +2,29 @@
   font-family: "VUper";
   src: url("../assets/font/LapsusPro-Bold.otf") format("opentype");
 }
-*{
-  font-family: 'VUper';
-
+* {
+  font-family: "VUper";
 }
 body::-webkit-scrollbar {
   display: none;
 }
 .hidden {
   display: none;
+}
+.p-container {
+  display: flex;
+  justify-content: space-between;
+  /* align-items: center; */
+}
+.rightStatSide {
+  position: relative;
+  left: -50%;
+  font-size: 2rem;
+  -webkit-text-stroke: 1px white;
+}
+.p-container p {
+  display: flex;
+  align-items: center;
 }
 .back-arrow {
   position: absolute;
@@ -72,6 +86,7 @@ canvas {
   cursor: pointer;
   width: 3.125rem;
   height: 3.125rem;
+  aspect-ratio: 1/1;
 }
 
 /* .restricted-area {
@@ -81,9 +96,7 @@ canvas {
 
 .stat-window {
   position: absolute;
-  top: 0px;
-  right: 0px;
-  width: 12.5rem;
+  width: 16.5rem;
   padding: 0 0.625rem;
   background: linear-gradient(
     135deg,
@@ -92,17 +105,17 @@ canvas {
   );
   background-size: 300% 300%;
   background-position: 50% 50%;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  border: 3px solid black;
+  border-radius: 0.5rem;
   display: none;
-  transition: max-height 0.3s ease-out, padding 0.3s ease-out,
+  transition: max-height 0.5s ease-out, padding 0.5s ease-out,
     background-position 1s ease-out;
   max-height: 0;
   overflow: hidden;
 }
 
 .stat-window.show {
-  max-height: 12.5rem;
+  max-height: 15rem;
   padding: 0.625rem;
   background-position: 100% 50%;
 }
@@ -110,18 +123,24 @@ canvas {
 .stat-window p {
   font-family: "VUper";
   margin: 0;
-  padding: 0.5rem 0;
   display: flex;
   justify-content: space-between;
+  font-size: 2rem;
 }
 
 .stat-window hr {
   border: none;
-  border-top: 1px solid #ccc;
+  height: 1px; /* Controls the thickness of the "border" */
   margin: 0.5rem 0;
-  width: 0;
   transition: width 1s ease-out;
   transform-origin: left;
+  background-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0),
+    black,
+    rgba(0, 0, 0, 0)
+  );
+  margin-bottom: 1rem;
 }
 
 .stat-window.show hr {
@@ -133,8 +152,7 @@ canvas {
   text-align: center;
   font-weight: bold;
   font-family: "VUper", sans-serif;
-  font-size: 1.2rem;
-  margin-bottom: 0.5rem;
+  font-size: 2rem;
   display: flex;
   justify-content: center;
 }
@@ -142,18 +160,18 @@ canvas {
 .center-text {
   text-align: center;
 }
-.leftside{
+.leftside {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 0.1rem;
 }
-.abovePic{
+.abovePic {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
 }
-#animalStatPicture{
-  width: 2rem;
+#animalStatPicture {
+  width: 3rem;
   height: auto;
 }

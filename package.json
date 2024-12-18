@@ -5,15 +5,39 @@
   "author": "PI & VU",
   "main": "index.js",
   "scripts": {
-    "start": "electron .",
-    "dist": "electron-builder"
+    "start": "electronmon .",
+    "dist": "electron-builder build --win portable",
+    "minify-all": "node minify-all.js",
+    "obfuscate": "node obfuscate.js",
+    "minify-html": "node minify-html.js",
+    "minify-css": "node minify-css.js",
+    "build": "npm run obfuscate && npm run minify-html && npm run minify-css"
   },
   "build": {
+    "asar": true,
+    "asarUnpack": [
+      "**/*.{mp3,mp4,png,jpg,webp,ttf,woff,woff2,otf}"
+    ],
+     "compression": "maximum", 
+  "nsis": {
+    "oneClick": false,
+    "allowToChangeInstallationDirectory": true
+  },
     "appId": "com.vuperautopets.app",
     "productName": "VUperAutoPets",
     "files": [
       "**/*",
-      "!node_modules/.cache/**/*"
+      "!node_modules/.cache",
+      "!node_modules",
+      "!dist",
+      "!logs",
+      "!*.log",
+      "!*.tmp",
+      "!*.map",
+      "!test/**",
+      "!*.config.js",
+      "!minify-*.js",
+      "!obfuscate.js"
     ],
     "win": {
       "target": "nsis",
@@ -21,7 +45,16 @@
     }
   },
   "devDependencies": {
+    "csso-cli": "^4.0.2",
     "electron": "33.3.0",
-    "electron-builder": "^25.1.8"
+    "electron-builder": "^25.1.8",
+    "electron-reload": "^2.0.0-alpha.1",
+    "electronmon": "^2.0.3",
+    "html-minifier-terser": "^7.2.0",
+    "javascript-obfuscator": "^4.1.1",
+    "terser": "^5.37.0"
+  },
+  "dependencies": {
+    "csso": "^5.0.5"
   }
 }

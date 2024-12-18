@@ -180,9 +180,11 @@ window.onload = function () {
   const errorModal = document.getElementById("errorModal");
   const modalErrorText = document.getElementById("modalErrorText");
   let isLoginCardVisible = false;
+  showForm(registrationForm, loginForm);
   const logged = localStorage.getItem("loggedin");
   if (logged) {
-    window.location.href = "/home/homepage.html";
+    const homePath = path.join(appDir, "home/homepage.html"); 
+    window.location.href = `file://${homePath}`; 
   }
   registerTab.classList.add("active");
   registrationForm.classList.add("active");
@@ -197,6 +199,7 @@ window.onload = function () {
         formToShow.classList.add("active");
       }, 20);
     }, 500);
+
   }
 
   registerTab.addEventListener("click", () => {
@@ -276,9 +279,7 @@ window.onload = function () {
 
   async function checkTraineeData(username) {
     try {
-      const response = await fetch(
-        "https://trainee-json.vercel.app/trainee.json"
-      );
+      const response = await fetch("https://narcore.apps.binus.ac.id/trainee.json");
       const trainees = await response.json();
       return trainees.some(
         (trainee) =>
@@ -304,7 +305,7 @@ window.onload = function () {
 
       errorElement.style.height = `${fullHeight}px`;
       errorElement.style.opacity = "1";
-      errorElement.style.transform = "translateY(0)";
+      errorElement.style.transform = "translateY(3)";
 
       setTimeout(() => {
         errorElement.style.height = "auto";
@@ -475,7 +476,7 @@ window.onload = function () {
     successModal.style.transform = "translateX(-50%)";
     successModal.style.backgroundColor = "#4CAF50";
     successModal.style.color = "white";
-    successModal.style.width = "300px";
+    // successModal.style.width = "300px";
     successModal.style.textAlign = "center";
     successModal.style.padding = "15px";
     successModal.style.borderRadius = "10px";
@@ -512,10 +513,10 @@ window.onload = function () {
 
       if (targetInput.type === "password") {
         targetInput.type = "text";
-        img.src = "../assets/login/hide.png";
+        img.src = "../assets/login/hiddeneyeblack.png";
       } else {
         targetInput.type = "password";
-        img.src = "../assets/login/eye.png";
+        img.src = "../assets/login/eyeblack.png";
       }
     });
   });
@@ -533,7 +534,7 @@ window.onload = function () {
     if (!user) {
       try {
         const response = await fetch(
-          "https://trainee-json.vercel.app/trainee.json"
+          "https://narcore.apps.binus.ac.id/trainee.json"
         );
         const trainees = await response.json();
 
@@ -553,7 +554,7 @@ window.onload = function () {
       } catch (error) {
         console.error("Error loading trainee data:", error);
       }
-      modalErrorText.innerText = "Invalid username or password.";
+      modalErrorText.innerText = "Wrong Credentials";
       showErrorModal();
       return;
     }
@@ -579,7 +580,8 @@ window.onload = function () {
       localStorage.setItem("username", user.displayName);
       localStorage.setItem("coins", user.coins);
       localStorage.setItem("ownedAnimals", JSON.stringify(user.ownedAnimals));
-      window.location.href = "/menu/menu.html";
+      const menuPath = path.join(appDir, "menu/menu.html"); 
+      window.location.href = `file://${menuPath}`; 
     } else {
       modalErrorText.innerText = "Invalid username or password.";
       showErrorModal();

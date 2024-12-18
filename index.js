@@ -9,6 +9,7 @@ app.on("ready", () => {
     width: 1920,
     height: 1080,
     resizable: false,
+    frame:false,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       contextIsolation: true,
@@ -16,6 +17,7 @@ app.on("ready", () => {
       experimentalFeatures: false,
       spellcheck: false,
       enableWebSQL: false,
+      allowRunningInsecureContent: true, // Allows loading `http` resources
       sandbox: false,
     },
   });
@@ -24,18 +26,30 @@ app.on("ready", () => {
   //  globalShortcut.register("CommandOrControl+Shift+I", () => {});
   //  globalShortcut.register("CommandOrControl+Shift+C", () => {});
   //  globalShortcut.register("F12", () => {});
+  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+    // Open URL in the user's default browser
+    require("electron").shell.openExternal(url);
+    return { action: "deny" }; // Prevent Electron from creating a new window
+  });
   mainWindow.webContents.session.webRequest.onHeadersReceived(
-    (details, callback) => {
-      callback({
-        responseHeaders: {
-          ...details.responseHeaders,
-          "Content-Security-Policy": [
-            "default-src 'self' https://*; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self' https://*",
-          ],
-        },
-      });
-    }
-  );
+  (details, callback) => {
+    callback({
+      responseHeaders: {
+        ...details.responseHeaders,
+        "Content-Security-Policy": [
+          "default-src 'self' https://*; " +
+          "style-src 'self' 'unsafe-inline'; " +
+          "script-src 'self' 'unsafe-inline'; " +
+          "connect-src 'self' https://* wss://*; " +
+          "img-src 'self' https://* data:; " +
+          "font-src 'self' https://*; "
+        ],
+      },
+    });
+  }
+);
+
+
 
 });
 

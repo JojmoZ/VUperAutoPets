@@ -1,23 +1,25 @@
 document.addEventListener("DOMContentLoaded", function () {
-   const logged = localStorage.getItem("loggedin");
+  const logged = localStorage.getItem("loggedin");
+  const path = window.electron.path;
+  const appDir = window.electron.__dirname;
+  if (!logged) {
+    function clearLocalStorageExceptUsers() {
+      const keysToKeep = ["users"];
 
-   if (!logged) {
-     function clearLocalStorageExceptUsers() {
-       const keysToKeep = ["users"]; 
+      const allKeys = Object.keys(localStorage);
 
-       const allKeys = Object.keys(localStorage);
+      allKeys.forEach((key) => {
+        if (!keysToKeep.includes(key)) {
+          localStorage.removeItem(key);
+        }
+      });
+    }
 
-       allKeys.forEach((key) => {
-         if (!keysToKeep.includes(key)) {
-           localStorage.removeItem(key);
-         }
-       });
-     }
+    clearLocalStorageExceptUsers();
 
-     clearLocalStorageExceptUsers();
-
-     window.location.href = "/login/index.html";
-   }
+    const loginPath = path.join(appDir, "login/index.html");
+    window.location.href = `file://${loginPath}`; 
+  }
 
   localStorage.removeItem("ingame");
   const specialAnimals = ["VandaJ", "MSeer", "eagSVle", "PamstIr", "YenguiK"];
@@ -27,27 +29,27 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   const username = localStorage.getItem("username");
   const redeem = document.getElementById("redeem-btn");
- redeem.addEventListener("click", function () {
-   let users = JSON.parse(localStorage.getItem("users")) || [];
-   const userIndex = users.findIndex((user) => user.displayName === username);
+  redeem.addEventListener("click", function () {
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+    const userIndex = users.findIndex((user) => user.displayName === username);
 
-   if (userIndex !== -1) {
-     let pendingCoins = users[userIndex].pendingCoins || 0;
-     if (pendingCoins > 0) {
-       users[userIndex].coins = (users[userIndex].coins || 0) + pendingCoins;
+    if (userIndex !== -1) {
+      let pendingCoins = users[userIndex].pendingCoins || 0;
+      if (pendingCoins > 0) {
+        users[userIndex].coins = (users[userIndex].coins || 0) + pendingCoins;
 
-       users[userIndex].pendingCoins = 0;
+        users[userIndex].pendingCoins = 0;
 
-       localStorage.setItem("users", JSON.stringify(users));
+        localStorage.setItem("users", JSON.stringify(users));
 
-       ShowModal(`You've earned ${pendingCoins} coins!`);
-     } else {
-       ShowModal("No coins to redeem!");
-     }
-   } else {
-     console.error(`User with username "${username}" not found.`);
-   }
- });
+        ShowModal(`You've earned ${pendingCoins} coins!`);
+      } else {
+        ShowModal("No coins to redeem!");
+      }
+    } else {
+      console.error(`User with username "${username}" not found.`);
+    }
+  });
 
   const cards = document.querySelectorAll(".card");
   const modal = document.getElementById("modal");
@@ -58,7 +60,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const coinImg = document.getElementById("coinImg");
   const backbtn = document.getElementById("backArrow");
   backbtn.addEventListener("click", function () {
-    window.location = "/menu/menu.html";
+    
+    const menuPath = path.join(appDir, "menu/menu.html");
+    window.location.href = `file://${menuPath}`; 
   });
   const shopContainer = document.querySelector(".shop-container");
   const scrollBar = document.getElementById("scroll-bar");
@@ -150,7 +154,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  
   loadShopAnimals();
 
   function generateCards(animals) {
@@ -208,17 +211,16 @@ document.addEventListener("DOMContentLoaded", function () {
           ShowModal("You already own this animal!");
           return;
         }
-      
+
         const h3 = document.getElementById("textext");
-        h3.innerHTML = "Are you sure you want to buy this?";
+        h3.innerHTML = `Are you sure you want to buy ${animal.name}?`;
         confirmButton.style.display = "inline-block";
         h3.style.textAlign = "center";
         cancelButton.innerHTML = "Close";
-      
+
         modalImage.src = animalImage;
         modal.setAttribute("data-animal", animalName);
-      
-        
+
         modal.setAttribute("data-price", animal.cost);
         document.getElementById(
           "modal-animal-price"
@@ -226,18 +228,19 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById(
           "modal-animal-stats"
         ).textContent = `Attack: ${animal.attack}, Health: ${animal.health}`;
-      
+
         const modalContent = document.querySelector(".modal-content");
         const nearColor = getNearColor(animal.color);
         modalContent.style.background = `linear-gradient(135deg, ${animal.color} 0%, ${nearColor} 100%)`;
-      
+
         const imageContainer = document.querySelector(".image-container");
         const darkerColor = getDarkerColor(animal.color);
         imageContainer.style.setProperty("--animal-border-color", darkerColor);
-      
+
         if (specialAnimals.includes(animalName)) {
+          document.getElementById("modal-animal-price").textContent = "";
           h3.innerHTML =
-            "You cannot buy this animal. You can only get this animal through gacha.";
+            `You cannot buy ${animalName}. You can only get ${animalName} through gacha.`;
           confirmButton.style.display = "none";
           h3.style.textAlign = "center";
           cancelButton.innerHTML = "Close";
@@ -245,7 +248,7 @@ document.addEventListener("DOMContentLoaded", function () {
       
         
       
-      
+
         modal.style.display = "flex";
         modal.classList.add("show");
       });
@@ -330,9 +333,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function formatCoins(coins) {
     if (coins >= 1000000) {
-      return (coins / 1000000).toFixed(1) + 'M';
+      return (coins / 1000000).toFixed(1) + "M";
     } else if (coins >= 1000) {
-      return (coins / 1000).toFixed(1) + 'K';
+      return (coins / 1000).toFixed(1) + "K";
     } else {
       return coins.toString();
     }
@@ -363,12 +366,14 @@ document.addEventListener("DOMContentLoaded", function () {
     if (animalCard) {
       const check = document.createElement("div");
       check.classList.add("sold-out");
-      animalCard.appendChild(check);  
+      animalCard.appendChild(check);
     }
   }
   const gotoGacha = document.getElementById("gacha-btn");
   gotoGacha.addEventListener("click", function () {
-    window.location = "/gacha/gachapage.html";
+    
+    const gachapath = path.join(appDir, "gacha/gachapage.html");
+    window.location.href = `file://${gachapath}`; 
   });
   const ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals")) || [];
   ownedAnimals.forEach((animal) => {
@@ -431,12 +436,12 @@ document.addEventListener("DOMContentLoaded", function () {
   const backgroundAudio = new Audio(
     "../assets/sound/Super Auto Pets  - Menu Theme.mp3"
   );
-   const savedVolume = localStorage.getItem("backgroundAudioVolume");
-   if (savedVolume !== null) {
-     backgroundAudio.volume = parseFloat(savedVolume);
-   } else {
-     backgroundAudio.volume = 0.1;
-   }
+  const savedVolume = localStorage.getItem("backgroundAudioVolume");
+  if (savedVolume !== null) {
+    backgroundAudio.volume = parseFloat(savedVolume);
+  } else {
+    backgroundAudio.volume = 0.1;
+  }
   backgroundAudio.loop = true;
 
   const savedTime = localStorage.getItem("backgroundAudioTime");
@@ -475,70 +480,69 @@ document.addEventListener("DOMContentLoaded", function () {
     const searchTerm = searchInput.value.toLowerCase().trim();
     const cards = document.querySelectorAll(".card");
 
-    
     cards.forEach((card) => {
       const animalName = card.getAttribute("data-animal").toLowerCase();
 
       if (animalName.includes(searchTerm)) {
-        card.style.display = "flex"; 
+        card.style.display = "flex";
       } else {
-        card.style.display = "none"; 
+        card.style.display = "none";
       }
     });
   });
-  
-let cheatCode = "";
-const cheatSequences = {
-  jaklingko: "500000 Coins",
-  nuclear: "All Animals",
-};
-let cheatActivated = false;
-let cheatReward = "";
 
-document.addEventListener("keydown", function (event) {
-  cheatCode += event.key.toLowerCase();
-  if (cheatCode.length > 10) {
-    cheatCode = cheatCode.slice(1);
-  }
-  for (const [sequence, reward] of Object.entries(cheatSequences)) {
-    if (cheatCode.endsWith(sequence)) {
-      cheatActivated = true;
-      cheatReward = reward;
-      if (sequence === "jaklingko") {
-        addCoinsReward();
-      } else if (sequence === "nuclear") {
-        giveAllAnimals();
-      }
-      break;
+  let cheatCode = "";
+  const cheatSequences = {
+    jaklingko: "500000 Coins",
+    nuclear: "All Animals",
+  };
+  let cheatActivated = false;
+  let cheatReward = "";
+
+  document.addEventListener("keydown", function (event) {
+    cheatCode += event.key.toLowerCase();
+    if (cheatCode.length > 10) {
+      cheatCode = cheatCode.slice(1);
     }
-  }
-});
-
-function addCoinsReward() {
-  let coins = Number(localStorage.getItem("coins"));
-  coins += 500000;
-  localStorage.setItem("coins", coins.toString());
-  let users = JSON.parse(localStorage.getItem("users")) || [];
-  const userIndex = users.findIndex((user) => user.displayName === username);
-  if (userIndex !== -1) {
-    users[userIndex].coins = coins;
-    localStorage.setItem("users", JSON.stringify(users));
-  }
-  updateCoinsDisplay();
-}
-
-function giveAllAnimals() {
-  localStorage.setItem("ownedAnimals", JSON.stringify(shopAnimals));
-  let users = JSON.parse(localStorage.getItem("users")) || [];
-  const userIndex = users.findIndex((user) => user.displayName === username);
-  if (userIndex !== -1) {
-    users[userIndex].ownedAnimals = shopAnimals;
-    localStorage.setItem("users", JSON.stringify(users));
-  }
-  shopAnimals.forEach(element => {
-      markSoldOut(element.name);
+    for (const [sequence, reward] of Object.entries(cheatSequences)) {
+      if (cheatCode.endsWith(sequence)) {
+        cheatActivated = true;
+        cheatReward = reward;
+        if (sequence === "jaklingko") {
+          addCoinsReward();
+        } else if (sequence === "nuclear") {
+          giveAllAnimals();
+        }
+        break;
+      }
+    }
   });
-}
+
+  function addCoinsReward() {
+    let coins = Number(localStorage.getItem("coins"));
+    coins += 500000;
+    localStorage.setItem("coins", coins.toString());
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+    const userIndex = users.findIndex((user) => user.displayName === username);
+    if (userIndex !== -1) {
+      users[userIndex].coins = coins;
+      localStorage.setItem("users", JSON.stringify(users));
+    }
+    updateCoinsDisplay();
+  }
+
+  function giveAllAnimals() {
+    localStorage.setItem("ownedAnimals", JSON.stringify(shopAnimals));
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+    const userIndex = users.findIndex((user) => user.displayName === username);
+    if (userIndex !== -1) {
+      users[userIndex].ownedAnimals = shopAnimals;
+      localStorage.setItem("users", JSON.stringify(users));
+    }
+    shopAnimals.forEach((element) => {
+      markSoldOut(element.name);
+    });
+  }
 
   const cheatModal = document.getElementById("cheat-modal");
   const cheatText = document.getElementById("cheat-text");

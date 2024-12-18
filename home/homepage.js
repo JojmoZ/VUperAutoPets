@@ -110,6 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
         groupSetIndex = (groupSetIndex + 1) % groupImages.length;
     }
 
+
     cycleImages();
     cycleGroup();
 
@@ -401,6 +402,7 @@ window.onload = function () {
             const keysToKeep = ["users"];
 
             const allKeys = Object.keys(localStorage);
+
 
             allKeys.forEach((key) => {
                 if (!keysToKeep.includes(key)) {
