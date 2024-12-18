@@ -240,12 +240,17 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
 
+    let columnsFinished = 0;
+
     columns.forEach((column, index) => {
       populateColumn(column, selectedAnimals[index]);
       setTimeout(() => {
         spinColumn(column, selectedAnimals[index], () => {
-          if (index === columns.length - 1) {
+          columnsFinished++;
+          if (columnsFinished === columns.length) {
             isRolling = false;
+            gachaSound.pause(); // Stop the gacha sound after all columns finish spinning
+            gachaSound.currentTime = 0; // Reset the sound to the beginning
             checkThreeOfAKind(selectedAnimals);
           }
         });

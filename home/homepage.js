@@ -136,7 +136,46 @@ const viewAllButton = document.getElementById("view-all");
 const closeInfoButton = document.getElementById("close-info");
 const prevButton = document.getElementById("prev-animal");
 const nextButton = document.getElementById("next-animal");
+ const backgroundAudio = new Audio(
+   "../assets/sound/Super Auto Pets  - Menu Theme.mp3"
+ );
+ const savedVolume = localStorage.getItem("backgroundAudioVolume");
+ if (savedVolume !== null) {
+   backgroundAudio.volume = parseFloat(savedVolume);
+ } else {
+   backgroundAudio.volume = 0.1;
+ }
+ backgroundAudio.loop = true;
 
+ const savedTime = localStorage.getItem("backgroundAudioTime");
+ if (savedTime) {
+   backgroundAudio.currentTime = parseFloat(savedTime);
+ }
+
+ const playBackgroundAudio = () => {
+   backgroundAudio.play();
+   document.removeEventListener("click", playBackgroundAudio);
+   document.removeEventListener("keydown", playBackgroundAudio);
+   document.removeEventListener("mousemove", playBackgroundAudio);
+   document.removeEventListener("scroll", playBackgroundAudio);
+   document.removeEventListener("touchstart", playBackgroundAudio);
+   document.removeEventListener("focus", playBackgroundAudio);
+   document.removeEventListener("mousedown", playBackgroundAudio);
+   document.removeEventListener("mouseup", playBackgroundAudio);
+ };
+
+ document.addEventListener("click", playBackgroundAudio);
+ document.addEventListener("keydown", playBackgroundAudio);
+ document.addEventListener("mousemove", playBackgroundAudio);
+ document.addEventListener("scroll", playBackgroundAudio);
+ document.addEventListener("touchstart", playBackgroundAudio);
+ document.addEventListener("focus", playBackgroundAudio);
+ document.addEventListener("mousedown", playBackgroundAudio);
+ document.addEventListener("mouseup", playBackgroundAudio);
+
+ window.addEventListener("beforeunload", () => {
+   localStorage.setItem("backgroundAudioTime", backgroundAudio.currentTime);
+ });
 let initialRight = -30;
 let maxScrollDistance = 0;
 const curtain = document.querySelector("#top-pets .curtain");
@@ -373,11 +412,13 @@ document
     popup.classList.remove("hidden");
     video.currentTime = 0;
     video.play();
+    backgroundAudio.pause();
   });
 
 popup.addEventListener("click", function () {
   popup.classList.add("hidden");
   video.pause();
+  backgroundAudio.play();
 });
 
 window.onload = function () {
@@ -617,44 +658,5 @@ window.onload = function () {
   window.onmousemove = (e) => handleOnMove(e);
   window.ontouchmove = (e) => handleOnMove(e.touches[0]);
 
-  const backgroundAudio = new Audio(
-    "../assets/sound/Super Auto Pets  - Menu Theme.mp3"
-  );
-  const savedVolume = localStorage.getItem("backgroundAudioVolume");
-  if (savedVolume !== null) {
-    backgroundAudio.volume = parseFloat(savedVolume);
-  } else {
-    backgroundAudio.volume = 0.1;
-  }
-  backgroundAudio.loop = true;
-
-  const savedTime = localStorage.getItem("backgroundAudioTime");
-  if (savedTime) {
-    backgroundAudio.currentTime = parseFloat(savedTime);
-  }
-
-  const playBackgroundAudio = () => {
-    backgroundAudio.play();
-    document.removeEventListener("click", playBackgroundAudio);
-    document.removeEventListener("keydown", playBackgroundAudio);
-    document.removeEventListener("mousemove", playBackgroundAudio);
-    document.removeEventListener("scroll", playBackgroundAudio);
-    document.removeEventListener("touchstart", playBackgroundAudio);
-    document.removeEventListener("focus", playBackgroundAudio);
-    document.removeEventListener("mousedown", playBackgroundAudio);
-    document.removeEventListener("mouseup", playBackgroundAudio);
-  };
-
-  document.addEventListener("click", playBackgroundAudio);
-  document.addEventListener("keydown", playBackgroundAudio);
-  document.addEventListener("mousemove", playBackgroundAudio);
-  document.addEventListener("scroll", playBackgroundAudio);
-  document.addEventListener("touchstart", playBackgroundAudio);
-  document.addEventListener("focus", playBackgroundAudio);
-  document.addEventListener("mousedown", playBackgroundAudio);
-  document.addEventListener("mouseup", playBackgroundAudio);
-
-  window.addEventListener("beforeunload", () => {
-    localStorage.setItem("backgroundAudioTime", backgroundAudio.currentTime);
-  });
+ 
 };

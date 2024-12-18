@@ -235,7 +235,7 @@ document.addEventListener("DOMContentLoaded", function () {
           h3.innerHTML = `You cannot buy ${animalName}. You can only get ${animalName} through gacha.`;
           confirmButton.style.display = "none";
           h3.style.textAlign = "center";
-          cancelButton.innerHTML = "Close";
+          // cancelButton.innerHTML = "Close";
         }
 
         modal.style.display = "flex";

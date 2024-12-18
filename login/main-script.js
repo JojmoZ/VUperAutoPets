@@ -587,7 +587,7 @@ window.onload = function () {
       const menuPath = path.join(appDir, "menu/menu.html");
       window.location.href = `file://${menuPath}`;
     } else {
-      modalErrorText.innerText = "Invalid username or password.";
+      modalErrorText.innerText = "Wrong Credentials";
       showErrorModal();
     }
   }
