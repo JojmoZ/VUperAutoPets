@@ -3,6 +3,7 @@ const menu = document.getElementById("menu");
 const settingsMenu = document.getElementById("settings-menu");
 const path = window.electron.path;
 const appDir = window.electron.__dirname;
+
 document.getElementById("burger-btn").addEventListener("click", function () {
   overlay.classList.toggle("hidden");
   menu.classList.toggle("hidden");
@@ -29,7 +30,6 @@ window.onload = () => {
     }
 
     clearLocalStorageExceptUsers();
-
        const loginPath = path.join(appDir, "login/index.html");
        window.location.href = `file://${loginPath}`; 
   }
@@ -98,38 +98,41 @@ window.onload = () => {
   const backgroundAudio = new Audio(
     "../assets/sound/Super Auto Pets  - Menu Theme.mp3"
   );
-  const soundRange = document.getElementById("SoundRange");
-  const percentDisplay = document.getElementById("percent");
+const soundRange = document.getElementById("SoundRange");
+const percentDisplay = document.getElementById("percent");
+soundRange.value = backgroundAudio.volume * 100;
+percentDisplay.textContent = `${soundRange.value}%`;
+function updateSliderBackground(value) {
+  const percentage = value + "%";
+  soundRange.style.background = `linear-gradient(to right, #651F00 0%, #651F00 ${percentage}, #FF5A25 ${percentage}, #FF5A25 100%)`;
+  backgroundAudio.play();
+}
+updateSliderBackground(soundRange.value);
+backgroundAudio.volume = 0.5; 
+backgroundAudio.loop = true;
+
+
+const savedVolume = localStorage.getItem("backgroundAudioVolume");
+if (savedVolume !== null) {
+  backgroundAudio.volume = parseFloat(savedVolume);
   soundRange.value = backgroundAudio.volume * 100;
   percentDisplay.textContent = `${soundRange.value}%`;
-  function updateSliderBackground(value) {
-    const percentage = value + "%";
-    soundRange.style.background = `linear-gradient(to right, #651F00 0%, #651F00 ${percentage}, #FF5A25 ${percentage}, #FF5A25 100%)`;
-    backgroundAudio.play();
-  }
   updateSliderBackground(soundRange.value);
-  backgroundAudio.volume = 0.5;
-  backgroundAudio.loop = true;
+}
 
-  const savedVolume = localStorage.getItem("backgroundAudioVolume");
-  if (savedVolume !== null) {
-    backgroundAudio.volume = parseFloat(savedVolume);
-    soundRange.value = backgroundAudio.volume * 100;
-    percentDisplay.textContent = `${soundRange.value}%`;
-    updateSliderBackground(soundRange.value);
-  }
 
-  soundRange.addEventListener("input", function () {
-    const volumeValue = soundRange.value / 100;
-    backgroundAudio.volume = volumeValue;
-    percentDisplay.textContent = `${soundRange.value}%`;
-    updateSliderBackground(soundRange.value);
-  });
+soundRange.addEventListener("input", function () {
+  const volumeValue = soundRange.value / 100; 
+  backgroundAudio.volume = volumeValue; 
+  percentDisplay.textContent = `${soundRange.value}%`; 
+  updateSliderBackground(soundRange.value); 
+});
 
-  window.addEventListener("beforeunload", () => {
-    localStorage.setItem("backgroundAudioVolume", backgroundAudio.volume);
-    localStorage.setItem("backgroundAudioTime", backgroundAudio.currentTime);
-  });
+
+window.addEventListener("beforeunload", () => {
+  localStorage.setItem("backgroundAudioVolume", backgroundAudio.volume);
+  localStorage.setItem("backgroundAudioTime", backgroundAudio.currentTime);
+});
   backgroundAudio.loop = true;
 
   const savedTime = localStorage.getItem("backgroundAudioTime");
@@ -157,53 +160,53 @@ window.onload = () => {
   document.addEventListener("focus", playBackgroundAudio);
   document.addEventListener("mousedown", playBackgroundAudio);
   document.addEventListener("mouseup", playBackgroundAudio);
-  const username = localStorage.getItem("username").split(" ")[0];
-  const el = document.querySelector("#typewriter");
-  const words = [
-    `Welcome, <span class="username">${username} </span>!`,
-    `Bienvenido, <span class="username">${username} </span>!`,
-    `Bienvenue, <span class="username">${username} </span>!`,
-    `Willkommen, <span class="username">${username} </span>!`,
-    `Benvenuto, <span class="username">${username} </span>!`,
-  ];
+   const username = localStorage.getItem("username").split(" ")[0];
+   const el = document.querySelector("#typewriter");
+    const words = [
+      `Welcome, <span class="username">${username} </span>!`,
+      `Bienvenido, <span class="username">${username} </span>!`,
+      `Bienvenue, <span class="username">${username} </span>!`,
+      `Willkommen, <span class="username">${username} </span>!`,
+      `Benvenuto, <span class="username">${username} </span>!`,
+    ];
 
-  const sleepTime = 100;
-  let currWordIndex = 0;
+    const sleepTime = 100;
+    let currWordIndex = 0;
 
-  const sleep = (time) => {
-    return new Promise((resolve) => setTimeout(resolve, time));
-  };
+    const sleep = (time) => {
+      return new Promise((resolve) => setTimeout(resolve, time));
+    };
 
-  const effect = async () => {
-    while (true) {
-      const currWord = words[currWordIndex];
-      let isTag = false;
+    const effect = async () => {
+      while (true) {
+        const currWord = words[currWordIndex];
+        let isTag = false;
 
-      for (let i = 0; i < currWord.length; i++) {
-        if (currWord[i] === "<") isTag = true;
-        if (currWord[i] === ">") isTag = false;
+        for (let i = 0; i < currWord.length; i++) {
+          if (currWord[i] === "<") isTag = true;
+          if (currWord[i] === ">") isTag = false;
 
-        el.innerHTML = currWord.substring(0, i + 1);
-        if (!isTag) await sleep(sleepTime);
+          el.innerHTML = currWord.substring(0, i + 1);
+          if (!isTag) await sleep(sleepTime);
+        }
+
+        await sleep(3000);
+
+        for (let i = currWord.length; i >= 0; i--) {
+          if (currWord[i] === ">") isTag = true;
+          if (currWord[i] === "<") isTag = false;
+
+          el.innerHTML = currWord.substring(0, i);
+          if (!isTag) await sleep(sleepTime);
+        }
+
+        let nextWordIndex;
+        do {
+          nextWordIndex = Math.floor(Math.random() * words.length);
+        } while (nextWordIndex === currWordIndex);
+
+        currWordIndex = nextWordIndex;
       }
-
-      await sleep(3000);
-
-      for (let i = currWord.length; i >= 0; i--) {
-        if (currWord[i] === ">") isTag = true;
-        if (currWord[i] === "<") isTag = false;
-
-        el.innerHTML = currWord.substring(0, i);
-        if (!isTag) await sleep(sleepTime);
-      }
-
-      let nextWordIndex;
-      do {
-        nextWordIndex = Math.floor(Math.random() * words.length);
-      } while (nextWordIndex === currWordIndex);
-
-      currWordIndex = nextWordIndex;
-    }
-  };
-  effect();
+    };
+    effect();
 };

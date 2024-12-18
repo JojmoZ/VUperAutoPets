@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const layers = document.querySelectorAll(".parallax-layer");
   const loadingFill = document.getElementById("loading-fill");
-  const totalGameTime = 20 * 2000;
+  const totalGameTime = 5 * 2000;
   localStorage.removeItem("ingame");
   const path = window.electron.path;
   const appDir = window.electron.__dirname;
@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const progress = Math.min((elapsedTime / totalGameTime) * 100, 100);
     loadingFill.style.width = `${progress}%`;
     animalVUnt.style.left = `calc(${progress}% - 5rem)`;
-    animalVUnt.style.top = `-7.5rem`;
+    animalVUnt.style.top = `-7.5rem`
     animalVUnt.style.width = `8rem`;
     animalVUnt.style.height = `8rem`;
 
@@ -60,28 +60,31 @@ document.addEventListener("DOMContentLoaded", () => {
       triggerTransitionToGame();
     }
   }
-  function triggerTransitionToGame() {
-    if (document.querySelector(".overlay")) return;
+ function triggerTransitionToGame() {
+   if (document.querySelector(".overlay")) return;
 
-    const blackOverlay = document.createElement("div");
-    blackOverlay.classList.add("overlay");
-    document.body.appendChild(blackOverlay);
 
-    const logo = document.createElement("img");
-    logo.src = "../assets/title-logo.png";
-    logo.classList.add("logo");
-    blackOverlay.appendChild(logo);
+   const blackOverlay = document.createElement("div");
+   blackOverlay.classList.add("overlay");
+   document.body.appendChild(blackOverlay);
 
-    setTimeout(() => {
-      blackOverlay.classList.add("fade-in-overlay");
-      logo.classList.add("fade-in-logo");
 
-      setTimeout(() => {
-        const gamePath = path.join(appDir, "game/game.html");
-        window.location.href = `file://${gamePath}`; 
-      }, 5000);
-    }, 100);
-  }
+   const logo = document.createElement("img");
+   logo.src = "../assets/title-logo.png";
+   logo.classList.add("logo");
+   blackOverlay.appendChild(logo);
+
+
+   setTimeout(() => {
+     blackOverlay.classList.add("fade-in-overlay");
+     logo.classList.add("fade-in-logo");
+
+
+     setTimeout(() => {
+       window.location.href = "/game/game.html";
+     }, 5000);
+   }, 100);
+ }
 
   function lockScroll() {
     document.body.style.overflow = "hidden";
@@ -94,14 +97,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let tipBox = null;
 
+
   function showRandomTip() {
-    if (tipBox) return; 
+    if (tipBox) return; // Prevent multiple tips from appearing
 
     tipBox = document.createElement("div");
     tipBox.classList.add("tip");
     tipBox.textContent = tips[Math.floor(Math.random() * tips.length)];
     document.body.appendChild(tipBox);
-
     const animalRect = animalVUnt.getBoundingClientRect();
     tipBox.style.left = `${animalRect.left + animalRect.width / 2}px`;
     tipBox.style.top = `${animalRect.top - animalRect.height + 50}px`;
@@ -115,7 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
       tipBox.classList.add("tip-animate-out");
       setTimeout(() => {
         document.body.removeChild(tipBox);
-        tipBox = null;
+        tipBox = null; 
       }, 500);
     }, 3000);
   }
@@ -126,7 +129,7 @@ document.addEventListener("DOMContentLoaded", () => {
   animalVUnt.style.height = "5rem";
   animalVUnt.style.position = "relative";
   animalVUnt.style.top = "-7rem";
-  animalVUnt.style.transform = "scaleX(-1)";
+  animalVUnt.style.transform ="scaleX(-1)";
   animalVUnt.classList.add("animal-vunt");
   document.getElementById("loading-bar").appendChild(animalVUnt);
 
@@ -148,9 +151,9 @@ document.addEventListener("DOMContentLoaded", () => {
   if (savedTime) {
     backgroundAudio.currentTime = parseFloat(savedTime);
   }
-  window.addEventListener("beforeunload", () => {
-    localStorage.setItem("backgroundAudioTime", backgroundAudio.currentTime);
-  });
+window.addEventListener("beforeunload", () => {
+  localStorage.setItem("backgroundAudioTime", backgroundAudio.currentTime);
+});
   const playBackgroundAudio = () => {
     backgroundAudio.play();
     document.removeEventListener("click", playBackgroundAudio);
@@ -172,3 +175,4 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("mousedown", playBackgroundAudio);
   document.addEventListener("mouseup", playBackgroundAudio);
 });
+

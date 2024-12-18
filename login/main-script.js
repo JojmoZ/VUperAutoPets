@@ -1,9 +1,6 @@
 const captchaModal1 = document.getElementById("captchaModal1");
 const captchaModal2 = document.getElementById("captchaModal2");
 
-
-const path = window.electron.path;
-const appDir = window.electron.__dirname;
 document.addEventListener("mousemove", (event) => {
   const { clientX, clientY } = event;
   const width = window.innerWidth;
@@ -630,13 +627,20 @@ window.onload = function () {
     "../assets/sound/Super Auto Pets  - Menu Theme.mp3"
   );
 
-  backgroundAudio.volume = 0.08;
+  const savedVolume = localStorage.getItem("backgroundAudioVolume");
+  if (savedVolume !== null) {
+    backgroundAudio.volume = parseFloat(savedVolume);
+  }else{
+    backgroundAudio.volume = 0.1;
+  }
   backgroundAudio.loop = true;
   const savedTime = localStorage.getItem("backgroundAudioTime");
   if (savedTime) {
     backgroundAudio.currentTime = parseFloat(savedTime);
   }
-
+window.addEventListener("beforeunload", () => {
+  localStorage.setItem("backgroundAudioTime", backgroundAudio.currentTime);
+});
   const playBackgroundAudio = () => {
     backgroundAudio.play();
     document.removeEventListener("click", playBackgroundAudio);

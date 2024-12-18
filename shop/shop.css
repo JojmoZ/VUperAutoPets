@@ -64,9 +64,10 @@ body {
     box-sizing: border-box;
     white-space: nowrap;
     -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
+    scrollbar-width: none;''
     -ms-overflow-style: none;
     padding-top: 2rem; 
+
 }
 
 .shop-container::-webkit-scrollbar {

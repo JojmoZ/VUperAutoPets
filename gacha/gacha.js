@@ -482,13 +482,20 @@ document.addEventListener("DOMContentLoaded", function () {
   const backgroundAudio = new Audio(
     "../assets/sound/Super Auto Pets  - Menu Theme.mp3"
   );
-  backgroundAudio.volume = 0.08;
+   const savedVolume = localStorage.getItem("backgroundAudioVolume");
+   if (savedVolume !== null) {
+     backgroundAudio.volume = parseFloat(savedVolume);
+   } else {
+     backgroundAudio.volume = 0.1;
+   }
   backgroundAudio.loop = true;
   const savedTime = localStorage.getItem("backgroundAudioTime");
   if (savedTime) {
     backgroundAudio.currentTime = parseFloat(savedTime);
   }
-
+window.addEventListener("beforeunload", () => {
+  localStorage.setItem("backgroundAudioTime", backgroundAudio.currentTime);
+});
   const playBackgroundAudio = () => {
     backgroundAudio.play();
     document.removeEventListener("click", playBackgroundAudio);

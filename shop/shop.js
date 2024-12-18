@@ -102,6 +102,7 @@ document.addEventListener("DOMContentLoaded", function () {
     { passive: false }
   );
 
+
   function smoothScroll() {
     if (Math.abs(scrollAmount) > 0.5) {
       shopContainer.scrollLeft += scrollAmount;
