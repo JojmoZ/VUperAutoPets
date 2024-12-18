@@ -776,6 +776,8 @@ function showStatWindow(animal) {
     animalAttack.textContent = animal.dataset.attack;
     animalHealth.textContent = animal.dataset.health;
     animalCost.textContent = animal.dataset.cost;
+    animalCost.style.top = "8px"
+    animalCost.style.left = "-50%"
     statWindow.style.setProperty("--animal-color", animalColor);
     hrElement.style.width = "0";
     statWindow.style.display = "block";

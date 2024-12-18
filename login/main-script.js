@@ -297,7 +297,8 @@ window.onload = function () {
     const errorElement = document.getElementById(`${inputId}Error`);
     if (errorElement) {
       errorElement.textContent = message;
-
+      errorElement.style.fontFamily ="Comic Sans MS";
+      errorElement.style.fontWeight = "bold";
       const fullHeight = errorElement.scrollHeight;
 
       errorElement.style.height = "0";

@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
     clearLocalStorageExceptUsers();
 
     const loginPath = path.join(appDir, "login/index.html");
-    window.location.href = `file://${loginPath}`; 
+    window.location.href = `file://${loginPath}`;
   }
 
   localStorage.removeItem("ingame");
@@ -60,9 +60,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const coinImg = document.getElementById("coinImg");
   const backbtn = document.getElementById("backArrow");
   backbtn.addEventListener("click", function () {
-    
     const menuPath = path.join(appDir, "menu/menu.html");
-    window.location.href = `file://${menuPath}`; 
+    window.location.href = `file://${menuPath}`;
   });
   const shopContainer = document.querySelector(".shop-container");
   const scrollBar = document.getElementById("scroll-bar");
@@ -101,7 +100,6 @@ document.addEventListener("DOMContentLoaded", function () {
     },
     { passive: false }
   );
-
 
   function smoothScroll() {
     if (Math.abs(scrollAmount) > 0.5) {
@@ -216,7 +214,6 @@ document.addEventListener("DOMContentLoaded", function () {
         h3.innerHTML = `Are you sure you want to buy ${animal.name}?`;
         confirmButton.style.display = "inline-block";
         h3.style.textAlign = "center";
-        cancelButton.innerHTML = "Close";
 
         modalImage.src = animalImage;
         modal.setAttribute("data-animal", animalName);
@@ -233,26 +230,17 @@ document.addEventListener("DOMContentLoaded", function () {
         const nearColor = getNearColor(animal.color);
         modalContent.style.background = `linear-gradient(135deg, ${animal.color} 0%, ${nearColor} 100%)`;
 
-        const imageContainer = document.querySelector(".image-container");
-        const darkerColor = getDarkerColor(animal.color);
-        imageContainer.style.setProperty("--animal-border-color", darkerColor);
-
         if (specialAnimals.includes(animalName)) {
           document.getElementById("modal-animal-price").textContent = "";
-          h3.innerHTML =
-            `You cannot buy ${animalName}. You can only get ${animalName} through gacha.`;
+          h3.innerHTML = `You cannot buy ${animalName}. You can only get ${animalName} through gacha.`;
           confirmButton.style.display = "none";
           h3.style.textAlign = "center";
           cancelButton.innerHTML = "Close";
         }
-      
-        
-      
 
         modal.style.display = "flex";
         modal.classList.add("show");
       });
-      
 
       shopContainer.appendChild(card);
     });
@@ -371,9 +359,8 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   const gotoGacha = document.getElementById("gacha-btn");
   gotoGacha.addEventListener("click", function () {
-    
     const gachapath = path.join(appDir, "gacha/gachapage.html");
-    window.location.href = `file://${gachapath}`; 
+    window.location.href = `file://${gachapath}`;
   });
   const ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals")) || [];
   ownedAnimals.forEach((animal) => {

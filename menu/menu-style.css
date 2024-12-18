@@ -248,7 +248,7 @@ header {
 
   background-color: white;
   border: 5px solid black;
-  border-radius: 10px;
+  border-radius: 0.5rem;
 
   width: 24rem;
   height: auto;

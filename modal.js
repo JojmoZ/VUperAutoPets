@@ -24,7 +24,7 @@ class Modal {
     this.modalBox.style.cssText = `
       background:white;
       border: 0.5rem solid black;
-      padding: 40px;
+      padding: 2rem 2rem 1.5rem 2rem;
       border-radius: 0.5rem;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
       text-align: center;
@@ -42,27 +42,26 @@ class Modal {
     `;
     this.modalCloseButton.style.cssText = `
       padding: 15px 30px;
-      font-size: 1.2rem;
-      background-color: ;
-      color: white;
+      background-image: url("../assets/buttons/close-btn.png");
+      background-size: cover;
       border: none;
-      border-radius: 10px;
+      border-radius: 0.5rem;
       cursor: pointer;
       position: relative;
       overflow: hidden;
       transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+      width: 13vw;
+      height: 4.5rem;
     `;
-    this.modalCloseButton.textContent = "Close";
+    this.modalCloseButton.textContent = "";
     this.modalCloseButton.addEventListener("mouseenter", () => {
       this.modalCloseButton.style.transform = "scale(1.1)";
-      this.modalCloseButton.style.backgroundColor = "#ff4757";
       this.modalCloseButton.style.color = "white";
 
       this.closeIcon.style.opacity = "1";
     });
     this.modalCloseButton.addEventListener("mouseleave", () => {
       this.modalCloseButton.style.transform = "scale(1)";
-      this.modalCloseButton.style.backgroundColor = "#007bff";
       this.modalCloseButton.style.color = "white";
 
       this.closeIcon.style.opacity = "0";

@@ -136,7 +136,7 @@ body {
 
   background-color: white;
   padding: 1rem;
-  border-radius: 0.625rem;
+  border-radius: 0.5rem;
   border: 0.325rem solid black;
 }
 
@@ -253,7 +253,7 @@ body {
     #eaeaea 10px,
     #eaeaea 20px
   );
-  border-radius: 1rem;
+  border-radius: 0.5rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   z-index: 10;
   text-align: left;
@@ -358,7 +358,7 @@ body {
   color: black;
   background-color: white;
 
-  border-radius: 0.625rem;
+  border-radius: 0.5rem;
   border: 0.325rem solid black;
   padding: 1rem;
   font-size: 1.5rem;
@@ -368,7 +368,7 @@ body {
 
 .pet-container {
   position: absolute;
-  width: 60%;
+  width: 50%;
   opacity: 1;
   right: -10%;
   display: flex;
@@ -383,7 +383,6 @@ body {
   width: 120vw;
   gap: 50px;
   right: -30%;
-  justify-content: space-evenly;
   z-index: 10101010;
 }
 .pet-card.scale-up {
@@ -396,7 +395,7 @@ body {
   position: absolute;
   opacity: 1;
   display: flex;
-  flex-shrink: 0;
+  /* flex-shrink: 0; */
   justify-content: center;
   align-items: center;
 
@@ -544,7 +543,7 @@ body {
   height: 30px;
   background: #ff6900;
   border: 2px solid white;
-  border-radius: 40%;
+  border-radius: 0.5rem;
   cursor: pointer;
 }
 
@@ -553,7 +552,7 @@ body {
   width: 100%;
   height: 10px;
   background: #e0e0e0;
-  border-radius: 5px;
+  border-radius: 0.5rem;
 }
 
 /* Style the thumb for IE/Edge */
@@ -562,7 +561,7 @@ body {
   height: 30px;
   background: #222;
   border: 2px solid white;
-  border-radius: 40%;
+  border-radius: 0.5rem;
   cursor: pointer;
 }
 
@@ -578,7 +577,7 @@ body {
 /* IE/Edge slider background */
 #pet-range::-ms-fill-lower {
   background: #e0e0e0;
-  border-radius: 5px;
+  border-radius: 0.5rem;
 }
 
 #view-all {

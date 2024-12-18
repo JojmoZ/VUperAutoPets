@@ -193,13 +193,13 @@ body {
     rgba(0, 0, 0, 0.7) 100%
   );
   border-radius: 0.5rem;
-  width: 60%;
+  width: 50%;
   max-width: 40rem;
   padding: 2rem;
   text-align: center;
   animation: fadeIn 0.5s ease-out;
 
-  border: 0.35rem solid black;
+  border: 0.5rem solid black;
 }
 
 .modal.show .modal-content {
@@ -220,68 +220,49 @@ body {
   align-items: center;
   width: 100%;
   height: auto;
-}
-
-.image-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 8rem;
-  height: 8rem;
-  border-radius: 50%;
-  border: 8px solid var(--animal-border-color, #28a745);
-  background-color: white;
-  padding: 0.5rem;
-  margin: auto;
-  transition: transform 0.3s ease-in-out;
+  transition: all 0.5s ease;
 }
 
 .modal-content img {
   width: 6rem;
-  height: 6rem;
+  height: auto;
   display: block;
   margin: auto;
 }
-
-.image-container:hover {
+.modal-img:hover {
   transform: scale(1.1);
 }
-
 .modal-text h2 {
-  font-size: 1.8rem;
+  padding-top: 2rem;
+  font-size: 2rem;
   color: black;
   margin-bottom: 1rem;
 }
 
 .modal-text p {
-  font-size: 1.3rem;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.modal-buttons {
+  margin-top: 1rem;
+  display: flex;
 }
 
 .modal-text button {
   margin: 1rem;
-  padding: 0.8rem 1.5rem;
-  font-size: 1.1rem;
   border: none;
   border-radius: 0.5rem;
   cursor: pointer;
+  background: none;
+  height: 5rem;
+  width: 50%;
 }
 
-#confirm-buy {
-  background-color: #28a745;
-  color: #fff;
-}
-
-#cancel-buy {
-  background-color: #dc3545;
-  color: #fff;
-}
-
-#cancel-buy:hover {
-  background-color: #c82333;
-}
-
-#confirm-buy:hover {
-  background-color: #218838;
+#confirm-buy img,
+#cancel-buy img {
+  width: 100%;
+  height: auto;
 }
 
 #confirm-buy,
@@ -290,12 +271,10 @@ body {
 }
 
 #confirm-buy:hover {
-  background-color: #218838;
   transform: scale(1.05);
 }
 
 #cancel-buy:hover {
-  background-color: #c82333;
   transform: scale(1.05);
 }
 

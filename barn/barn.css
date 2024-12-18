@@ -15,10 +15,17 @@ body::-webkit-scrollbar {
   display: flex;
   justify-content: space-evenly;
 }
+
+.leftside.coins {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .rightStatSide {
   position: relative;
-  left: -50%;
+  left: -22.5%;
   font-size: 2rem;
+  height: 2rem;
   color: white;
   -webkit-text-stroke: 2px black;
 }
@@ -96,7 +103,7 @@ canvas {
 
 .stat-window {
   position: absolute;
-  width: 16.5rem;
+  width: 20rem;
   padding: 0 0.625rem;
   background: linear-gradient(
     135deg,
@@ -169,6 +176,7 @@ canvas {
 .abovePic {
   display: flex;
   justify-content: space-evenly;
+  gap: 1.5rem;
   align-items: center;
 }
 #animalStatPicture {
