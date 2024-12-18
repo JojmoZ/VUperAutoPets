@@ -315,35 +315,9 @@ function showAnimalInfo(card) {
       }, 50);
     }, 100);
   }, 500);
-                    card.offsetHeight;
-                    container.offsetHeight;
-                    tempcontright = container.style.right;
-                    container.style.right = ``;
-                    console.log(tempcontright);
-                    card.style.transition = "all 0.8s ease-in-out";
-                    container.style.transition = "all 0.8s ease-in-out";
-                    card.style.transform = "translate(0, 0)";
-                    card.classList.add("showandtell");
-                    image.classList.remove("move-down");
-                    animalNameElement.textContent = animalName;
-                    animalDescriptionElement.innerHTML =
-                        petDescriptions[animalName] || "No description available.";
-                    infoCard.classList.remove("hidden", "hide");
-                    void infoCard.offsetWidth;
-                    infoCard.classList.add("show");
-                    setTimeout(() => {
-                        allCards.forEach((c) => {
-                            if (c !== card) {
-                                c.classList.add("hidden");
-                            }
-                        });
 
-                    }, 800);
-                }, 1000);
-            }, 50);
-        }, 100);
-    }, 500);
 }
+
 
 function resetCarousel() {
   const allCards = document.querySelectorAll(".pet-card");
