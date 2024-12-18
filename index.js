@@ -13,11 +13,11 @@ app.on("ready", () => {
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       contextIsolation: true,
-      // devTools: false,
+      devTools: false,
       experimentalFeatures: false,
       spellcheck: false,
       enableWebSQL: false,
-      allowRunningInsecureContent: true, // Allows loading `http` resources
+      allowRunningInsecureContent: true,
       sandbox: false,
     },
   });
