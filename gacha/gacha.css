@@ -1,90 +1,142 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&display=swap");
 
 @font-face {
-    font-family: "VUper";
-    src: url("../assets/font/LapsusPro-Bold.otf") format("opentype");
+  font-family: "VUper";
+  src: url("../assets/font/LapsusPro-Bold.otf") format("opentype");
 }
 
 * {
-    font-family: 'VUper', serif;
+  font-family: "VUper", serif;
 }
-
+.gacha-iamge-container {
+  position: absolute;
+}
+.gacha-title-imagae {
+  position: relative;
+  top: 3rem;
+  height: 15rem;
+}
 .hidden {
-    display: none;
+  display: none;
 }
 
 body::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
+.coins-container {
+  position: absolute;
+  width: fit-content;
+  right: 2rem;
+  top: 1rem;
+  display: flex;
+  justify-content: end;
+  align-items: center;
 
+  padding: 0.5rem 1rem;
+  margin-left: 1.5rem;
+
+  background: white;
+  border: 5px solid black;
+  border-radius: 0.75rem;
+}
+#coinsDisplay {
+  font-family: "VUper", serif;
+  color: black;
+  font-size: 2rem;
+  padding-left: 3rem;
+  margin-right: 0.5rem;
+}
+#coinImg {
+  width: 3rem;
+  height: 3rem;
+}
 html,
 body {
-    margin: 0;
-    width: 100vw;
-    background-size: cover;
-    background-position: top;
-    backdrop-filter: blur(30px);
-    background-image: url(../assets/gacha/gacha.png);
-
+  margin: 0;
+  width: 100vw;
+  overflow: hidden;
+  background-size: cover;
+  background-position: top;
+  backdrop-filter: blur(30px);
+  background-image: url(../assets/gacha/gacha.png);
 }
 
 .back-arrow {
-    position: absolute;
-    top: 0;
-    left: 0;
-    padding: 0;
-    z-index: 2421241241241;
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-    transition: transform 0.3s ease;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 0;
+  z-index: 2421241241241;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  transition: transform 0.3s ease;
 }
 
 .back-arrow img {
-    width: 8rem;
-    height: auto;
+  width: 8rem;
+  height: auto;
 }
 
 .back-arrow:hover {
-    transform: scale(1.1);
+  transform: scale(1.1);
 }
 
 .gacha-wrapper {
-    display: flex;
-    height: 100vh;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
+  display: flex;
+  height: 100vh;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
 }
 
 @keyframes altBg {
+  0% {
+    background-image: url(../assets/gacha/board.png);
+  }
+  50% {
+    background-image: url(../assets/gacha/board-alt.png);
+  }
+  100% {
+    background-image: url(../assets/gacha/board.png);
+  }
+}
 
-    0% {
-        background-image: url(../assets/gacha/board.png);
-    }
-    50% {
-        background-image: url(../assets/gacha/board-alt.png);
-    }
-    100% {
-        background-image: url(../assets/gacha/board.png);
-    }
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes fadeOutScale {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
 }
 
 .gacha-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 70vw;
-    height:60vh;
-    aspect-ratio: 1/1;
-    background-image: url("../assets/gacha/board-alt.png");
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    transition: all 0.3s ease;
-    animation: altBg 1s linear infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 70vw;
+  height: 645px;
+  aspect-ratio: 1/1;
+  background-image: url("../assets/gacha/board-alt.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  transition: all 0.3s ease;
+  animation: altBg 1s linear infinite;
 }
-
-
 
 .slot-machine {
   display: flex;
@@ -92,144 +144,190 @@ body {
   gap: 20px;
   position: relative;
   overflow: hidden;
-  height: 501px; 
+  height: 585px;
   width: 100%;
 }
 
-
 .slot-column {
-  width: 30%; 
-  height: 100%; 
+  width: 28%;
+  height: 100%;
   overflow: hidden;
   position: relative;
 }
 
 .slot-item {
   width: 100%;
-  height: calc(100% / 3); 
+  height: 195px;
+  aspect-ratio: 1/1;
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
-  transition: transform 0.3s ease; 
+  transition: transform 0.3s ease;
 }
 .slot-item img {
-  width: 80%; 
-  height: auto; 
+  width: 80%;
+  height: auto;
   max-width: 10rem;
-  max-height: 10rem;
+  max-height: 195px;
 }
 
-
 .slot-column:nth-child(2) {
-  border-left: 2px solid #000;
-  border-right: 2px solid #000;
+  position: relative;
+  z-index: 1;
+  padding-inline: 1.75rem;
+}
+
+.slot-column:nth-child(2)::before,
+.slot-column:nth-child(2)::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 5px; /* Adjust for the border width */
+}
+
+.slot-column:nth-child(2)::before {
+  left: 0; /* Left border */
+  background: linear-gradient(
+    180deg,
+    transparent,
+    #f7eed6,
+    #f7eed6,
+    transparent
+  );
+}
+
+.slot-column:nth-child(2)::after {
+  right: 0; /* Right border */
+  background: linear-gradient(
+    180deg,
+    transparent,
+    #f7eed6,
+    #f7eed6,
+    transparent
+  );
 }
 
 .slot-item:nth-child(even) {
-  background-color: rgba(240, 240, 240, 0.5); 
+  background-color: rgba(240, 240, 240, 0.5);
 }
-
 .lever-container {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 1rem;
-    position: relative;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+  position: relative;
 }
-
+.start-button:hover {
+  filter: brightness(1.2);
+}
+.start-button {
+  position: relative;
+  top: -1rem;
+  width: 19rem;
+  aspect-ratio: 1/1;
+  height: 8rem;
+  background-image: url(../assets/game-asset/button/confirm-btn.png);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  cursor: pointer;
+  border: none;
+  background-image: url(../assets/gacha/2.png);
+}
 .lever {
-    width: 20px;
-    height: 100px;
-    background-color: red;
-    cursor: pointer;
-    position: relative;
-    transition: transform 0.5s ease;
+  width: 20px;
+  height: 100px;
+  background-color: red;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.5s ease;
 }
 
 .lever::before {
-    content: "";
-    width: 40px;
-    height: 40px;
-    background-color: red;
-    border-radius: 50%;
-    position: absolute;
-    top: -30px;
-    left: -10px;
-    transition: top 0.5s ease;
+  content: "";
+  width: 40px;
+  height: 40px;
+  background-color: red;
+  border-radius: 50%;
+  position: absolute;
+  top: -30px;
+  left: -10px;
+  transition: top 0.5s ease;
 }
 
 .lever[style*="translateY(100px)"]::before {
-    top: 70px;
+  top: 70px;
 }
 
 #gachaResult {
-    margin-top: 1rem;
+  margin-top: 1rem;
 }
 
 #gachaResult img {
-    width: 100px;
-    height: 100px;
+  width: 100px;
+  height: 100px;
 }
 
 h1 {
-    font-size: 88px;
-    font-weight: 800;
-    letter-spacing: 8px;
-    text-transform: uppercase;
-    text-decoration: none;
-    color: transparent;
-    -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: black;
-    text-align: center;
-    position: relative;
+  font-size: 88px;
+  font-weight: 800;
+  letter-spacing: 8px;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: transparent;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
+  text-align: center;
+  position: relative;
 }
 
 h1::before,
 h1::after {
-    content: attr(data-text);
-    position: absolute;
-    top: 0;
-    left: 0;
-    transition: 0.3s ease-out;
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: 0.3s ease-out;
 }
 
 h1:hover::before {
-    color: #e6d3e6;
-    transform: translate(12px, -12px);
-    -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: black;
+  color: #e6d3e6;
+  transform: translate(12px, -12px);
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
 }
 
 h1:hover::after {
-    color: #eee7e6;
-    transform: translate(24px, -24px);
-    -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: black;
+  color: #eee7e6;
+  transform: translate(24px, -24px);
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
 }
 
 h1.hover::before {
-    color: #e6d3e6;
-    transform: translate(12px, -12px);
-    -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: black;
+  color: #e6d3e6;
+  transform: translate(12px, -12px);
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
 }
 
 h1.hover::after {
-    color: #eee7e6;
-    transform: translate(24px, -24px);
-    -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: black;
+  color: #eee7e6;
+  transform: translate(24px, -24px);
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
 }
 
 .fireworks-container {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 1000;
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1002;
 }
 
 .color-row {
@@ -255,4 +353,35 @@ h1.hover::after {
 
 .color-row.yellow {
   background-color: rgba(255, 255, 0, 0.2);
+}
+
+.win-image-container {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1001;
+  animation: fadeInScale 0.5s ease-out forwards;
+}
+
+.win-image-container.fade-out {
+  animation: fadeOutScale 0.5s ease-out forwards;
+}
+
+.win-image-container img {
+  width: 70rem;
+  max-width: 60rem;
+  height: auto;
+}
+
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
 }

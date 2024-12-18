@@ -330,8 +330,8 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 101%;
+  height: 101%;
   transform: translateY(-100%);
   transition: transform 0.8s ease-in;
   z-index: 2;
@@ -387,6 +387,7 @@ body {
     gap:50px;
     right:-30%;
     justify-content: space-evenly;
+    z-index: 10101010;
 }
 .pet-card.scale-up {
     transform: scale(1.2) !important; /* Ensure it overrides other transform styles */

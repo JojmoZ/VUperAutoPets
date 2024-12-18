@@ -12,14 +12,17 @@
   <div class="teamNameContainer" id="teamNameContainer">
     <p class="teamName" id="teamNameDisplay">No Team Name</p>
   </div>
-  <div id="heartsContainer" class="hearts-container">
-    <img id="heart1" src="../assets/game-asset/heart.png" alt="Heart 1">
-    <img id="heart2" src="../assets/game-asset/heart.png" alt="Heart 2">
-    <img id="heart3" src="../assets/game-asset/heart.png" alt="Heart 3">
-  </div>
-  <div id="coinsContainer" class="coins-container">
-    <img id="coinIcon" src="../assets/game-asset/gold.png" alt="Gold Coin">
-    <span id="coins"></span>
+  <div class="stats-top">
+    <div id="heartsContainer" class="hearts-container">
+      <img id="heart1" src="../assets/game-asset/heart.png" alt="Heart 1">
+      <img id="heart2" src="../assets/game-asset/heart.png" alt="Heart 2">
+      <img id="heart3" src="../assets/game-asset/heart.png" alt="Heart 3">
+    </div>
+    <div class="coins-container">
+      <img id="coinImg" src="../assets/game-asset/Gold.png" alt="Coins">
+      <div id="coins"></div>
+    </div>
+
   </div>
   <img id="middleHeart" class="hidden" src="../assets/game-asset/heart.png" alt="Middle Heart">
   <button class="back-arrow" id="backArrow">
@@ -72,10 +75,10 @@
   <div id="dimmerOverlay" class="hidden"></div>
   <div id="loadingScreen" class="hidden">
     <div class="loading-content">
-  <div class="spinner"></div>
-  <p class="wave-text">
-  </p>
-</div>
+      <div class="spinner"></div>
+      <p class="wave-text">
+      </p>
+    </div>
 
   </div>
   <audio id="buySound">

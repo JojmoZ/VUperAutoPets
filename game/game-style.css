@@ -22,7 +22,6 @@ body {
   position: absolute;
   padding: 0.5rem;
   left: 47.35%;
-  /* background-color: black; */
   background-color: transparent;
   width: 5rem;
   top: 2%;
@@ -32,12 +31,10 @@ body {
 
 .pause-btn:hover {
   transform: translateY(-5px);
-  /* box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); */
 }
 
 .pause-btn:active {
   transform: translateY(-2px);
-  /* box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); */
 }
 
 #mainContainer {
@@ -50,12 +47,12 @@ body {
 #coins {
   font-size: 2rem;
   color: black;
+  margin-left: 1rem;
 }
 .animal {
   width: 6.25rem;
   height: 6.25rem;
   position: relative;
-  /* background-image: url(../assets/game-asset/stone.png); */
   background-repeat: no-repeat;
   background-size: contain;
   background-position: bottom;
@@ -82,7 +79,7 @@ body {
 .battle-slots {
   user-select: none;
   display: flex;
-  margin-top: 13rem;
+  margin-top: 16rem;
   justify-content: center;
   margin-bottom: 2vh;
 }
@@ -97,7 +94,7 @@ body {
   position: relative;
 }
 .selection-area {
-  margin-top: 5vh;
+  margin-top: 9vh;
   display: flex;
   height: 8.75rem;
   justify-content: space-between;
@@ -120,7 +117,7 @@ button {
 }
 canvas {
   user-select: none;
-  margin-top: -5vh;
+  /* margin-top: -5vh; */
 }
 img {
   width: 100%;
@@ -142,7 +139,15 @@ img {
   width: 8rem;
   height: auto;
 }
-
+.stats-top {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 20px;
+  gap: 2rem;
+  right: 2rem;
+}
 .back-arrow:hover {
   transform: scale(1.1);
 }
@@ -163,9 +168,9 @@ img {
 }
 
 .stat-icon img {
-  width: 2.5rem;
+  height: 3rem;
+  width: 3rem;
   user-select: none;
-  height: 2.5rem;
   pointer-events: none;
 }
 
@@ -174,7 +179,8 @@ img {
   top: 50%;
   left: 53%;
   transform: translate(-50%, -50%);
-  font-size: 0.9rem;
+  font-size: 1.75rem;
+  -webkit-text-stroke: 2px black;
   font-weight: bold;
   color: white;
 }
@@ -182,27 +188,42 @@ img {
   display: none;
 }
 .hearts-container {
-  position: absolute;
-  top: 10px;
-  right: 20px;
+  position: relative;
+  /* top: 10px;
+  right: 20px; */
 }
 .coins-container {
-  position: absolute;
-  top: 50px;
-  right: 20px;
+  position: relative;
+
+  width: fit-content;
+  height: 3rem;
   display: flex;
+  justify-content: end;
   align-items: center;
-  gap: 0.5rem;
-  color: black;
-  font-size: 1.25rem;
-  font-weight: bold;
+
+  margin-left: 1.5rem;
+
+  background: white;
+  border: 5px solid black;
+  border-radius: 0.5rem;
 }
-.coins-container span {
-  font-family: "VUper", sans-serif;
+
+#coins {
+  font-family: "VUper", serif;
+  color: black;
+  font-size: 2rem;
+  padding-inline: 2rem 1rem;
+}
+
+#coinImg {
+  position: absolute;
+  left: -2rem;
+  width: 4rem;
+  height: 4rem;
 }
 .hearts-container img {
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 4rem;
+  height: 4rem;
   margin-left: 0.625rem;
 }
 .coins-container img {
@@ -292,6 +313,7 @@ img {
   width: auto;
   height: 3rem;
   margin-right: 1rem;
+  padding-right: 2rem;
   cursor: pointer;
   transition: opacity 0.3s ease;
 }
@@ -429,6 +451,7 @@ img {
   align-items: center;
   gap: 2rem;
   margin-right: 35vh;
+  margin-top: 3vh;
 }
 .item-slot {
   margin-right: 2rem;
@@ -535,9 +558,9 @@ img {
 }
 .battlesign {
   width: 8rem;
-  height: 7rem;
+  height: AUTO;
   position: relative;
-  left: 0.2rem;
+  left: 1rem;
   top: -1rem;
   user-select: none;
 }
@@ -705,7 +728,7 @@ img {
 .teamName {
   background-color: white;
   padding: 0.5rem 1rem;
-  border-radius: 15px;
+  border-radius: 0.5rem;
   border: 4px solid black;
   font-size: 2rem;
   font-weight: bold;
@@ -724,16 +747,14 @@ img {
   border: 4px solid black;
 } */
 
-    #teamNameYour {
-      color: #02b6ff;
-    }
+#teamNameYour {
+  color: #02b6ff;
+}
 
-    #teamNameEnemy {
-      color: #ff6933;
-    }
+#teamNameEnemy {
+  color: #ff6933;
+}
 
-
-/* Center the VS label */
 #vsLabel {
   position: absolute;
   top: 14%;
@@ -749,7 +770,6 @@ img {
   z-index: 10;
 }
 
-/* Position teamNameYour 5rem to the left of the VS label */
 #teamNameYour {
   position: absolute;
   top: 14%;
@@ -768,7 +788,6 @@ img {
   box-sizing: border-box;
 }
 
-/* Position teamNameEnemy 5rem to the right of the VS label */
 #teamNameEnemy {
   position: absolute;
   top: 14%;
@@ -785,7 +804,6 @@ img {
   max-width: 20%;
   box-sizing: border-box;
 }
-
 
 #teamNameYour,
 #teamNameEnemy,
@@ -836,7 +854,6 @@ img {
 .wave-text span:nth-child(3) {
   --i: 2;
 }
-/* Add the same for the rest of the spans, incrementing --i */
 .wave-text span:nth-child(21) {
   --i: 20;
 }
@@ -905,6 +922,7 @@ img {
   gap: 3rem;
   left: 5%;
   bottom: 5%;
+  z-index: 1;
   background-color: rgba(0, 0, 0, 0.5);
 }
 .enemyTeamInfo {
@@ -916,6 +934,7 @@ img {
   border-radius: 20px;
   gap: 3rem;
   right: 5%;
+  z-index: 1;
   bottom: 5%;
   background-color: rgba(0, 0, 0, 0.5);
 }

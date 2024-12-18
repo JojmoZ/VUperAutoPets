@@ -1,88 +1,94 @@
 const animalContainer = document.getElementById("animals");
-const walkingSpeed = 50;
+const walkingSpeed = 100;
+const path = window.electron.path;
+const appDir = window.electron.__dirname;
 const frameDuration = 1000 / 60;
 localStorage.removeItem("ingame");
 const gridSize = 10;
 let animationId;
+let grid;
 let foodElement = null;
 let foodElements = [];
 let scaleX, scaleY;
 const restrictedZones = [
-  { x: 0, y: 0, width: 50, height: 1080 },
-  { x: 0, y: 0, width: 320, height: 230 },
-  { x: 1850, y: 0, width: 70, height: 1080 },
-  { x: 915 - 5, y: 90, width: 25, height: 130 },
-  { x: 915 - 5, y: 170, width: 50, height: 60 },
-  { x: 1410, y: 0, width: 220, height: 120 },
-  { x: 1630, y: 60, width: 25, height: 50 },
-  { x: 1680, y: 0, width: 90, height: 55 },
-  { x: 1635, y: 160, width: 14, height: 140 },
-  { x: 1610, y: 140 + 140, width: 1920 - 1610, height: 100 },
-  { x: 1169, y: 140 + 140, width: 250, height: 100 },
-  { x: 969, y: 140 + 140, width: 120, height: 100 },
-  { x: 949, y: 260, width: 120, height: 100 },
-  { x: 929, y: 240, width: 120, height: 100 },
-  { x: 400, y: 140, width: 120, height: 100 },
-  { x: 420, y: 160, width: 120, height: 100 },
-  { x: 440, y: 180, width: 120, height: 100 },
-  { x: 460, y: 200, width: 120, height: 100 },
-  { x: 890, y: 220, width: 100, height: 100 },
-  { x: 1635, y: 140 + 90, width: 1920 - 1635, height: 50 },
-  { x: 1169, y: 140 + 90, width: 245, height: 50 },
-  { x: 1169 + 225, y: 160, width: 16, height: 100 },
-  { x: 410, y: 0, width: 20, height: 230 },
-  { x: 430, y: 90, width: 30, height: 50 },
-  { x: 795, y: 100, width: 20, height: 90 },
-  { x: 605, y: 0, width: 150, height: 80 },
-  { x: 500, y: 180, width: 330, height: 140 },
-  { x: 0, y: 420, width: 445, height: 35 },
-  { x: 435, y: 420, width: 15, height: 175 },
-  { x: 435, y: 650, width: 15, height: 180 },
-  { x: 0, y: 880, width: 280, height: 90 },
-  { x: 270, y: 850, width: 330, height: 100 },
-  { x: 295, y: 820, width: 150, height: 80 },
-  { x: 270, y: 850, width: 10, height: 80 },
-  { x: 600, y: 820, width: 20, height: 150 },
-  { x: 670, y: 820, width: 20, height: 150 },
-  { x: 690, y: 835, width: 90, height: 120 },
-  { x: 780, y: 835, width: 100, height: 100 },
-  { x: 820, y: 935, width: 15, height: 150 },
-  { x: 1350, y: 915, width: 1920 - 1350, height: 160 },
-  { x: 800, y: 815, width: 200, height: 60 },
-  { x: 890, y: 780, width: 180, height: 70 },
-  { x: 970, y: 750, width: 100, height: 70 },
-  { x: 990, y: 730, width: 100, height: 70 },
-  { x: 1010, y: 710, width: 100, height: 70 },
-  { x: 1040, y: 680, width: 100, height: 60 },
-  { x: 1065, y: 590, width: 100, height: 120 },
-  { x: 1065, y: 450, width: 100, height: 120 },
+  { x: 0, y: 0, width: 60, height: 1080 },
+  { x: 0, y: 150, width: 320, height: 140 },
+  { x: 0, y: 0, width: 160, height: 80 },
+  { x: 0, y: 1070, width: 1920, height: 150 },
+  { x: 0, y: 430, width: 445, height: 35 },
+  { x: 0, y: 820, width: 280, height: 90 },
+  { x: 270, y: 805, width: 330, height: 100 },
+  { x: 290, y: 70, width: 20, height: 100 },
+  { x: 295, y: 780, width: 150, height: 80 },
+  { x: 390, y: 180, width: 120, height: 100 },
+  { x: 410, y: 70, width: 20, height: 200 },
+  { x: 420, y: 200, width: 120, height: 100 },
+  { x: 430, y: 150, width: 30, height: 50 },
+  { x: 435, y: 430, width: 15, height: 165 },
+  { x: 435, y: 635, width: 15, height: 180 },
+  { x: 440, y: 220, width: 120, height: 100 },
+  { x: 460, y: 240, width: 120, height: 100 },
+  { x: 500, y: 220, width: 330, height: 140 },
+  { x: 600, y: 780, width: 20, height: 140 },
+  { x: 605, y: 0, width: 155, height: 140 },
+  { x: 670, y: 780, width: 20, height: 140 },
+  { x: 690, y: 795, width: 90, height: 120 },
+  { x: 780, y: 795, width: 100, height: 100 },
+  { x: 795, y: 140, width: 20, height: 90 },
+  { x: 800, y: 775, width: 200, height: 60 },
+  { x: 820, y: 895, width: 15, height: 140 },
+  { x: 890, y: 750, width: 180, height: 70 },
+  { x: 890, y: 240, width: 100, height: 100 },
+  { x: 915, y: 140, width: 15, height: 130 },
+  { x: 915, y: 220, width: 50, height: 60 }, 
+  { x: 929, y: 280, width: 120, height: 100 },
+  { x: 949, y: 300, width: 120, height: 100 },
+  { x: 969, y: 320, width: 120, height: 80 },
+  { x: 970, y: 740, width: 100, height: 70 },
+  { x: 990, y: 720, width: 100, height: 70 },
+  { x: 1010, y: 700, width: 100, height: 70 },
+  { x: 1040, y: 670, width: 100, height: 60 },
   { x: 1040, y: 430, width: 170, height: 75 },
   { x: 1060, y: 410, width: 130, height: 130 },
-  { x: 1085, y: 190, width: 80, height: 300 },
-  { x: 1110, y: 160, width: 80, height: 100 },
-  { x: 1130, y: 140, width: 80, height: 100 },
-  { x: 1130, y: 140, width: 100, height: 30 },
-  { x: 1160, y: 0, width: 100, height: 20 },
-  { x: 1160, y: 40, width: 100, height: 100 },
-  { x: 0, y: 1070, width: 1920, height: 150 },
+  { x: 1065, y: 590, width: 100, height: 120 },
+  { x: 1065, y: 445, width: 100, height: 120 },
+  { x: 1085, y: 210, width: 80, height: 300 },
+  { x: 1110, y: 190, width: 80, height: 100 },
+  { x: 1130, y: 170, width: 80, height: 70 },
+  { x: 1160, y: 170, width: 100, height: 20 },
+  { x: 1160, y: 140, width: 100, height: 30 },
+  { x: 1160, y: 110, width: 100, height: 80 },
+  { x: 1165, y: 20, width: 120, height: 40 },
+  { x: 1155, y: 30, width: 120, height: 50 },
+  { x: 1170, y: 0, width: 120, height: 20 },
+  { x: 1076, y: 0, width: 44, height: 56 },
+  { x: 1170, y: 0, width: 120, height: 20 },
+  { x: 1290, y: 0, width: 120, height: 20 },
+  { x: 1320, y: 0, width: 40, height: 90 },
+  { x: 1169, y: 140 + 150, width: 260, height: 100 },
+  { x: 1169 + 225, y: 200, width: 16, height: 100 },
+  { x: 1169, y: 140 + 120, width: 245, height: 50 },
+  { x: 1350, y: 870, width: 1920 - 1350, height: 30 },
+  { x: 1350, y: 870, width: 15, height: 145 },
+  { x: 1410, y: 40, width: 220, height: 125 },
+  { x: 1480, y: 0, width: 130, height: 125 },
+  { x: 1610, y: 150 + 140, width: 1920 - 1610, height: 100 },
+  { x: 1630, y: 120, width: 25, height: 50 },
+  { x: 1635, y: 200, width: 14, height: 140 },
+  { x: 1635, y: 140 + 120, width: 1920 - 1635, height: 50 },
+  { x: 1680, y: 50, width: 90, height: 65 },
+  { x: 1850, y: 0, width: 70, height: 140 },
+  { x: 1850, y: 280, width: 70, height: 1080 },
 ];
-function updateScalingFactors() {
-  const barnElement = document.getElementById("animals");
-  const barnRect = barnElement.getBoundingClientRect();
-  scaleX = barnRect.width / 1920;
-  scaleY = barnRect.height / 1080;
-}
+
 const logged = localStorage.getItem("loggedin");
 
 if (!logged) {
-  
   function clearLocalStorageExceptUsers() {
-    const keysToKeep = ["users"]; 
+    const keysToKeep = ["users"];
 
-    
     const allKeys = Object.keys(localStorage);
 
-    
     allKeys.forEach((key) => {
       if (!keysToKeep.includes(key)) {
         localStorage.removeItem(key);
@@ -90,21 +96,21 @@ if (!logged) {
     });
   }
 
-  
   clearLocalStorageExceptUsers();
 
-  
-  window.location.href = "/login/index.html";
+  const loginPath = path.join(appDir, "login/index.html");
+  window.location.href = `file://${loginPath}`;
 }
 
 function isInRestrictedZone(animalX, animalY, animalWidth, animalHeight) {
-  updateScalingFactors();
+  const { bgWidth, bgHeight, offsetX, offsetY } = calculateBackgroundOffsets();
 
   return restrictedZones.some((zone) => {
-    const zoneX = zone.x * scaleX;
-    const zoneY = zone.y * scaleY;
-    const zoneWidth = zone.width * scaleX;
-    const zoneHeight = zone.height * scaleY;
+    const zoneX = (zone.x / 1920) * bgWidth + offsetX;
+    const zoneY = (zone.y / 1080) * bgHeight + offsetY;
+    const zoneWidth = (zone.width / 1920) * bgWidth;
+    const zoneHeight = (zone.height / 1080) * bgHeight;
+
     return (
       animalX < zoneX + zoneWidth &&
       animalX + animalWidth > zoneX &&
@@ -116,7 +122,7 @@ function isInRestrictedZone(animalX, animalY, animalWidth, animalHeight) {
 
 const rows = Math.floor(window.innerHeight / gridSize);
 const cols = Math.floor(window.innerWidth / gridSize);
-const grid = Array.from({ length: rows }, () => Array(cols).fill(0));
+const grida = Array.from({ length: rows }, () => Array(cols).fill(0));
 restrictedZones.forEach((zone) => {
   const startX = Math.floor(zone.x / gridSize);
   const startY = Math.floor(zone.y / gridSize);
@@ -126,7 +132,7 @@ restrictedZones.forEach((zone) => {
     if (i >= rows) continue;
     for (let j = startX; j <= endX; j++) {
       if (j >= cols) continue;
-      grid[i][j] = 1;
+      grida[i][j] = 1;
     }
   }
 });
@@ -138,7 +144,7 @@ function getUserAnimals() {
 
 function createAnimal(animal) {
   const animalElement = document.createElement("img");
-  animalElement.src = animal.img
+  animalElement.src = animal.img;
   animalElement.className = "animal";
   animalElement.style.position = "absolute";
   animalElement.dataset.name = animal.name;
@@ -249,7 +255,8 @@ function isValidCell(row, col) {
 }
 const backbtn = document.getElementById("backArrow");
 backbtn.addEventListener("click", function () {
-  window.location = "/menu/menu.html";
+  const menuPath = path.join(appDir, "menu/menu.html");
+  window.location.href = `file://${menuPath}`;
 });
 function moveOutOfRestrictedZone(animal) {
   const directions = [
@@ -377,15 +384,20 @@ function roamAnimal(animal) {
 }
 
 function createFood(event) {
-  const foodX = event.clientX - 10;
-  const foodY = event.clientY - 10;
+  const { bgWidth, bgHeight, offsetX, offsetY } = calculateBackgroundOffsets();
+
+  
+  const foodX = (event.clientX - offsetX) / (bgWidth / 1920);
+  const foodY = (event.clientY - offsetY) / (bgHeight / 1080);
   const foodWidth = 20;
   const foodHeight = 20;
 
+  
   if (isInRestrictedZone(foodX, foodY, foodWidth, foodHeight)) {
     return;
   }
 
+  
   const foodElement = document.createElement("div");
   foodElement.className = "food";
   foodElement.style.position = "absolute";
@@ -393,14 +405,18 @@ function createFood(event) {
   foodElement.style.height = "1.75rem";
   foodElement.style.backgroundImage = "url('../assets/items/Pizza.webp')";
   foodElement.style.backgroundSize = "cover";
+
   
-  foodElement.style.left = `${foodX}px`;
-  foodElement.style.top = `${foodY}px`;
+  foodElement.style.left = `${(foodX / 1920) * bgWidth + offsetX}px`;
+  foodElement.style.top = `${(foodY / 1080) * bgHeight + offsetY}px`;
   animalContainer.appendChild(foodElement);
   foodElements.push(foodElement);
 
-  const foodRow = Math.floor(event.clientY / gridSize);
-  const foodCol = Math.floor(event.clientX / gridSize);
+  
+  const foodRow = Math.floor(foodY / gridSize);
+  const foodCol = Math.floor(foodX / gridSize);
+
+  
   const animals = document.querySelectorAll(".animal");
   let closestAnimal = null;
   let minDistance = Infinity;
@@ -408,13 +424,17 @@ function createFood(event) {
   animals.forEach((animal) => {
     if (animal.dataset.isMovingToFood === "true") return;
 
-    const animalRow = Math.floor(
-      (parseFloat(animal.style.top) + animal.offsetHeight / 2) / gridSize
-    );
-    const animalCol = Math.floor(
-      (parseFloat(animal.style.left) + animal.offsetWidth / 2) / gridSize
-    );
+    
+    const animalX =
+      (parseFloat(animal.style.left) + animal.offsetWidth /2 - offsetX) / (bgWidth / 1920);
+    const animalY =
+      (parseFloat(animal.style.top) + animal.offsetHeight / 2 - offsetY) /
+      (bgHeight / 1080);
 
+    const animalRow = Math.floor(animalY / gridSize);
+    const animalCol = Math.floor(animalX / gridSize);
+
+    
     const distance =
       Math.abs(animalRow - foodRow) + Math.abs(animalCol - foodCol);
 
@@ -428,113 +448,60 @@ function createFood(event) {
     closestAnimal.dataset.isMovingToFood = "true";
     cancelAnimationFrame(closestAnimal.roamAnimationId);
     setTimeout(() => {
+      
       const start = {
         row: Math.floor(
           (parseFloat(closestAnimal.style.top) +
-            closestAnimal.offsetHeight / 2) /
-            gridSize
+            closestAnimal.offsetHeight / 2 -
+            offsetY) /
+            (gridSize * (bgHeight / 1080))
         ),
         col: Math.floor(
           (parseFloat(closestAnimal.style.left) +
-            closestAnimal.offsetWidth / 2) /
-            gridSize
+            closestAnimal.offsetWidth / 2 -
+            offsetX) /
+            (gridSize * (bgWidth / 1920))
         ),
       };
-      const end = { row: foodRow, col: foodCol };
+
+      const end = {
+        row: foodRow,
+        col: foodCol,
+      };
 
       const path = astar(start, end);
-      if (path) {
+      if (!path) {
+        foodElement.remove();
+        foodElements = foodElements.filter((el) => el !== foodElement);
+        closestAnimal.dataset.isMovingToFood = "false";
+        roamAnimal(closestAnimal);
+      } else {
         followPath(closestAnimal, path, () => {
           foodElement.remove();
           foodElements = foodElements.filter((el) => el !== foodElement);
-          if (
-            isInRestrictedZone(
-              parseFloat(closestAnimal.style.left),
-              parseFloat(closestAnimal.style.top),
-              closestAnimal.offsetWidth,
-              closestAnimal.offsetHeight
-            )
-          ) {
-            unstickAnimal(closestAnimal);
-          }
+              if (
+                isInRestrictedZone(
+                  parseFloat(closestAnimal.style.left),
+                  parseFloat(closestAnimal.style.top),
+                  closestAnimal.offsetWidth,
+                  closestAnimal.offsetHeight
+                )
+              ) {
+                unstickAnimal(closestAnimal);
+              }
           closestAnimal.dataset.isMovingToFood = "false";
           roamAnimal(closestAnimal);
         });
       }
     }, 200);
+  } else {
   }
-}
-
-function followPath(animal, path, callback) {
-  let index = 0;
-  const speed = 0.7;
-  function moveStep() {
-    if (index >= path.length) {
-      if (callback) callback();
-      return;
-    }
-    const node = path[index];
-    const nextX = node.col * gridSize + gridSize / 2;
-    const nextY = node.row * gridSize + gridSize / 2;
-    const currentX = parseFloat(animal.style.left) + animal.offsetWidth / 2;
-    const currentY = parseFloat(animal.style.top) + animal.offsetHeight / 2;
-    const deltaX = nextX - currentX;
-    const deltaY = nextY - currentY;
-    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-    if (distance > speed) {
-      const moveX = (deltaX / distance) * speed;
-      const moveY = (deltaY / distance) * speed;
-      animal.style.left = `${currentX + moveX - animal.offsetWidth / 2}px`;
-      animal.style.top = `${currentY + moveY - animal.offsetHeight / 2}px`;
-      requestAnimationFrame(moveStep);
-    } else {
-      animal.style.left = `${nextX - animal.offsetWidth / 2}px`;
-      animal.style.top = `${nextY - animal.offsetHeight / 2}px`;
-      index++;
-      setTimeout(moveStep, 10);
-    }
-  }
-  moveStep();
-  setTimeout(() => {}, 500);
-}
-function drawRestrictedZones() {
-  const existingZones = document.querySelectorAll(".restricted-area");
-  existingZones.forEach((zone) => zone.remove());
-
-  restrictedZones.forEach((zone) => {
-    const zoneElement = document.createElement("div");
-    zoneElement.className = "restricted-area";
-    zoneElement.style.position = "absolute";
-    zoneElement.style.left = `${zone.x * scaleX}px`;
-    zoneElement.style.top = `${zone.y * scaleY}px`;
-    zoneElement.style.width = `${zone.width * scaleX}px`;
-    zoneElement.style.height = `${zone.height * scaleY}px`;
-    animalContainer.appendChild(zoneElement);
-  });
-}
-
-drawRestrictedZones();
-
-function updateRestrictedZones() {
-  const barnElement = document.getElementById("animals");
-  const barnRect = barnElement.getBoundingClientRect();
-  const scaleX = barnRect.width / 1920;
-  const scaleY = barnRect.height / 1080;
-
-  const restrictedAreaElements = document.querySelectorAll(".restricted-area");
-  restrictedAreaElements.forEach((element, index) => {
-    const zone = restrictedZones[index];
-    element.style.left = `${zone.x * scaleX}px`;
-    element.style.top = `${zone.y * scaleY}px`;
-    element.style.width = `${zone.width * scaleX}px`;
-    element.style.height = `${zone.height * scaleY}px`;
-  });
 }
 function unstickAnimal(animal) {
   const startX = parseFloat(animal.style.left) + animal.offsetWidth / 2;
   const startY = parseFloat(animal.style.top) + animal.offsetHeight / 2;
 
-  const safeDistance = 30;
+  const safeDistance = 50;
   const searchRadius = 100;
   const stepSize = gridSize;
 
@@ -569,11 +536,11 @@ function unstickAnimal(animal) {
           animal.offsetHeight
         )
       ) {
-        const isFarEnough = restrictedZones.every((zone) => {
-          const zoneX = zone.x * scaleX;
-          const zoneY = zone.y * scaleY;
-          const zoneWidth = zone.width * scaleX;
-          const zoneHeight = zone.height * scaleY;
+        const distanceToRestrictedZones = restrictedZones.reduce((minDist, zone) => {
+          const zoneX = (zone.x / 1920) * animalContainer.clientWidth;
+          const zoneY = (zone.y / 1080) * animalContainer.clientHeight;
+          const zoneWidth = (zone.width / 1920) * animalContainer.clientWidth;
+          const zoneHeight = (zone.height / 1080) * animalContainer.clientHeight;
           const zoneCenterX = zoneX + zoneWidth / 2;
           const zoneCenterY = zoneY + zoneHeight / 2;
 
@@ -581,31 +548,26 @@ function unstickAnimal(animal) {
             (candidateX - zoneCenterX) ** 2 + (candidateY - zoneCenterY) ** 2
           );
 
-          return distance >= safeDistance;
-        });
+          return Math.min(minDist, distance);
+        }, Infinity);
 
-        if (isFarEnough) {
-          safeLocations.push({ x: candidateX, y: candidateY });
-        }
+        safeLocations.push({ x: candidateX, y: candidateY, distanceToRestrictedZones });
       }
     }
   }
 
-  let closestLocation = null;
-  let minDistance = Infinity;
+  let bestLocation = null;
+  let maxDistance = -Infinity;
   safeLocations.forEach((location) => {
-    const distance = Math.sqrt(
-      (location.x - startX) ** 2 + (location.y - startY) ** 2
-    );
-    if (distance < minDistance) {
-      minDistance = distance;
-      closestLocation = location;
+    if (location.distanceToRestrictedZones > maxDistance) {
+      maxDistance = location.distanceToRestrictedZones;
+      bestLocation = location;
     }
   });
 
-  if (closestLocation) {
-    const endX = closestLocation.x - animal.offsetWidth / 2;
-    const endY = closestLocation.y - animal.offsetHeight / 2;
+  if (bestLocation) {
+    const endX = bestLocation.x - animal.offsetWidth / 2;
+    const endY = bestLocation.y - animal.offsetHeight / 2;
 
     const duration = 500;
     const startTime = performance.now();
@@ -617,78 +579,117 @@ function unstickAnimal(animal) {
       const newX = startX + (endX - startX) * progress;
       const newY = startY + (endY - startY) * progress;
 
-      animal.style.left = `${newX}px`;
-      animal.style.top = `${newY}px`;
+      animal.style.left = `${newX - animal.offsetWidth / 2}px`;
+      animal.style.top = `${newY - animal.offsetHeight / 2}px`;
 
       if (progress < 1) {
         requestAnimationFrame(animateMove);
       } else {
-        console.log("Animal successfully moved to a safe location.");
+        if (
+          isInRestrictedZone(
+            parseFloat(animal.style.left),
+            parseFloat(animal.style.top),
+            animal.offsetWidth,
+            animal.offsetHeight
+          )
+        ) {
+          unstickAnimal(animal);
+        } else {
+        }
       }
     }
 
     requestAnimationFrame(animateMove);
   } else {
-    console.warn("No valid nearby location found to unstick the animal.");
   }
 }
 
-function updateAnimalSizes() {
-  const barnElement = document.getElementById("animals");
-  const barnRect = barnElement.getBoundingClientRect();
-  const scaleX = barnRect.width / 1920;
-  const scaleY = barnRect.height / 1080;
+function followPath(animal, path, callback) {
+  let index = 0;
+  const speed = 1;
 
-  const animals = document.querySelectorAll(".animal");
-  animals.forEach((animal) => {
-    const originalWidth = 50;
-    const originalHeight = 50;
-    animal.style.width = `${originalWidth * scaleX}px`;
-    animal.style.height = `${originalHeight * scaleY}px`;
+  function moveStep() {
+    if (index >= path.length) {
+      if (callback) callback();
+      return;
+    }
 
-    const left = parseFloat(animal.style.left);
-    const top = parseFloat(animal.style.top);
-    animal.style.left = `${left * scaleX}px`;
-    animal.style.top = `${top * scaleY}px`;
+    const { bgWidth, bgHeight, offsetX, offsetY } =
+      calculateBackgroundOffsets(); 
+    const node = path[index];
+    const nextX =
+      (node.col * gridSize * bgWidth) / 1920 +
+      offsetX +
+      (gridSize * bgWidth) / 1920 / 2;
+    const nextY =
+      (node.row * gridSize * bgHeight) / 1080 +
+      offsetY +
+      (gridSize * bgHeight) / 1080 / 2;
+
+    
+    const currentX = parseFloat(animal.style.left) + animal.offsetWidth / 2;
+    const currentY = parseFloat(animal.style.top) + animal.offsetHeight / 2;
+
+    
+    const deltaX = nextX - currentX;
+    const deltaY = nextY - currentY;
+    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+    if (distance > speed) {
+      const moveX = (deltaX / distance) * speed;
+      const moveY = (deltaY / distance) * speed;
+
+      animal.style.left = `${currentX + moveX - animal.offsetWidth / 2}px`;
+      animal.style.top = `${currentY + moveY - animal.offsetHeight / 2}px`;
+
+      requestAnimationFrame(moveStep);
+    } else {
+      
+      animal.style.left = `${nextX - animal.offsetWidth / 2}px`;
+      animal.style.top = `${nextY - animal.offsetHeight / 2}px`;
+      index++;
+      setTimeout(moveStep, 10);
+    }
+  }
+
+  moveStep();
+}
+
+function drawRestrictedZones() {
+  const { bgWidth, bgHeight, offsetX, offsetY } = calculateBackgroundOffsets();
+  const existingZones = document.querySelectorAll(".restricted-area");
+  existingZones.forEach((zone) => zone.remove());
+
+  restrictedZones.forEach((zone) => {
+    const zoneElement = document.createElement("div");
+    zoneElement.className = "restricted-area";
+
+    zoneElement.style.position = "absolute";
+    zoneElement.style.left = `${(zone.x / 1920) * bgWidth + offsetX}px`;
+    zoneElement.style.top = `${(zone.y / 1080) * bgHeight + offsetY}px`;
+    zoneElement.style.width = `${(zone.width / 1920) * bgWidth}px`;
+    zoneElement.style.height = `${(zone.height / 1080) * bgHeight}px`;
+
+    animalContainer.appendChild(zoneElement);
   });
 }
 
-function updateCoordinates() {
-  const barnElement = document.getElementById("animals");
-  const barnRect = barnElement.getBoundingClientRect();
-  const scaleX = barnRect.width / 1920;
-  const scaleY = barnRect.height / 1080;
 
-  const animals = document.querySelectorAll(".animal");
-  animals.forEach((animal) => {
-    const left = parseFloat(animal.style.left) / scaleX;
-    const top = parseFloat(animal.style.top) / scaleY;
-    animal.style.left = `${left}px`;
-    animal.style.top = `${top}px`;
-  });
-
-  const restrictedAreaElements = document.querySelectorAll(".restricted-area");
-  restrictedAreaElements.forEach((element, index) => {
-    const zone = restrictedZones[index];
-    element.style.left = `${zone.x * scaleX}px`;
-    element.style.top = `${zone.y * scaleY}px`;
-    element.style.width = `${zone.width * scaleX}px`;
-    element.style.height = `${zone.height * scaleY}px`;
-  });
-}
 
 window.addEventListener("resize", () => {
-  updateScalingFactors();
-  resetGrid();
   drawRestrictedZones();
 });
-updateScalingFactors();
-resetGrid();
-drawRestrictedZones();
 
+
+
+let initialGridResetDone = false;
 document.addEventListener("DOMContentLoaded", () => {
   hideStatWindow();
   const userAnimals = getUserAnimals();
+  setTimeout(() => {
+    resetGrid();
+    drawRestrictedZones();
+  }, 100); 
   userAnimals.forEach((animal) => {
     const animalElement = createAnimal(animal);
   });
@@ -703,18 +704,50 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+function calculateBackgroundOffsets() {
+  const barnElement = document.getElementById("animals");
+  const barnRect = barnElement.getBoundingClientRect();
+  const bgImageAspectRatio = 1920 / 1080;
+  const containerAspectRatio = barnRect.width / barnRect.height;
+
+  let bgWidth, bgHeight, offsetX, offsetY;
+
+  if (containerAspectRatio > bgImageAspectRatio) {
+    bgWidth = barnRect.width;
+    bgHeight = barnRect.width / bgImageAspectRatio;
+    offsetX = 0;
+    offsetY = (barnRect.height - bgHeight) / 2;
+  } else {
+    bgWidth = barnRect.height * bgImageAspectRatio;
+    bgHeight = barnRect.height;
+    offsetX = (barnRect.width - bgWidth) / 2;
+    offsetY = 0;
+  }
+
+  return { bgWidth, bgHeight, offsetX, offsetY };
+}
+function initializeGrid() {
+  return Array.from({ length: rows }, () => Array(cols).fill(0));
+}
+
 function resetGrid() {
-  updateScalingFactors();
-  grid.forEach((row) => row.fill(0));
+  const { bgWidth, bgHeight } = calculateBackgroundOffsets();
+  const rows = Math.floor(bgHeight / gridSize);
+  const cols = Math.floor(bgWidth / gridSize);
+
+  grid = Array.from({ length: rows }, () => Array(cols).fill(0));
+
   restrictedZones.forEach((zone) => {
-    const startX = Math.floor((zone.x * scaleX) / gridSize);
-    const startY = Math.floor((zone.y * scaleY) / gridSize);
-    const endX = Math.floor(((zone.x + zone.width) * scaleX) / gridSize);
-    const endY = Math.floor(((zone.y + zone.height) * scaleY) / gridSize);
+    const startX = Math.floor(zone.x / gridSize);
+    const startY = Math.floor(zone.y / gridSize);
+    const endX = Math.floor((zone.x + zone.width) / gridSize);
+    const endY = Math.floor((zone.y + zone.height) / gridSize);
 
     for (let i = startY; i <= endY; i++) {
+      if (i < 0 || i >= rows) continue;
       for (let j = startX; j <= endX; j++) {
-        if (i >= 0 && i < rows && j >= 0 && j < cols) grid[i][j] = 1;
+        if (j < 0 || j >= cols) continue;
+        grid[i][j] = 1;
       }
     }
   });
@@ -723,43 +756,27 @@ function resetGrid() {
 let currentAnimal = null;
 
 function showStatWindow(animal) {
-  const pic = document.getElementById("animalStatPicture");
-  pic.src = animal.src;
   
+  const pic = document.getElementById("animalStatPicture");
   const statWindow = document.getElementById("statWindow");
   const animalName = document.getElementById("animalName");
   const animalAttack = document.getElementById("animalAttack");
   const animalHealth = document.getElementById("animalHealth");
   const animalCost = document.getElementById("animalCost");
   const hrElement = statWindow.querySelector("hr");
-
+  const animalColor = animal.dataset.color || "#ffffff";
+  
   if (currentAnimal === animal) {
     return;
   }
-
-  currentAnimal = animal;
-
-  const animalColor = animal.dataset.color || "#ffffff";
-  statWindow.style.setProperty("--animal-color", animalColor);
-
-  if (statWindow.classList.contains("show")) {
-    statWindow.classList.remove("show");
-    setTimeout(() => {
-      animalName.textContent = animal.dataset.name;
-      animalAttack.textContent = animal.dataset.attack;
-      animalHealth.textContent = animal.dataset.health;
-      animalCost.textContent = animal.dataset.cost;
-      hrElement.style.width = "0";
-      statWindow.classList.add("show");
-      setTimeout(() => {
-        hrElement.style.width = "100%";
-      }, 10);
-    }, 300);
-  } else {
+  
+  const updateStatWindow = () => {
+    pic.src = animal.src;
     animalName.textContent = animal.dataset.name;
     animalAttack.textContent = animal.dataset.attack;
     animalHealth.textContent = animal.dataset.health;
     animalCost.textContent = animal.dataset.cost;
+    statWindow.style.setProperty("--animal-color", animalColor);
     hrElement.style.width = "0";
     statWindow.style.display = "block";
     setTimeout(() => {
@@ -768,7 +785,47 @@ function showStatWindow(animal) {
         hrElement.style.width = "100%";
       }, 10);
     }, 10);
+  };
+
+
+  if (statWindow.classList.contains("show")) {
+    const oldAnimal = currentAnimal;
+    statWindow.classList.remove("show");
+    setTimeout(() => {
+      statWindow.style.display = "none";
+      updateStatWindow();
+      currentAnimal = animal;
+      updateStatWindowPosition(animal);
+    }, 300);
+    updateStatWindowPosition(oldAnimal);
+  } else {
+    updateStatWindow();
+    currentAnimal = animal;
+    updateStatWindowPosition(animal);
   }
+}
+
+function updateStatWindowPosition(animal) {
+  const statWindow = document.getElementById("statWindow");
+  const animalRect = animal.getBoundingClientRect();
+  const statWindowWidth = statWindow.offsetWidth;
+  const statWindowHeight = statWindow.offsetHeight;
+
+  let leftPosition = animalRect.right + 10;
+  let topPosition = animalRect.top;
+
+  if (leftPosition + statWindowWidth > window.innerWidth) {
+    leftPosition = animalRect.left - statWindowWidth - 10;
+  }
+
+  if (topPosition + statWindowHeight > window.innerHeight) {
+    topPosition = window.innerHeight - statWindowHeight - 10;
+  }
+
+  statWindow.style.left = `${leftPosition}px`;
+  statWindow.style.top = `${topPosition}px`;
+
+  requestAnimationFrame(() => updateStatWindowPosition(animal));
 }
 
 function hideStatWindow() {
@@ -777,13 +834,16 @@ function hideStatWindow() {
   setTimeout(() => {
     statWindow.style.display = "none";
     currentAnimal = null;
-  }, 300);
+  }, 800);
 }
+
 const backgroundAudio = new Audio(
   "../assets/sound/Super Auto Pets  - Menu Theme.mp3"
 );
 backgroundAudio.volume = 0.08;
 backgroundAudio.loop = true;
+
+
 const savedTime = localStorage.getItem("backgroundAudioTime");
 if (savedTime) {
   backgroundAudio.currentTime = parseFloat(savedTime);

@@ -1,11 +1,11 @@
 let cheatCode = "";
 const cheatSequences = {
   jaklingko: "500000 Coins",
-  subcoc: "MSeer",
-  subcojava: "YenguiK",
-  subcodb: "VandaJ",
-  subcowd: "PamstIr",
-  subcovis: "eagSVle",
+  subcoc: "Your next reward is your SubCo A&DS!",
+  subcojava: "Your next reward is your SubCo Java!",
+  subcodb: "Your next reward is your SubCo DB!",
+  subcowd: "Your next reward is your SubCo WD!",
+  subcovis: "Your next reward is your SubCo COMVIS!",
 };
 let cheatActivated = false;
 let cheatReward = "";
@@ -35,16 +35,37 @@ document.addEventListener("keydown", function (event) {
   }
 });
 
-function updateCoinsDisplay() {
+  function updateCoinsDisplay() {
+    const coins = parseInt(localStorage.getItem("coins"), 10);
+    coinsDisplay.textContent = formatCoins(coins);
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+    const userIndex = users.findIndex((user) => user.displayName === username);
+    if (userIndex !== -1) {
+      users[userIndex].coins = coins;
+      localStorage.setItem("users", JSON.stringify(users));
+    }
+  }
+function addCoinsReward() {
   let coins = Number(localStorage.getItem("coins"));
   coins += 500000;
-  localStorage.setItem("coins", coins);
-  const coinsDisplay = document.getElementById("coinsDisplay");
-  if (coinsDisplay) {
-    coinsDisplay.textContent = `Coins: ${coins}`;
+  localStorage.setItem("coins", coins.toString());
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+  const userIndex = users.findIndex((user) => user.displayName === username);
+  if (userIndex !== -1) {
+    users[userIndex].coins = coins;
+    localStorage.setItem("users", JSON.stringify(users));
+  }
+  updateCoinsDisplay();
+}
+function formatCoins(coins) {
+  if (coins >= 1000000) {
+    return (coins / 1000000).toFixed(1) + "M";
+  } else if (coins >= 1000) {
+    return (coins / 1000).toFixed(1) + "K";
+  } else {
+    return coins.toString();
   }
 }
-
 const cheatModal = document.getElementById("cheat-modal");
 const cheatText = document.getElementById("cheat-text");
 const cheatRewardText = document.getElementById("cheat-reward");
@@ -62,16 +83,10 @@ function showCheatModal(reward) {
       cheatModal.style.display = "none";
       cheatModal.classList.remove("hide");
       cheatActivated = false;
-    }, 500);
+    }, 3000);
   }, 1500);
 
   if(reward == "500000 Coins"){
-     let users = JSON.parse(localStorage.getItem("users")) || [];
-     let coins = Number(localStorage.getItem("coins"));
-     const userIndex = users.findIndex((user) => user.displayName === username);
-    if (userIndex !== -1) {
-      users[userIndex].coins = coins;
-      localStorage.setItem("users", JSON.stringify(users));
-    }
+    addCoinsReward();
   }
 }
