@@ -141,8 +141,8 @@ if (!logged) {
 
   clearLocalStorageExceptUsers();
 
-  const loginPath = path.join(appDir, "login/index.html"); 
-    window.location.href = `file://${loginPath}`; 
+  const loginPath = path.join(appDir, "login/index.html");
+  window.location.href = `file://${loginPath}`;
 }
 
 function saveRandomAnimals() {
@@ -152,8 +152,8 @@ function rollfirst() {
   const ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
   if (!ownedAnimals || ownedAnimals.length === 0) {
     setTimeout(() => {
-      const homePath = path.join(appDir, "home/homepage.html"); 
-    window.location.href = `file://${homePath}`; 
+      const homePath = path.join(appDir, "home/homepage.html");
+      window.location.href = `file://${homePath}`;
     }, 3000);
     return;
   }
@@ -211,19 +211,16 @@ function renderRandomAnimals() {
   const randomAnimalsContainer = document.getElementById("random-animals");
   randomAnimalsContainer.innerHTML = "";
 
-  
   for (let i = 0; i < maxShopAnimals; i++) {
-    const animal = randomAnimals[i] || null; 
+    const animal = randomAnimals[i] || null;
     const animalDiv = document.createElement("div");
     animalDiv.classList.add("animal");
     animalDiv.setAttribute("data-index", i);
 
-    
     const stone = document.createElement("div");
     stone.classList.add("stone");
     animalDiv.appendChild(stone);
 
-    
     if (animal) {
       const animalImage = document.createElement("img");
       animalImage.src = animal.img;
@@ -311,7 +308,6 @@ function renderRandomAnimals() {
     randomAnimalsContainer.appendChild(animalDiv);
   }
 }
-
 
 function saveBattleLineup() {
   localStorage.setItem("battleLineup", JSON.stringify(battleLineup));
@@ -687,7 +683,7 @@ function renderTeams() {
           iconSize
         );
         ctx.fillStyle = "white";
-        ctx.font = "1rem VUper";
+        ctx.font = "1.75rem VUper";
         let attackText = `${animal.attack}`;
         let attackTextWidth = ctx.measureText(attackText).width;
         let attackX =
@@ -701,7 +697,7 @@ function renderTeams() {
           iconSize
         );
         ctx.fillStyle = "white";
-        ctx.font = "1rem VUper";
+        ctx.font = "1.75rem VUper";
         let healthText = `${animal.health}`;
         let healthTextWidth = ctx.measureText(healthText).width;
         let healthX =
@@ -725,7 +721,7 @@ function renderTeams() {
           iconSize
         );
         ctx.fillStyle = "white";
-        ctx.font = "1rem VUper";
+        ctx.font = "1.75rem VUper";
         let attackText = `${animal.attack}`;
         let attackTextWidth = ctx.measureText(attackText).width;
         let attackX = enemyOffsetX + index * 100 + 20 - attackTextWidth / 2;
@@ -738,7 +734,7 @@ function renderTeams() {
           iconSize
         );
         ctx.fillStyle = "white";
-        ctx.font = "1rem VUper";
+        ctx.font = "1.75rem VUper";
         let healthText = `${animal.health}`;
         let healthTextWidth = ctx.measureText(healthText).width;
         let healthX = enemyOffsetX + index * 100 + 60 - healthTextWidth / 2;
@@ -1240,8 +1236,8 @@ function hideNonBattleElements() {
 }
 document.getElementById("backArrow").addEventListener("click", function () {
   localStorage.removeItem("ingame");
-  const menuPath = path.join(appDir, "menu/menu.html"); 
-  window.location.href = `file://${menuPath}`; 
+  const menuPath = path.join(appDir, "menu/menu.html");
+  window.location.href = `file://${menuPath}`;
 });
 function showCanvas() {
   document.getElementById("battleCanvas").classList.remove("hidden");
@@ -1257,7 +1253,7 @@ function adjustCanvasSize() {
 }
 function loadassets() {
   fistImg.src = "../assets/game-asset/fist.png";
-  heartImg.src = "../assets/game-asset/heart.png";
+  heartImg.src = "../assets/game-asset/stat-heart.png";
   bandageImg.src = "../assets/game-asset/hurt.png";
   starImg.src = "../assets/game-asset/star-new-new.png";
 }
@@ -1324,8 +1320,8 @@ document.addEventListener("DOMContentLoaded", function () {
         setTimeout(() => {
           if (lives <= 0) {
             resetGame();
-            const menuPath = path.join(appDir, "menu/menu.html"); 
-            window.location.href = `file://${menuPath}`; 
+            const menuPath = path.join(appDir, "menu/menu.html");
+            window.location.href = `file://${menuPath}`;
           }
         }, 1000);
         localStorage.setItem("lives", lives);
@@ -1531,7 +1527,7 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
     ctx.drawImage(fistImg, playerX, playerY + 60, 40, 40);
     ctx.drawImage(heartImg, playerX + 40, playerY + 60, 40, 40);
     ctx.fillStyle = "white";
-    ctx.font = "1rem VUper";
+    ctx.font = "1.75rem VUper";
     let attackText = `${playerAnimal.attack}`;
     let attackTextWidth = ctx.measureText(attackText).width;
     let attackX = playerX + 20 - attackTextWidth / 2;
@@ -1545,7 +1541,7 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
     ctx.drawImage(fistImg, enemyX, enemyY + 60, 40, 40);
     ctx.drawImage(heartImg, enemyX + 40, enemyY + 60, 40, 40);
     ctx.fillStyle = "white";
-    ctx.font = "1rem VUper";
+    ctx.font = "1.75rem VUper";
     let attackTextEn = `${enemyAnimal.attack}`;
     let attackTextWidthEn = ctx.measureText(attackTextEn).width;
     let attackXEn = enemyX + 20 - attackTextWidthEn / 2;
@@ -1628,7 +1624,7 @@ function animateHeadbutt(playerAnimal, enemyAnimal, onComplete) {
       ctx.drawImage(fistImg, playerX, playerY + 60, 40, 40);
       ctx.drawImage(heartImg, playerX + 40, playerY + 60, 40, 40);
       ctx.fillStyle = "white";
-      ctx.font = "1rem VUper";
+      ctx.font = "1.75rem VUper";
       let attackText = `${playerAnimal.attack}`;
       let attackTextWidth = ctx.measureText(attackText).width;
       let attackX = playerX + 20 - attackTextWidth / 2;
@@ -1745,7 +1741,7 @@ function showDamage(
     ctx.drawImage(fistImg, enemyX, commonY + 60, 40, 40);
     ctx.drawImage(heartImg, enemyX + 40, commonY + 60, 40, 40);
     ctx.fillStyle = "white";
-    ctx.font = "1rem VUper";
+    ctx.font = "1.75rem VUper";
     let attackText = `${playerDamage}`;
     let attackTextWidth = ctx.measureText(attackText).width;
     let attackX = playerX + 20 - attackTextWidth / 2;
@@ -1755,7 +1751,7 @@ function showDamage(
     ctx.fillText(attackText, attackX, commonY + 85);
     ctx.fillText(healthText, healthX, commonY + 85);
     ctx.fillStyle = "white";
-    ctx.font = "1rem VUper";
+    ctx.font = "1.75rem VUper";
     let attackTextEn = `${enemyDamage}`;
     let attackTextWidthEn = ctx.measureText(attackTextEn).width;
     let attackXEn = enemyX + 20 - attackTextWidthEn / 2;
@@ -1902,7 +1898,8 @@ function renderFullTeam() {
       ctx.drawImage(fistImg, xPos, commonY + 60, iconSize, iconSize);
       ctx.drawImage(heartImg, xPos + 40, commonY + 60, iconSize, iconSize);
       ctx.fillStyle = "white";
-      ctx.font = "1rem VUper";
+      ctx.font = "1.75rem VUper";
+
       let attackText = `${animal.attack}`;
       let attackTextWidth = ctx.measureText(attackText).width;
       let attackX = xPos + 20 - attackTextWidth / 2;
@@ -1926,7 +1923,7 @@ function renderFullTeam() {
       ctx.drawImage(fistImg, xPos, commonY + 60, iconSize, iconSize);
       ctx.drawImage(heartImg, xPos + 40, commonY + 60, iconSize, iconSize);
       ctx.fillStyle = "white";
-      ctx.font = "1rem VUper";
+      ctx.font = "1.75rem VUper";
       let attackText = `${animal.attack}`;
       let attackTextWidth = ctx.measureText(attackText).width;
       let attackX = xPos + 20 - attackTextWidth / 2;
@@ -2725,8 +2722,8 @@ function DefeatScreen() {
         hideRightSide();
         openCurtains(() => {
           resetGame();
-          const menuPath = path.join(appDir, "menu/menu.html"); 
-          window.location.href = `file://${menuPath}`; 
+          const menuPath = path.join(appDir, "menu/menu.html");
+          window.location.href = `file://${menuPath}`;
         });
       }, 1000);
     }, 1000);
@@ -3020,17 +3017,17 @@ function generaateMyInfo() {
   const myName = document.createElement("p");
   myName.textContent = username;
   const myLives = document.createElement("pre");
-    myLives.textContent = `Lives     ${lives}`;
+  myLives.textContent = `Lives     ${lives}`;
   const heart = document.createElement("img");
   heart.src = "../assets/game-asset/stat-heart.png";
   heart.style.width = "3rem";
   heart.style.height = "3rem";
   heart.style.position = "relative";
-  heart.style.zIndex = "-1"
-  if(lives ==1){
-    heart.style.left = "-2.2rem"
-  }else{
-    heart.style.left = "-2.4rem"
+  heart.style.zIndex = "-1";
+  if (lives == 1) {
+    heart.style.left = "-2.2rem";
+  } else {
+    heart.style.left = "-2.4rem";
   }
   const RightDiv = document.createElement("div");
   const LeftDiv = document.createElement("div");
@@ -3060,8 +3057,8 @@ function generateEnemyInfo(bossBattle = false) {
   heart.src = "../assets/game-asset/stat-heart.png";
   heart.style.width = "3rem";
   heart.style.height = "3rem";
-  heart.style.position = "relative"
-  heart.style.zIndex = "-1"
+  heart.style.position = "relative";
+  heart.style.zIndex = "-1";
   enemyTeamInfo.innerHTML = "";
   const fromOnline = localStorage.getItem("fromOnline");
   let enemyLives = document.createElement("pre");
@@ -3069,18 +3066,18 @@ function generateEnemyInfo(bossBattle = false) {
   if (fromOnline == "false" && bossBattle == false) {
     enemyName.textContent = "Hard Bot";
     enemyLives.textContent = "Lives     1";
-    heart.style.left = "-2.2rem"
+    heart.style.left = "-2.2rem";
   } else if (bossBattle == true) {
     enemyName.textContent = "ADMIN";
     enemyLives.textContent = "Lives     1";
-    heart.style.left = "-2.2rem"
+    heart.style.left = "-2.2rem";
   } else {
     enemyName.textContent = enemyOnlineName;
     enemyLives.textContent = "Lives     " + enemyOnlineLives;
-    if(enemyOnlineLives == 1){
-      heart.style.left = "-2.2rem"
-    }else{
-      heart.style.left = "-2.4rem"
+    if (enemyOnlineLives == 1) {
+      heart.style.left = "-2.2rem";
+    } else {
+      heart.style.left = "-2.4rem";
     }
   }
   const leftDiv = document.createElement("div");

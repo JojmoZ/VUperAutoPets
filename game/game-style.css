@@ -47,7 +47,7 @@ body {
 #coins {
   font-size: 2rem;
   color: black;
-  margin-left:1rem;
+  margin-left: 1rem;
 }
 .animal {
   width: 6.25rem;
@@ -139,10 +139,14 @@ img {
   width: 8rem;
   height: auto;
 }
-.stats-top{
-  display:flex;
-  position: absolute; 
-  top: 20px;right: 2rem;
+.stats-top {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 20px;
+  gap: 2rem;
+  right: 2rem;
 }
 .back-arrow:hover {
   transform: scale(1.1);
@@ -164,9 +168,9 @@ img {
 }
 
 .stat-icon img {
-  width: 2.5rem;
+  height: 3rem;
+  width: 3rem;
   user-select: none;
-  height: 2.5rem;
   pointer-events: none;
 }
 
@@ -175,7 +179,8 @@ img {
   top: 50%;
   left: 53%;
   transform: translate(-50%, -50%);
-  font-size: 0.9rem;
+  font-size: 1.75rem;
+  -webkit-text-stroke: 2px black;
   font-weight: bold;
   color: white;
 }
@@ -189,28 +194,32 @@ img {
 }
 .coins-container {
   position: relative;
-  /* top: 50px;
-  right: 20px; */
-  background-color: white;
-  padding: 0.2rem 1rem;
+
+  width: fit-content;
+  height: 3rem;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+
+  margin-left: 1.5rem;
+
+  background: white;
   border: 5px solid black;
   border-radius: 0.5rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: black;
-  font-size: 1.25rem;
-  font-weight: bold;
 }
-#coinIcon{
- position: absolute;
-    left: -2rem;
-    width: 3.5rem;
-    height:3.5rem;
 
+#coins {
+  font-family: "VUper", serif;
+  color: black;
+  font-size: 2rem;
+  padding-inline: 2rem 1rem;
 }
-.coins-container span {
-  font-family: "VUper", sans-serif;
+
+#coinImg {
+  position: absolute;
+  left: -2rem;
+  width: 4rem;
+  height: 4rem;
 }
 .hearts-container img {
   width: 4rem;
@@ -304,6 +313,7 @@ img {
   width: auto;
   height: 3rem;
   margin-right: 1rem;
+  padding-right: 2rem;
   cursor: pointer;
   transition: opacity 0.3s ease;
 }
@@ -441,7 +451,7 @@ img {
   align-items: center;
   gap: 2rem;
   margin-right: 35vh;
-  margin-top:3vh;
+  margin-top: 3vh;
 }
 .item-slot {
   margin-right: 2rem;
@@ -548,9 +558,9 @@ img {
 }
 .battlesign {
   width: 8rem;
-  height: 7rem;
+  height: AUTO;
   position: relative;
-  left: 0.2rem;
+  left: 1rem;
   top: -1rem;
   user-select: none;
 }
@@ -718,7 +728,7 @@ img {
 .teamName {
   background-color: white;
   padding: 0.5rem 1rem;
-  border-radius: 15px;
+  border-radius: 0.5rem;
   border: 4px solid black;
   font-size: 2rem;
   font-weight: bold;
@@ -737,14 +747,13 @@ img {
   border: 4px solid black;
 } */
 
-    #teamNameYour {
-      color: #02b6ff;
-    }
+#teamNameYour {
+  color: #02b6ff;
+}
 
-    #teamNameEnemy {
-      color: #ff6933;
-    }
-
+#teamNameEnemy {
+  color: #ff6933;
+}
 
 #vsLabel {
   position: absolute;
@@ -795,7 +804,6 @@ img {
   max-width: 20%;
   box-sizing: border-box;
 }
-
 
 #teamNameYour,
 #teamNameEnemy,
