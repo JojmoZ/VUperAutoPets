@@ -201,8 +201,8 @@ function formatCoins(coins) {
     }
     gachaSound.loop = true;
     gachaSound.play();
-    localStorage.setItem("coins", coins - 5);
-    updateCoinsDisplay();
+   
+    
     let users = JSON.parse(localStorage.getItem("users")) || [];
     const userIndex = users.findIndex((user) => user.displayName === username);
     if (userIndex !== -1) {
@@ -220,7 +220,8 @@ function formatCoins(coins) {
       document.getElementById("column2"),
       document.getElementById("column3"),
     ];
-
+ localStorage.setItem("coins", coins - 5);
+ updateCoinsDisplay();
     const selectedAnimals = [];
     const random = Math.random();
 

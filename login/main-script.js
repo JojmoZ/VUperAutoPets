@@ -242,6 +242,7 @@ window.onload = function () {
     }
 
     if (!isUsernameValid(username)) {
+      console.log('aa')
       showError("username", "Username must be between 5-20 characters long");
 
       return;
@@ -306,7 +307,9 @@ window.onload = function () {
       errorElement.style.opacity = "0";
       errorElement.style.transform = "translateY(-10px)";
       void errorElement.offsetHeight;
-      eye.style.display = "none";
+      if(eye){
+        eye.style.display = "none";
+      }
       errorElement.style.height = `${fullHeight}px`;
       errorElement.style.opacity = "1";
       errorElement.style.transform = "translateY(3)";
@@ -330,7 +333,9 @@ window.onload = function () {
       errorElement.style.height = `${currentHeight}px`;
 
       void errorElement.offsetHeight;
-      eye.style.display = "block";
+      if(eye){
+        eye.style.display = "block";
+      }
       errorElement.style.height = "0";
       errorElement.style.opacity = "0";
       errorElement.style.transform = "translateY(-10px)";
