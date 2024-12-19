@@ -916,9 +916,9 @@ img {
   position: absolute;
   color: white;
   width: auto;
-  padding: 1rem;
+  padding: 0.5rem 1rem;
   font-size: 1.5rem;
-  border-radius: 20px;
+  border-radius: 0.5rem;
   gap: 3rem;
   left: 5%;
   bottom: 5%;
@@ -929,9 +929,9 @@ img {
   position: absolute;
   color: white;
   width: auto;
-  padding: 1rem;
+  padding: 0.5rem 1rem;
   font-size: 1.5rem;
-  border-radius: 20px;
+  border-radius: 0.5rem;
   gap: 3rem;
   right: 5%;
   z-index: 1;

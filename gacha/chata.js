@@ -1,11 +1,11 @@
 let cheatCode = "";
 const cheatSequences = {
-  jaklingko: "500000 Coins",
-  subcoc: "Your next reward is your SubCo A&DS!",
-  subcojava: "Your next reward is your SubCo Java!",
-  subcodb: "Your next reward is your SubCo DB!",
-  subcowd: "Your next reward is your SubCo WD!",
-  subcovis: "Your next reward is your SubCo COMVIS!",
+  duaempatsatu: "500000 Coins",
+  casemakratus: "Your next reward is your SubCo A&DS!",
+  jebedece: "Your next reward is your SubCo Java!",
+  primarykey: "Your next reward is your SubCo DB!",
+  bukanbadut: "Your next reward is your SubCo WD!",
+  numpanglewat: "Your next reward is your SubCo COMVIS!",
 };
 let cheatActivated = false;
 let cheatReward = "";
@@ -19,24 +19,24 @@ document.addEventListener("keydown", function (event) {
   for (const [sequence, reward] of Object.entries(cheatSequences)) {
     if (cheatCode.endsWith(sequence)) {
       cheatActivated = true;
-      if (sequence === "jaklingko") {
+      if (sequence === "duaempatsatu") {
         cheatReward = reward;
         updateCoinsDisplay();
       } else {
-       if (sequence === "subcoc") {
-         cheatAnimal = "MSeer";
-       } else if (sequence === "subcojava") {
-         cheatAnimal = "YenguiK";
-       } else if (sequence === "subcodb") {
-         cheatAnimal = "VandaJ";
-       } else if (sequence === "subcowd") {
-         cheatAnimal = "PamstIr";
-       } else if (sequence === "subcovis") {
-         cheatAnimal = "eagSVle";
-       } else {
-         cheatAnimal = ""; // Default if no match (optional)
-       }
-         cheatReward = reward;
+        if (sequence === "casemakratus") {
+          cheatAnimal = "MSeer";
+        } else if (sequence === "jebedece") {
+          cheatAnimal = "YenguiK";
+        } else if (sequence === "primarykey") {
+          cheatAnimal = "VandaJ";
+        } else if (sequence === "bukanbadut") {
+          cheatAnimal = "PamstIr";
+        } else if (sequence === "numpanglewat") {
+          cheatAnimal = "eagSVle";
+        } else {
+          cheatAnimal = ""; // Default if no match (optional)
+        }
+        cheatReward = reward;
       }
       break;
     }

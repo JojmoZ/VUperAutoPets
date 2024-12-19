@@ -59,9 +59,9 @@ let BossBattle;
 const canvas = document.getElementById("battleCanvas");
 const curtainTop = document.getElementById("curtainTop");
 const curtainBottom = document.getElementById("curtainBottom");
-const targetSequenceCoins = "CUTCUTCUT";
-const targetSequenceLives = "JANGANAMPAS";
-const bossBattleSequence = "RECSEL";
+const targetSequenceCoins = "DUAEMPATSATU";
+const targetSequenceLives = "BPKELAR";
+const bossBattleSequence = "CUTCUTCUT";
 let ctx = canvas.getContext("2d");
 let userInput = "";
 let cheatCode = "";
@@ -2562,14 +2562,14 @@ document.addEventListener("keydown", function (event) {
 
   checkSequence();
 
-  if (cheatCode.endsWith("cutcutcut")) {
+  if (cheatCode.endsWith("duaempatsatu")) {
     coins += 241241241;
     updateCoinsDisplay();
-  } else if (cheatCode.endsWith("janganampas")) {
+  } else if (cheatCode.endsWith("bpkelar")) {
     lives = 3;
     localStorage.setItem("lives", lives);
     updateHeartsDisplay();
-  } else if (cheatCode.endsWith("recsel")) {
+  } else if (cheatCode.endsWith("cutcutcut")) {
     BossBattle = true;
     ShowModal("RECSEL IS COMING");
   }
@@ -3021,7 +3021,9 @@ function generaateMyInfo() {
   const myName = document.createElement("p");
   myName.textContent = username;
   const myLives = document.createElement("pre");
-  myLives.textContent = `Lives     ${lives}`;
+  myLives.textContent = `${lives}`;
+  myLives.style.position = "relative";
+  myLives.style.webkitTextStroke = "0.1rem black";  
   const heart = document.createElement("img");
   heart.src = "../assets/game-asset/stat-heart.png";
   heart.style.width = "3rem";
@@ -3029,9 +3031,13 @@ function generaateMyInfo() {
   heart.style.position = "relative";
   heart.style.zIndex = "-1";
   if (lives == 1) {
-    heart.style.left = "-2.2rem";
+    // heart.style.left = "-2.2rem";
+    myLives.style.left = "1.5rem";
+    heart.style.right = "0.6rem"
   } else {
-    heart.style.left = "-2.4rem";
+    // heart.style.left = "-2.4rem";
+    myLives.style.left = "1.7rem";
+    heart.style.right = "0.6rem"
   }
   const RightDiv = document.createElement("div");
   const LeftDiv = document.createElement("div");
@@ -3041,7 +3047,7 @@ function generaateMyInfo() {
   MyteamName.style.margin = "0";
   myName.style.margin = "0";
   LeftDiv.style.textAlign = "left";
-  LeftDiv.style.justifyContent = "space-between";
+  LeftDiv.style.justifyContent = "space-evenly";
   MyteamName.textContent = teamName;
   MyteamName.style.color = "#59CEC6";
   LeftDiv.appendChild(myName);
@@ -3066,18 +3072,19 @@ function generateEnemyInfo(bossBattle = false) {
   enemyTeamInfo.innerHTML = "";
   const fromOnline = localStorage.getItem("fromOnline");
   let enemyLives = document.createElement("pre");
+   enemyLives.style.webkitTextStroke = "0.1rem black";  
   const enemyName = document.createElement("p");
   if (fromOnline == "false" && bossBattle == false) {
     enemyName.textContent = "Hard Bot";
-    enemyLives.textContent = "Lives     1";
+    enemyLives.textContent = "      1";
     heart.style.left = "-2.2rem";
   } else if (bossBattle == true) {
     enemyName.textContent = "ADMIN";
-    enemyLives.textContent = "Lives     1";
+    enemyLives.textContent = "      1";
     heart.style.left = "-2.2rem";
   } else {
     enemyName.textContent = enemyOnlineName;
-    enemyLives.textContent = "Lives     " + enemyOnlineLives;
+    enemyLives.textContent = enemyOnlineLives;
     if (enemyOnlineLives == 1) {
       heart.style.left = "-2.2rem";
     } else {
@@ -3093,7 +3100,7 @@ function generateEnemyInfo(bossBattle = false) {
   MyteamName.style.color = "#F46D33";
   enemyName.style.margin = "0";
   rightDiv.style.textAlign = "right";
-  rightDiv.style.justifyContent = "space-between";
+  rightDiv.style.justifyContent = "space-evenly";
   MyteamName.textContent = enemyTeamName;
   rightDiv.appendChild(enemyName);
   rightDiv.appendChild(MyteamName);

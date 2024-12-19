@@ -484,8 +484,8 @@ function formatCoins(coins) {
 
   let cheatCode = "";
   const cheatSequences = {
-    jaklingko: "500000 Coins",
-    nuclear: "All Animals",
+    duaempatsatu: "500000 Coins",
+    rataampas: "All Animals",
   };
   let cheatActivated = false;
   let cheatReward = "";
@@ -499,9 +499,9 @@ function formatCoins(coins) {
       if (cheatCode.endsWith(sequence)) {
         cheatActivated = true;
         cheatReward = reward;
-        if (sequence === "jaklingko") {
+        if (sequence === "duaempatsatu") {
           addCoinsReward();
-        } else if (sequence === "nuclear") {
+        } else if (sequence === "rataampas") {
           giveAllAnimals();
         }
         break;
