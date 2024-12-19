@@ -1365,13 +1365,17 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 function formatCoins(coins) {
   if (coins >= 1000000) {
-    return (coins / 1000000).toFixed(1) + "M";
+    return (coins / 1000000).toFixed(1).replace(/\.0$/, "") + "M";
   } else if (coins >= 1000) {
-    return (coins / 1000).toFixed(1) + "K";
+    // Use Math.floor to avoid rounding issues
+    const value = Math.floor(coins / 100) / 10; // Keeps one decimal place without rounding up
+    return value.toFixed(1).replace(/\.0$/, "") + "K";
   } else {
     return coins.toString();
   }
 }
+
+
 function updateCoinsDisplay() {
   localStorage.setItem("gamecoins", coins);
   let displaycoin = formatCoins(coins);

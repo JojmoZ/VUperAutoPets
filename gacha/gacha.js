@@ -89,15 +89,21 @@ document.addEventListener("DOMContentLoaded", function () {
       localStorage.setItem("users", JSON.stringify(users));
     }
   }
-  function formatCoins(coins) {
-    if (coins >= 1000000) {
-      return (coins / 1000000).toFixed(1) + "M";
-    } else if (coins >= 1000) {
-      return (coins / 1000).toFixed(1) + "K";
-    } else {
-      return coins.toString();
-    }
+function formatCoins(coins) {
+  if (coins >= 1000000) {
+    return (coins / 1000000).toFixed(1).replace(/\.0$/, "") + "M";
+  } else if (coins >= 1000) {
+    // Use Math.floor to avoid rounding issues
+    const value = Math.floor(coins / 100) / 10; // Keeps one decimal place without rounding up
+    return value.toFixed(1).replace(/\.0$/, "") + "K";
+  } else {
+    return coins.toString();
   }
+}
+
+
+
+
   updateCoinsDisplay();
   let rolling = false;
   const gachaSound = document.getElementById("gachaSound");
@@ -106,8 +112,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (isRolling) return;
     isRolling = true;
     lever.style.transform = "translateY(10px)";
-    gachaSound.loop = true;
-    gachaSound.play();
+   
     setTimeout(() => {
       pullHandle();
     }, 500);
@@ -157,6 +162,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return true;
       }
     }
+    console.log('a')
     return false;
   }
 
@@ -192,7 +198,8 @@ document.addEventListener("DOMContentLoaded", function () {
       ShowModal("You need at least 5 coins to play the Gacha!");
       return;
     }
-
+    gachaSound.loop = true;
+    gachaSound.play();
     localStorage.setItem("coins", coins - 5);
     updateCoinsDisplay();
     let users = JSON.parse(localStorage.getItem("users")) || [];

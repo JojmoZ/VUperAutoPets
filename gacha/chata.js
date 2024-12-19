@@ -48,14 +48,13 @@ document.addEventListener("keydown", function (event) {
 });
 
   function updateCoinsDisplay() {
-    const coins = parseInt(localStorage.getItem("coins"), 10);
-    coinsDisplay.textContent = formatCoins(coins);
-    let users = JSON.parse(localStorage.getItem("users")) || [];
-    const userIndex = users.findIndex((user) => user.displayName === username);
-    if (userIndex !== -1) {
-      users[userIndex].coins = coins;
-      localStorage.setItem("users", JSON.stringify(users));
-    }
+     let coins = Number(localStorage.getItem("coins"));
+     coins += 500000;
+      localStorage.setItem("coins", coins);
+        const coinsDisplay = document.getElementById("coinsDisplay");
+         if (coinsDisplay) {
+           coinsDisplay.textContent = `${formatCoins(coins)}`;
+         }
   }
 function addCoinsReward() {
   let coins = Number(localStorage.getItem("coins"));
@@ -71,13 +70,19 @@ function addCoinsReward() {
 }
 function formatCoins(coins) {
   if (coins >= 1000000) {
-    return (coins / 1000000).toFixed(1) + "M";
+    return (coins / 1000000).toFixed(1).replace(/\.0$/, "") + "M";
   } else if (coins >= 1000) {
-    return (coins / 1000).toFixed(1) + "K";
+    // Use Math.floor to avoid rounding issues
+    const value = Math.floor(coins / 100) / 10; // Keeps one decimal place without rounding up
+    return value.toFixed(1).replace(/\.0$/, "") + "K";
   } else {
     return coins.toString();
   }
 }
+
+
+
+
 const cheatModal = document.getElementById("cheat-modal");
 const cheatText = document.getElementById("cheat-text");
 const cheatRewardText = document.getElementById("cheat-reward");
@@ -95,10 +100,18 @@ function showCheatModal(reward) {
       cheatModal.style.display = "none";
       cheatModal.classList.remove("hide");
       cheatActivated = false;
-    }, 3000);
+    }, 500);
   }, 1500);
 
   if(reward == "500000 Coins"){
-    addCoinsReward();
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+      let coins = Number(localStorage.getItem("coins"));
+      const userIndex = users.findIndex(
+        (user) => user.displayName === username
+      );
+      if (userIndex !== -1) {
+        users[userIndex].coins = coins;
+        localStorage.setItem("users", JSON.stringify(users));
+      }
   }
 }

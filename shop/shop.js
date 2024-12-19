@@ -319,15 +319,19 @@ document.addEventListener("DOMContentLoaded", function () {
     return colorMap[color] || "#000000";
   }
 
-  function formatCoins(coins) {
-    if (coins >= 1000000) {
-      return (coins / 1000000).toFixed(1) + "M";
-    } else if (coins >= 1000) {
-      return (coins / 1000).toFixed(1) + "K";
-    } else {
-      return coins.toString();
-    }
+function formatCoins(coins) {
+  if (coins >= 1000000) {
+    return (coins / 1000000).toFixed(1).replace(/\.0$/, "") + "M";
+  } else if (coins >= 1000) {
+    // Use Math.floor to avoid rounding issues
+    const value = Math.floor(coins / 100) / 10; // Keeps one decimal place without rounding up
+    return value.toFixed(1).replace(/\.0$/, "") + "K";
+  } else {
+    return coins.toString();
   }
+}
+
+
 
   function updateCoinsDisplay() {
     const coins = parseInt(localStorage.getItem("coins"), 10);
