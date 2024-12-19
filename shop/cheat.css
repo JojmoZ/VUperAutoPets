@@ -19,6 +19,11 @@
   display: flex;
   opacity: 1;
 }
+.modal-text-cheat h2 {
+  font-size: 2rem;
+  color: black;
+  margin-bottom: 1rem;
+}
 #cheat-modal.hide {
   opacity: 0;
   transition: opacity 0.5s ease;
@@ -59,15 +64,15 @@
   background-size: 400% 400%;
   animation: rainbow-gradient 5s ease infinite;
 }
-.modal-text h2{
+.modal-text-cheat h2{
   font-family: 'VUper';
 }
-.modal-text p {
+.modal-text-cheat p {
   font-family: 'Comic Sans MS',serif;
 
 }
-#cheat-modal .modal-text h2,
-#cheat-modal .modal-text p {
+#cheat-modal .modal-text-cheat h2,
+#cheat-modal .modal-text-cheat p {
   background: linear-gradient(
     135deg,
     Violet,

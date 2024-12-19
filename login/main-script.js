@@ -295,6 +295,7 @@ window.onload = function () {
   }
   function showError(inputId, message) {
     const errorElement = document.getElementById(`${inputId}Error`);
+    const eye = document.getElementById(`${inputId}Button`);
     if (errorElement) {
       errorElement.textContent = message;
       errorElement.style.fontFamily ="Comic Sans MS";
@@ -304,9 +305,8 @@ window.onload = function () {
       errorElement.style.height = "0";
       errorElement.style.opacity = "0";
       errorElement.style.transform = "translateY(-10px)";
-
       void errorElement.offsetHeight;
-
+      eye.style.display = "none";
       errorElement.style.height = `${fullHeight}px`;
       errorElement.style.opacity = "1";
       errorElement.style.transform = "translateY(3)";
@@ -323,13 +323,14 @@ window.onload = function () {
 
   function hideError(inputId) {
     const errorElement = document.getElementById(`${inputId}Error`);
+     const eye = document.getElementById(`${inputId}Button`);
     if (errorElement) {
       const currentHeight = errorElement.scrollHeight;
 
       errorElement.style.height = `${currentHeight}px`;
 
       void errorElement.offsetHeight;
-
+      eye.style.display = "block";
       errorElement.style.height = "0";
       errorElement.style.opacity = "0";
       errorElement.style.transform = "translateY(-10px)";

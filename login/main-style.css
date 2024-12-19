@@ -814,7 +814,7 @@ body.modal-active {
   margin-bottom: 1rem;
   transition: all 0.3s ease;
   font-size: 1.25rem;
-  --primary: #cbac24;
+  --primary: #cbac24; 
 }
 
 .input {

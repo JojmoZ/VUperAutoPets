@@ -155,8 +155,8 @@
   },
   {
     "name": "PamstIr",
-    "attack": 3,
-    "health": 5,
+    "attack": 20,
+    "health": 20,
     "cost": 2,
     "img": "../assets/Animals/PamstIr.webp",
     "color": "#D9A46F",
