@@ -43,13 +43,19 @@ body::-webkit-scrollbar {
   font-family: "VUper", serif;
   color: black;
   font-size: 2rem;
-  padding-left: 3rem;
-  margin-right: 0.5rem;
+  padding-left: 2rem;
 }
+
 #coinImg {
-  width: 3rem;
-  height: 3rem;
+  position: absolute;
+  left: -2rem;
+  width: 4rem;
+  height: 4rem;
 }
+
+
+
+
 html,
 body {
   margin: 0;

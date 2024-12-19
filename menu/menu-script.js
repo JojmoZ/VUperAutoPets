@@ -3,7 +3,10 @@ const menu = document.getElementById("menu");
 const settingsMenu = document.getElementById("settings-menu");
 const path = window.electron.path;
 const appDir = window.electron.__dirname;
-
+const privatePath = document.getElementById("privacyPolicy");
+privatePath.addEventListener("click", function () {
+  window.open("https://nar.binus.ac.id", "_blank");
+})
 document.getElementById("burger-btn").addEventListener("click", function () {
   overlay.classList.toggle("hidden");
   menu.classList.toggle("hidden");

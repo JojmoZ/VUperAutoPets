@@ -136,46 +136,46 @@ const viewAllButton = document.getElementById("view-all");
 const closeInfoButton = document.getElementById("close-info");
 const prevButton = document.getElementById("prev-animal");
 const nextButton = document.getElementById("next-animal");
- const backgroundAudio = new Audio(
-   "../assets/sound/Super Auto Pets  - Menu Theme.mp3"
- );
- const savedVolume = localStorage.getItem("backgroundAudioVolume");
- if (savedVolume !== null) {
-   backgroundAudio.volume = parseFloat(savedVolume);
- } else {
-   backgroundAudio.volume = 0.1;
- }
- backgroundAudio.loop = true;
+const backgroundAudio = new Audio(
+  "../assets/sound/Super Auto Pets  - Menu Theme.mp3"
+);
+const savedVolume = localStorage.getItem("backgroundAudioVolume");
+if (savedVolume !== null) {
+  backgroundAudio.volume = parseFloat(savedVolume);
+} else {
+  backgroundAudio.volume = 0.1;
+}
+backgroundAudio.loop = true;
 
- const savedTime = localStorage.getItem("backgroundAudioTime");
- if (savedTime) {
-   backgroundAudio.currentTime = parseFloat(savedTime);
- }
+const savedTime = localStorage.getItem("backgroundAudioTime");
+if (savedTime) {
+  backgroundAudio.currentTime = parseFloat(savedTime);
+}
 
- const playBackgroundAudio = () => {
-   backgroundAudio.play();
-   document.removeEventListener("click", playBackgroundAudio);
-   document.removeEventListener("keydown", playBackgroundAudio);
-   document.removeEventListener("mousemove", playBackgroundAudio);
-   document.removeEventListener("scroll", playBackgroundAudio);
-   document.removeEventListener("touchstart", playBackgroundAudio);
-   document.removeEventListener("focus", playBackgroundAudio);
-   document.removeEventListener("mousedown", playBackgroundAudio);
-   document.removeEventListener("mouseup", playBackgroundAudio);
- };
+const playBackgroundAudio = () => {
+  backgroundAudio.play();
+  document.removeEventListener("click", playBackgroundAudio);
+  document.removeEventListener("keydown", playBackgroundAudio);
+  document.removeEventListener("mousemove", playBackgroundAudio);
+  document.removeEventListener("scroll", playBackgroundAudio);
+  document.removeEventListener("touchstart", playBackgroundAudio);
+  document.removeEventListener("focus", playBackgroundAudio);
+  document.removeEventListener("mousedown", playBackgroundAudio);
+  document.removeEventListener("mouseup", playBackgroundAudio);
+};
 
- document.addEventListener("click", playBackgroundAudio);
- document.addEventListener("keydown", playBackgroundAudio);
- document.addEventListener("mousemove", playBackgroundAudio);
- document.addEventListener("scroll", playBackgroundAudio);
- document.addEventListener("touchstart", playBackgroundAudio);
- document.addEventListener("focus", playBackgroundAudio);
- document.addEventListener("mousedown", playBackgroundAudio);
- document.addEventListener("mouseup", playBackgroundAudio);
+document.addEventListener("click", playBackgroundAudio);
+document.addEventListener("keydown", playBackgroundAudio);
+document.addEventListener("mousemove", playBackgroundAudio);
+document.addEventListener("scroll", playBackgroundAudio);
+document.addEventListener("touchstart", playBackgroundAudio);
+document.addEventListener("focus", playBackgroundAudio);
+document.addEventListener("mousedown", playBackgroundAudio);
+document.addEventListener("mouseup", playBackgroundAudio);
 
- window.addEventListener("beforeunload", () => {
-   localStorage.setItem("backgroundAudioTime", backgroundAudio.currentTime);
- });
+window.addEventListener("beforeunload", () => {
+  localStorage.setItem("backgroundAudioTime", backgroundAudio.currentTime);
+});
 let initialRight = -30;
 let maxScrollDistance = 0;
 const curtain = document.querySelector("#top-pets .curtain");
@@ -242,16 +242,16 @@ viewAllButton.addEventListener("click", () => {
 });
 
 petRange.addEventListener("input", (e) => {
- const rangeValue = e.target.value;
+  const rangeValue = e.target.value;
 
- // Normalize the rangeValue to a percentage of max scroll distance
- const normalizedRange = rangeValue / 100; // Converts 0-100 range to 0.0-1.0
+  // Normalize the rangeValue to a percentage of max scroll distance
+  const normalizedRange = rangeValue / 100; // Converts 0-100 range to 0.0-1.0
 
- // Calculate the container offset with a consistent rate
- const containerOffset = initialRight - normalizedRange * maxScrollDistance;
+  // Calculate the container offset with a consistent rate
+  const containerOffset = initialRight - normalizedRange * maxScrollDistance;
 
- // Apply the calculated offset
- container.style.right = `${containerOffset}%`;
+  // Apply the calculated offset
+  container.style.right = `${containerOffset}%`;
 });
 
 const allCards = document.querySelectorAll(".pet-card");
@@ -269,11 +269,16 @@ closeInfoButton.addEventListener("click", () => {
 });
 
 const petDescriptions = {
-  PamstIr: "The PamstIr is a unique pet that can be used to counter enemy strategies, making it a great choice for a flexible team.",
-  eagSVle: "The eagSVle has a powerful ability, which makes it a great choice for a summoning-based strategy.",
-  YenguiK: "The YenguiK is a scaling pet, which is an excellent choice for longer games where scaling is essential.",
-  VandaJ: "The VandaJ is a versatile pet, which makes it a great choice for scaling early to mid-game, helping to keep your team strong.",
-  MSeer: "The MSeer is a high-impact support pet, known for its ability to deal significant damage with its \"Attack\" ability.",
+  PamstIr:
+    "The PamstIr is a unique pet that can be used to counter enemy strategies, making it a great choice for a flexible team. <br><br>One of its charming traits is its fondness for food, which aligns with its playful demeanor and enhances its interactions within the game. <br><br> Players often enjoy incorporating the PamstIr into their teams for its fun mechanics and the delightful chaos it brings to battles.",
+  eagSVle:
+    "The eagSVle has a powerful ability, which makes it a great choice for a summoning-based strategy. <br><br>With its keen eye for spotting opportunities, the eagSVle can turn the tide of battle in your favor, making it a favored choice for players looking to build a reliable and synergistic team. <br><br>Whether soaring high above or diving into action, the eagSVle embodies determination and teamwork, ensuring that your pets are always ready for the challenge ahead.",
+  YenguiK:
+    "The YenguiK is a scaling pet, which is an excellent choice for longer games where scaling is essential. <br><br>With its relaxed demeanor and strategic support, the YenguiK is perfect for players who enjoy a more methodical approach to battles. <br><br>Whether it's lounging on a snowy landscape or rallying its fellow pets for a well-deserved rest, the YenguiK adds a fun and whimsical element to your team, proving that sometimes, taking a break is the best strategy!",
+  VandaJ:
+    "The VandaJ is a versatile pet, which makes it a great choice for scaling early to mid-game, helping to keep your team strong. <br><br>Its thoughtful nature encourages players to build a well-rounded team, making the VandaJ an essential addition for those who enjoy a more cerebral approach to battles. <br><br>With its endearing personality and supportive role, the VandaJ not only adds fun to your lineup but also proves that knowledge is power.",
+  MSeer:
+    "The MSeer is a high-impact support pet, known for its ability to deal significant damage with its 'Attack' ability. <br><br>The MSeer's no-nonsense attitude encourages players to think critically about their team composition and tactics, making it an excellent choice for those who thrive on discipline and precision.  <br><br>With its strong presence on the battlefield, the MSeer not only brings a sense of authority but also fosters a cohesive team dynamic, proving that sometimes, a firm approach is the key to victory.",
 };
 
 let isShowingAnimal = false;
@@ -291,7 +296,7 @@ function showAnimalInfo(card) {
     setTimeout(() => {
       curtain.style.backgroundImage =
         window.getComputedStyle(card).backgroundImage;
-        curtain.style.backgroundSize = "cover";
+      curtain.style.backgroundSize = "cover";
       card.style.backgroundImage = "none";
       card.style.overflow = "visible";
       topPetsHeader.classList.add("hidden");
@@ -338,7 +343,7 @@ function showAnimalInfo(card) {
           card.classList.add("showandtell");
           image.classList.remove("move-down");
           animalNameElement.textContent = animalName;
-          animalDescriptionElement.textContent =
+          animalDescriptionElement.innerHTML =
             petDescriptions[animalName] || "No description available.";
           infoCard.classList.remove("hidden", "hide");
           void infoCard.offsetWidth;
@@ -354,9 +359,7 @@ function showAnimalInfo(card) {
       }, 50);
     }, 100);
   }, 500);
-
 }
-
 
 function resetCarousel() {
   const allCards = document.querySelectorAll(".pet-card");
@@ -657,6 +660,4 @@ window.onload = function () {
   window.ontouchend = (e) => handleOnUp(e.touches[0]);
   window.onmousemove = (e) => handleOnMove(e);
   window.ontouchmove = (e) => handleOnMove(e.touches[0]);
-
- 
 };
