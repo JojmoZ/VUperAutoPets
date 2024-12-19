@@ -388,14 +388,13 @@ body {
 .pet-card.scale-up {
   transform: scale(
     1.2
-  ) !important; /* Ensure it overrides other transform styles */
-  transition: transform 0.4s ease-out; /* Smooth scaling */
+  ) !important; 
+  transition: transform 0.4s ease-out; 
 }
 .pet-card {
   position: absolute;
   opacity: 1;
   display: flex;
-  /* flex-shrink: 0; */
   justify-content: center;
   align-items: center;
 
@@ -425,9 +424,9 @@ body {
   display: none;
 }
 .pet-container.expanded .pet-card:hover {
-  transform: scale(1.1); /* Slightly scale up */
-  transition: transform 0.3s ease-out; /* Smooth and fast scaling */
-  cursor: pointer; /* Indicate the card is clickable */
+  transform: scale(1.1); 
+  transition: transform 0.3s ease-out; 
+  cursor: pointer;
 }
 .pet-card:nth-child(1) {
   background-image: url("../assets/home-asset/top-pets/top-bg-5.png");
@@ -1215,7 +1214,7 @@ section {
 
   position: absolute;
   z-index: 15;
-  bottom: 2.5vmin;
+  bottom: 2.35rem;
 
   letter-spacing: 0.2rem;
 }

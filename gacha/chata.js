@@ -100,6 +100,7 @@ function showCheatModal(reward) {
       cheatModal.style.display = "none";
       cheatModal.classList.remove("hide");
       cheatActivated = false;
+      // isRolling = false; // Reset the rolling state
     }, 500);
   }, 1500);
 

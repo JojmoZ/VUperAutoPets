@@ -289,6 +289,12 @@ function showAnimalInfo(card) {
   const image = card.querySelector("img");
   const animalName = image.alt;
 
+  // Adjust width and height for VandaJ
+  if (animalName === "VandaJ") {
+    card.style.width = "25rem";
+    card.style.height = "25rem";
+  }
+
   setTimeout(() => {
     image.classList.add("move-down");
     const curtain = document.querySelector("#top-pets .curtain");
@@ -336,7 +342,6 @@ function showAnimalInfo(card) {
           container.offsetHeight;
           tempcontright = container.style.right;
           container.style.right = ``;
-          console.log(tempcontright);
           card.style.transition = "all 0.8s ease-in-out";
           container.style.transition = "all 0.8s ease-in-out";
           card.style.transform = "translate(0, 0)";

@@ -23,12 +23,17 @@ body::-webkit-scrollbar {
 }
 .rightStatSide {
   position: relative;
-  left: -20.5%;
-  top:-3%;
+  left: -22%;
+  top: -3%;
   font-size: 2rem;
   height: 2rem;
   color: white;
   -webkit-text-stroke: 2px black;
+  text-align: center;
+  min-width: 2.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .p-container p {
   display: flex;
@@ -175,6 +180,7 @@ canvas {
   gap: 0.1rem;
 }
 .abovePic {
+  width: 100%;
   display: flex;
   justify-content: space-evenly;
   gap: 1.5rem;

@@ -45,6 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "Sudah Siap Network???",
     "一二三四五六七， 你的朋友在哪里？",
     "Kayaknya perlu extend deh...",
+    "Kita tunggu core diextend :)"
   ];
 
   function updateLoading() {
