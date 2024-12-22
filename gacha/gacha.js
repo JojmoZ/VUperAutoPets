@@ -152,11 +152,11 @@ function formatCoins(coins) {
           }, index * 1000);
         });
 
-        localStorage.setItem(
-          "coins",
-          (localStorage.getItem("coins") - 5).toString()
-        );
-        updateCoinsDisplay();
+        // localStorage.setItem(
+        //   "coins",
+        //   (localStorage.getItem("coins") - 5).toString()
+        // );
+        // updateCoinsDisplay();
 
         cheatAnimal = "";
         return true;
@@ -193,6 +193,9 @@ function formatCoins(coins) {
   }
 
   function pullHandle() {
+     if (handleCheatActivation()) {
+       return;
+     }
     const coins = parseInt(localStorage.getItem("coins"), 10);
     if (coins < 5) {
       ShowModal("You need at least 5 coins to play the Gacha!");
@@ -212,9 +215,7 @@ function formatCoins(coins) {
       users[userIndex].pity += 1;
       localStorage.setItem("users", JSON.stringify(users));
     }
-    if (handleCheatActivation()) {
-      return;
-    }
+   
     const columns = [
       document.getElementById("column1"),
       document.getElementById("column2"),

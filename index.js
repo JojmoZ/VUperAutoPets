@@ -13,7 +13,7 @@ app.on("ready", () => {
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       contextIsolation: true,
-      // devTools: false,
+      devTools: false,
       experimentalFeatures: false,
       spellcheck: false,
       enableWebSQL: false,
@@ -23,9 +23,9 @@ app.on("ready", () => {
   });
 
   mainWindow.loadFile(path.join(__dirname, "login", "index.html")); // Load your starting HTML
-  //  globalShortcut.register("CommandOrControl+Shift+I", () => {});
-  //  globalShortcut.register("CommandOrControl+Shift+C", () => {});
-  //  globalShortcut.register("F12", () => {});
+   globalShortcut.register("CommandOrControl+Shift+I", () => {});
+   globalShortcut.register("CommandOrControl+Shift+C", () => {});
+   globalShortcut.register("F12", () => {});
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
     // Open URL in the user's default browser
     require("electron").shell.openExternal(url);

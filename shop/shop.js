@@ -32,16 +32,24 @@ document.addEventListener("DOMContentLoaded", function () {
   redeem.addEventListener("click", function () {
     let users = JSON.parse(localStorage.getItem("users")) || [];
     const userIndex = users.findIndex((user) => user.displayName === username);
-
+    let coins = parseInt(localStorage.getItem("coins"), 10);
     if (userIndex !== -1) {
       let pendingCoins = users[userIndex].pendingCoins || 0;
       if (pendingCoins > 0) {
-        users[userIndex].coins = (users[userIndex].coins || 0) + pendingCoins;
+        coins = coins + pendingCoins
+          localStorage.setItem("coins", coins.toString());
+           if (userIndex !== -1) {
+             users[userIndex].coins = coins;
+            }
+            
+            // users[userIndex].coins = parseInt(users[userIndex].coins || 0) + pendingCoins;
+            // console.log(users[userIndex].coins);
+            // console.log(typeof(users[userIndex].coins));
+            users[userIndex].pendingCoins = 0;
+            localStorage.setItem("users", JSON.stringify(users));
 
-        users[userIndex].pendingCoins = 0;
-
-        localStorage.setItem("users", JSON.stringify(users));
-
+        // localStorage.setItem("users", JSON.stringify(users));
+        updateCoinsDisplay()
         ShowModal(`You've earned ${pendingCoins} coins!`);
       } else {
         ShowModal("No coins to redeem!");
