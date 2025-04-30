@@ -1,8 +1,8 @@
 let socket;
 let isPaired = false;
 let enemyOnlineName;
-const path = window.electron.path;
-const appDir = window.electron.__dirname;
+// const path = window.electron.path;
+// const appDir = window.electron.__dirname;
 let enemyOnlineLives;
 let username;
 let pairingTimeout = null;
@@ -141,8 +141,9 @@ if (!logged) {
 
   clearLocalStorageExceptUsers();
 
-  const loginPath = path.join(appDir, "login/index.html");
-  window.location.href = `file://${loginPath}`;
+  // const loginPath = path.join(appDir, "login/index.html");
+  // window.location.href = `file://${loginPath}`;
+  window.location.href = "/login/index.html";
 }
 
 function saveRandomAnimals() {
@@ -152,8 +153,9 @@ function rollfirst() {
   const ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals"));
   if (!ownedAnimals || ownedAnimals.length === 0) {
     setTimeout(() => {
-      const homePath = path.join(appDir, "home/homepage.html");
-      window.location.href = `file://${homePath}`;
+      // const homePath = path.join(appDir, "home/homepage.html");
+      // window.location.href = `file://${homePath}`;
+      window.location.href = "/home/homepage.html";
     }, 3000);
     return;
   }
@@ -1236,8 +1238,9 @@ function hideNonBattleElements() {
 }
 document.getElementById("backArrow").addEventListener("click", function () {
   localStorage.removeItem("ingame");
-  const menuPath = path.join(appDir, "menu/menu.html");
-  window.location.href = `file://${menuPath}`;
+  // const menuPath = path.join(appDir, "menu/menu.html");
+  // window.location.href = `file://${menuPath}`;
+  window.location.href = "/menu/menu.html";
 });
 function showCanvas() {
   document.getElementById("battleCanvas").classList.remove("hidden");
@@ -1320,8 +1323,9 @@ document.addEventListener("DOMContentLoaded", function () {
         setTimeout(() => {
           if (lives <= 0) {
             resetGame();
-            const menuPath = path.join(appDir, "menu/menu.html");
-            window.location.href = `file://${menuPath}`;
+            // const menuPath = path.join(appDir, "menu/menu.html");
+            // window.location.href = `file://${menuPath}`;
+            window.location.href = "/menu/menu.html";
           }
         }, 1000);
         localStorage.setItem("lives", lives);
@@ -1374,7 +1378,6 @@ function formatCoins(coins) {
     return coins.toString();
   }
 }
-
 
 function updateCoinsDisplay() {
   localStorage.setItem("gamecoins", coins);
@@ -2726,8 +2729,9 @@ function DefeatScreen() {
         hideRightSide();
         openCurtains(() => {
           resetGame();
-          const menuPath = path.join(appDir, "menu/menu.html");
-          window.location.href = `file://${menuPath}`;
+          // const menuPath = path.join(appDir, "menu/menu.html");
+          // window.location.href = `file://${menuPath}`;
+          window.location.href = "/menu/menu.html";
         });
       }, 1000);
     }, 1000);
@@ -3023,7 +3027,7 @@ function generaateMyInfo() {
   const myLives = document.createElement("pre");
   myLives.textContent = `${lives}`;
   myLives.style.position = "relative";
-  myLives.style.webkitTextStroke = "0.1rem black";  
+  myLives.style.webkitTextStroke = "0.1rem black";
   const heart = document.createElement("img");
   heart.src = "../assets/game-asset/stat-heart.png";
   heart.style.width = "3rem";
@@ -3033,11 +3037,11 @@ function generaateMyInfo() {
   if (lives == 1) {
     // heart.style.left = "-2.2rem";
     myLives.style.left = "1.5rem";
-    heart.style.right = "0.6rem"
+    heart.style.right = "0.6rem";
   } else {
     // heart.style.left = "-2.4rem";
     myLives.style.left = "1.7rem";
-    heart.style.right = "0.6rem"
+    heart.style.right = "0.6rem";
   }
   const RightDiv = document.createElement("div");
   const LeftDiv = document.createElement("div");
@@ -3072,7 +3076,7 @@ function generateEnemyInfo(bossBattle = false) {
   enemyTeamInfo.innerHTML = "";
   const fromOnline = localStorage.getItem("fromOnline");
   let enemyLives = document.createElement("pre");
-   enemyLives.style.webkitTextStroke = "0.1rem black";  
+  enemyLives.style.webkitTextStroke = "0.1rem black";
   const enemyName = document.createElement("p");
   if (fromOnline == "false" && bossBattle == false) {
     enemyName.textContent = "Hard Bot";

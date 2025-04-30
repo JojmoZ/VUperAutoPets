@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   const logged = localStorage.getItem("loggedin");
-  const path = window.electron.path;
-  const appDir = window.electron.__dirname;
+  // const path = window.electron.path;
+  // const appDir = window.electron.__dirname;
   if (!logged) {
     function clearLocalStorageExceptUsers() {
       const keysToKeep = ["users"];
@@ -17,8 +17,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     clearLocalStorageExceptUsers();
 
-    const loginPath = path.join(appDir, "login/index.html");
-    window.location.href = `file://${loginPath}`;
+    // const loginPath = path.join(appDir, "login/index.html");
+    // window.location.href = `file://${loginPath}`;
+    window.location.href = "/login/index.html";
   }
 
   localStorage.removeItem("ingame");
@@ -68,8 +69,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const coinImg = document.getElementById("coinImg");
   const backbtn = document.getElementById("backArrow");
   backbtn.addEventListener("click", function () {
-    const menuPath = path.join(appDir, "menu/menu.html");
-    window.location.href = `file://${menuPath}`;
+    // const menuPath = path.join(appDir, "menu/menu.html");
+    // window.location.href = `file://${menuPath}`;
+    window.location.href = "/menu/menu.html";
   });
   const shopContainer = document.querySelector(".shop-container");
   const scrollBar = document.getElementById("scroll-bar");
@@ -371,8 +373,9 @@ function formatCoins(coins) {
   }
   const gotoGacha = document.getElementById("gacha-btn");
   gotoGacha.addEventListener("click", function () {
-    const gachapath = path.join(appDir, "gacha/gachapage.html");
-    window.location.href = `file://${gachapath}`;
+    // const gachapath = path.join(appDir, "gacha/gachapage.html");
+    // window.location.href = `file://${gachapath}`;
+    window.location.href = "/gacha/gachapage.html";
   });
   const ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals")) || [];
   ownedAnimals.forEach((animal) => {

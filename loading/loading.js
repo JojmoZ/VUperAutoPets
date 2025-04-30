@@ -3,8 +3,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const loadingFill = document.getElementById("loading-fill");
   const totalGameTime = 5 * 2000;
   localStorage.removeItem("ingame");
-  const path = window.electron.path;
-  const appDir = window.electron.__dirname;
+  // const path = window.electron.path;
+  // const appDir = window.electron.__dirname;
   const startTime = Date.now();
   const tips = [
     "Kalau melawan tantangan yang tinggi, jangan menyerah!",
@@ -81,8 +81,9 @@ document.addEventListener("DOMContentLoaded", () => {
       logo.classList.add("fade-in-logo");
 
       setTimeout(() => {
-        const gamePath = path.join(appDir, "game/game.html");
-        window.location.href = `file://${gamePath}`;
+        // const gamePath = path.join(appDir, "game/game.html");
+        // window.location.href = `file://${gamePath}`;
+        window.location.href = "/game/game.html";
       }, 5000);
     });
   }

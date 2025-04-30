@@ -2,8 +2,8 @@
  * SECTION: Hero
  */
 
-const path = window.electron.path;
-const appDir = window.electron.__dirname;
+// const path = window.electron.path;
+// const appDir = window.electron.__dirname;
 const DELAY = 500;
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -435,8 +435,9 @@ window.onload = function () {
 
   const backbtn = document.getElementById("backArrow");
   backbtn.addEventListener("click", function () {
-    const menuPath = path.join(appDir, "menu/menu.html");
-    window.location.href = `file://${menuPath}`;
+    // const menuPath = path.join(appDir, "menu/menu.html");
+    // window.location.href = `file://${menuPath}`;
+    window.location.href = "/menu/menu.html";
   });
   track.dataset.percentage = "-30";
   track.style.transform = `translate(-30%, -50%)`;
@@ -460,8 +461,9 @@ window.onload = function () {
 
     clearLocalStorageExceptUsers();
 
-    const loginPath = path.join(appDir, "login/index.html");
-    window.location.href = `file://${loginPath}`;
+    // const loginPath = path.join(appDir, "login/index.html");
+    // window.location.href = `file://${loginPath}`;
+    window.location.href = "/login/index.html";
   }
   const fadeInElements = document.querySelectorAll(".fade-in-element");
   const elementObserver = new IntersectionObserver(

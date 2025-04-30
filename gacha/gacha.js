@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   localStorage.removeItem("ingame");
-  const path = window.electron.path;
-  const appDir = window.electron.__dirname;
+  // const path = window.electron.path;
+  // const appDir = window.electron.__dirname;
   const lever = document.getElementById("lever");
   const columns = [
     document.getElementById("column1"),
@@ -69,15 +69,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
     clearLocalStorageExceptUsers();
 
-    const loginPath = path.join(appDir, "login/index.html");
-    window.location.href = `file://${loginPath}`;
+    // const loginPath = path.join(appDir, "login/index.html");
+    // window.location.href = `file://${loginPath}`;
+    window.location.href = "/login/index.html";
   }
 
   const coinsDisplay = document.getElementById("coinsDisplay");
   const backBtn = document.getElementById("backArrow");
   backBtn.addEventListener("click", function () {
-    const shoppage = path.join(appDir, "shop/shoppage.html");
-    window.location.href = `file://${shoppage}`;
+    // const shoppage = path.join(appDir, "shop/shoppage.html");
+    // window.location.href = `file://${shoppage}`;
+    window.location.href = "/shop/shoppage.html";
   });
   function updateCoinsDisplay() {
     const coins = parseInt(localStorage.getItem("coins"), 10);
