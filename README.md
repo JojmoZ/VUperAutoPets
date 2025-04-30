@@ -1,4 +1,4 @@
-# 🐾 VUper Auto Pets — Web Showcase
+# 🐾 VUper Auto Pets
 
 Welcome to **VUper Auto Pets**, a parody to *Super Auto Pets* game web demo designed to simulate the look, feel, excitement, and new improvements of the original Steam game!
 
