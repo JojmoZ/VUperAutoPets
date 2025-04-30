@@ -8,7 +8,7 @@ let username;
 let pairingTimeout = null;
 let pairingDuration = 50000;
 function connectWebSocket() {
-  socket = new WebSocket("https://narcore.apps.binus.ac.id");
+  socket = new WebSocket("ws://localhost:8080");
 
   socket.onopen = () => {
     console.log("Connected to server");

@@ -243,7 +243,7 @@ window.onload = function () {
     }
 
     if (!isUsernameValid(username)) {
-      console.log('aa')
+      console.log("aa");
       showError("username", "Username must be between 5-20 characters long");
 
       return;
@@ -283,7 +283,7 @@ window.onload = function () {
   async function checkTraineeData(username) {
     try {
       const response = await fetch(
-        "https://narcore.apps.binus.ac.id/trainee.json"
+        "https://trainee-json.vercel.app/trainee.json"
       );
       const trainees = await response.json();
       return trainees.some(
@@ -300,7 +300,7 @@ window.onload = function () {
     const eye = document.getElementById(`${inputId}Button`);
     if (errorElement) {
       errorElement.textContent = message;
-      errorElement.style.fontFamily ="Comic Sans MS";
+      errorElement.style.fontFamily = "Comic Sans MS";
       errorElement.style.fontWeight = "bold";
       const fullHeight = errorElement.scrollHeight;
 
@@ -308,7 +308,7 @@ window.onload = function () {
       errorElement.style.opacity = "0";
       errorElement.style.transform = "translateY(-10px)";
       void errorElement.offsetHeight;
-      if(eye){
+      if (eye) {
         eye.style.display = "none";
       }
       errorElement.style.height = `${fullHeight}px`;
@@ -327,14 +327,14 @@ window.onload = function () {
 
   function hideError(inputId) {
     const errorElement = document.getElementById(`${inputId}Error`);
-     const eye = document.getElementById(`${inputId}Button`);
+    const eye = document.getElementById(`${inputId}Button`);
     if (errorElement) {
       const currentHeight = errorElement.scrollHeight;
 
       errorElement.style.height = `${currentHeight}px`;
 
       void errorElement.offsetHeight;
-      if(eye){
+      if (eye) {
         eye.style.display = "block";
       }
       errorElement.style.height = "0";
