@@ -70,3 +70,33 @@ Five scroll-snapped sections:
   - Flying off-screen (Bezier animation) on defeat
 - Victory / Draw / Defeat logic with custom animations
 - Anti-cheat detection on refresh with proper outcomes
+
+---
+To run this project:
+
+1. Clone the repository:
+   ```bash
+   git clone <your-repository-url>
+   ```
+
+2. Open the project directory.
+
+3. Start the project by opening the following file in your browser:
+   ```
+   /login/index.html
+   ```
+[TO RUN WEBSOCKET]
+4. to run Websocket for online multiplayer
+   ```bash
+   cd websocket-server
+   ```
+  next
+  ```bash
+   npm install
+  ```
+  next just
+  ```bash
+  node server.js
+  ```
+
+
