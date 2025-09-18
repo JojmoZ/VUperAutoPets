@@ -593,7 +593,7 @@ window.onload = function () {
       localStorage.setItem("ownedAnimals", JSON.stringify(user.ownedAnimals));
       // const menuPath = path.join(appDir, "menu/menu.html");
       // window.location.href = `file://${menuPath}`;
-      window.location.href = "menu/menu.html";
+      window.location.href = "VUperAutoPets/menu/menu.html";
     } else {
       modalErrorText.innerText = "Wrong Credentials";
       showErrorModal();
