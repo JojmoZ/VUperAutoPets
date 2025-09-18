@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // const loginPath = path.join(appDir, "login/index.html");
     // window.location.href = `file://${loginPath}`;
-    window.location.href = "/login/index.html";
+    window.location.href = "../login/index.html";
   }
 
   localStorage.removeItem("ingame");
@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function () {
   backbtn.addEventListener("click", function () {
     // const menuPath = path.join(appDir, "menu/menu.html");
     // window.location.href = `file://${menuPath}`;
-    window.location.href = "/menu/menu.html";
+    window.location.href = "../menu/menu.html";
   });
   const shopContainer = document.querySelector(".shop-container");
   const scrollBar = document.getElementById("scroll-bar");
@@ -375,7 +375,7 @@ function formatCoins(coins) {
   gotoGacha.addEventListener("click", function () {
     // const gachapath = path.join(appDir, "gacha/gachapage.html");
     // window.location.href = `file://${gachapath}`;
-    window.location.href = "/gacha/gachapage.html";
+    window.location.href = "../gacha/gachapage.html";
   });
   const ownedAnimals = JSON.parse(localStorage.getItem("ownedAnimals")) || [];
   ownedAnimals.forEach((animal) => {

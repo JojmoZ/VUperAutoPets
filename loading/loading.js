@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
       setTimeout(() => {
         // const gamePath = path.join(appDir, "game/game.html");
         // window.location.href = `file://${gamePath}`;
-        window.location.href = "/game/game.html";
+        window.location.href = "../game/game.html";
       }, 5000);
     });
   }

@@ -143,7 +143,7 @@ if (!logged) {
 
   // const loginPath = path.join(appDir, "login/index.html");
   // window.location.href = `file://${loginPath}`;
-  window.location.href = "/login/index.html";
+  window.location.href = "../login/index.html";
 }
 
 function saveRandomAnimals() {
@@ -155,7 +155,7 @@ function rollfirst() {
     setTimeout(() => {
       // const homePath = path.join(appDir, "home/homepage.html");
       // window.location.href = `file://${homePath}`;
-      window.location.href = "/home/homepage.html";
+      window.location.href = "../home/homepage.html";
     }, 3000);
     return;
   }
@@ -1240,7 +1240,7 @@ document.getElementById("backArrow").addEventListener("click", function () {
   localStorage.removeItem("ingame");
   // const menuPath = path.join(appDir, "menu/menu.html");
   // window.location.href = `file://${menuPath}`;
-  window.location.href = "/menu/menu.html";
+  window.location.href = "../menu/menu.html";
 });
 function showCanvas() {
   document.getElementById("battleCanvas").classList.remove("hidden");
@@ -1325,7 +1325,7 @@ document.addEventListener("DOMContentLoaded", function () {
             resetGame();
             // const menuPath = path.join(appDir, "menu/menu.html");
             // window.location.href = `file://${menuPath}`;
-            window.location.href = "/menu/menu.html";
+            window.location.href = "../menu/menu.html";
           }
         }, 1000);
         localStorage.setItem("lives", lives);
@@ -2731,7 +2731,7 @@ function DefeatScreen() {
           resetGame();
           // const menuPath = path.join(appDir, "menu/menu.html");
           // window.location.href = `file://${menuPath}`;
-          window.location.href = "/menu/menu.html";
+          window.location.href = "../menu/menu.html";
         });
       }, 1000);
     }, 1000);

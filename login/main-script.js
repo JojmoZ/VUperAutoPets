@@ -187,7 +187,7 @@ window.onload = function () {
   if (logged) {
     // const homePath = path.join(appDir, "home/homepage.html");
     // window.location.href = `file://${homePath}`;
-    window.location.href = "/home/homepage.html";
+    window.location.href = "../home/homepage.html";
   }
   registerTab.classList.add("active");
   registrationForm.classList.add("active");

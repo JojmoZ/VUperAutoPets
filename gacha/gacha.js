@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // const loginPath = path.join(appDir, "login/index.html");
     // window.location.href = `file://${loginPath}`;
-    window.location.href = "/login/index.html";
+    window.location.href = "../login/index.html";
   }
 
   const coinsDisplay = document.getElementById("coinsDisplay");
@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", function () {
   backBtn.addEventListener("click", function () {
     // const shoppage = path.join(appDir, "shop/shoppage.html");
     // window.location.href = `file://${shoppage}`;
-    window.location.href = "/shop/shoppage.html";
+    window.location.href = "../shop/shoppage.html";
   });
   function updateCoinsDisplay() {
     const coins = parseInt(localStorage.getItem("coins"), 10);

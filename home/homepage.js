@@ -437,7 +437,7 @@ window.onload = function () {
   backbtn.addEventListener("click", function () {
     // const menuPath = path.join(appDir, "menu/menu.html");
     // window.location.href = `file://${menuPath}`;
-    window.location.href = "/menu/menu.html";
+    window.location.href = "../menu/menu.html";
   });
   track.dataset.percentage = "-30";
   track.style.transform = `translate(-30%, -50%)`;
@@ -463,7 +463,7 @@ window.onload = function () {
 
     // const loginPath = path.join(appDir, "login/index.html");
     // window.location.href = `file://${loginPath}`;
-    window.location.href = "/login/index.html";
+    window.location.href = "../login/index.html";
   }
   const fadeInElements = document.querySelectorAll(".fade-in-element");
   const elementObserver = new IntersectionObserver(

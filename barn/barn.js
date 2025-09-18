@@ -100,7 +100,7 @@ if (!logged) {
 
   // const loginPath = path.join(appDir, "login/index.html");
   // window.location.href = `file://${loginPath}`;
-  window.location.href = "/login/index.html";
+  window.location.href = "../login/index.html";
 }
 
 function isInRestrictedZone(animalX, animalY, animalWidth, animalHeight) {
@@ -258,7 +258,7 @@ const backbtn = document.getElementById("backArrow");
 backbtn.addEventListener("click", function () {
   // const menuPath = path.join(appDir, "menu/menu.html");
   // window.location.href = `file://${menuPath}`;
-  window.location.href = "/menu/menu.html";
+  window.location.href = "../menu/menu.html";
 });
 function moveOutOfRestrictedZone(animal) {
   const directions = [

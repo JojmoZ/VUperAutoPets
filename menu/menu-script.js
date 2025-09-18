@@ -35,7 +35,7 @@ window.onload = () => {
     clearLocalStorageExceptUsers();
     //  const loginPath = path.join(appDir, "login/index.html");
     //  window.location.href = `/file://${loginPath}`;
-    window.location.href = "/login/index.html";
+    window.location.href = "../login/index.html";
   }
 
   localStorage.removeItem("ingame");
@@ -46,7 +46,7 @@ window.onload = () => {
     if (canPlay) {
       //  const loadingPath = path.join(appDir, "loading/loading.html");
       //  window.location.href = `/file://${loadingPath}`;
-      window.location.href = "/loading/loading.html";
+      window.location.href = "../loading/loading.html";
     } else {
       ShowModal("You need to have at least 1 animal to play the game!");
     }
@@ -55,19 +55,19 @@ window.onload = () => {
   homebtn.addEventListener("click", function () {
     //  const homePath = path.join(appDir, "home/homepage.html");
     //  window.location.href = `/file://${homePath}`;
-    window.location.href = "/home/homepage.html";
+    window.location.href = "../home/homepage.html";
   });
   const barnbtn = document.getElementById("barn-btn");
   barnbtn.addEventListener("click", function () {
     // const barnPath = path.join(appDir, "barn/barnpage.html");
     // window.location.href = `/file://${barnPath}`;
-    window.location.href = "/barn/barnpage.html";
+    window.location.href = "../barn/barnpage.html";
   });
   const shopbtn = document.getElementById("shop-btn");
   shopbtn.addEventListener("click", function () {
     // const shopPath = path.join(appDir, "shop/shoppage.html");
     // window.location.href = `/file://${shopPath}`;
-    window.location.href = "/shop/shoppage.html";
+    window.location.href = "../shop/shoppage.html";
   });
 
   overlay.addEventListener("click", function () {
@@ -93,7 +93,7 @@ window.onload = () => {
     localStorage.removeItem("fromOnline");
     //  const loginPath = path.join(appDir, "login/index.html");
     //  window.location.href = `/file://${loginPath}`;
-    window.location.href = "/login/index.html";
+    window.location.href = "../login/index.html";
   });
   function checkboughtanimals() {
     const boughtanimals = localStorage.getItem("ownedAnimals");
